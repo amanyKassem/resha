@@ -1,0 +1,1 @@
+export default {	white:'#fff',	orange : '#f0ac3f',	darkOrange : '#E8A816',	blue : '#299391',	gray : '#9d9d9d',	lightGray : '#cecece',	boldGray:'#525252',	rose:'#ce9cb4',	mov:'#241934'}
