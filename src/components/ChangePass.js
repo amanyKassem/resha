@@ -105,28 +105,28 @@ class ChangePass extends Component {
 
                                         <View style={styles.inputParent}>
                                             <Item stackedLabel style={styles.item } bordered>
-                                                <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
+                                                <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
                                                     { i18n.t('oldPass') }
                                                 </Label>
-                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                                 <Input autoCapitalize='none' secureTextEntry value={this.state.oldPass} onChangeText={(oldPass) => this.setState({oldPass})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                             </Item>
                                         </View>
                                         <View style={styles.inputParent}>
                                             <Item stackedLabel style={styles.item } bordered>
-                                                <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
+                                                <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
                                                     { i18n.t('newPass') }
                                                 </Label>
-                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                                 <Input autoCapitalize='none' secureTextEntry value={this.state.newPass} onChangeText={(newPass) => this.setState({newPass})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                             </Item>
                                         </View>
                                         <View style={styles.inputParent}>
                                             <Item stackedLabel style={styles.item } bordered>
-                                                <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
+                                                <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
                                                     { i18n.t('verifyNewPass') }
                                                 </Label>
-                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                                 <Input autoCapitalize='none' secureTextEntry value={this.state.verifyNewPass} onChangeText={(verifyNewPass) => this.setState({verifyNewPass})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                             </Item>
                                         </View>

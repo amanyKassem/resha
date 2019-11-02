@@ -36,7 +36,7 @@ class Events extends Component {
             <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookTicket')} style={[styles.notiBlock , styles.directionRow]}>
                 <Image source={item.image} resizeMode={'cover'} style={styles.eventImg}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
-                    <Text style={[styles.headerText , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
+                    <Text style={[styles.headerText, styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
                     <View style={[styles.directionRowAlignCenter  ]}>
                         <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                         <Text style={[styles.blueText , styles.normalText]}>{item.time}</Text>
@@ -116,9 +116,9 @@ class Events extends Component {
 
                         <View style={[styles.directionRowSpace , styles.w100  , styles.mt70, {paddingHorizontal:20 , paddingVertical:15}]}>
                             <View style={[styles.directionColumn , {flex: 1}]}>
-                                <Text style={[styles.whiteText, styles.normalText ]}>فاعليات</Text>
-                                <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>عدد الفاعليات : 512</Text>
-                                <Text style={[styles.whiteText, styles.normalText , {fontSize:13} ]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،</Text>
+                                <Text style={[styles.whiteText, styles.normalText, styles.asfs , styles.writing ]}>{ i18n.t('events') }</Text>
+                                <Text style={[styles.whiteText, styles.normalText, styles.asfs , styles.writing , {fontSize:14}]}>{ i18n.t('eventsNo') } : 512</Text>
+                                <Text style={[styles.whiteText, styles.normalText, styles.asfs , styles.writing, {fontSize:13} ]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،</Text>
                             </View>
                             <Image source={require('../../assets/images/events_icon.png')} style={{ width:135, height:135}} resizeMode={'contain'} />
                         </View>

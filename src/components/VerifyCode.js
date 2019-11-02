@@ -40,7 +40,7 @@ class VerifyCode extends Component {
                                             <Label style={styles.labelItem}>
                                                 { i18n.t('verifyCode') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input value={this.state.code} onChangeText={(code) => this.setState({code})} keyboardType={'number-pad'} style={styles.itemInput}  />
                                         </Item>
                                     </View>

@@ -6,9 +6,10 @@ import {
     TouchableOpacity,
     Dimensions,
     Animated,
-    Share,
+    Slider,
     ImageBackground,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Platform, I18nManager
 } from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form, Picker} from 'native-base'
 import styles from '../../assets/styles'
@@ -41,6 +42,10 @@ class SearchFilter extends Component {
             initMap: true,
             date: '',
             isDatePickerVisible: false,
+            value: null,
+            max: 2500,
+            step: 500,
+            min: 0,
         }
     }
 
@@ -49,6 +54,10 @@ class SearchFilter extends Component {
     });
 
     _toggleModal = () => this.setState({ isModalVisible: !this.state.isModalVisible });
+
+    change(value){
+        this.setState({value})
+    }
 
 
     showDatePicker = () => {
@@ -196,7 +205,7 @@ class SearchFilter extends Component {
                         <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                         </TouchableOpacity>
-                        <Text style={[styles.headerText]}>فلتر بحث</Text>
+                        <Text style={[styles.headerText]}>{ i18n.t('searchFilter') }</Text>
                         <TouchableOpacity style={styles.headerBtn}>
                             <Image source={require('../../assets/images/reload_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>
@@ -211,8 +220,12 @@ class SearchFilter extends Component {
 
                                     <View style={styles.inputParent}>
                                         <Item style={styles.itemPicker} regular >
-                                            <Label style={[styles.labelItem , {top:-18.5 , paddingRight:20 , borderBottomColor:'#fff'}]}>المدينة</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , {top:-19}]}/>
+                                            <Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,
+                                                paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,
+                                                paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10,
+                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
+                                                borderBottomColor:'#fff'}]}>{ i18n.t('city') }</Label>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>
                                             <Picker
                                                 mode="dropdown"
                                                 style={[styles.picker , { color: COLORS.gray , backgroundColor:'#f5f5f5',}]}
@@ -229,8 +242,12 @@ class SearchFilter extends Component {
                                     </View>
                                     <View style={styles.inputParent}>
                                         <Item style={styles.itemPicker} regular >
-                                            <Label style={[styles.labelItem , {top:-18.5 , paddingRight:20 , borderBottomColor:'#fff'}]}>نوع الفاعلية</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , {top:-19}]}/>
+                                            <Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,
+                                                paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,
+                                                paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10,
+                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
+                                                borderBottomColor:'#fff'}]}>{ i18n.t('eventType') }</Label>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>
                                             <Picker
                                                 mode="dropdown"
                                                 style={[styles.picker , { color: COLORS.gray , backgroundColor:'#f5f5f5',}]}
@@ -247,16 +264,20 @@ class SearchFilter extends Component {
                                     </View>
                                     <View style={styles.inputParent}>
                                         <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={() =>this._toggleModal()}>
-                                            <Label style={[styles.labelItem , {top:-8, borderBottomColor:'#fff'}]}>{ i18n.t('location') }</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5
+                                                ,backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
+                                                borderBottomColor:'#fff'}]}>{ i18n.t('location') }</Label>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform]}/>
                                             <Text style={[styles.whiteText , styles.normalText , styles.itemText, {backgroundColor:'#f5f5f5',  color: COLORS.gray } ]}>{this.state.location}</Text>
                                         </TouchableOpacity>
                                         <Image source={require('../../assets/images/placeholder_blue.png')} style={styles.mapMarker} resizeMode={'contain'} />
                                     </View>
                                     <View style={styles.inputParent}>
                                         <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={this.showDatePicker}>
-                                            <Label style={[styles.labelItem , {top:-8 , borderBottomColor:'#fff'}]}>التاريخ</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 ,
+                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
+                                                borderBottomColor:'#fff'}]}>{ i18n.t('date') }</Label>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform]}/>
                                             <Text style={[styles.whiteText , styles.normalText , styles.itemText, {backgroundColor:'#f5f5f5',  color: COLORS.gray } ]}>{this.state.date}</Text>
                                         </TouchableOpacity>
                                         <Image source={require('../../assets/images/calendar_icon_small.png')} style={styles.mapMarker} resizeMode={'contain'} />
@@ -269,12 +290,28 @@ class SearchFilter extends Component {
                                     </View>
 
                                     <View style={[styles.directionRowAlignCenter , styles.mt15]}>
-                                        <Image source={require('../../assets/images/feather_color.png')} style={[styles.resha]} resizeMode={'contain'} />
-                                        <Text style={[styles.headerText , {color:'#272727'}]}>السعر</Text>
+                                        <Image source={require('../../assets/images/feather_color.png')} style={[styles.resha , styles.transform]} resizeMode={'contain'} />
+                                        <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('price') }</Text>
                                     </View>
 
 
-                                    {/*range Slider missed */}
+                                    <View style={styles.sliderParent}>
+                                        <Slider
+                                            step={this.state.step}
+                                            maximumValue={this.state.max}
+                                            onValueChange={(value) => this.change(value)}
+                                            // value={this.state.value}
+                                            thumbTintColor={COLORS.rose}
+                                            style={styles.slider}
+                                            maximumTrackTintColor={"#000"}
+                                            minimumTrackTintColor={COLORS.blue}
+                                        />
+                                        <View style={styles.range}>
+                                            <Left><Text style={[styles.headerText , {color:'#272727'}]}>{this.state.min}</Text></Left>
+                                            <Text style={[styles.headerText , {color:'#272727'}]}>{this.state.value}</Text>
+                                            <Right><Text style={[styles.headerText , {color:'#272727'}]}>{this.state.max}</Text></Right>
+                                        </View>
+                                    </View>
 
 
                                     <TouchableOpacity onPress={() => this.props.navigation.navigate('searchResult')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>

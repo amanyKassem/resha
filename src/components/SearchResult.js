@@ -36,7 +36,7 @@ class SearchResult extends Component {
             <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookTicket')} style={[styles.notiBlock , styles.directionRow]}>
                 <Image source={item.image} resizeMode={'cover'} style={styles.eventImg}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
-                    <Text style={[styles.headerText , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
+                    <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
                     <View style={[styles.directionRowAlignCenter  ]}>
                         <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                         <Text style={[styles.blueText , styles.normalText]}>{item.time}</Text>
@@ -103,7 +103,7 @@ class SearchResult extends Component {
                         <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                         </TouchableOpacity>
-                        <Text style={[styles.headerText]}>نتائج البحث</Text>
+                        <Text style={[styles.headerText]}>{ i18n.t('searchResult') }</Text>
                         <TouchableOpacity onPress={ () => this.props.navigation.navigate('searchFilter')} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/filter_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>

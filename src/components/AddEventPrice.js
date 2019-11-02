@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     Dimensions,
     Animated,
-    FlatList,
+    Platform,
     ImageBackground,
     KeyboardAvoidingView
 } from "react-native";
@@ -92,7 +92,7 @@ class AddEventPrice extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>اضافة فاعلية</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('addEvent') }</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
@@ -100,19 +100,19 @@ class AddEventPrice extends Component {
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
-                            <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
+                            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'height' : 'padding'} style={styles.keyboardAvoid}>
                                 <Form style={{padding:20}}>
 
                                     <View style={styles.ticketView}>
                                         <Image source={require('../../assets/images/ticket_vip.png')} style={[styles.ticket]} resizeMode={'contain'} />
-                                        <Text style={[styles.whiteText , styles.normalText , styles.ticketText ]}>تذكره vip</Text>
+                                        <Text style={[styles.whiteText , styles.normalText , styles.ticketText ]}>{ i18n.t('vipTicket') }</Text>
                                     </View>
 
                                     <View style={styles.directionRowSpace}>
                                         <View style={[styles.inputParent , {width: '48%'}]}>
                                             <Item stackedLabel style={styles.item } bordered>
-                                                <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                                    السعر
+                                                <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
+                                                    { i18n.t('price') }
                                                 </Label>
                                                 <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
                                                 <Input keyboardType={'number-pad'} value={this.state.vipPrice} onChangeText={(vipPrice) => this.setState({vipPrice})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray , width: '92.5%' }]}  />
@@ -120,8 +120,8 @@ class AddEventPrice extends Component {
                                         </View>
                                         <View style={[styles.inputParent , {width: '48%'}]}>
                                             <Item stackedLabel style={styles.item } bordered>
-                                                <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                                    الكمية
+                                                <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
+                                                    { i18n.t('quantity') }
                                                 </Label>
                                                 <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
                                                 <Input keyboardType={'number-pad'} value={this.state.vipQuantity} onChangeText={(vipQuantity) => this.setState({vipQuantity})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray , width: '92.5%' }]}  />
@@ -131,14 +131,14 @@ class AddEventPrice extends Component {
 
                                     <View style={[styles.ticketView , styles.mt15]}>
                                         <Image source={require('../../assets/images/ticket_yellow_big.png')} style={[styles.ticket]} resizeMode={'contain'} />
-                                        <Text style={[styles.whiteText , styles.normalText , styles.ticketText ]}>تذكره ذهبية</Text>
+                                        <Text style={[styles.whiteText , styles.normalText , styles.ticketText ]}>{ i18n.t('goldTicket') }</Text>
                                     </View>
 
                                     <View style={styles.directionRowSpace}>
                                         <View style={[styles.inputParent , {width: '48%'}]}>
                                             <Item stackedLabel style={styles.item } bordered>
-                                                <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                                    السعر
+                                                <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
+                                                    { i18n.t('price') }
                                                 </Label>
                                                 <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
                                                 <Input keyboardType={'number-pad'} value={this.state.goldPrice} onChangeText={(goldPrice) => this.setState({goldPrice})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray , width: '92.5%' }]}  />
@@ -146,8 +146,8 @@ class AddEventPrice extends Component {
                                         </View>
                                         <View style={[styles.inputParent , {width: '48%'}]}>
                                             <Item stackedLabel style={styles.item } bordered>
-                                                <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                                    الكمية
+                                                <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
+                                                    { i18n.t('quantity') }
                                                 </Label>
                                                 <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
                                                 <Input keyboardType={'number-pad'} value={this.state.goldQuantity} onChangeText={(goldQuantity) => this.setState({goldQuantity})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray , width: '92.5%' }]}  />
@@ -157,14 +157,14 @@ class AddEventPrice extends Component {
 
                                     <View style={[styles.ticketView , styles.mt15]}>
                                         <Image source={require('../../assets/images/ticket_gray.png')} style={[styles.ticket]} resizeMode={'contain'} />
-                                        <Text style={[styles.whiteText , styles.normalText , styles.ticketText ]}>تذكره عادية</Text>
+                                        <Text style={[styles.whiteText , styles.normalText , styles.ticketText ]}>{ i18n.t('normalTicket') }</Text>
                                     </View>
 
                                     <View style={styles.directionRowSpace}>
                                         <View style={[styles.inputParent , {width: '48%'}]}>
                                             <Item stackedLabel style={styles.item } bordered>
-                                                <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                                    السعر
+                                                <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
+                                                    { i18n.t('price') }
                                                 </Label>
                                                 <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
                                                 <Input keyboardType={'number-pad'} value={this.state.normalPrice} onChangeText={(normalPrice) => this.setState({normalPrice})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray , width: '92.5%' }]}  />
@@ -172,8 +172,8 @@ class AddEventPrice extends Component {
                                         </View>
                                         <View style={[styles.inputParent , {width: '48%'}]}>
                                             <Item stackedLabel style={styles.item } bordered>
-                                                <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                                    الكمية
+                                                <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
+                                                    { i18n.t('quantity') }
                                                 </Label>
                                                 <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
                                                 <Input keyboardType={'number-pad'} value={this.state.normalQuantity} onChangeText={(normalQuantity) => this.setState({normalQuantity})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray , width: '92.5%' }]}  />

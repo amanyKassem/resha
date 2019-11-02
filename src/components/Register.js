@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions,  ImageBackground , KeyboardAvoidingView} from "react-native";
+import {
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    Dimensions,
+    ImageBackground,
+    KeyboardAvoidingView,
+    Platform, I18nManager
+} from "react-native";
 import {Container, Content, Form, Picker, Input, Item, Label, Button} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -52,7 +61,7 @@ class Register extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
-        getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
+        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
 
         console.log(getCity);
 
@@ -80,7 +89,7 @@ class Register extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += mapRegion.latitude + ',' + mapRegion.longitude;
-        getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
+        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
 
         console.log('locations data', getCity);
 
@@ -132,27 +141,29 @@ class Register extends Component {
 
                             <Image source={require('../../assets/images/logo.png')} resizeMode={'contain'} style={[styles.logo , styles.mb10]}/>
 
-                            <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
+                            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'absolute' : 'padding'} style={styles.keyboardAvoid}>
                                 <Form style={{}}>
 
                                     <View style={styles.inputParent}>
                                         <Item style={styles.itemPicker} regular >
-                                            <Label style={[styles.labelItem , {top:-18.5 , paddingRight:20}]}>نوع المستخدم</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , {top:-19}]}/>
+                                            <Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,
+                                                paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,
+                                                paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10}]}>{ i18n.t('userType') }</Label>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>
                                             <Picker
                                                 mode="dropdown"
-                                                style={styles.picker}
+                                                style={[styles.picker , {width:Platform.OS === 'ios' ? 313 : '100%'}]}
                                                 placeholderStyle={{ color: COLORS.white}}
                                                 placeholderIconColor={{color: COLORS.white}}
                                                 selectedValue={this.state.userType}
                                                 onValueChange={(value) => this.setState({ userType: value })}
                                             >
-                                                <Picker.Item label={'مستخدم عادي'} value={1} />
-                                                <Picker.Item label={'صاحب فاعلية'}  value={2} />
-                                                <Picker.Item label={'منظم'} value={3} />
-                                                <Picker.Item label={'صاحب كافيه'}  value={4} />
-                                                <Picker.Item label={'صاحب اسرة منتجة'}  value={5} />
-                                                <Picker.Item label={'صاحب فود تراك'}  value={6} />
+                                                <Picker.Item label={ i18n.t('normalUser') } value={1} />
+                                                <Picker.Item label={ i18n.t('eventOwner') }  value={2} />
+                                                <Picker.Item label={ i18n.t('organizer') }  value={3} />
+                                                <Picker.Item label={ i18n.t('cafeOwner') }  value={4} />
+                                                <Picker.Item label={ i18n.t('productiveOwner') }  value={5} />
+                                                <Picker.Item label={ i18n.t('foodTrackOwner') }  value={6} />
                                             </Picker>
                                             <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
                                         </Item>
@@ -162,8 +173,8 @@ class Register extends Component {
                                         this.state.userType != 5 ? (
                                             <View style={styles.inputParent}>
                                                 <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={() =>this._toggleModal()}>
-                                                    <Label style={[styles.labelItem , {top:-8}]}>{ i18n.t('location') }</Label>
-                                                    <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                                    <Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 }]}>{ i18n.t('location') }</Label>
+                                                    <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform, styles.transform]}/>
                                                     <Text style={[styles.whiteText , styles.normalText , styles.itemText ]}>{this.state.city}</Text>
                                                 </TouchableOpacity>
                                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={styles.mapMarker} resizeMode={'contain'} />
@@ -179,7 +190,7 @@ class Register extends Component {
                                             <Label style={styles.labelItem}>
                                                 { i18n.t('username') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input autoCapitalize='none' value={this.state.username} onChangeText={(username) => this.setState({username})}   style={styles.itemInput}  />
                                         </Item>
                                     </View>
@@ -189,7 +200,7 @@ class Register extends Component {
                                             <Label style={styles.labelItem}>
                                                 { i18n.t('phoneNumber') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input value={this.state.phone} onChangeText={(phone) => this.setState({phone})} keyboardType={'number-pad'} style={styles.itemInput}  />
                                         </Item>
                                     </View>
@@ -199,7 +210,7 @@ class Register extends Component {
                                             <Label style={styles.labelItem}>
                                                 { i18n.t('email') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input value={this.state.mail} onChangeText={(mail) => this.setState({mail})} keyboardType={'email-address'} style={styles.itemInput}  />
                                         </Item>
                                     </View>
@@ -209,7 +220,7 @@ class Register extends Component {
                                             <Label style={styles.labelItem}>
                                                 { i18n.t('password') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input autoCapitalize='none' value={this.state.password} onChangeText={(password) => this.setState({password})} secureTextEntry  style={styles.itemInput}  />
                                         </Item>
                                     </View>
@@ -219,7 +230,7 @@ class Register extends Component {
                                             <Label style={styles.labelItem}>
                                                 { i18n.t('rePassword') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input autoCapitalize='none' value={this.state.rePassword} onChangeText={(rePassword) => this.setState({rePassword})} secureTextEntry  style={styles.itemInput}  />
                                         </Item>
                                     </View>

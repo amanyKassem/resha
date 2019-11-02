@@ -71,7 +71,7 @@ class Profile extends Component {
                         <TouchableOpacity  onPress={() => this.props.navigation.openDrawer()} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/menu.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>
-                        <Text style={[styles.headerText]}>الملف الشخصي</Text>
+                        <Text style={[styles.headerText]}>{ i18n.t('profile') }</Text>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('notifications')}   style={styles.headerBtn}>
                             <Image source={require('../../assets/images/bell_active.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>
@@ -81,12 +81,12 @@ class Profile extends Component {
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
-                        <View style={[styles.homeSection , { marginTop:40}]}>
+                        <View style={[styles.homeSection , { marginTop:70}]}>
 
                             <View style={styles.sideImgView}>
                                 <View style={styles.cutCircle}>
                                     <View style={styles.sideProfileImg}>
-                                        <Image source={require('../../assets/images/profile_pic.png')} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                        <Image source={require('../../assets/images/profile_pic.png')} resizeMode={'cover'} style={styles.drawImg}/>
                                     </View>
                                 </View>
                                 <Text style={styles.sideName}>اماني قاسم</Text>
@@ -94,7 +94,7 @@ class Profile extends Component {
 
                                 <View style={[styles.editBtn]}>
                                     <TouchableOpacity onPress={() => this.props.navigation.navigate('editProfile')} style={[styles.blueBtn , {width:170, height:40}]} >
-                                        <Text style={[styles.whiteText, styles.normalText ]}>تعديل الحساب</Text>
+                                        <Text style={[styles.whiteText, styles.normalText ]}>{ i18n.t('editAcc') }</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -103,7 +103,7 @@ class Profile extends Component {
 
                             <View style={[styles.directionColumn , {paddingHorizontal:15}]}>
                                 <View style={styles.directionRowAlignCenter}>
-                                    <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                    <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg , styles.transform]} resizeMode={'contain'} />
                                     <Text style={[styles.headerText ]}>{ i18n.t('username') }</Text>
                                 </View>
                                 <Text style={[styles.headerText , styles.asfs , {marginLeft:25 , fontSize: 14} ]}>اماني قاسم</Text>
@@ -113,7 +113,7 @@ class Profile extends Component {
 
                             <View style={[styles.directionColumn , {paddingHorizontal:15}]}>
                                 <View style={styles.directionRowAlignCenter}>
-                                    <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                    <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg , styles.transform]} resizeMode={'contain'} />
                                     <Text style={[styles.headerText ]}>{ i18n.t('email') }</Text>
                                 </View>
                                 <Text style={[styles.headerText , styles.asfs , {marginLeft:25 , fontSize: 14} ]}>aait.sa.com</Text>
@@ -123,7 +123,7 @@ class Profile extends Component {
 
                             <View style={[styles.directionColumn , {paddingHorizontal:15}]}>
                                 <View style={styles.directionRowAlignCenter}>
-                                    <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                    <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg , styles.transform]} resizeMode={'contain'} />
                                     <Text style={[styles.headerText ]}>{ i18n.t('phoneNumber') }</Text>
                                 </View>
                                 <Text style={[styles.headerText , styles.asfs , {marginLeft:25 , fontSize: 14} ]}>01023456789</Text>

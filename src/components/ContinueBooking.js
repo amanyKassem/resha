@@ -8,7 +8,7 @@ import {
     Animated,
     FlatList,
     ImageBackground,
-    KeyboardAvoidingView
+    KeyboardAvoidingView, Platform
 } from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form} from 'native-base'
 import styles from '../../assets/styles'
@@ -89,7 +89,7 @@ class ContinueBooking extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>اكمال الحجز</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('continueBooking') }</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
@@ -101,7 +101,7 @@ class ContinueBooking extends Component {
                             <View  style={[styles.ticketViewType , styles.mb15]}>
                                 <Image source={require('../../assets/images/ticket_vip.png')} style={[styles.ticketType]} resizeMode={'contain'} />
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>تذكره vip</Text>
-                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>السعر 133 ريال</Text>
+                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>{ i18n.t('price') } 133 ريال</Text>
                             </View>
 
 
@@ -109,8 +109,8 @@ class ContinueBooking extends Component {
                                 <Form style={{padding:20}}>
                                     <View style={styles.inputParent}>
                                         <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                                عدد التذاكر
+                                            <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' , borderBottomColor:'#fff'}]}>
+                                                { i18n.t('ticketsNo') }
                                             </Label>
                                             <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
                                             <Input keyboardType={'number-pad'} value={this.state.ticketsNo} onChangeText={(ticketsNo) => this.setState({ticketsNo})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />

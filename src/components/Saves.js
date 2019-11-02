@@ -118,7 +118,7 @@ class Saves extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>المحفوظات</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('saves') }</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
@@ -130,15 +130,15 @@ class Saves extends Component {
                         <View style={styles.mainScroll}>
                             <ScrollView style={{}} horizontal={true} showsHorizontalScrollIndicator={false}>
                                 <TouchableOpacity onPress={ () => this.setState({activeType:0})} style={styles.scrollView}>
-                                    <Text style={[styles.scrollText,{color:this.state.activeType === 0 ? COLORS.rose : COLORS.gray}]}>الفاعليات</Text>
+                                    <Text style={[styles.scrollText,{color:this.state.activeType === 0 ? COLORS.rose : COLORS.gray}]}>{ i18n.t('events') }</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 0 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={ () => this.setState({activeType:1})} style={styles.scrollView}>
-                                    <Text style={[styles.scrollText,{color:this.state.activeType === 1 ? COLORS.rose : COLORS.gray}]}>الأسر المنتجة</Text>
+                                    <Text style={[styles.scrollText,{color:this.state.activeType === 1 ? COLORS.rose : COLORS.gray}]}>{ i18n.t('productiveFamilies') }</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 1 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={ () => this.setState({activeType:2})} style={styles.scrollView}>
-                                    <Text style={[styles.scrollText,{color:this.state.activeType === 2 ? COLORS.rose : COLORS.gray}]}>المطاعم والكافيهات</Text>
+                                    <Text style={[styles.scrollText,{color:this.state.activeType === 2 ? COLORS.rose : COLORS.gray}]}>{ i18n.t('rest&cafe') }</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 2 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
                             </ScrollView>

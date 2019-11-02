@@ -94,7 +94,7 @@ class TicketPayment extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>الدفع</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('payment') }</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
@@ -106,23 +106,23 @@ class TicketPayment extends Component {
                             <View  style={[styles.ticketViewType , styles.mb15 , styles.w100 ]}>
                                 <Image source={require('../../assets/images/ticket_vip.png')} style={[styles.ticketType, styles.w100]} resizeMode={'contain'} />
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>تذكره vip</Text>
-                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>السعر 133 ريال</Text>
+                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>{ i18n.t('price') } 133 ريال</Text>
                             </View>
 
 
                             <TouchableOpacity onPress={() => this.selectPay('visa')} style={[styles.directionRowAlignCenter , styles.payView , styles.mt15 , {borderColor:this.state.payType === 'visa' ?COLORS.blue : COLORS.gray}]}>
                                 <Image source={ this.state.payType === 'visa' ? require('../../assets/images/credit_card.png') : require('../../assets/images/credit_card_gray.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
-                                <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'visa' ?COLORS.blue : COLORS.gray}]}>الدفع بالفيزا / الماستر كارد</Text>
+                                <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'visa' ?COLORS.blue : COLORS.gray}]}>{ i18n.t('payByVisa') }</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => this.selectPay('sdad')} style={[styles.directionRowAlignCenter , styles.payView, {borderColor:this.state.payType === 'sdad' ?COLORS.blue : COLORS.gray}]}>
                                 <Image source={ this.state.payType === 'sdad' ? require('../../assets/images/sadad_logo_blue.png') : require('../../assets/images/sadad_logo.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
-                                <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'sdad' ?COLORS.blue : COLORS.gray}]}>الدفع بسداد</Text>
+                                <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'sdad' ?COLORS.blue : COLORS.gray}]}>{ i18n.t('payBySadad') }</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => this.selectPay('mada')} style={[styles.directionRowAlignCenter , styles.payView, {borderColor:this.state.payType === 'mada' ?COLORS.blue : COLORS.gray}]}>
                                 <Image source={ this.state.payType === 'mada' ? require('../../assets/images/mada_logo_blue.png') : require('../../assets/images/mada_logo.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
-                                <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'mada' ?COLORS.blue : COLORS.gray}]}>الدفع بمدي</Text>
+                                <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'mada' ?COLORS.blue : COLORS.gray}]}>{ i18n.t('payByMada') }</Text>
                             </TouchableOpacity>
 
 

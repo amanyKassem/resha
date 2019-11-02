@@ -36,8 +36,8 @@ class Terms extends Component {
     renderItems = (item) => {
         return(
             <View style={styles.faqBlock}>
-                <Text style={[styles.headerText , {color:'#272727'}]}>{item.ques}</Text>
-                <Text style={[styles.grayText , styles.normalText]}>{item.ans}</Text>
+                <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727'}]}>{item.ques}</Text>
+                <Text style={[styles.grayText , styles.asfs , styles.writing , styles.normalText]}>{item.ans}</Text>
             </View>
         );
     }
@@ -112,7 +112,7 @@ class Terms extends Component {
                                 />
                                 <View style={[styles.directionRowAlignCenter , styles.mb15 ]}>
                                     <CheckBox onPress={() => this.setState({checkTerms: !this.state.checkTerms})} checked={this.state.checkTerms} color={'#2f9694'} style={styles.checkBox} />
-                                    <Text style={[styles.headerText , {color:'#272727'}]}>الموافقة علي الشروط و الأحكام</Text>
+                                    <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('acceptTerms') }</Text>
                                 </View>
 
                             </ImageBackground>

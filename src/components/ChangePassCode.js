@@ -103,10 +103,10 @@ class ChangePassCode extends Component {
 
                                         <View style={styles.inputParent}>
                                             <Item stackedLabel style={styles.item } bordered>
-                                                <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
+                                                <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
                                                     { i18n.t('verifyCode') }
                                                 </Label>
-                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                                 <Input keyboardType={'number-pad'} value={this.state.verifyCode} onChangeText={(verifyCode) => this.setState({verifyCode})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                             </Item>
                                         </View>

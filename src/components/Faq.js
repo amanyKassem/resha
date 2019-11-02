@@ -35,8 +35,8 @@ class Faq extends Component {
     renderItems = (item) => {
         return(
             <View style={styles.faqBlock}>
-                <Text style={[styles.headerText , {color:'#272727'}]}>{item.ques}</Text>
-                <Text style={[styles.grayText , styles.normalText]}>{item.ans}</Text>
+                <Text style={[styles.headerText, styles.asfs , styles.writing  , {color:'#272727'}]}>{item.ques}</Text>
+                <Text style={[styles.grayText, styles.asfs , styles.writing  , styles.normalText]}>{item.ans}</Text>
             </View>
         );
     }

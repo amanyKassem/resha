@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     Dimensions,
     Animated,
-    FlatList,
+    Platform,
     ImageBackground,
     KeyboardAvoidingView
 } from "react-native";
@@ -116,7 +116,7 @@ class EditProfile extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>تعديل الصفحة الشخصية</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('editProfile') }</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
@@ -131,7 +131,7 @@ class EditProfile extends Component {
                                     <View style={[styles.cutCircle]}>
                                         <View style={styles.sideProfileImg}>
                                             <View style={styles.overProfile}/>
-                                            <Image source={{ uri: image }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                            <Image source={{ uri: image }} resizeMode={'cover'} style={styles.drawImg}/>
                                         </View>
                                     </View>
                                 </View>
@@ -141,7 +141,8 @@ class EditProfile extends Component {
                                     <View style={[styles.cutCircle]}>
                                         <View style={styles.sideProfileImg}>
                                             <View style={styles.overProfile}/>
-                                            <Image source={require('../../assets/images/profile_pic.png')} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                            <Image source={require('../../assets/images/profile_pic.png')} resizeMode={'cover'} style={[styles.drawImg , { width:Platform.OS === 'ios' ?146 :160,
+                                                height:Platform.OS === 'ios' ?146 :160  , top:Platform.OS === 'ios' ?-1 :0 ,}]}/>
                                         </View>
                                     </View>
                                 </View>
@@ -149,39 +150,39 @@ class EditProfile extends Component {
 
                             <TouchableOpacity onPress={this._pickImage}  style={[styles.upload]} >
                                 <Image source={require('../../assets/images/upload_button.png')} style={[styles.headerMenu , {marginRight:5}]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText, styles.normalText ]}>رفع صوره</Text>
+                                <Text style={[styles.blueText, styles.normalText ]}>{ i18n.t('uploadPhoto') }</Text>
                             </TouchableOpacity>
 
 
-                            <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
+                            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'height' : 'padding'} style={styles.keyboardAvoid}>
                                 <Form style={{padding:20}}>
 
 
                                     <View style={styles.inputParent}>
                                         <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
+                                            <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
                                                 { i18n.t('username') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform]}/>
                                             <Input autoCapitalize='none' value={this.state.username} onChangeText={(username) => this.setState({username})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                         </Item>
                                     </View>
                                     <View style={styles.inputParent}>
                                         <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
+                                            <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
                                                 { i18n.t('phoneNumber') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform]}/>
                                             <Input keyboardType={'number-pad'} value={this.state.phone} onChangeText={(phone) => this.setState({phone})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                         </Item>
                                     </View>
 
                                     <View style={styles.inputParent}>
                                         <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
+                                            <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
                                                 { i18n.t('email') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform]}/>
                                             <Input keyboardType={'email-address'} value={this.state.email} onChangeText={(email) => this.setState({email})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                         </Item>
                                     </View>

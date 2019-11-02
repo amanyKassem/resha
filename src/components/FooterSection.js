@@ -77,7 +77,7 @@ class FooterSection extends Component {
                     {  this.renderFooterTabs('reservations') }
 
                     <Button style={styles.footSearch}  onPress={() => this.props.navigation.navigate('search')} >
-                        <Image style={styles.footSearchImg} resizeMode={'contain'} source={ require('../../assets/images/search_floting.png')}/>
+                        <Image style={[styles.footSearchImg , styles.transform]} resizeMode={'contain'} source={ require('../../assets/images/search_floting.png')}/>
                     </Button>
 
                     {  this.renderFooterTabs('saves') }

@@ -21,7 +21,6 @@ class Login extends Component {
 
     render() {
 
-
         return (
             <Container>
                 <Content contentContainerStyle={styles.flexGrow} >
@@ -38,7 +37,7 @@ class Login extends Component {
                                             <Label style={styles.labelItem}>
                                                 { i18n.t('phoneNumber') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input value={this.state.phone} onChangeText={(phone) => this.setState({phone})} keyboardType={'number-pad'} style={styles.itemInput}  />
                                         </Item>
                                     </View>
@@ -47,7 +46,7 @@ class Login extends Component {
                                             <Label style={styles.labelItem}>
                                                 { i18n.t('password') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input autoCapitalize='none' value={this.state.password} onChangeText={(password) => this.setState({password})} secureTextEntry  style={styles.itemInput}  />
                                         </Item>
                                     </View>
@@ -69,7 +68,7 @@ class Login extends Component {
 
                         <View style={[styles.accParent]}>
                             <View style={styles.createAccText}>
-                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , {top:5}]}/>
+                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:5}]}/>
                                 <Text style={[styles.blueText, styles.normalText ]}>{ i18n.t('registerButton') }</Text>
                             </View>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('register')} style={styles.noAcc} >

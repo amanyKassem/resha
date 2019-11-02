@@ -97,19 +97,19 @@ class Search extends Component {
 
                             <TouchableOpacity style={[styles.directionRowAlignCenter, styles.mb15]}>
                                 <Image source={require('../../assets/images/image_one_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
-                                <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>الايفينتات المقترحة</Text>
+                                <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('proposedEvents') }</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.directionRowAlignCenter, styles.mb15]}>
                                 <Image source={require('../../assets/images/image_two_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
-                                <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>الايفينتات الشائعة</Text>
+                                <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('commonEvents') }</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.directionRowAlignCenter, styles.mb15]}>
                                 <Image source={require('../../assets/images/image_three_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
-                                <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>الايفينتات المفضلة</Text>
+                                <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('favsEvents') }</Text>
                             </TouchableOpacity>
 
 
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('reservations')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('searchResult', { search : this.state.search } )} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
                                 <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
                             </TouchableOpacity>
                         </View>

@@ -8,7 +8,7 @@ import {
     Animated,
     FlatList,
     ImageBackground,
-    KeyboardAvoidingView
+    KeyboardAvoidingView, Platform
 } from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label} from 'native-base'
 import styles from '../../assets/styles'
@@ -109,7 +109,7 @@ class PaymentDetails extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>عملية الدفع</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('paymentOp') }</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
@@ -124,36 +124,36 @@ class PaymentDetails extends Component {
 
                                     <View style={styles.inputParent}>
                                         <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                                بطاقة ائتمان
+                                            <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' , borderBottomColor:'#fff'}]}>
+                                                { i18n.t('creditCard') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input keyboardType={'number-pad'} value={this.state.creditCard} onChangeText={(creditCard) => this.setState({creditCard})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                         </Item>
                                     </View>
 
                                     <View style={styles.inputParent}>
                                         <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                                الاسم الأول
+                                            <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' , borderBottomColor:'#fff'}]}>
+                                                { i18n.t('firstName') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input autoCapitalize='none' value={this.state.firstName} onChangeText={(firstName) => this.setState({firstName})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                         </Item>
                                     </View>
                                     <View style={styles.inputParent}>
                                         <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                                الاسم الاخير
+                                            <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' , borderBottomColor:'#fff'}]}>
+                                                { i18n.t('lastName') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input autoCapitalize='none' value={this.state.lastNAme} onChangeText={(lastNAme) => this.setState({lastNAme})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                         </Item>
                                     </View>
                                     <View style={styles.inputParent}>
                                         <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={this.showDatePicker}>
-                                            <Label style={[styles.labelItem , {top:-8 , borderBottomColor:'#fff'}]}>تاريخ الانتهاء</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Label style={[styles.labelItem , {top:-8, backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent'  , borderBottomColor:'#fff'}]}>{ i18n.t('expDate') }</Label>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Text style={[styles.whiteText , styles.normalText , styles.itemText, {backgroundColor:'#f5f5f5',  paddingLeft:10,color: COLORS.gray  } ]}>{this.state.date}</Text>
                                         </TouchableOpacity>
                                         <DateTimePicker
@@ -166,10 +166,10 @@ class PaymentDetails extends Component {
 
                                     <View style={styles.inputParent}>
                                         <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                                رمز الحماية
+                                            <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' , borderBottomColor:'#fff'}]}>
+                                                { i18n.t('securityCode') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input autoCapitalize='none' value={this.state.securityCode} onChangeText={(securityCode) => this.setState({securityCode})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                         </Item>
                                     </View>

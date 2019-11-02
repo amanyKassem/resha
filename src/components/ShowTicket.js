@@ -95,7 +95,7 @@ class ShowTicket extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>عرض التذكرة</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('showTicket') }</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
@@ -134,7 +134,7 @@ class ShowTicket extends Component {
                                 <Image source={require('../../assets/images/events.jpg')}  style={styles.swiperImg} resizeMode={'cover'}/>
                             </Swiper>
 
-                            <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>حفلة وسط البلد</Text>
+                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing, styles.mb10]}>حفلة وسط البلد</Text>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
                                     <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
@@ -153,7 +153,7 @@ class ShowTicket extends Component {
                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>الرياض . جده . السعودية</Text>
                             </View>
-                            <Text style={[styles.grayText , styles.normalText , {fontSize:13}]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،</Text>
+                            <Text style={[styles.grayText , styles.normalText, styles.asfs , styles.writing , {fontSize:13}]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،</Text>
 
 
                             { this.state.eventType === 0 ?
@@ -171,8 +171,8 @@ class ShowTicket extends Component {
                     <Modal onBackdropPress={()=> this.setState({ cancelEvent : false })} isVisible={this.state.cancelEvent}>
                         <View style={styles.modalEvent}>
 
-                            <Text style={[styles.headerText , styles.mt15 , {color:'#272727'}]}>تأكيد الغاء الفاعلية</Text>
-                            <Text style={[styles.grayText , styles.mb15 , styles.normalText]}>يتم التواصل مع الادارة</Text>
+                            <Text style={[styles.headerText , styles.mt15 , {color:'#272727'}]}>{ i18n.t('confirmCancelEvent') }</Text>
+                            <Text style={[styles.grayText , styles.mb15 , styles.normalText]}>{ i18n.t('communicateWithManage') }</Text>
 
                             <View style={styles.line}/>
 

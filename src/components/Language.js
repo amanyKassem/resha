@@ -53,7 +53,7 @@ class Language extends Component {
                             </View>
 
                             <TouchableOpacity onPress={ () => this.props.navigation.navigate('login') } style={[styles.blueBtn , styles.mt70]}>
-                                <Text style={[styles.whiteText , styles.normalText , styles.tAC]}>التالي</Text>
+                                <Text style={[styles.whiteText , styles.normalText , styles.tAC]}>{ i18n.t('next') }</Text>
                             </TouchableOpacity>
 
                         </View>

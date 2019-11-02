@@ -54,10 +54,10 @@ class DrawerCustomization extends Component {
                          <View style={styles.sideImgView}>
                             <View style={styles.cutCircle}>
                                 <View style={styles.sideProfileImg}>
-                                    <Image source={require('../../assets/images/profile_pic.png')} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                    <Image source={require('../../assets/images/profile_pic.png')} resizeMode={'cover'} style={styles.drawImg}/>
                                 </View>
                             </View>
-                             <Text style={styles.sideName}>اماني قاسم</Text>
+                            <Text style={styles.sideName}>اماني قاسم</Text>
                          </View>
 
 

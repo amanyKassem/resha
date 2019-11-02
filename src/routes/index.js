@@ -44,6 +44,38 @@ import Search from "../components/Search";
 import Saves from "../components/Saves";
 import Profile from "../components/Profile";
 import EditProfile from "../components/EditProfile";
+import ProductiveFamilies from "../components/ProductiveFamilies";
+import Families from "../components/Families";
+import FamilyFilter from "../components/FamilyFilter";
+import FamilyDetails from "../components/FamilyDetails";
+import Products from "../components/Products";
+import ProductFilter from "../components/ProductFilter";
+import ProductDetails from "../components/ProductDetails";
+import Cars from "../components/Cars";
+import CarDetails from "../components/CarDetails";
+import RestCafe from "../components/RestCafe";
+import RestCafeDetails from "../components/RestCafeDetails";
+import MyResturant from "../components/MyResturant";
+import RestProducts from "../components/RestProducts";
+import RestProductDetails from "../components/RestProductDetails";
+import EditRestProfile from "../components/EditRestProfile";
+import EditRestContact from "../components/EditRestContact";
+import AddProduct from "../components/AddProduct";
+import FoodPayment from "../components/FoodPayment";
+import FoodPayMethod from "../components/FoodPayMethod";
+import MyCar from "../components/MyCar";
+import CarProducts from "../components/CarProducts";
+import EditCarProfile from "../components/EditCarProfile";
+import EditCarContact from "../components/EditCarContact";
+import MyFamily from "../components/MyFamily";
+import FamilyProducts from "../components/FamilyProducts";
+import EditFamilyProfile from "../components/EditFamilyProfile";
+import EditFamilyContact from "../components/EditFamilyContact";
+import MyOrders from "../components/MyOrders";
+import OrderDetails from "../components/OrderDetails";
+import QrConfirmTicket from "../components/QrConfirmTicket";
+import QrTicketDetails from "../components/QrTicketDetails";
+import QrScan from "../components/QrScan";
 
 
 const width = Dimensions.get('window').width;
@@ -53,6 +85,10 @@ const drawerNavigator = createDrawerNavigator({
     notifications:Notifications,
     myEvents:MyEvents,
     addEvent:AddEvent,
+    myResturant:MyResturant,
+    myCar:MyCar,
+    myFamily:MyFamily,
+    myOrders:MyOrders,
     faq:Faq,
     addEventDesc:AddEventDesc,
     addEventPrice:AddEventPrice,
@@ -83,6 +119,31 @@ const drawerNavigator = createDrawerNavigator({
     saves:Saves,
     profile:Profile,
     editProfile:EditProfile,
+    productiveFamilies:ProductiveFamilies,
+    families:Families,
+    familyFilter:FamilyFilter,
+    familyDetails:FamilyDetails,
+    products:Products,
+    productFilter:ProductFilter,
+    productDetails:ProductDetails,
+    cars:Cars,
+    carDetails:CarDetails,
+    restCafe:RestCafe,
+    restCafeDetails:RestCafeDetails,
+    restProducts:RestProducts,
+    restProductDetails:RestProductDetails,
+    editRestProfile:EditRestProfile,
+    editRestContact:EditRestContact,
+    addProduct:AddProduct,
+    carProducts:CarProducts,
+    editCarProfile:EditCarProfile,
+    editCarContact:EditCarContact,
+    familyProducts:FamilyProducts,
+    editFamilyProfile:EditFamilyProfile,
+    editFamilyContact:EditFamilyContact,
+    orderDetails:OrderDetails,
+    qrConfirmTicket:QrConfirmTicket,
+    qrTicketDetails:QrTicketDetails,
 
 },{
     initialRouteName:'home',
@@ -101,6 +162,204 @@ const AppNavigator = createStackNavigator({
 
     drawerNavigator: {
         screen: drawerNavigator,
+        navigationOptions: {
+            header: null
+        }
+    },
+    productFilter: {
+        screen: ProductFilter,
+        navigationOptions: {
+            header: null
+        }
+    },
+    searchFilter: {
+        screen: SearchFilter,
+        navigationOptions: {
+            header: null
+        }
+    },
+    myOrders: {
+        screen: MyOrders,
+        navigationOptions: {
+            header: null
+        }
+    },
+    qrScan: {
+        screen: QrScan,
+        navigationOptions: {
+            header: null
+        }
+    },
+    qrConfirmTicket: {
+        screen: QrConfirmTicket,
+        navigationOptions: {
+            header: null
+        }
+    },
+    qrTicketDetails: {
+        screen: QrTicketDetails,
+        navigationOptions: {
+            header: null
+        }
+    },
+    orderDetails: {
+        screen: OrderDetails,
+        navigationOptions: {
+            header: null
+        }
+    },
+    myFamily: {
+        screen: MyFamily,
+        navigationOptions: {
+            header: null
+        }
+    },
+    editFamilyProfile: {
+        screen: EditFamilyProfile,
+        navigationOptions: {
+            header: null
+        }
+    },
+    editFamilyContact: {
+        screen: EditFamilyContact,
+        navigationOptions: {
+            header: null
+        }
+    },
+    myCar: {
+        screen: MyCar,
+        navigationOptions: {
+            header: null
+        }
+    },
+    familyProducts: {
+        screen: FamilyProducts,
+        navigationOptions: {
+            header: null
+        }
+    },
+    editCarProfile: {
+        screen: EditCarProfile,
+        navigationOptions: {
+            header: null
+        }
+    },
+    editCarContact: {
+        screen: EditCarContact,
+        navigationOptions: {
+            header: null
+        }
+    },
+    carProducts: {
+        screen: CarProducts,
+        navigationOptions: {
+            header: null
+        }
+    },
+    foodPayMethod: {
+        screen: FoodPayMethod,
+        navigationOptions: {
+            header: null
+        }
+    },
+    foodPayment: {
+        screen: FoodPayment,
+        navigationOptions: {
+            header: null
+        }
+    },
+    restProducts: {
+        screen: RestProducts,
+        navigationOptions: {
+            header: null
+        }
+    },
+    addProduct: {
+        screen: AddProduct,
+        navigationOptions: {
+            header: null
+        }
+    },
+    myResturant: {
+        screen: MyResturant,
+        navigationOptions: {
+            header: null
+        }
+    },
+    editRestContact: {
+        screen: EditRestContact,
+        navigationOptions: {
+            header: null
+        }
+    },
+    editRestProfile: {
+        screen: EditRestProfile,
+        navigationOptions: {
+            header: null
+        }
+    },
+    restProductDetails: {
+        screen: RestProductDetails,
+        navigationOptions: {
+            header: null
+        }
+    },
+    restCafeDetails: {
+        screen: RestCafeDetails,
+        navigationOptions: {
+            header: null
+        }
+    },
+    restCafe: {
+        screen: RestCafe,
+        navigationOptions: {
+            header: null
+        }
+    },
+    carDetails: {
+        screen: CarDetails,
+        navigationOptions: {
+            header: null
+        }
+    },
+    cars: {
+        screen: Cars,
+        navigationOptions: {
+            header: null
+        }
+    },
+    productDetails: {
+        screen: ProductDetails,
+        navigationOptions: {
+            header: null
+        }
+    },
+    familyDetails: {
+        screen: FamilyDetails,
+        navigationOptions: {
+            header: null
+        }
+    },
+    products: {
+        screen: Products,
+        navigationOptions: {
+            header: null
+        }
+    },
+    families: {
+        screen: Families,
+        navigationOptions: {
+            header: null
+        }
+    },
+    familyFilter: {
+        screen: FamilyFilter,
+        navigationOptions: {
+            header: null
+        }
+    },
+    productiveFamilies: {
+        screen: ProductiveFamilies,
         navigationOptions: {
             header: null
         }
@@ -141,18 +400,18 @@ const AppNavigator = createStackNavigator({
             header: null
         }
     },
-    searchFilter: {
-        screen: SearchFilter,
-        navigationOptions: {
-            header: null
-        }
-    },
+
+
+
     showTicketQr: {
         screen: ShowTicketQr,
         navigationOptions: {
             header: null
         }
     },
+
+
+
     confirmPayment: {
         screen: ConfirmPayment,
         navigationOptions: {
@@ -207,12 +466,19 @@ const AppNavigator = createStackNavigator({
             header: null
         }
     },
+
+
+
+
     addEventImage: {
         screen: AddEventImage,
         navigationOptions: {
             header: null
         }
     },
+
+
+
     addEventPrice: {
         screen: AddEventPrice,
         navigationOptions: {

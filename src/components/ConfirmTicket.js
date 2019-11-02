@@ -87,7 +87,7 @@ class ConfirmTicket extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>تأكيد بيانات التذكرة</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('confirmTicket') }</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
@@ -99,10 +99,10 @@ class ConfirmTicket extends Component {
                             <View style={styles.directionRowCenter}>
 
                                 <View style={styles.dateView}>
-                                    <Text style={[styles.boldGrayText , styles.normalText]}>20 سبتمبر</Text>
+                                    <Text style={[styles.boldGrayText , styles.normalText , {height:45 , lineHeight:45}]}>20 سبتمبر</Text>
                                 </View>
                                 <View style={styles.remainingView}>
-                                    <Text style={[styles.boldGrayText , styles.normalText]}>متبقي ١٠ ايام</Text>
+                                    <Text style={[styles.boldGrayText , styles.normalText , {height:45 , lineHeight:45}]}>{ i18n.t('remain') } ١٠ ايام</Text>
                                 </View>
 
                             </View>
@@ -114,7 +114,7 @@ class ConfirmTicket extends Component {
                                 <Image source={require('../../assets/images/events.jpg')}  style={styles.swiperImg} resizeMode={'cover'}/>
                             </Swiper>
 
-                            <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>حفلة وسط البلد</Text>
+                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing , styles.mb10]}>حفلة وسط البلد</Text>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
                                     <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
@@ -127,7 +127,7 @@ class ConfirmTicket extends Component {
                             </View>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>144 ريال ( عدد التذاكر 4 )</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>144 ريال ( { i18n.t('ticketsNo') } 4 )</Text>
                             </View>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
@@ -149,11 +149,11 @@ class ConfirmTicket extends Component {
                                     <View style={styles.borderImg}>
                                         <Image source={require('../../assets/images/profile_pic.png')} style={[styles.footSearchImg]} resizeMode={'cover'} />
                                     </View>
-                                    <Text style={[styles.boldGrayText , styles.normalText ]}>اسم المستخدم</Text>
+                                    <Text style={[styles.boldGrayText , styles.normalText ]}>{ i18n.t('username') }</Text>
                                 </View>
 
                                 <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookTicket')} >
-                                    <Text style={[styles.blueText , styles.normalText ]}>التفاصيل</Text>
+                                    <Text style={[styles.blueText , styles.normalText ]}>{ i18n.t('details') }</Text>
                                 </TouchableOpacity>
                             </View>
 
@@ -161,10 +161,10 @@ class ConfirmTicket extends Component {
 
                             <View style={styles.directionRowSpace}>
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate('ticketPayment')} style={[styles.blueBtn]}>
-                                    <Text style={[styles.whiteText , styles.normalText ]}>اكمال</Text>
+                                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('continue') }</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate('events')} style={[styles.disabledBtn]}>
-                                    <Text style={[styles.boldGrayText , styles.normalText ]}>حذف التذكرة</Text>
+                                    <Text style={[styles.boldGrayText , styles.normalText ]}>{ i18n.t('deleteTicket') }</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

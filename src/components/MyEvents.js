@@ -26,7 +26,7 @@ class MyEvents extends Component {
     }
 
     static navigationOptions = () => ({
-        drawerLabel: 'فاعلياتي' ,
+        drawerLabel: i18n.t('myEvents') ,
         drawerIcon: (<Image source={require('../../assets/images/checklist_menu.png')} style={styles.drawerImg} resizeMode={'contain'} /> )
     })
 
@@ -38,7 +38,7 @@ class MyEvents extends Component {
             <TouchableOpacity onPress={ () => this.props.navigation.navigate('showTicket')} style={[styles.notiBlock , styles.directionRow]}>
                 <Image source={item.image} resizeMode={'cover'} style={styles.eventImg}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
-                    <Text style={[styles.headerText , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
+                    <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
                     <View style={[styles.directionRowAlignCenter  ]}>
                         <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                         <Text style={[styles.blueText , styles.normalText]}>{item.time}</Text>
@@ -119,19 +119,19 @@ class MyEvents extends Component {
                         <View style={styles.mainScroll}>
                             <ScrollView style={{}} horizontal={true} showsHorizontalScrollIndicator={false}>
                                 <TouchableOpacity onPress={ () => this.setState({activeType:0})} style={styles.scrollView}>
-                                    <Text style={[styles.scrollText,{color:this.state.activeType === 0 ? COLORS.rose : COLORS.gray}]}>تحت التأكيد</Text>
+                                    <Text style={[styles.scrollText,{color:this.state.activeType === 0 ? COLORS.rose : COLORS.gray}]}>{i18n.t('underConfirmation')}</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 0 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={ () => this.setState({activeType:1})} style={styles.scrollView}>
-                                    <Text style={[styles.scrollText,{color:this.state.activeType === 1 ? COLORS.rose : COLORS.gray}]}>تمت الموافقة عليها</Text>
+                                    <Text style={[styles.scrollText,{color:this.state.activeType === 1 ? COLORS.rose : COLORS.gray}]}>{i18n.t('approved')}</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 1 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={ () => this.setState({activeType:2})} style={styles.scrollView}>
-                                    <Text style={[styles.scrollText,{color:this.state.activeType === 2 ? COLORS.rose : COLORS.gray}]}>منفذه</Text>
+                                    <Text style={[styles.scrollText,{color:this.state.activeType === 2 ? COLORS.rose : COLORS.gray}]}>{i18n.t('executed')}</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 2 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={ () => this.setState({activeType:3})} style={styles.scrollView}>
-                                    <Text style={[styles.scrollText,{color:this.state.activeType === 3 ? COLORS.rose : COLORS.gray}]}>ملغاه</Text>
+                                    <Text style={[styles.scrollText,{color:this.state.activeType === 3 ? COLORS.rose : COLORS.gray}]}>{i18n.t('cancelled')}</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 3 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
                             </ScrollView>

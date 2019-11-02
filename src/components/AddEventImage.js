@@ -8,7 +8,7 @@ import {
     Animated,
     FlatList,
     ImageBackground,
-    KeyboardAvoidingView ,  ImageEditor,ImageStore
+    KeyboardAvoidingView, ImageEditor, ImageStore, Platform, I18nManager
 } from "react-native";
 import {
     Container,
@@ -125,7 +125,7 @@ class AddEventImage extends Component {
             return(
                 <TouchableOpacity onPress={() => this.setState({imageBrowserOpen: true})} style={[styles.directionRowAlignCenter]}>
                     <Image source={require('../../assets/images/add_more.png')} style={[styles.addMore]} resizeMode={'contain'} />
-                    <Text style={[styles.blueText , styles.normalText , {marginLeft:10}  ]}>اضافة العديد من الصور</Text>
+                    <Text style={[styles.blueText , styles.normalText , {marginLeft:10}  ]}>{ i18n.t('addManyPhotos') }</Text>
                 </TouchableOpacity>
             );
         }
@@ -249,7 +249,7 @@ class AddEventImage extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>اضافة فاعلية</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('addEvent') }</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
@@ -259,8 +259,10 @@ class AddEventImage extends Component {
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20} ]}>
                                     <View style={[styles.inputParent , styles.mb15]}>
                                         <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={this._eventImg}>
-                                            <Label style={[styles.labelItem , {top:-8 , borderBottomColor:'#fff'}]}>صور للفاعلية</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 ,
+                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
+                                                borderBottomColor:'#fff'}]}>{ i18n.t('eventPhotos') }</Label>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform]}/>
                                             <Text style={[styles.whiteText , styles.normalText , styles.itemText, {backgroundColor:'#f5f5f5',  color: COLORS.gray } ]}>{this.state.eventImg}</Text>
                                         </TouchableOpacity>
                                         <Image source={require('../../assets/images/add_camera.png')} style={styles.mapMarker} resizeMode={'contain'} />
@@ -285,17 +287,17 @@ class AddEventImage extends Component {
 
                             <Image source={require('../../assets/images/calendar_blue.png')} resizeMode={'contain'} style={styles.sideImg}/>
 
-                            <Text style={[styles.headerText , {color:'#272727'}]}>نجح ارسال الفاعلية</Text>
-                            <Text style={[styles.grayText , styles.normalText]}>سيتم الرد عليك من قبل الادارة</Text>
+                            <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('eventSent') }</Text>
+                            <Text style={[styles.grayText , styles.normalText]}>{ i18n.t('willBeAnswered') }</Text>
 
                             <View style={styles.line}/>
 
                             <View style={styles.directionRowSpace}>
                                 <TouchableOpacity onPress={() => this.showTicket()} style={[styles.centerBlock ,{width:'50%' , borderRightWidth:.5 , borderColor:COLORS.lightGray ,}]}>
-                                    <Text style={[styles.blueText , styles.normalText]}>رؤية الفاعلية</Text>
+                                    <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('seeEvent') }</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => this.backHome()} style={[styles.centerBlock ,{width:'50%'}]}>
-                                    <Text style={[styles.blueText , styles.normalText]}>العوده للرئيسية</Text>
+                                    <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('home') }</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

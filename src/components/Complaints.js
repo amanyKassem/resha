@@ -8,7 +8,7 @@ import {
     Animated,
     FlatList,
     ImageBackground,
-    KeyboardAvoidingView
+    KeyboardAvoidingView, Platform, I18nManager
 } from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label, Textarea} from 'native-base'
 import styles from '../../assets/styles'
@@ -102,11 +102,13 @@ class Complaints extends Component {
                                 <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
                                     <Form style={{padding:20}}>
 
-                                        <View style={styles.inputParent}>
+                                        <View style={[styles.inputParent , {height:Platform.OS === 'ios' ?56 : 50}]}>
                                             <Item stackedLabel style={[styles.item , {top:-14.5}]} bordered>
                                                 <Label style={[styles.labelItem , {borderBottomColor:'transparent' }]}/>
-                                                <Input placeholder={'ضع الشكوي وانتظر المقترح'} placeholderTextColor={COLORS.gray} autoCapitalize='none' value={this.state.title} onChangeText={(title) => this.setState({title})}
-                                                       style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray , left:5 ,paddingRight:30 }]}  />
+                                                <Input placeholder={ i18n.t('complainAndProposal') } placeholderTextColor={COLORS.gray} autoCapitalize='none' value={this.state.title} onChangeText={(title) => this.setState({title})}
+                                                       style={[styles.itemInput , {top: Platform.OS === 'ios' ?-1 : -7,
+                                                           lineHeight:I18nManager.isRTL ?Platform.OS === 'ios' ?28 : 37 : Platform.OS === 'ios' ?20 : 37,
+                                                           backgroundColor:'#f5f5f5',  color: COLORS.gray , left:5 ,paddingRight:30 }]}  />
                                             </Item>
                                             <Image source={require('../../assets/images/add_only.png')} style={styles.mapMarker} resizeMode={'contain'} />
                                         </View>
@@ -114,7 +116,8 @@ class Complaints extends Component {
                                         <View style={[styles.inputParent , {height:133}]}>
                                             <Item stackedLabel style={[styles.item , {top:-14.5}]} bordered>
                                                 <Label style={[styles.labelItem , {borderBottomColor:'transparent' }]}/>
-                                                <Textarea placeholder={'اضافة تفاصيل للشكوي'} placeholderTextColor={COLORS.gray} autoCapitalize='none' value={this.state.desc} onChangeText={(desc) => this.setState({desc})} style={[styles.textarea]}  />
+                                                <Textarea placeholder={ i18n.t('addComp') } placeholderTextColor={COLORS.gray} autoCapitalize='none' value={this.state.desc} onChangeText={(desc) => this.setState({desc})}
+                                                          style={[styles.textarea , {top:Platform.OS === 'ios' ?0 : -7}]}  />
                                             </Item>
                                         </View>
 

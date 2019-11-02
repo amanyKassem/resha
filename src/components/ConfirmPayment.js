@@ -97,7 +97,7 @@ class ConfirmPayment extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>تأكيد عملية الدفع</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('confirmPayment') }</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
@@ -114,7 +114,7 @@ class ConfirmPayment extends Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('confirmTicket')} style={[styles.blueBtn,  styles.mb15 , {backgroundColor:'transparent'}]}>
-                                <Text style={[styles.blueText , styles.normalText ]}>عوده للتذكرة</Text>
+                                <Text style={[styles.blueText , styles.normalText ]}>{ i18n.t('backToTicket') }</Text>
                             </TouchableOpacity>
 
                         </View>
@@ -124,18 +124,18 @@ class ConfirmPayment extends Component {
 
                             <Image source={require('../../assets/images/calendar_blue.png')} resizeMode={'contain'} style={styles.sideImg}/>
 
-                            <Text style={[styles.headerText , {color:'#272727'}]}>تم تأكيد الدفع</Text>
-                            <Text style={[styles.grayText , styles.normalText]}>تم حجز مقعدك بنجاح</Text>
-                            <Text style={[styles.grayText , styles.normalText]}>لا يمكن استرجاع المبلغ</Text>
+                            <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('payDone') }</Text>
+                            <Text style={[styles.grayText , styles.normalText]}>{ i18n.t('bookChair') }</Text>
+                            <Text style={[styles.grayText , styles.normalText]}>{ i18n.t('noRefund') }</Text>
 
                             <View style={styles.line}/>
 
                             <View style={styles.directionRowSpace}>
                                 <TouchableOpacity onPress={() => this.showTicket()} style={[styles.centerBlock ,{width:'50%' , borderRightWidth:.5 , borderColor:COLORS.lightGray ,}]}>
-                                    <Text style={[styles.blueText , styles.normalText]}>رؤية التذكرة</Text>
+                                    <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('seeTicket') }</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => this.backHome()} style={[styles.centerBlock ,{width:'50%'}]}>
-                                    <Text style={[styles.blueText , styles.normalText]}>العوده للرئيسية</Text>
+                                    <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('home') }</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

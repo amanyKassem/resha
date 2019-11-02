@@ -82,7 +82,7 @@ class BookType extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>نوع التذكرة</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('ticketType') }</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
@@ -93,25 +93,25 @@ class BookType extends Component {
 
                             <TouchableOpacity onPress={() => this.selectType('vip')} style={[styles.ticketViewType , styles.mb15, {backgroundColor:this.state.type === 'vip' ? '#deeeee' : 'transparent'}]}>
                                 <Image source={require('../../assets/images/ticket_vip.png')} style={[styles.ticketType]} resizeMode={'contain'} />
-                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>تذكره vip</Text>
-                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>السعر 133 ريال</Text>
+                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>{ i18n.t('vipTicket') }</Text>
+                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>{ i18n.t('price') } 133 ريال</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => this.selectType('gold')} style={[styles.ticketViewType , styles.mb15, {backgroundColor:this.state.type === 'gold' ? '#deeeee' : 'transparent'}]}>
                                 <Image source={require('../../assets/images/ticket_yellow_big.png')} style={[styles.ticketType]} resizeMode={'contain'} />
-                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>تذكره ذهبية</Text>
-                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>السعر 133 ريال</Text>
+                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>{ i18n.t('goldTicket') }</Text>
+                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>{ i18n.t('price') } 133 ريال</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => this.selectType('normal')} style={[styles.ticketViewType , {backgroundColor:this.state.type === 'normal' ? '#deeeee' : 'transparent'}]}>
                                 <Image source={require('../../assets/images/ticket_gray.png')} style={[styles.ticketType]} resizeMode={'contain'} />
-                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>تذكره عادية</Text>
-                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>السعر 133 ريال</Text>
+                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>{ i18n.t('normalTicket') }</Text>
+                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>{ i18n.t('price') } 133 ريال</Text>
                             </TouchableOpacity>
 
 
                             <TouchableOpacity onPress={ () => this.props.navigation.navigate('continueBooking')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                <Text style={[styles.whiteText , styles.normalText ]}>حجز</Text>
+                                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('book') }</Text>
                             </TouchableOpacity>
 
                         </View>

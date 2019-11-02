@@ -6,9 +6,9 @@ import {
     TouchableOpacity,
     Dimensions,
     Animated,
-    FlatList,
+    I18nManager,
     ImageBackground,
-    KeyboardAvoidingView
+    KeyboardAvoidingView, Platform
 } from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label} from 'native-base'
 import styles from '../../assets/styles'
@@ -48,7 +48,7 @@ class AddEvent extends Component {
     }
 
     static navigationOptions = () => ({
-        drawerLabel: 'اضافة فاعلية' ,
+        drawerLabel: i18n.t('addEvent') ,
         drawerIcon: (<Image source={require('../../assets/images/add_event_menu.png')} style={styles.drawerImg} resizeMode={'contain'} /> )
     })
 
@@ -220,7 +220,7 @@ class AddEvent extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>اضافة فاعلية</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('addEvent') }</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
@@ -228,32 +228,34 @@ class AddEvent extends Component {
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
-                            <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
+                            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'height' : 'padding'} style={styles.keyboardAvoid}>
                                 <Form style={{padding:20}}>
 
                                     <View style={styles.inputParent}>
                                         <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                                اسم الفاعية باللغة العربية
+                                            <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
+                                                { i18n.t('arEvent') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input autoCapitalize='none' value={this.state.arabicName} onChangeText={(arabicName) => this.setState({arabicName})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                         </Item>
                                     </View>
                                     <View style={styles.inputParent}>
                                         <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                                اسم الفاعية بالأنجليزي
+                                            <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
+                                                { i18n.t('enEvent') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input autoCapitalize='none' value={this.state.englishName} onChangeText={(englishName) => this.setState({englishName})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                         </Item>
                                     </View>
 
                                     <View style={styles.inputParent}>
                                         <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={this.showDatePicker}>
-                                            <Label style={[styles.labelItem , {top:-8 , borderBottomColor:'#fff'}]}>تاريخ الفاعلية</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 ,
+                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
+                                                borderBottomColor:'#fff'}]}>{ i18n.t('eventDate') }</Label>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Text style={[styles.whiteText , styles.normalText , styles.itemText, {backgroundColor:'#f5f5f5',  color: COLORS.gray } ]}>{this.state.date}</Text>
                                         </TouchableOpacity>
                                         <Image source={require('../../assets/images/calendar_icon_small.png')} style={styles.mapMarker} resizeMode={'contain'} />
@@ -267,8 +269,10 @@ class AddEvent extends Component {
 
                                     <View style={styles.inputParent}>
                                         <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={this.showTimePicker}>
-                                            <Label style={[styles.labelItem , {top:-8 , borderBottomColor:'#fff'}]}>توقيت الفاعلية</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 ,
+                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
+                                                borderBottomColor:'#fff'}]}>{ i18n.t('eventTime') }</Label>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Text style={[styles.whiteText , styles.normalText , styles.itemText, {backgroundColor:'#f5f5f5',  color: COLORS.gray } ]}>{this.state.time}</Text>
                                         </TouchableOpacity>
                                         <Image source={require('../../assets/images/clock_blue.png')} style={styles.mapMarker} resizeMode={'contain'} />
@@ -283,18 +287,20 @@ class AddEvent extends Component {
 
                                     <View style={styles.inputParent}>
                                         <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                               عدد ساعات الفاعلية
+                                            <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
+                                                { i18n.t('eventHoursNo') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Input keyboardType={'number-pad'} value={this.state.hoursNo} onChangeText={(hoursNo) => this.setState({hoursNo})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                         </Item>
                                     </View>
 
                                     <View style={styles.inputParent}>
                                         <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={() =>this._toggleModal()}>
-                                            <Label style={[styles.labelItem , {top:-8, borderBottomColor:'#fff'}]}>{ i18n.t('location') }</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 ,
+                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
+                                                borderBottomColor:'#fff'}]}>{ i18n.t('location') }</Label>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Text style={[styles.whiteText , styles.normalText , styles.itemText, {backgroundColor:'#f5f5f5',  color: COLORS.gray } ]}>{this.state.city}</Text>
                                         </TouchableOpacity>
                                         <Image source={require('../../assets/images/placeholder_blue.png')} style={styles.mapMarker} resizeMode={'contain'} />

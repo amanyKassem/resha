@@ -80,7 +80,7 @@ class Reservations extends Component {
     renderItems = (item) => {
         return(
             <TouchableOpacity onPress={() => this.props.navigation.navigate('showTicketQr')} style={[styles.eventTouch ]}>
-                <Image source={item.image} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:5}}/>
+                <Image source={item.image} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                 <View style={[styles.eventCont ]}>
                     <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
                     <View style={styles.dateEvent}>
@@ -105,7 +105,7 @@ class Reservations extends Component {
                         <TouchableOpacity  onPress={() => this.props.navigation.openDrawer()} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/menu.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>
-                        <Text style={[styles.headerText]}>حجوزاتي</Text>
+                        <Text style={[styles.headerText]}>{ i18n.t('reservations') }</Text>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('notifications')}   style={styles.headerBtn}>
                             <Image source={require('../../assets/images/bell_active.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>

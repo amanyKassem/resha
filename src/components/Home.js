@@ -87,37 +87,37 @@ class Home extends Component {
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('events')} style={[styles.imgParent , styles.w100]}>
                                 <Image source={require('../../assets/images/events.jpg')} style={[styles.w100 , {height:180}]} resizeMode={'cover'} />
                                 <View style={styles.overlay}>
-                                    <Image source={require('../../assets/images/fireworks_wite_descrpion.png')} style={[styles.overImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.whiteText, styles.normalText , {fontSize:24}]}>فاعليات</Text>
-                                    <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>عدد الفاعليات : 512</Text>
+                                    <Image source={require('../../assets/images/fireworks_wite_descrpion.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
+                                    <Text style={[styles.whiteText, styles.normalText , {fontSize:24}]}>{ i18n.t('events') }</Text>
+                                    <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>{ i18n.t('eventsNo') } : 512</Text>
                                 </View>
                             </TouchableOpacity>
 
                             <View style={[styles.directionRowSpace, styles.w100]}>
                                 <View style={[styles.directionColumn , {width: '47%'}] }>
-                                    <TouchableOpacity style={[styles.imgParent , {width: '100%'}]}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('restCafe')} style={[styles.imgParent , {width: '100%'}]}>
                                         <Image source={require('../../assets/images/lights.jpg')} style={[styles.w100 , {height:180}]} resizeMode={'cover'} />
                                         <View style={[styles.overlay , {justifyContent:'flex-end' , paddingBottom:30}]}>
-                                            <Image source={require('../../assets/images/shop_white.png')} style={[styles.overImg]} resizeMode={'contain'} />
-                                            <Text style={[styles.whiteText, styles.normalText , {fontSize:16}]}>كوفي ومطاعم</Text>
-                                            <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>العدد : 512</Text>
+                                            <Image source={require('../../assets/images/shop_white.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
+                                            <Text style={[styles.whiteText, styles.normalText , {fontSize:16}]}>{ i18n.t('coffeeRest') }</Text>
+                                            <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>{ i18n.t('number') } : 512</Text>
                                         </View>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={[styles.imgParent , {width: '100%'}]}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('cars')} style={[styles.imgParent , {width: '100%'}]}>
                                         <Image source={require('../../assets/images/track_blue.jpg')} style={[styles.w100 , {height:180}]} resizeMode={'cover'} />
                                         <View style={[styles.overlay , {justifyContent:'flex-end' , paddingBottom:30}]}>
-                                            <Image source={require('../../assets/images/delivery_truck_icon.png')} style={[styles.overImg]} resizeMode={'contain'} />
-                                            <Text style={[styles.whiteText, styles.normalText , {fontSize:20}]}>فود تراك</Text>
-                                            <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>العدد : 512</Text>
+                                            <Image source={require('../../assets/images/delivery_truck_icon.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
+                                            <Text style={[styles.whiteText, styles.normalText , {fontSize:20}]}>{ i18n.t('foodTrack') }</Text>
+                                            <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>{ i18n.t('number') } : 512</Text>
                                         </View>
                                     </TouchableOpacity>
                                 </View>
-                                <TouchableOpacity style={[styles.imgParent , {width: '47%'}]}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('productiveFamilies')} style={[styles.imgParent , {width: '47%'}]}>
                                     <Image source={require('../../assets/images/family_descrption.jpg')} style={[styles.w100 , {height:382}]} resizeMode={'cover'} />
                                     <View style={[styles.overlay , {justifyContent:'flex-end' , paddingBottom:30}]}>
-                                        <Image source={require('../../assets/images/family_icon.png')} style={[styles.overImg]} resizeMode={'contain'} />
-                                        <Text style={[styles.whiteText, styles.normalText , {fontSize:19}]}>الأسر المنتجة</Text>
-                                        <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>عدد الأسر : 512</Text>
+                                        <Image source={require('../../assets/images/family_icon.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
+                                        <Text style={[styles.whiteText, styles.normalText , {fontSize:19}]}>{ i18n.t('productiveFamilies') }</Text>
+                                        <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>{ i18n.t('familiesNumber') } : 512</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>

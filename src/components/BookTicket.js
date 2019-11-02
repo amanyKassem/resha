@@ -28,12 +28,6 @@ class BookTicket extends Component {
     });
 
 
-    onStarRatingPress(rating) {
-        this.setState({
-            starCount: rating
-        });
-    }
-
 
     onShare = async () => {
         try {
@@ -144,11 +138,11 @@ class BookTicket extends Component {
                                     <View style={styles.directionColumn}>
                                         <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>اسم صاحب الفاعلية</Text>
                                         <StarRating
-                                            disabled={false}
+                                            disabled={true}
                                             maxStars={5}
                                             rating={this.state.starCount}
                                             fullStarColor={'#f0aa0b'}
-                                            selectedStar={(rating) => this.onStarRatingPress(rating)}
+                                            // selectedStar={(rating) => this.onStarRatingPress(rating)}
                                             starSize={18}
                                             starStyle={styles.starStyle}
                                         />
@@ -167,7 +161,7 @@ class BookTicket extends Component {
                                 <Image source={require('../../assets/images/events.jpg')}  style={styles.swiperImg} resizeMode={'cover'}/>
                             </Swiper>
 
-                            <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>حفلة وسط البلد</Text>
+                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing , styles.mb10]}>حفلة وسط البلد</Text>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
                                     <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
@@ -186,11 +180,11 @@ class BookTicket extends Component {
                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>الرياض . جده . السعودية</Text>
                             </View>
-                            <Text style={[styles.grayText , styles.normalText , {fontSize:13}]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،</Text>
+                            <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13}]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،</Text>
 
 
                             <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookType')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                <Text style={[styles.whiteText , styles.normalText ]}>حجز</Text>
+                                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('book') }</Text>
                             </TouchableOpacity>
 
 

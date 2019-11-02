@@ -105,7 +105,7 @@ class ContactUs extends Component {
                                    <View style={styles.directionColumn}>
                                        <View style={styles.directionRowAlignCenter}>
                                            <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                           <Text style={[styles.headerText , {color:'#272727'}]}>الرقم الاساسي</Text>
+                                           <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('mainNumber') }</Text>
                                        </View>
                                        <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13 , marginLeft:25}]}>012345678</Text>
                                    </View>

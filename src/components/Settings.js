@@ -126,6 +126,7 @@ class Settings extends Component {
                                         <Picker
                                             mode="dropdown"
                                             style={[styles.pickerLabel]}
+                                            placeholder={ i18n.t('langSettings') }
                                             placeholderStyle={{ color: COLORS.boldGray  }}
                                             placeholderIconColor={COLORS.boldGray }
                                             textStyle={{ color: COLORS.boldGray }}
@@ -133,7 +134,7 @@ class Settings extends Component {
                                             selectedValue={this.state.language}
                                             onValueChange={(value) => this.onChangeLang(value)}
                                         >
-                                            <Picker.Item label={'اعدادات اللغة'} value={null} />
+                                            <Picker.Item label={ i18n.t('langSettings') } value={null} />
                                             <Picker.Item label={'العربية'} value={"ar"} />
                                             <Picker.Item label={'English'} value={"en"} />
                                         </Picker>
@@ -144,12 +145,12 @@ class Settings extends Component {
                                 <View style={[styles.line ]}/>
 
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate('changePass')}>
-                                    <Text style={[styles.boldGrayText , styles.normalText  ]}>{ i18n.t('changePass') }</Text>
+                                    <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing  ]}>{ i18n.t('changePass') }</Text>
                                 </TouchableOpacity>
 
 
                                 <TouchableOpacity  onPress={() => this.props.navigation.navigate('login')} style={styles.delAcc}>
-                                    <Text style={[styles.whiteText , styles.BoldText ,{color:COLORS.rose , fontSize:13 }]}>حذف الحساب</Text>
+                                    <Text style={[styles.whiteText , styles.BoldText ,{color:COLORS.rose , fontSize:13 }]}>{ i18n.t('deleteAcc') }</Text>
                                 </TouchableOpacity>
 
 

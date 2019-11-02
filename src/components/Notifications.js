@@ -44,7 +44,7 @@ class Notifications extends Component {
                         <Image source={require('../../assets/images/close_notifcation.png')} style={[styles.notiClose]} resizeMode={'contain'} />
                     </TouchableOpacity>
                 </View>
-                <Text style={[styles.grayText , styles.normalText]}>{item.content}</Text>
+                <Text style={[styles.grayText , styles.asfs , styles.writing , styles.normalText]}>{item.content}</Text>
            </View>
         );
     }

@@ -104,6 +104,9 @@ const styles = ({
     w100:{
         width:'100%'
     },
+    w50:{
+        width:'50%'
+    },
     BoldText:{
         fontFamily: I18nManager.isRTL ? 'cairoBold' : 'openSansBold'
     },
@@ -116,6 +119,10 @@ const styles = ({
     },
     blueText:{
         color:COLORS.blue,
+        fontSize:15
+    },
+    orangeText:{
+        color:COLORS.orange,
         fontSize:15
     },
     grayText:{
@@ -229,18 +236,19 @@ const styles = ({
         justifyContent : 'center',
     },
     picker:{
-        width:Platform.OS === 'ios' ? 280 : '100%',
+        width:Platform.OS === 'ios' ? 300 : '100%',
         backgroundColor: '#ffffff20',
         color: COLORS.white ,
         fontFamily: I18nManager.isRTL ? 'cairo' : 'openSans',
         fontWeight: 'normal',
         fontSize: 15,
-        top: -13,
+        top: I18nManager.isRTL ? Platform.OS === 'ios' ? -15 : -13 : -11,
         paddingRight:10,
-        paddingLeft:10,
+        paddingLeft:Platform.OS === 'ios' ?0:10,
         height:37,
         lineHeight:37,
-        left:-2
+        left:Platform.OS === 'ios' ? 0 : -2,
+        borderRadius:0
     },
     pickerImg:{
         width: 20,
@@ -317,10 +325,10 @@ const styles = ({
         fontFamily:  I18nManager.isRTL ? 'cairo' : 'openSans',
         color: COLORS.blue ,
         fontSize:15 ,
-        top:-13,
-        paddingRight: 25,
-        paddingLeft:7,
-        left:-5,
+        top: I18nManager.isRTL ?-13 : -8.5,
+        paddingRight: I18nManager.isRTL ? Platform.OS === 'ios' ?13 :25 : 13,
+        paddingLeft:I18nManager.isRTL ? Platform.OS === 'ios' ?25 : 10 :25,
+        left:0,
         borderBottomWidth:1,
         borderBottomColor:'#201531'
     },
@@ -329,20 +337,20 @@ const styles = ({
         color: COLORS.white,
         textAlign: I18nManager.isRTL ?'right' : 'left',
         fontSize: 15,
-        top: -7,
+        top: I18nManager.isRTL ? Platform.OS === 'ios' ?-11 : -7 : Platform.OS === 'ios' ?-4 : -3 ,
         paddingRight:10,
         paddingLeft:10,
         fontFamily: I18nManager.isRTL ? 'cairo' : 'openSans',
         backgroundColor: '#ffffff20',
         height:37,
-        lineHeight:37,
+        lineHeight:I18nManager.isRTL ? Platform.OS === 'ios' ?30 : 37 : Platform.OS === 'ios' ?20 : 37 ,
         left:5.4
     },
     textarea:{
         width: '96.6%',
         textAlign: I18nManager.isRTL ?'right' : 'left',
         fontSize: 15,
-        top: -7,
+        top: I18nManager.isRTL ? Platform.OS === 'ios' ?-11 : -7 : -3,
         padding:10,
         fontFamily: I18nManager.isRTL ? 'cairo' : 'openSans',
         height:120,
@@ -354,14 +362,15 @@ const styles = ({
         width: '96.6%',
         color: COLORS.white,
         fontSize: 15,
-        top: -2,
-        paddingRight:10,
-        paddingLeft:30,
+        top: I18nManager.isRTL ? Platform.OS === 'ios' ?-6: -2 : 2,
+        paddingRight:Platform.OS === 'ios' ?30 :10,
+        paddingLeft:Platform.OS === 'ios' ?10 :30,
         fontFamily: I18nManager.isRTL ? 'cairo' : 'openSans',
         backgroundColor: '#ffffff20',
         height:37,
         lineHeight:37,
         left:5.4,
+        writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'
     },
 
     accParent:{
@@ -382,7 +391,7 @@ const styles = ({
         borderBottomWidth:1,
         borderBottomColor:'#201531',
         flexDirection:'row',
-        top:-26,
+        top:I18nManager.isRTL ?-26 : -21.5,
         paddingLeft: 20,
         paddingRight:5,
     },
@@ -390,7 +399,7 @@ const styles = ({
         width: '96.6%',
         color: COLORS.white,
         fontSize: 15,
-        top:-21,
+        top:I18nManager.isRTL ?-21 : -16,
         backgroundColor:COLORS.blue,
         height:38,
         left:5,
@@ -423,7 +432,14 @@ const styles = ({
     },
     sideDrawerImg:{
         width:'100%',
-        height:'100%',
+        height:'100%'
+    },
+    drawImg:{
+        width:Platform.OS === 'ios' ?151 :160,
+        height:Platform.OS === 'ios' ?151 :160 ,
+        top:Platform.OS === 'ios' ?-1.5 :0 ,
+        alignSelf:'center',
+        borderRadius:80,
     },
     sideName:{
         color:'#fff',
@@ -478,6 +494,7 @@ const styles = ({
         height: 100,
         paddingLeft:0,
         paddingRight:0,
+        borderBottomWidth:0
     },
     animatedHeader:{
         width: '100%',
@@ -545,6 +562,10 @@ const styles = ({
         width:40,
         height:40,
     },
+    activeImg : {
+        width:30,
+        height:30,
+    },
 
 
 
@@ -552,7 +573,8 @@ const styles = ({
     footer:{
         backgroundColor: COLORS.mov,
         height:55,
-        paddingTop:15
+        paddingTop:15,
+        borderTopWidth:0
     },
     footerTab:{
         backgroundColor: COLORS.mov,
@@ -574,7 +596,9 @@ const styles = ({
         marginBottom:10,
     },
     footSearch:{
-        top:-25
+        bottom:25,
+        width: 80,
+        height: 80,
     },
     footSearchImg:{
         width: 50,
@@ -650,8 +674,14 @@ const styles = ({
     eventImg:{
         width:110,
         height:'100%',
-        marginRight:10,
+        marginRight:20,
         flex:0
+    },
+    touchImg:{
+        width:110,
+        marginRight:20,
+        flex:0,
+        height:115
     },
     ticketView:{
         alignSelf:'center',
@@ -686,7 +716,7 @@ const styles = ({
         left:0,
         marginRight:5,
         marginLeft:0,
-        paddingRight:2,
+        paddingRight:Platform.OS === 'ios' ?4 : 2,
         borderRadius:3
     },
     line:{
@@ -694,6 +724,12 @@ const styles = ({
         borderColor:COLORS.lightGray ,
         width:'100%' ,
         marginVertical:20
+    },
+    whiteLine:{
+        borderWidth:1 ,
+        borderColor:COLORS.white ,
+        width:37 ,
+        marginVertical:5
     },
     catPicker:{
         borderWidth: 1,
@@ -778,9 +814,22 @@ const styles = ({
         marginBottom:15,
         overflow:'hidden'
     },
+    restImg:{
+        width: '90%',
+        height: 200,
+        marginTop:20,
+        marginBottom:15,
+        overflow:'hidden',
+        alignSelf:'center'
+    },
     swiperImg:{
         width: '100%',
         height: '100%',
+    },
+    productImg:{
+        width: 100,
+        height: 90,
+        marginTop:10
     },
     dateView:{
         height: 45,
@@ -810,7 +859,7 @@ const styles = ({
         bottom:100 ,
         left:20,
         marginBottom:30,
-        overflow:'hidden'
+        overflow:'hidden',
     },
     // reservation
 
@@ -869,6 +918,28 @@ const styles = ({
         alignItems:'center',
         top:10
 
+    },
+
+    familiesCont : {
+        backgroundColor: '#b1aba940' ,
+        position:'absolute' ,
+        top:0 ,
+        height:'100%' ,
+        padding:20,
+        borderRadius:15,
+        flexDirection:'column' ,
+        flex:1 ,
+        width:'100%' ,
+        justifyContent:'space-between' ,
+
+    },
+    familiesEvent : {
+        backgroundColor:'#28939187',
+        paddingHorizontal:15 ,
+        paddingVertical:10,
+        justifyContent:'center' ,
+        alignItems:'center',
+        alignSelf:'flex-end'
     },
     inputView : {
         borderRadius: 35,
@@ -943,6 +1014,63 @@ const styles = ({
         borderRadius:80,
         left:-.5
     },
+    restTabs:{
+        width:'50%',
+        justifyContent:'center',
+        alignItems:'center',
+        paddingBottom:10
+    },
+    grayCont:{
+        backgroundColor:'#f2f2f2',
+        padding:15
+    },
+    floatingEdit:{
+        position:'absolute',
+        bottom:100,
+        right:10
+    },
+    editImg:{
+        width:60,
+        height:60
+    },
+    restProfile:{
+        width:100 ,
+        height:100 ,
+        marginTop:35,
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor:'#e9f4f4',
+        alignSelf:'center',
+        marginBottom:15
+    },
+    deleteProduct:{
+        width:50,
+        height:50 ,
+        justifyContent:'center' ,
+        alignItems:'center',
+        position:'absolute',
+        right:-20,
+        top:-15,
+    },
+    sliderParent:{
+        width: '100%',
+        marginTop: 20
+    },
+    slider:{
+        width: '100%' ,
+        transform: Platform.OS === 'ios' ?  [{rotateY : '0deg'}] : I18nManager.isRTL ? [{rotateY : '-180deg'}] : [{rotateY : '0deg'}]
+    },
+    range:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 5,
+        width: '100%',
+        alignItems: 'center'
+    },
+    switch:{
+        marginHorizontal:5,
+        transform: I18nManager.isRTL ? Platform.OS === 'ios' ?  [{rotateY : '0deg'}] : [{rotateY : '-180deg'}] :  [{rotateY : '0deg'}]
+    }
 });
 
 export default styles;

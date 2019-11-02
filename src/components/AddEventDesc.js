@@ -6,9 +6,10 @@ import {
     TouchableOpacity,
     Dimensions,
     Animated,
-    FlatList,
+    Platform,
     ImageBackground,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    I18nManager
 } from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Textarea, Left, Form, Label, Picker} from 'native-base'
 import styles from '../../assets/styles'
@@ -91,7 +92,7 @@ class AddEventDesc extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>اضافة فاعلية</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('addEvent') }</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
@@ -99,32 +100,36 @@ class AddEventDesc extends Component {
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
-                            <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
+                            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'height' : 'padding'} style={styles.keyboardAvoid}>
                                 <Form style={{padding:20}}>
 
                                     <View style={[styles.inputParent , {height:133}]}>
                                         <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                               وصف عربي
+                                            <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
+                                                { i18n.t('arDesc') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Textarea autoCapitalize='none' value={this.state.arabicDesc} onChangeText={(arabicDesc) => this.setState({arabicDesc})} style={[styles.textarea]}  />
                                         </Item>
                                     </View>
                                     <View style={[styles.inputParent , {height:133}]}>
                                         <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={[styles.labelItem , {borderBottomColor:'#fff'}]}>
-                                               وصف انجليزي
+                                            <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
+                                                { i18n.t('enDesc') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
                                             <Textarea autoCapitalize='none' value={this.state.englishDesc} onChangeText={(englishDesc) => this.setState({englishDesc})} style={[styles.textarea]}  />
                                         </Item>
                                     </View>
 
                                     <View style={styles.inputParent}>
                                         <Item style={styles.itemPicker} regular >
-                                            <Label style={[styles.labelItem , {top:-18.5 , paddingRight:20 , borderBottomColor:'#fff'}]}>القسم</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , {top:-19}]}/>
+                                            <Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,
+                                                paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,
+                                                paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10,
+                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
+                                                borderBottomColor:'#fff'}]}>{ i18n.t('section') }</Label>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform , {top:-19}]}/>
                                             <Picker
                                                 mode="dropdown"
                                                 style={[styles.picker , { color: COLORS.gray , backgroundColor:'#f5f5f5',}]}
@@ -143,8 +148,12 @@ class AddEventDesc extends Component {
 
                                     <View style={styles.inputParent}>
                                         <Item style={styles.itemPicker} regular >
-                                            <Label style={[styles.labelItem , {top:-18.5 , paddingRight:20 , borderBottomColor:'#fff'}]}>الهيئة</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , {top:-19}]}/>
+                                            <Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,
+                                                paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,
+                                                paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10,
+                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
+                                                borderBottomColor:'#fff'}]}>{ i18n.t('commission') }</Label>
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform , {top:-19}]}/>
                                             <Picker
                                                 mode="dropdown"
                                                 style={[styles.picker , { color: COLORS.gray , backgroundColor:'#f5f5f5',}]}
