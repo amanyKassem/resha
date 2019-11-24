@@ -1,10 +1,13 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground} from "react-native";
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground, Linking} from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
-import Swiper from 'react-native-swiper';
+import { DoubleBounce } from 'react-native-loader';
+import COLORS from "../consts/colors";
+import {connect} from "react-redux";
+import {SetFavouriteEvent, getProfileDetails} from "../actions";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -18,6 +21,7 @@ class FamilyDetails extends Component {
             backgroundColor: new Animated.Value(0),
             availabel: 0,
             savedEvent: false,
+            loader: 1
         }
     }
 
@@ -26,7 +30,27 @@ class FamilyDetails extends Component {
     });
 
 
+    componentWillMount() {
+        this.setState({ loader: 1});
+        this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id , this.props.user.token)
+    }
+    _linkPressed (url){
+        Linking.openURL(url);
+    }
 
+    renderLoader(){
+        if (this.state.loader == 1){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        console.log('nextProps.profileDetails.is_save' , nextProps.profileDetails.is_save)
+        this.setState({ loader: nextProps.key , savedEvent: nextProps.profileDetails.is_save });
+    }
 
     onShare = async () => {
         try {
@@ -83,9 +107,10 @@ class FamilyDetails extends Component {
         }
     }
 
-    savedEvent() {
-        this.setState({savedEvent: !this.state.savedEvent})
-    }
+    // savedEvent() {
+    //     this.setState({savedEvent: !this.state.savedEvent})
+    //     this.props.SetFavouriteEvent( this.props.lang , this.props.navigation.state.params.user_id , this.props.user.token)
+    // }
 
     renderImage() {
         let source = '';
@@ -96,6 +121,11 @@ class FamilyDetails extends Component {
         }
         return source;
     }
+
+    onFocus(payload){
+        this.componentWillMount()
+    }
+
 
     render() {
 
@@ -115,9 +145,9 @@ class FamilyDetails extends Component {
 
 
                         <View style={styles.directionRowAlignCenter}>
-                            <TouchableOpacity onPress={() => this.savedEvent()} style={styles.headerBtn}>
-                                <Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />
-                            </TouchableOpacity>
+                            {/*<TouchableOpacity onPress={() => this.savedEvent()} style={styles.headerBtn}>*/}
+                                {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
+                            {/*</TouchableOpacity>*/}
                             <TouchableOpacity onPress={this.onShare} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/share_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                             </TouchableOpacity>
@@ -127,25 +157,23 @@ class FamilyDetails extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
                             <View style={styles.directionRowSpace}>
-                                <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>اسم الأسرة</Text>
+                                <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.profileDetails.name}</Text>
 
-                                <TouchableOpacity >
+                                <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.profileDetails.mobile)}>
                                     <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
                                 </TouchableOpacity>
                             </View>
 
-                            <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                    containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
-                                <Image source={require('../../assets/images/image_eleven.jpg')} style={styles.swiperImg} resizeMode={'cover'}/>
-                                <Image source={require('../../assets/images/image_one.png')} style={styles.swiperImg} resizeMode={'cover'}/>
-                                <Image source={require('../../assets/images/events.jpg')}  style={styles.swiperImg} resizeMode={'cover'}/>
-                            </Swiper>
+                            <Image source={{ uri: this.props.profileDetails.image }}  style={[styles.restImg , {width:'100%'}]} resizeMode={'cover'}/>
 
 
-                            <Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing  , {fontSize:13}]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،</Text>
+
+                            <Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing  , {fontSize:13}]}>{this.props.profileDetails.details}</Text>
 
                             <View style={[styles.directionRowAlignCenter , styles.mt15 , styles.mb15]}>
                                 <Image source={require('../../assets/images/feather_color.png')} style={[styles.resha]} resizeMode={'contain'} />
@@ -153,27 +181,20 @@ class FamilyDetails extends Component {
                             </View>
 
                             <View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails')}>
-                                    <Image source={require('../../assets/images/image_food_two.jpg')} style={styles.productImg} resizeMode={'cover'}/>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails')}>
-                                    <Image source={require('../../assets/images/image_food_three.jpg')} style={styles.productImg} resizeMode={'cover'}/>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails')}>
-                                    <Image source={require('../../assets/images/food_sweet.jpg')} style={styles.productImg} resizeMode={'cover'}/>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails')}>
-                                    <Image source={require('../../assets/images/image_food_two.jpg')} style={styles.productImg} resizeMode={'cover'}/>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails')}>
-                                    <Image source={require('../../assets/images/image_food_three.jpg')} style={styles.productImg} resizeMode={'cover'}/>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails')}>
-                                    <Image source={require('../../assets/images/food_sweet.jpg')} style={styles.productImg} resizeMode={'cover'}/>
-                                </TouchableOpacity>
+
+                                {
+                                    this.props.profileDetails.products.map((product, i) =>{
+                                        return (
+                                            <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('productDetails', {product_id:product.product_id})}>
+                                                <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
+                                            </TouchableOpacity>
+                                        )
+                                    })
+                                }
+
                             </View>
 
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('products')} style={styles.delAcc}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('products', {user_id :this.props.navigation.state.params.user_id })} style={styles.delAcc}>
                                 <Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>
                             </TouchableOpacity>
                         </View>
@@ -186,4 +207,12 @@ class FamilyDetails extends Component {
     }
 }
 
-export default FamilyDetails;
+const mapStateToProps = ({ lang , profileDetails , profile }) => {
+    return {
+        lang: lang.lang,
+        profileDetails: profileDetails.profileDetails,
+        user: profile.user,
+        key: profileDetails.key
+    };
+};
+export default connect(mapStateToProps, {getProfileDetails , SetFavouriteEvent})(FamilyDetails);

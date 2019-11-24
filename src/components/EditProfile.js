@@ -16,6 +16,9 @@ import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import { updateProfile} from '../actions'
+import {connect} from "react-redux";
+import {DoubleBounce} from "react-native-loader";
 
 
 const height = Dimensions.get('window').height;
@@ -28,11 +31,12 @@ class EditProfile extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            userImage: null,
+            userImage: this.props.user.avatar,
             base64: null,
-            username: '',
-            phone: '',
-            email: '',
+            username: this.props.user.name,
+            phone: this.props.user.mobile,
+            email: this.props.user.email ,
+            isSubmitted: false,
         }
     }
 
@@ -96,6 +100,53 @@ class EditProfile extends Component {
         } else{
             this.setAnimate(1)
         }
+    }
+
+
+
+
+    renderEditProfile(){
+        if (this.state.username == '' || this.state.email == '' || this.state.phone == ''){
+            return (
+                <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , { backgroundColor: '#999' }]}>
+                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
+                </TouchableOpacity>
+            );
+        }
+
+        if (this.state.isSubmitted){
+            return(
+                <View style={[{ justifyContent: 'center', alignItems: 'center' }, styles.mt50 ]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{ alignSelf: 'center' }} />
+                </View>
+            )
+        }
+
+        return (
+            <TouchableOpacity onPress={() => this.onUpdateProfile()} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
+            </TouchableOpacity>
+        );
+    }
+
+    onUpdateProfile(){
+        const data = {
+            name: this.state.username,
+            phone: this.state.phone,
+            image: this.state.base64,
+            email: this.state.email,
+            lang: this.props.lang,
+            token: this.props.user.token
+        };
+
+        this.setState({ isSubmitted: true });
+        this.props.updateProfile(data);
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ isSubmitted: false })
+        this.props.navigation.navigate('profile');
     }
 
 
@@ -187,10 +238,9 @@ class EditProfile extends Component {
                                         </Item>
                                     </View>
 
+                                    { this.renderEditProfile() }
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('profile')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
-                                    </TouchableOpacity>
+
 
                                 </Form>
                             </KeyboardAvoidingView>
@@ -204,4 +254,10 @@ class EditProfile extends Component {
     }
 }
 
-export default EditProfile;
+const mapStateToProps = ({ profile, lang }) => {
+    return {
+        user: profile.user,
+        lang: lang.lang,
+    };
+};
+export default connect(mapStateToProps, { updateProfile })(EditProfile);

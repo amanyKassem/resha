@@ -4,6 +4,9 @@ import {Container, Content, Header, Button, Item, Input, Right, Icon, Left} from
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getAboutApp} from "../actions";
 
 
 const height = Dimensions.get('window').height;
@@ -24,6 +27,19 @@ class AboutApp extends Component {
         drawerIcon: (<Image source={require('../../assets/images/conversation_menu.png')} style={styles.drawerImg} resizeMode={'contain'} /> )
     })
 
+    componentWillMount() {
+        this.props.getAboutApp( this.props.lang )
+    }
+
+    renderLoader(){
+        if (this.props.loader == 0){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
 
 
     setAnimate(availabel){
@@ -83,15 +99,14 @@ class AboutApp extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <Image source={require('../../assets/images/about_undraw.png')} style={[styles.faqImg]} resizeMode={'contain'} />
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20 , marginTop:15}]}>
                             <ImageBackground source={require('../../assets/images/bg_feather.png')} resizeMode={'cover'} style={styles.imageBackground}>
 
                                 <Image source={require('../../assets/images/black_white_logo.png')} style={[styles.blackLogo , styles.mb10]} resizeMode={'contain'} />
-                                <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13}]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى
-                                    هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى
-                                </Text>
+                                <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13}]}>{this.props.about}</Text>
 
                             </ImageBackground>
                         </View>
@@ -103,4 +118,11 @@ class AboutApp extends Component {
     }
 }
 
-export default AboutApp;
+const mapStateToProps = ({ lang , about }) => {
+    return {
+        lang: lang.lang,
+        about: about.about,
+        loader: about.key
+    };
+};
+export default connect(mapStateToProps, {getAboutApp})(AboutApp);

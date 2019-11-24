@@ -14,6 +14,7 @@ import {Container, Content, Header, Button, Item, Input, Right, Textarea, Left, 
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -75,7 +76,78 @@ class AddEventPrice extends Component {
     }
 
 
+
+
+
+    renderNextBtn(){
+        if (this.state.vipPrice == '' || this.state.vipQuantity == '' || this.state.goldPrice == '' || this.state.goldQuantity == '' || this.state.normalPrice == '' || this.state.normalQuantity == '' ){
+            return (
+                <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , {backgroundColor:'#999'}]}>
+                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
+                </TouchableOpacity>
+            );
+        }
+        const tickets = [
+            {
+                type:1,
+                price:this.state.normalPrice,
+                amount:this.state.normalQuantity
+            },
+            {
+                type:2,
+                price:this.state.goldPrice,
+                amount:this.state.goldQuantity
+            },
+            {
+                type:3,
+                price:this.state.vipPrice,
+                amount:this.state.vipQuantity
+            },
+        ]
+        return (
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('addEventImage' , {
+                ar_name : this.props.navigation.state.params.ar_name ,
+                en_name : this.props.navigation.state.params.en_name ,
+                date :this.props.navigation.state.params.date ,
+                time : this.props.navigation.state.params.time ,
+                event_hours : this.props.navigation.state.params.event_hours ,
+                address : this.props.navigation.state.params.address ,
+                latitude : this.props.navigation.state.params.latitude ,
+                longitude : this.props.navigation.state.params.longitude ,
+                ar_description :  this.props.navigation.state.params.ar_description,
+                en_description : this.props.navigation.state.params.en_description,
+                organization_id: this.props.navigation.state.params.organization_id,
+                category_id: this.props.navigation.state.params.category_id,
+                tickets
+
+            })}
+                              style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
+            </TouchableOpacity>
+        );
+    }
+
+
+    onFocus(payload){
+        // this.componentWillMount()
+    }
+
+
     render() {
+
+
+        // console.log( this.props.navigation.state.params.ar_name ,
+        //     this.props.navigation.state.params.en_name ,
+        //     this.props.navigation.state.params.date ,
+        //    this.props.navigation.state.params.time ,
+        //      this.props.navigation.state.params.event_hours ,
+        //      this.props.navigation.state.params.address ,
+        //     this.props.navigation.state.params.latitude ,
+        //      this.props.navigation.state.params.longitude ,
+        //     this.props.navigation.state.params.ar_description,
+        //     this.props.navigation.state.params.en_description,
+        //     this.props.navigation.state.params.organization_id,
+        //     this.props.navigation.state.params.category_id)
 
         const backgroundColor = this.state.backgroundColor.interpolate({
             inputRange: [0, 1],
@@ -98,6 +170,7 @@ class AddEventPrice extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
                             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'height' : 'padding'} style={styles.keyboardAvoid}>
@@ -181,10 +254,9 @@ class AddEventPrice extends Component {
                                         </View>
                                     </View>
 
+                                    { this.renderNextBtn()}
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('addEventImage')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
-                                    </TouchableOpacity>
+
                                 </Form>
                             </KeyboardAvoidingView>
 

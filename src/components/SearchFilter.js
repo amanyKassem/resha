@@ -21,6 +21,9 @@ import MapView from 'react-native-maps';
 import * as Location from 'expo-location';
 import axios from 'axios';
 import DateTimePicker from "react-native-modal-datetime-picker";
+import {getEventCategories, getEventsPrices , getFilterEvents} from "../actions";
+import {connect} from "react-redux";
+import { DoubleBounce } from 'react-native-loader';
 
 
 const height = Dimensions.get('window').height;
@@ -43,9 +46,10 @@ class SearchFilter extends Component {
             date: '',
             isDatePickerVisible: false,
             value: null,
-            max: 2500,
-            step: 500,
-            min: 0,
+            isSubmitted: false
+            // max: null,
+            // step: null,
+            // min: null,
         }
     }
 
@@ -78,6 +82,9 @@ class SearchFilter extends Component {
 
     async componentWillMount() {
 
+        this.props.getEventCategories(this.props.lang);
+        this.props.getEventsPrices(this.props.lang);
+
 
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
@@ -91,7 +98,7 @@ class SearchFilter extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
-        getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
+        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
 
         console.log(getCity);
 
@@ -119,7 +126,7 @@ class SearchFilter extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += mapRegion.latitude + ',' + mapRegion.longitude;
-        getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
+        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
 
         console.log('locations data', getCity);
 
@@ -190,6 +197,37 @@ class SearchFilter extends Component {
     }
 
 
+    renderSubmit(){
+        if (this.state.isSubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt50, styles.mb15 ]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity  onPress={() => this.submitSearch()} style={[styles.blueBtn , styles.mt50, styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.filterKey == 1) {
+            this.setState({isSubmitted: false});
+            // this.props.navigation.navigate('searchResult', { searchResult : nextProps.filterEvents } );
+        }
+        console.log('nextProps.filterEvents' , nextProps.filterEvents)
+    }
+
+    submitSearch(){
+        this.setState({ isSubmitted: true });
+        this.props.getFilterEvents( this.props.lang , this.state.value , this.state.mapRegion.latitude , this.state.mapRegion.longitude , this.state.eventType , this.props.user.token , this.props)
+    }
+
+
+
     render() {
 
         const backgroundColor = this.state.backgroundColor.interpolate({
@@ -218,28 +256,28 @@ class SearchFilter extends Component {
                             <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
                                 <Form style={{padding:20}}>
 
-                                    <View style={styles.inputParent}>
-                                        <Item style={styles.itemPicker} regular >
-                                            <Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,
-                                                paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,
-                                                paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10,
-                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
-                                                borderBottomColor:'#fff'}]}>{ i18n.t('city') }</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>
-                                            <Picker
-                                                mode="dropdown"
-                                                style={[styles.picker , { color: COLORS.gray , backgroundColor:'#f5f5f5',}]}
-                                                placeholderStyle={{ color: COLORS.gray}}
-                                                placeholderIconColor={{color: COLORS.gray}}
-                                                selectedValue={this.state.city}
-                                                onValueChange={(value) => this.setState({ city: value })}
-                                            >
-                                                <Picker.Item label={'الرياض'} value={1} />
-                                                <Picker.Item label={'القاهرة'}  value={2} />
-                                            </Picker>
-                                            <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
-                                        </Item>
-                                    </View>
+                                    {/*<View style={styles.inputParent}>*/}
+                                        {/*<Item style={styles.itemPicker} regular >*/}
+                                            {/*<Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,*/}
+                                                {/*paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,*/}
+                                                {/*paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10,*/}
+                                                {/*backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,*/}
+                                                {/*borderBottomColor:'#fff'}]}>{ i18n.t('city') }</Label>*/}
+                                            {/*<Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>*/}
+                                            {/*<Picker*/}
+                                                {/*mode="dropdown"*/}
+                                                {/*style={[styles.picker , { color: COLORS.gray , backgroundColor:'#f5f5f5',}]}*/}
+                                                {/*placeholderStyle={{ color: COLORS.gray}}*/}
+                                                {/*placeholderIconColor={{color: COLORS.gray}}*/}
+                                                {/*selectedValue={this.state.city}*/}
+                                                {/*onValueChange={(value) => this.setState({ city: value })}*/}
+                                            {/*>*/}
+                                                {/*<Picker.Item label={'الرياض'} value={1} />*/}
+                                                {/*<Picker.Item label={'القاهرة'}  value={2} />*/}
+                                            {/*</Picker>*/}
+                                            {/*<Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />*/}
+                                        {/*</Item>*/}
+                                    {/*</View>*/}
                                     <View style={styles.inputParent}>
                                         <Item style={styles.itemPicker} regular >
                                             <Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,
@@ -256,8 +294,13 @@ class SearchFilter extends Component {
                                                 selectedValue={this.state.eventType}
                                                 onValueChange={(value) => this.setState({ eventType: value })}
                                             >
-                                                <Picker.Item label={'حفلات'} value={1} />
-                                                <Picker.Item label={'امسية رمضان'}  value={2} />
+                                                <Picker.Item label={ i18n.t('eventType') } value={null} />
+                                                {
+                                                    this.props.eventCategories.map((cat, i) => (
+                                                        <Picker.Item key={i} label={cat.name} value={cat.id} />
+                                                    ))
+
+                                                }
                                             </Picker>
                                             <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
                                         </Item>
@@ -297,8 +340,8 @@ class SearchFilter extends Component {
 
                                     <View style={styles.sliderParent}>
                                         <Slider
-                                            step={this.state.step}
-                                            maximumValue={this.state.max}
+                                            step={10}
+                                            maximumValue={this.props.eventsPrices.max}
                                             onValueChange={(value) => this.change(value)}
                                             // value={this.state.value}
                                             thumbTintColor={COLORS.rose}
@@ -307,16 +350,16 @@ class SearchFilter extends Component {
                                             minimumTrackTintColor={COLORS.blue}
                                         />
                                         <View style={styles.range}>
-                                            <Left><Text style={[styles.headerText , {color:'#272727'}]}>{this.state.min}</Text></Left>
+                                            <Left><Text style={[styles.headerText , {color:'#272727'}]}>{this.props.eventsPrices.min}</Text></Left>
                                             <Text style={[styles.headerText , {color:'#272727'}]}>{this.state.value}</Text>
-                                            <Right><Text style={[styles.headerText , {color:'#272727'}]}>{this.state.max}</Text></Right>
+                                            <Right><Text style={[styles.headerText , {color:'#272727'}]}>{this.props.eventsPrices.max}</Text></Right>
                                         </View>
                                     </View>
 
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('searchResult')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
-                                    </TouchableOpacity>
+                                    {
+                                        this.renderSubmit()
+                                    }
 
                                 </Form>
                             </KeyboardAvoidingView>
@@ -356,4 +399,14 @@ class SearchFilter extends Component {
     }
 }
 
-export default SearchFilter;
+const mapStateToProps = ({ lang , eventCategories , eventsPrices , filterEvents , profile}) => {
+    return {
+        lang: lang.lang,
+        eventCategories: eventCategories.eventCategories,
+        filterEvents: filterEvents.filterEvents,
+        filterKey: filterEvents.key,
+        user: profile.user,
+        eventsPrices: eventsPrices.eventsPrices,
+    };
+};
+export default connect(mapStateToProps, {getEventCategories , getEventsPrices , getFilterEvents})(SearchFilter);

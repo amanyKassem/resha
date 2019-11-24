@@ -1,5 +1,5 @@
 import React from "react";
-import { createStackNavigator, createAppContainer , createDrawerNavigator } from "react-navigation";
+import {createStackNavigator, createAppContainer, createDrawerNavigator, createSwitchNavigator} from "react-navigation";
 import {Dimensions, I18nManager} from "react-native";
 
 import Home from "../components/Home";
@@ -76,6 +76,10 @@ import OrderDetails from "../components/OrderDetails";
 import QrConfirmTicket from "../components/QrConfirmTicket";
 import QrTicketDetails from "../components/QrTicketDetails";
 import QrScan from "../components/QrScan";
+import ProposedEvents from "../components/ProposedEvents";
+import CommonEvents from "../components/CommonEvents";
+import InitScreen from "../components/InitScreen";
+import SignIn from "../components/SignIn";
 
 
 const width = Dimensions.get('window').width;
@@ -144,6 +148,9 @@ const drawerNavigator = createDrawerNavigator({
     orderDetails:OrderDetails,
     qrConfirmTicket:QrConfirmTicket,
     qrTicketDetails:QrTicketDetails,
+    proposedEvents:ProposedEvents,
+    commonEvents:CommonEvents,
+    signIn:SignIn,
 
 },{
     initialRouteName:'home',
@@ -158,10 +165,29 @@ const drawerNavigator = createDrawerNavigator({
 
 
 
-const AppNavigator = createStackNavigator({
+const appStack = createStackNavigator({
 
+
+    language: {
+        screen: Language,
+        navigationOptions: {
+            header: null
+        }
+    },
     drawerNavigator: {
         screen: drawerNavigator,
+        navigationOptions: {
+            header: null
+        }
+    },
+    commonEvents: {
+        screen: CommonEvents,
+        navigationOptions: {
+            header: null
+        }
+    },
+    proposedEvents: {
+        screen: ProposedEvents,
         navigationOptions: {
             header: null
         }
@@ -491,6 +517,12 @@ const AppNavigator = createStackNavigator({
             header: null
         }
     },
+    signIn: {
+        screen: SignIn,
+        navigationOptions: {
+            header: null
+        }
+    },
     changePass: {
         screen: ChangePass,
         navigationOptions: {
@@ -569,18 +601,14 @@ const AppNavigator = createStackNavigator({
             header: null
         }
     },
-    register: {
-        screen: Register,
-        navigationOptions: {
-            header: null
-        }
-    },
-    activationCode: {
-        screen: ActivationCode,
-        navigationOptions: {
-            header: null
-        }
-    },
+
+
+
+
+});
+
+
+const authStack = createStackNavigator({
     login: {
         screen: Login,
         navigationOptions: {
@@ -593,24 +621,42 @@ const AppNavigator = createStackNavigator({
             header: null
         }
     },
-    confirmPass: {
-        screen: ConfirmPass,
-        navigationOptions: {
-            header: null
-        }
-    },
     verifyCode: {
         screen: VerifyCode,
         navigationOptions: {
             header: null
         }
     },
-    Language: {
-        screen: Language,
+    register: {
+        screen: Register,
         navigationOptions: {
             header: null
         }
     },
+    activationCode: {
+        screen: ActivationCode,
+        navigationOptions: {
+            header: null
+        }
+    },
+    confirmPass: {
+        screen: ConfirmPass,
+        navigationOptions: {
+            header: null
+        }
+    },
+});
+
+
+const AppNavigator = createSwitchNavigator({
+    initScreen: {
+        screen: InitScreen,
+        navigationOptions: {
+            header: null
+        }
+    },
+    auth: authStack,
+    app: appStack,
 
 });
 

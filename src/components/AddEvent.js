@@ -20,6 +20,8 @@ import * as Permissions from 'expo-permissions';
 import MapView from 'react-native-maps';
 import * as Location from 'expo-location';
 import axios from 'axios';
+import {DoubleBounce} from "react-native-loader";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -78,7 +80,7 @@ class AddEvent extends Component {
 
     handleTimePicked = time => {
         console.log("A time has been picked: ", time);
-        let formatedTime = time.getHours() + ":" + time.getMinutes()
+        let formatedTime =   ((time.getHours()<10?'0':'') + time.getHours()) + ":" + ((time.getMinutes()<10?'0':'') + time.getMinutes()) + ":"  + (time.getSeconds() == '0' ? '00' : time.getSeconds())
         this.setState({ time : formatedTime })
         this.hideTimePicker();
     };
@@ -103,7 +105,7 @@ class AddEvent extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
-        getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
+        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
 
         console.log(getCity);
 
@@ -131,7 +133,7 @@ class AddEvent extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += mapRegion.latitude + ',' + mapRegion.longitude;
-        getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
+        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
 
         console.log('locations data', getCity);
 
@@ -203,6 +205,30 @@ class AddEvent extends Component {
     }
 
 
+
+    renderNextBtn(){
+        if (this.state.arabicName == '' || this.state.englishName == '' || this.state.date == '' || this.state.time == ''|| this.state.hoursNo == '' || this.state.city == ''){
+            return (
+                <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , {backgroundColor:'#999'}]}>
+                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
+                </TouchableOpacity>
+            );
+        }
+
+        return (
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('addEventDesc' , {ar_name : this.state.arabicName , en_name : this.state.englishName ,
+                date : this.state.date , time : this.state.time , event_hours : this.state.hoursNo , address : this.state.city ,
+                latitude : this.state.mapRegion.latitude , longitude : this.state.mapRegion.longitude})}
+                              style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
+            </TouchableOpacity>
+        );
+    }
+
+    onFocus(payload){
+        this.componentWillMount()
+    }
+
     render() {
 
         const backgroundColor = this.state.backgroundColor.interpolate({
@@ -226,6 +252,7 @@ class AddEvent extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
                             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'height' : 'padding'} style={styles.keyboardAvoid}>
@@ -306,9 +333,10 @@ class AddEvent extends Component {
                                         <Image source={require('../../assets/images/placeholder_blue.png')} style={styles.mapMarker} resizeMode={'contain'} />
                                     </View>
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('addEventDesc')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
-                                    </TouchableOpacity>
+
+                                    { this.renderNextBtn()}
+
+
                                 </Form>
                             </KeyboardAvoidingView>
 

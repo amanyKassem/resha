@@ -176,7 +176,15 @@ class PaymentDetails extends Component {
                                 </Form>
                             </KeyboardAvoidingView>
 
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('confirmPayment')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('confirmPayment', {
+                                event_info : this.props.navigation.state.params.event_info,
+                                event_id : this.props.navigation.state.params.event_id ,
+                                price : this.props.navigation.state.params.price,
+                                ticket_type : this.props.navigation.state.params.ticket_type,
+                                imgSrc : this.props.navigation.state.params.imgSrc,
+                                ticketName : this.props.navigation.state.params.ticketName,
+                                ticketsNo : this.props.navigation.state.params.ticketsNo,
+                            })} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
                                 <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
                             </TouchableOpacity>
 

@@ -9,7 +9,7 @@ import {
     KeyboardAvoidingView,
     Platform, I18nManager
 } from "react-native";
-import {Container, Content, Form, Picker, Input, Item, Label, Button} from 'native-base'
+import {Container, Content, Form, Picker, Input, Item, Label, Button, Toast} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
@@ -18,6 +18,9 @@ import * as Permissions from 'expo-permissions';
 import MapView from 'react-native-maps';
 import * as Location from 'expo-location';
 import axios from 'axios';
+import {DoubleBounce} from "react-native-loader";
+import {register} from "../actions";
+import {connect} from "react-redux";
 
 
 const height = Dimensions.get('window').height;
@@ -27,7 +30,7 @@ class Register extends Component {
         super(props);
 
         this.state={
-            userType: null,
+            userType: 0,
             username:'',
             phone:'',
             mail: '',
@@ -39,12 +42,89 @@ class Register extends Component {
             mapRegion: null,
             hasLocationPermissions: false,
             initMap: true,
+            isLoaded: false,
         }
     }
     _toggleModal = () => this.setState({ isModalVisible: !this.state.isModalVisible });
 
+    renderSubmit(){
+        if (this.state.username == '' || this.state.mail == '' || this.state.phone == '' || this.state.password == '' || this.state.rePassword == ''){
+            return (
+                <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15, {backgroundColor: '#999'}]}>
+                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('register') }</Text>
+                </TouchableOpacity>
+            );
+        }
+
+        if (this.state.isLoaded){
+            return(
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt50, styles.mb15]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+
+        return (
+            <TouchableOpacity onPress={() => this.onRegisterPressed()} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('register') }</Text>
+            </TouchableOpacity>
+        );
+    }
+
+    validate = () => {
+        let isError = false;
+        let msg = '';
+
+        if (this.state.password.length <= 0) {
+            isError = true;
+            msg = i18n.t('passwordRequired');
+        }else if (this.state.password != this.state.rePassword) {
+            isError = true;
+            msg = i18n.t('verifyPassword');
+        }else if (this.state.password.length < 8) {
+            isError = true;
+            msg = i18n.t('passwordLength');
+        }else if (this.state.mail.length <= 0 || this.state.mail.indexOf("@") === -1 || this.state.mail.indexOf(".") === -1) {
+            isError = true;
+            msg = i18n.t('emailNotCorrect');
+        }
+
+        if (msg != ''){
+            Toast.show({
+                text: msg,
+                type: "danger",
+                duration: 3000
+            });
+        }
+        return isError;
+    };
 
 
+    onRegisterPressed() {
+        const err = this.validate();
+        if (!err){
+            this.setState({ isLoaded: true });
+
+            const { username, mail, phone, password, city, mapRegion, userType } = this.state;
+            const data = {
+                username,
+                mail ,
+                phone,
+                password,
+                lang: this.props.lang,
+                city,
+                mapRegion,
+                userType
+            };
+
+            this.props.register(data, this.props);
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ isLoaded: false });
+        console.log('new props of register', nextProps);
+    }
 
     async componentWillMount() {
 
@@ -158,19 +238,18 @@ class Register extends Component {
                                                 selectedValue={this.state.userType}
                                                 onValueChange={(value) => this.setState({ userType: value })}
                                             >
-                                                <Picker.Item label={ i18n.t('normalUser') } value={1} />
-                                                <Picker.Item label={ i18n.t('eventOwner') }  value={2} />
-                                                <Picker.Item label={ i18n.t('organizer') }  value={3} />
-                                                <Picker.Item label={ i18n.t('cafeOwner') }  value={4} />
-                                                <Picker.Item label={ i18n.t('productiveOwner') }  value={5} />
-                                                <Picker.Item label={ i18n.t('foodTrackOwner') }  value={6} />
+                                                <Picker.Item label={ i18n.t('normalUser') } value={0} />
+                                                <Picker.Item label={ i18n.t('eventOwner') }  value={1} />
+                                                <Picker.Item label={ i18n.t('organizer') }  value={2} />
+                                                <Picker.Item label={ i18n.t('cafeOwner') }  value={3} />
+                                                <Picker.Item label={ i18n.t('productiveOwner') }  value={4} />
+                                                <Picker.Item label={ i18n.t('foodTrackOwner') }  value={5} />
                                             </Picker>
                                             <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
                                         </Item>
                                     </View>
-
                                     {
-                                        this.state.userType != 5 ? (
+                                        this.state.userType != 4 ? (
                                             <View style={styles.inputParent}>
                                                 <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={() =>this._toggleModal()}>
                                                     <Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 }]}>{ i18n.t('location') }</Label>
@@ -235,9 +314,9 @@ class Register extends Component {
                                         </Item>
                                     </View>
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('activationCode')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('register') }</Text>
-                                    </TouchableOpacity>
+                                    {
+                                        this.renderSubmit()
+                                    }
                                 </Form>
                             </KeyboardAvoidingView>
 
@@ -279,4 +358,14 @@ class Register extends Component {
     }
 }
 
-export default Register;
+const mapStateToProps = ({ auth, profile, lang, register }) => {
+    return {
+        key: auth.key,
+        auth: auth.user,
+        user: profile.user,
+        registering: register.register,
+        lang: lang.lang,
+    };
+};
+
+export default connect(mapStateToProps, { register })(Register);

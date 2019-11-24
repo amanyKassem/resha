@@ -15,15 +15,15 @@ import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import FooterSection from './FooterSection';
+import {connect} from "react-redux";
+import {getReservations, getReservationsByDay , getReservationDetails} from "../actions";
+import { DoubleBounce } from 'react-native-loader';
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
 
-const events =[
-    {id:1 , name:'أمسيات رمضان', image:require('../../assets/images/event_image_tean.jpg') , date:'15 مايو'},
-    {id:2 , name:'مؤتمرات عالمية',  image:require('../../assets/images/events_pic_image.jpg')  , date:'15 مايو'},
-    {id:3 , name:'حفلات موسيقية',  image:require('../../assets/images/image_eleven.jpg')  , date:'15 مايو'},
-]
+
 
 
 class Reservations extends Component {
@@ -33,14 +33,50 @@ class Reservations extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            activeType:0,
-            events,
+            activeDate:null,
+            loader: 1
         }
     }
 
     static navigationOptions = () => ({
         drawerLabel: () => null
     });
+
+
+    componentWillMount() {
+        this.setState({ loader: 1});
+        this.props.getReservations( this.props.lang , this.props.user.token)
+    }
+
+    renderLoader(){
+        if (this.state.loader == 1){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loader: nextProps.key });
+        console.log('nextprops reservations' , nextProps)
+        // if (nextProps.detKey == 1)
+        //     this.props.navigation.navigate('showTicketQr', {
+        //         ticketsInfo : nextProps.reservationDetails,
+        //     })
+    }
+    pressedDate(date){
+        this.setState({activeDate :date})
+        this.props.getReservationsByDay( this.props.lang , date , this.props.user.token)
+    }
+
+
+    goToTicket(ticket_id){
+        this.props.getReservationDetails( this.props.lang ,
+            ticket_id,
+            this.props.user.token
+        )
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -79,16 +115,31 @@ class Reservations extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('showTicketQr')} style={[styles.eventTouch ]}>
-                <Image source={item.image} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+            <TouchableOpacity onPress={() => this.goToTicket(item.ticket_id)} style={[styles.eventTouch ]}>
+                <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                 <View style={[styles.eventCont ]}>
-                    <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
+                    <Text style={[styles.whiteText , styles.BoldText]}>{item.event_name}</Text>
                     <View style={styles.dateEvent}>
-                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{item.date}</Text>
+                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{item.day}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
         );
+    }
+
+
+    renderNoData(){
+        if (this.props.reservations.tickets && (this.props.reservations.tickets).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 50, alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
+
+        return <View />
+    }
+
+    onFocus(payload){
+        this.componentWillMount()
     }
 
     render() {
@@ -114,41 +165,39 @@ class Reservations extends Component {
 
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection  , {paddingHorizontal:0}]}>
 
                             <View style={styles.reservationScroll}>
                                 <ScrollView style={{}} horizontal={true} showsHorizontalScrollIndicator={false}>
-                                    <TouchableOpacity onPress={ () => this.setState({activeType:0})} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeType === 0 ?'#6b4d6b' : 'transparent'}]}>
-                                        <Text style={[styles.reservationScrollText]}>15</Text>
-                                        <Text style={[styles.reservationScrollText]}>مايو</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={ () => this.setState({activeType:1})} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeType === 1 ?'#6b4d6b' : 'transparent'}]}>
-                                        <Text style={[styles.reservationScrollText]}>16</Text>
-                                        <Text style={[styles.reservationScrollText]}>مايو</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={ () => this.setState({activeType:2})} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeType === 2 ?'#6b4d6b' : 'transparent'}]}>
-                                        <Text style={[styles.reservationScrollText ]}>17</Text>
-                                        <Text style={[styles.reservationScrollText ]}>مايو</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={ () => this.setState({activeType:3})} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeType === 3 ?'#6b4d6b' : 'transparent'}]}>
-                                        <Text style={[styles.reservationScrollText ]}>18</Text>
-                                        <Text style={[styles.reservationScrollText ]}>مايو</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={ () => this.setState({activeType:4})} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeType === 4 ?'#6b4d6b' : 'transparent'}]}>
-                                        <Text style={[styles.reservationScrollText ]}>19</Text>
-                                        <Text style={[styles.reservationScrollText ]}>مايو</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={ () => this.setState({activeType:5})} style={[styles.reservationScrollView ,   {backgroundColor:this.state.activeType === 5 ?'#6b4d6b' : 'transparent'}]}>
-                                        <Text style={[styles.reservationScrollText ]}>20</Text>
-                                        <Text style={[styles.reservationScrollText ]}>مايو</Text>
-                                    </TouchableOpacity>
+                                    {/*<TouchableOpacity onPress={ () => this.setState({activeType:0})} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeType === 0 ?'#6b4d6b' : 'transparent'}]}>*/}
+                                        {/*<Text style={[styles.reservationScrollText]}>15</Text>*/}
+                                        {/*<Text style={[styles.reservationScrollText]}>December</Text>*/}
+                                    {/*</TouchableOpacity>*/}
+
+                                    {
+                                        this.props.reservations.dates.map((date, i) => {
+                                                return(
+                                                    <TouchableOpacity onPress={ () => this.pressedDate(date.date)} key={i} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeDate === date.date ?'#6b4d6b' : 'transparent'}]}>
+                                                        <Text style={[styles.reservationScrollText]}>{date.day}</Text>
+                                                        <Text style={[styles.reservationScrollText]}>{date.month}</Text>
+                                                    </TouchableOpacity>
+                                                )
+                                            }
+                                        )
+                                    }
+
                                 </ScrollView>
                             </View>
 
                            <View style={{paddingHorizontal:10}}>
+                               {
+                                   this.renderNoData()
+                               }
                                <FlatList
-                                   data={this.state.events}
+                                   data={this.props.reservations.tickets}
                                    renderItem={({item}) => this.renderItems(item)}
                                    numColumns={1}
                                    keyExtractor={this._keyExtractor}
@@ -164,5 +213,14 @@ class Reservations extends Component {
         );
     }
 }
-
-export default Reservations;
+const mapStateToProps = ({ lang , profile , reservations , reservationDetails }) => {
+    return {
+        lang: lang.lang,
+        user: profile.user,
+        reservations: reservations.reservations,
+        reservationDetails: reservationDetails.reservationDetails,
+        key: reservations.key,
+        detKey: reservationDetails.key
+    };
+};
+export default connect(mapStateToProps, {getReservations , getReservationsByDay , getReservationDetails})(Reservations);

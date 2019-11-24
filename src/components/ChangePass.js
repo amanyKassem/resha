@@ -10,10 +10,27 @@ import {
     ImageBackground,
     I18nManager, KeyboardAvoidingView
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Switch, Left, Form, Picker, Label} from 'native-base'
+import {
+    Container,
+    Content,
+    Header,
+    Button,
+    Item,
+    Input,
+    Right,
+    Switch,
+    Left,
+    Form,
+    Picker,
+    Label,
+    Toast
+} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getChangePassword} from "../actions";
 
 
 const height = Dimensions.get('window').height;
@@ -29,6 +46,7 @@ class ChangePass extends Component {
             oldPass: '',
             newPass: '',
             verifyNewPass: '',
+            isSubmitted: false
         }
     }
 
@@ -37,6 +55,63 @@ class ChangePass extends Component {
     });
 
 
+
+    renderSubmit(){
+        if (this.state.oldPass == '' || this.state.newPass == '' || this.state.verifyNewPass == '') {
+            return (
+                <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15, {backgroundColor: '#999'}]}>
+                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
+                </TouchableOpacity>
+            );
+        }
+        if (this.state.isSubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt50, styles.mb15]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity onPress={() => this.changePass()} style={[styles.blueBtn, styles.mt50, styles.mb15]}>
+                <Text style={[styles.whiteText, styles.normalText]}>{i18n.t('save')}</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.changePassword) {
+            this.setState({isSubmitted: false});
+            this.props.navigation.navigate('changePassCode' , { new_password : nextProps.changePassword.new_password , code : nextProps.changePassword.code})
+        }
+        console.log('confirmnextProps' , nextProps)
+    }
+
+    changePass(){
+        if (this.state.newPass.length < 8){
+            Toast.show({
+                text: i18n.t('phoneValidation'),
+                type: "danger",
+                duration: 3000
+            });
+            return false
+        }
+        if(this.state.newPass != this.state.verifyNewPass){
+            Toast.show({
+                text: i18n.t('verifyPassword'),
+                type: "danger",
+                duration: 3000
+            });
+            return false
+        }
+
+        this.setState({ isSubmitted: true });
+        this.props.getChangePassword( this.props.lang ,
+            this.state.oldPass,
+            this.state.newPass,
+            this.props.user.token
+        )
+    }
 
 
     setAnimate(availabel){
@@ -133,9 +208,9 @@ class ChangePass extends Component {
                                     </Form>
                                 </KeyboardAvoidingView>
 
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('changePassCode')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
-                                </TouchableOpacity>
+                                {
+                                    this.renderSubmit()
+                                }
 
                             </ImageBackground>
                         </View>
@@ -146,5 +221,12 @@ class ChangePass extends Component {
         );
     }
 }
-
-export default ChangePass;
+const mapStateToProps = ({ lang , profile , changePassword }) => {
+    return {
+        lang: lang.lang,
+        user: profile.user,
+        changePassword: changePassword.changePassword,
+        key: changePassword.key
+    };
+};
+export default connect(mapStateToProps, {getChangePassword})(ChangePass);

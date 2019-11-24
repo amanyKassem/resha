@@ -1,11 +1,15 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground} from "react-native";
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground, Linking} from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
 import StarRating from 'react-native-star-rating';
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getEventDetails , setSaveEvent} from "../actions";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -20,6 +24,7 @@ class BookTicket extends Component {
             availabel: 0,
             starCount:3,
             savedEvent: false,
+            loader: 1
         }
     }
 
@@ -27,7 +32,29 @@ class BookTicket extends Component {
         drawerLabel: () => null
     });
 
+    _linkPressed (url){
+        Linking.openURL(url);
+    }
 
+
+    componentWillMount() {
+        this.setState({ loader: 1});
+        this.props.getEventDetails( this.props.lang , this.props.navigation.state.params.event_id , this.props.user.token)
+    }
+
+    renderLoader(){
+        if (this.state.loader == 1){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        console.log('nextProps.eventDet.is_save' , nextProps.eventDet.is_save)
+        this.setState({ loader: nextProps.key , savedEvent: nextProps.eventDet.is_save });
+    }
 
     onShare = async () => {
         try {
@@ -86,6 +113,7 @@ class BookTicket extends Component {
 
     savedEvent() {
         this.setState({savedEvent: !this.state.savedEvent})
+        this.props.setSaveEvent( this.props.lang , this.props.navigation.state.params.event_id , this.props.user.token)
     }
 
     renderImage() {
@@ -96,6 +124,10 @@ class BookTicket extends Component {
             source = require('../../assets/images/bookmark_white.png')
         }
         return source;
+    }
+
+    onFocus(payload){
+        this.componentWillMount()
     }
 
     render() {
@@ -128,19 +160,21 @@ class BookTicket extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
                             <View style={styles.directionRowSpace}>
                                 <View style={styles.directionRowAlignCenter}>
                                     <View style={styles.borderImg}>
-                                        <Image source={require('../../assets/images/profile_pic.png')} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                                        <Image source={{ uri: this.props.eventDet.user.avatar }} style={[styles.footSearchImg]} resizeMode={'cover'} />
                                     </View>
                                     <View style={styles.directionColumn}>
-                                        <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>اسم صاحب الفاعلية</Text>
+                                        <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.eventDet.user.user_name}</Text>
                                         <StarRating
                                             disabled={true}
                                             maxStars={5}
-                                            rating={this.state.starCount}
+                                            rating={this.props.eventDet.user.rates}
                                             fullStarColor={'#f0aa0b'}
                                             // selectedStar={(rating) => this.onStarRatingPress(rating)}
                                             starSize={18}
@@ -149,41 +183,45 @@ class BookTicket extends Component {
                                     </View>
                                 </View>
 
-                                <TouchableOpacity >
+                                <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.eventDet.user.mobile)}>
                                     <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
                                 </TouchableOpacity>
                             </View>
 
                             <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
                                     containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
-                                <Image source={require('../../assets/images/image_eleven.jpg')} style={styles.swiperImg} resizeMode={'cover'}/>
-                                <Image source={require('../../assets/images/image_one.png')} style={styles.swiperImg} resizeMode={'cover'}/>
-                                <Image source={require('../../assets/images/events.jpg')}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                {
+                                    this.props.eventDet.images.map((img, i) =>{
+                                        return (
+                                            <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                        )
+                                    })
+                                }
                             </Swiper>
 
-                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing , styles.mb10]}>حفلة وسط البلد</Text>
+                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing , styles.mb10]}>{this.props.eventDet.name}</Text>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
                                     <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>3:30 AM _ 6:00 PM</Text>
+                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.time}</Text>
                                 </View>
                                 <View style={[styles.directionRowAlignCenter ]}>
                                     <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>9/7/2020</Text>
+                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.date}</Text>
                                 </View>
                             </View>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>144 ريال</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.normal_price} { i18n.t('RS') }</Text>
                             </View>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>الرياض . جده . السعودية</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.address}</Text>
                             </View>
-                            <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13}]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،</Text>
+                            <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13}]}>{this.props.eventDet.details}</Text>
 
 
-                            <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookType')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                            <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookType' , { event_id: this.props.eventDet.id })} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
                                 <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('book') }</Text>
                             </TouchableOpacity>
 
@@ -200,4 +238,13 @@ class BookTicket extends Component {
     }
 }
 
-export default BookTicket;
+
+const mapStateToProps = ({ lang , eventDetails , profile }) => {
+    return {
+        lang: lang.lang,
+        eventDet: eventDetails.eventDet,
+        user: profile.user,
+        key: eventDetails.key
+    };
+};
+export default connect(mapStateToProps, {getEventDetails , setSaveEvent})(BookTicket);

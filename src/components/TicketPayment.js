@@ -104,9 +104,9 @@ class TicketPayment extends Component {
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:25} ]}>
 
                             <View  style={[styles.ticketViewType , styles.mb15 , styles.w100 ]}>
-                                <Image source={require('../../assets/images/ticket_vip.png')} style={[styles.ticketType, styles.w100]} resizeMode={'contain'} />
-                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>تذكره vip</Text>
-                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>{ i18n.t('price') } 133 ريال</Text>
+                                <Image source={this.props.navigation.state.params.imgSrc} style={[styles.ticketType, styles.w100]} resizeMode={'contain'} />
+                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>{this.props.navigation.state.params.ticketName}</Text>
+                                <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>{ i18n.t('price') } {this.props.navigation.state.params.price * this.props.navigation.state.params.ticketsNo} { i18n.t('RS') }</Text>
                             </View>
 
 
@@ -127,7 +127,15 @@ class TicketPayment extends Component {
 
 
 
-                            <TouchableOpacity onPress={ () => this.props.navigation.navigate('paymentDetails')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                            <TouchableOpacity onPress={ () => this.props.navigation.navigate('paymentDetails', {
+                                event_info : this.props.navigation.state.params.event_info,
+                                event_id : this.props.navigation.state.params.event_id ,
+                                price : this.props.navigation.state.params.price,
+                                ticket_type : this.props.navigation.state.params.ticket_type,
+                                imgSrc : this.props.navigation.state.params.imgSrc,
+                                ticketName : this.props.navigation.state.params.ticketName,
+                                ticketsNo : this.props.navigation.state.params.ticketsNo,
+                            })} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
                                 <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
                             </TouchableOpacity>
 

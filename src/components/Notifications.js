@@ -4,15 +4,13 @@ import {Container, Content, Header, Button, Item, Input, Right, Icon, Left} from
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getNotifications} from "../actions";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
-const notifies =[
-    {id:1 , content:'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،'},
-    {id:2 , content:'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،'},
-    {id:3 , content:'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،'},
-    {id:4 , content:'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،'},
-]
 
 class Notifications extends Component {
     constructor(props){
@@ -21,7 +19,6 @@ class Notifications extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            notifies
         }
     }
 
@@ -29,6 +26,28 @@ class Notifications extends Component {
         drawerLabel: () => null
     });
 
+    componentWillMount() {
+        this.props.getNotifications( this.props.lang , this.props.user.token)
+    }
+
+    renderLoader(){
+        if (this.props.loader == 0){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+    renderNoData(){
+        if (this.props.notifications && (this.props.notifications).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 60, alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
+
+        return <View />
+    }
 
     _keyExtractor = (item, index) => item.id;
 
@@ -38,13 +57,13 @@ class Notifications extends Component {
                 <View style={styles.directionRowSpace}>
                     <View style={styles.directionRowAlignCenter}>
                         <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                        <Text style={[styles.headerText , {color:'#272727'}]}>تنبيه من الادارة</Text>
+                        <Text style={[styles.headerText , {color:'#272727'}]}>{item.title}</Text>
                     </View>
                     <TouchableOpacity>
                         <Image source={require('../../assets/images/close_notifcation.png')} style={[styles.notiClose]} resizeMode={'contain'} />
                     </TouchableOpacity>
                 </View>
-                <Text style={[styles.grayText , styles.asfs , styles.writing , styles.normalText]}>{item.content}</Text>
+                <Text style={[styles.grayText , styles.asfs , styles.writing , styles.normalText]}>{item.message}</Text>
            </View>
         );
     }
@@ -83,7 +102,9 @@ class Notifications extends Component {
         }
     }
 
-
+    onFocus(payload){
+        this.componentWillMount()
+    }
     render() {
 
         const backgroundColor = this.state.backgroundColor.interpolate({
@@ -107,10 +128,13 @@ class Notifications extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0}]}>
+                            {this.renderNoData()}
                             <FlatList
-                                data={this.state.notifies}
+                                data={this.props.notifications}
                                 renderItem={({item}) => this.renderItems(item)}
                                 numColumns={1}
                                 keyExtractor={this._keyExtractor}
@@ -124,5 +148,11 @@ class Notifications extends Component {
         );
     }
 }
-
-export default Notifications;
+const mapStateToProps = ({ lang , notifications , profile }) => {
+    return {
+        lang: lang.lang,
+        user: profile.user,
+        notifications: notifications.notifications,
+    };
+};
+export default connect(mapStateToProps, {getNotifications})(Notifications);

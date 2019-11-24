@@ -40,10 +40,16 @@
     "react-native-swiper": "^1.5.14",
     "react-native-web": "^0.11.7",
     "react-navigation": "^3.11.1",
+    "react-redux": "^7.1.1",
+    "redux": "^4.0.4",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0",
     "rn-bottom-drawer": "^1.4.3"
   },
   "devDependencies": {
-    "babel-preset-expo": "^7.0.0"
+    "babel-preset-expo": "^7.0.0",
+    "reactotron-react-native": "^2.1.0",
+    "reactotron-redux": "^3.1.2"
   },
   "private": true
 }

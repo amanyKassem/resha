@@ -5,6 +5,7 @@ import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import FooterSection from './FooterSection';
+import {connect} from "react-redux";
 
 
 const height = Dimensions.get('window').height;
@@ -86,10 +87,10 @@ class Profile extends Component {
                             <View style={styles.sideImgView}>
                                 <View style={styles.cutCircle}>
                                     <View style={styles.sideProfileImg}>
-                                        <Image source={require('../../assets/images/profile_pic.png')} resizeMode={'cover'} style={styles.drawImg}/>
+                                        <Image source={{ uri : this.props.user.avatar }} resizeMode={'cover'} style={styles.drawImg}/>
                                     </View>
                                 </View>
-                                <Text style={styles.sideName}>اماني قاسم</Text>
+                                <Text style={styles.sideName}>{ this.props.user.name }</Text>
 
 
                                 <View style={[styles.editBtn]}>
@@ -106,7 +107,7 @@ class Profile extends Component {
                                     <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg , styles.transform]} resizeMode={'contain'} />
                                     <Text style={[styles.headerText ]}>{ i18n.t('username') }</Text>
                                 </View>
-                                <Text style={[styles.headerText , styles.asfs , {marginLeft:25 , fontSize: 14} ]}>اماني قاسم</Text>
+                                <Text style={[styles.headerText , styles.asfs , {marginLeft:25 , fontSize: 14} ]}>{ this.props.user.name }</Text>
                             </View>
 
                             <View style={[styles.line]}/>
@@ -116,7 +117,7 @@ class Profile extends Component {
                                     <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg , styles.transform]} resizeMode={'contain'} />
                                     <Text style={[styles.headerText ]}>{ i18n.t('email') }</Text>
                                 </View>
-                                <Text style={[styles.headerText , styles.asfs , {marginLeft:25 , fontSize: 14} ]}>aait.sa.com</Text>
+                                <Text style={[styles.headerText , styles.asfs , {marginLeft:25 , fontSize: 14} ]}>a{ this.props.user.email }</Text>
                             </View>
 
                             <View style={[styles.line]}/>
@@ -126,7 +127,7 @@ class Profile extends Component {
                                     <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg , styles.transform]} resizeMode={'contain'} />
                                     <Text style={[styles.headerText ]}>{ i18n.t('phoneNumber') }</Text>
                                 </View>
-                                <Text style={[styles.headerText , styles.asfs , {marginLeft:25 , fontSize: 14} ]}>01023456789</Text>
+                                <Text style={[styles.headerText , styles.asfs , {marginLeft:25 , fontSize: 14} ]}>{ this.props.user.mobile }</Text>
                             </View>
 
                             <View style={[styles.line]}/>
@@ -141,4 +142,12 @@ class Profile extends Component {
     }
 }
 
-export default Profile;
+
+
+const mapStateToProps = ({ profile, lang }) => {
+    return {
+        user: profile.user,
+        lang: lang.lang,
+    };
+};
+export default connect(mapStateToProps, {})(Profile);

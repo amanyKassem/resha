@@ -4,14 +4,13 @@ import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getProfileProducts} from "../actions";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
-const products =[
-    {id:1 , product:'اسم المنتج', family:'اسم الأسرة', category:'تصنيف حلويات', image:require('../../assets/images/event_image_tean.jpg') , price:'144 ريال' , rate:'3/5'},
-    {id:1 , product:'اسم المنتج', family:'اسم الأسرة', category:'تصنيف حلويات', image:require('../../assets/images/events_pic_image.jpg') , price:'144 ريال' , rate:'3/5'},
-    {id:1 , product:'اسم المنتج', family:'اسم الأسرة', category:'تصنيف حلويات', image:require('../../assets/images/image_eleven.jpg') , price:'144 ريال' , rate:'3/5'},
-]
 
 class Products extends Component {
     constructor(props){
@@ -20,8 +19,8 @@ class Products extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            products,
             search:'',
+            loader: 1
         }
     }
 
@@ -30,21 +29,41 @@ class Products extends Component {
     });
 
 
+    componentWillMount() {
+        this.setState({ loader: 1});
+        this.props.getProfileProducts( this.props.lang , this.props.navigation.state.params.user_id )
+    }
+
+    renderLoader(){
+        if (this.state.loader == 1){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loader: nextProps.key });
+    }
+
     _keyExtractor = (item, index) => item.id;
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={ () => this.props.navigation.navigate('productDetails')} style={[styles.notiBlock , styles.directionRow]}>
-                <Image source={item.image} resizeMode={'cover'} style={[styles.eventImg ]}/>
+            <TouchableOpacity onPress={ () => this.props.navigation.navigate('productDetails' , {product_id:item.id})} style={[styles.notiBlock , styles.directionRow]}>
+                <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={[styles.eventImg ]}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
-                    <Text style={[styles.headerText , styles.asfs, styles.writing  , {color:'#272727'}]}>{item.product}</Text>
+                    <Text style={[styles.headerText , styles.asfs, styles.writing  , {color:'#272727'}]}>{item.name}</Text>
                     <View style={[styles.directionRowAlignCenter]}>
                         <Image source={require('../../assets/images/category.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                         <Text style={[styles.blueText , styles.normalText , {color:COLORS.gray}]}>{item.category}</Text>
                     </View>
                     <View style={[styles.directionRowAlignCenter]}>
                         <Image source={require('../../assets/images/identification.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                        <Text style={[styles.blueText , styles.normalText , {color:COLORS.gray}]}>{item.family}</Text>
+                        <Text style={[styles.blueText , styles.normalText , {color:COLORS.gray}]}>{item.profile_name}</Text>
                     </View>
                     <View style={styles.directionRowAlignCenter}>
                         <View style={[styles.eventBtn]}>
@@ -52,7 +71,7 @@ class Products extends Component {
                         </View>
                         <View style={[styles.eventBtn , {backgroundColor:'#f0ac3f' , flexDirection:'row' , marginLeft:10}]}>
                             <Image source={require('../../assets/images/star_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                            <Text style={[styles.whiteText , styles.normalText]}>{item.rate}</Text>
+                            <Text style={[styles.whiteText , styles.normalText]}>{item.rates} / 5</Text>
                         </View>
                     </View>
                 </View>
@@ -60,7 +79,15 @@ class Products extends Component {
         );
     }
 
+    renderNoData(){
+        if (this.props.profileProducts && (this.props.profileProducts).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 60, alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
 
+        return <View />
+    }
     setAnimate(availabel){
         if (availabel === 0){
             Animated.timing(
@@ -97,6 +124,11 @@ class Products extends Component {
     submitSearch(){
         // this.props.navigation.navigate('searchResult', { search : this.state.search } );
     }
+
+    onFocus(payload){
+        this.componentWillMount()
+    }
+
     render() {
 
         const backgroundColor = this.state.backgroundColor.interpolate({
@@ -120,6 +152,8 @@ class Products extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
 
@@ -131,9 +165,11 @@ class Products extends Component {
                                     <Image source={require('../../assets/images/search_floting.png')} style={[styles.searchImg , styles.transform]} resizeMode={'contain'}/>
                                 </TouchableOpacity>
                             </View>
-
+                            {
+                                this.renderNoData()
+                            }
                             <FlatList
-                                data={this.state.products}
+                                data={this.props.profileProducts}
                                 renderItem={({item}) => this.renderItems(item)}
                                 numColumns={1}
                                 keyExtractor={this._keyExtractor}
@@ -148,4 +184,11 @@ class Products extends Component {
     }
 }
 
-export default Products;
+const mapStateToProps = ({ lang , profileProducts }) => {
+    return {
+        lang: lang.lang,
+        profileProducts: profileProducts.profileProducts,
+        key: profileProducts.key
+    };
+};
+export default connect(mapStateToProps, {getProfileProducts})(Products);

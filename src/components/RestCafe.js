@@ -4,14 +4,13 @@ import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getRestaurants} from "../actions";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
-const restCafe =[
-    {id:1 , name:'اسم المطعم', image:require('../../assets/images/event_image_tean.jpg') , families:'200'},
-    {id:2 , name:'اسم الكافيه',  image:require('../../assets/images/factory.jpg')  , families:'200'},
-    {id:3 , name:'اسم المطعم',  image:require('../../assets/images/image_eleven.jpg')  , families:'200'},
-]
 
 class RestCafe extends Component {
     constructor(props){
@@ -20,7 +19,7 @@ class RestCafe extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            restCafe,
+            loader: 1
         }
     }
 
@@ -29,22 +28,49 @@ class RestCafe extends Component {
     });
 
 
+    componentWillMount() {
+        this.setState({ loader: 1});
+        this.props.getRestaurants( this.props.lang )
+    }
+
+    renderLoader(){
+        if (this.state.loader == 1){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loader: nextProps.key });
+    }
+
     _keyExtractor = (item, index) => item.id;
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('restCafeDetails')} style={[styles.eventTouch ]}>
-                <Image source={item.image} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('restCafeDetails' , {user_id: item.user_id})} style={[styles.eventTouch ]}>
+                <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                 <View style={[styles.eventCont , { backgroundColor: '#b1aba940'}]}>
                     <Text style={[styles.whiteText , styles.BoldText , {top:-5}]}>{item.name}</Text>
                     <View style={styles.familiesEvent}>
-                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{ i18n.t('prodNo') } : {item.families}</Text>
+                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{ i18n.t('prodNo') } : {item.products_count}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
         );
     }
 
+    renderNoData(){
+        if (this.props.restaurants && (this.props.restaurants).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 20, alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
+
+        return <View />
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -79,7 +105,9 @@ class RestCafe extends Component {
         }
     }
 
-
+    onFocus(payload){
+        this.componentWillMount()
+    }
     render() {
 
         const backgroundColor = this.state.backgroundColor.interpolate({
@@ -104,21 +132,23 @@ class RestCafe extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
 
                         <View style={[styles.directionRowSpace , styles.w100  , styles.mt70, {paddingHorizontal:20 , paddingVertical:15}]}>
                             <View style={[styles.directionColumn , {flex: 1}]}>
                                 <Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing ]}>{ i18n.t('rest&cafe') }</Text>
-                                <Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing , {fontSize:14}]}>{ i18n.t('number') } : 512</Text>
-                                <Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing , {fontSize:13} ]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،</Text>
+                                <Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing , {fontSize:14}]}>{ i18n.t('number') } : {this.props.count}</Text>
+                                <Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing , {fontSize:13} ]}>{this.props.desc}</Text>
                             </View>
                             <Image source={require('../../assets/images/resturant_undraw.png')} style={{ width:135, height:135}} resizeMode={'contain'} />
                         </View>
 
                         <View style={[styles.homeSection , styles.whiteHome , {padding:15 ,  marginTop:15}]}>
-
+                            {this.renderNoData()}
                             <FlatList
-                                data={this.state.restCafe}
+                                data={this.props.restaurants}
                                 renderItem={({item}) => this.renderItems(item)}
                                 numColumns={1}
                                 keyExtractor={this._keyExtractor}
@@ -133,4 +163,14 @@ class RestCafe extends Component {
     }
 }
 
-export default RestCafe;
+
+const mapStateToProps = ({ lang , restaurants }) => {
+    return {
+        lang: lang.lang,
+        restaurants: restaurants.restaurants,
+        desc: restaurants.desc,
+        count: restaurants.count,
+        key: restaurants.key
+    };
+};
+export default connect(mapStateToProps, {getRestaurants})(RestCafe);

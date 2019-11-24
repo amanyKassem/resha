@@ -14,6 +14,8 @@ import {Container, Content, Header, Button, Item, Input, Right, Switch, Left, Fo
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import {connect} from "react-redux";
+import {chooseLang , getDeleteAccount} from "../actions";
 
 
 const height = Dimensions.get('window').height;
@@ -27,7 +29,7 @@ class Settings extends Component {
             backgroundColor: new Animated.Value(0),
             availabel: 0,
             SwitchOnValueHolder:false,
-            language:''
+            language:null
         }
     }
 
@@ -38,6 +40,9 @@ class Settings extends Component {
 
     onChangeLang(value){
         this.setState({ language: value })
+        if (this.props.lang != value){
+            this.props.chooseLang(value);
+        }
     }
 
     stopNotification = (value) =>{
@@ -78,6 +83,11 @@ class Settings extends Component {
         } else{
             this.setAnimate(1)
         }
+    }
+
+    deleteAcc(){
+        this.props.getDeleteAccount( this.props.lang , this.props.user.token)
+        this.props.navigation.navigate('login')
     }
 
     render() {
@@ -149,7 +159,7 @@ class Settings extends Component {
                                 </TouchableOpacity>
 
 
-                                <TouchableOpacity  onPress={() => this.props.navigation.navigate('login')} style={styles.delAcc}>
+                                <TouchableOpacity  onPress={() => this.deleteAcc()} style={styles.delAcc}>
                                     <Text style={[styles.whiteText , styles.BoldText ,{color:COLORS.rose , fontSize:13 }]}>{ i18n.t('deleteAcc') }</Text>
                                 </TouchableOpacity>
 
@@ -164,4 +174,11 @@ class Settings extends Component {
     }
 }
 
-export default Settings;
+const mapStateToProps = ({ lang , profile }) => {
+    return {
+        lang: lang.lang,
+        user: profile.user,
+    };
+};
+
+export default connect(mapStateToProps, {chooseLang , getDeleteAccount})(Settings);

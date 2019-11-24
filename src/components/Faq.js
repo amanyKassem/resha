@@ -4,15 +4,12 @@ import {Container, Content, Header, Button, Item, Input, Right, Icon, Left} from
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getFaq} from "../actions";
 
 
 const height = Dimensions.get('window').height;
-const faq =[
-    {id:1 , ques:'صيغة سؤال ؟' , ans:'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،'},
-    {id:2 , ques:'صيغة سؤال ؟' , ans:'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،'},
-    {id:3 , ques:'صيغة سؤال ؟' , ans:'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،'},
-    {id:4 , ques:'صيغة سؤال ؟' , ans:'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،'},
-]
 
 class Faq extends Component {
     constructor(props){
@@ -21,7 +18,6 @@ class Faq extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            faq
         }
     }
 
@@ -30,13 +26,28 @@ class Faq extends Component {
         drawerIcon: (<Image source={require('../../assets/images/contact_phone.png')} style={styles.drawerImg} resizeMode={'contain'} /> )
     })
 
+
+    componentWillMount() {
+        this.props.getFaq( this.props.lang )
+    }
+    renderLoader(){
+        if (this.props.loader == 0){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+
+
     _keyExtractor = (item, index) => item.id;
 
     renderItems = (item) => {
         return(
             <View style={styles.faqBlock}>
-                <Text style={[styles.headerText, styles.asfs , styles.writing  , {color:'#272727'}]}>{item.ques}</Text>
-                <Text style={[styles.grayText, styles.asfs , styles.writing  , styles.normalText]}>{item.ans}</Text>
+                <Text style={[styles.headerText, styles.asfs , styles.writing  , {color:'#272727'}]}>{item.question}</Text>
+                <Text style={[styles.grayText, styles.asfs , styles.writing  , styles.normalText]}>{item.answer}</Text>
             </View>
         );
     }
@@ -99,12 +110,13 @@ class Faq extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <Image source={require('../../assets/images/qu_undraw.png')} style={[styles.faqImg]} resizeMode={'contain'} />
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20 , marginTop:15}]}>
                             <ImageBackground source={require('../../assets/images/bg_feather.png')} resizeMode={'cover'} style={styles.imageBackground}>
                                 <FlatList
-                                    data={this.state.faq}
+                                    data={this.props.faq}
                                     renderItem={({item}) => this.renderItems(item)}
                                     numColumns={1}
                                     keyExtractor={this._keyExtractor}
@@ -119,4 +131,11 @@ class Faq extends Component {
     }
 }
 
-export default Faq;
+const mapStateToProps = ({ lang , faq }) => {
+    return {
+        lang: lang.lang,
+        faq: faq.ques,
+        loader: faq.key
+    };
+};
+export default connect(mapStateToProps, {getFaq})(Faq);

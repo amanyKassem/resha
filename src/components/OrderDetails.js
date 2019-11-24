@@ -6,6 +6,10 @@ import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
 import Modal from "react-native-modal";
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getEventDetails , getAcceptEvent , getRejectEvent , deleteOrganizerEvent} from "../actions";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -18,8 +22,8 @@ class OrderDetails extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            orderType:0,
             deleteProduct: false,
+            loader: 1
         }
     }
 
@@ -28,12 +32,24 @@ class OrderDetails extends Component {
     });
 
 
-    _deleteProduct = () => this.setState({ deleteProduct: !this.state.deleteProduct });
-    _deleteConfirmation() {
-        this.setState({ deleteProduct: !this.state.deleteProduct });
-        this.props.navigation.navigate('myOrders')
+
+    componentWillMount() {
+        this.setState({ loader: 1});
+        this.props.getEventDetails( this.props.lang , this.props.navigation.state.params.event_id , this.props.user.token)
     }
 
+    renderLoader(){
+        if (this.state.loader == 1){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loader: nextProps.key });
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -68,27 +84,45 @@ class OrderDetails extends Component {
         }
     }
 
+    acceptEvent(){
+        this.props.getAcceptEvent( this.props.lang , this.props.navigation.state.params.event_id , this.props.user.token , this.props)
+    }
+
+    rejectEvent(){
+        this.props.getRejectEvent( this.props.lang , this.props.navigation.state.params.event_id , this.props.user.token , this.props)
+    }
+
+
+
+    _deleteProduct = () => this.setState({ deleteProduct: !this.state.deleteProduct });
+
+    _deleteConfirmation() {
+        this.setState({ deleteProduct: !this.state.deleteProduct });
+        this.props.deleteOrganizerEvent( this.props.lang , this.props.navigation.state.params.event_id , this.props.user.token , this.props)
+    }
+
+
     renderBtn(){
-        if(this.state.orderType === 0){
+        if(this.props.navigation.state.params.orderType === 1){
             return(
                 <View>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('myOrders')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                    <TouchableOpacity onPress={() => this.acceptEvent()} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
                         <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('myOrders')} style={[styles.disabledBtn, styles.mb15 , {backgroundColor:'transparent'}]}>
+                    <TouchableOpacity onPress={() => this.rejectEvent()} style={[styles.disabledBtn, styles.mb15 , {backgroundColor:'transparent'}]}>
                         <Text style={[styles.blueText , styles.normalText ]}>{ i18n.t('refuse') }</Text>
                     </TouchableOpacity>
                 </View>
             )
         }
-        else if(this.state.orderType === 1){
+        else if(this.props.navigation.state.params.orderType === 2){
             return(
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('contactUs')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
                     <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('contactManege') }</Text>
                 </TouchableOpacity>
             )
         }
-        else if(this.state.orderType === 2 || this.state.orderType === 3){
+        else if(this.props.navigation.state.params.orderType === 3 || this.props.navigation.state.params.orderType === 4){
             return(
                 <TouchableOpacity onPress={this._deleteProduct} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
                     <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('delete') }</Text>
@@ -97,7 +131,9 @@ class OrderDetails extends Component {
         }
     }
 
-
+    onFocus(payload){
+        this.componentWillMount()
+    }
     render() {
 
         const backgroundColor = this.state.backgroundColor.interpolate({
@@ -121,27 +157,33 @@ class OrderDetails extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
 
-                            <Text style={[styles.boldGrayText , styles.normalText , styles.mb10, styles.asfs, styles.writing]}>حفلة وسط البلد</Text>
+                            <Text style={[styles.boldGrayText , styles.normalText , styles.mb10, styles.asfs, styles.writing]}>{this.props.eventDet.name}</Text>
 
                             <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
                                     containerStyle={[styles.eventswiper , styles.mb15]} showsButtons={false} autoplay={true}>
-                                <Image source={require('../../assets/images/image_eleven.jpg')} style={styles.swiperImg} resizeMode={'cover'}/>
-                                <Image source={require('../../assets/images/image_one.png')} style={styles.swiperImg} resizeMode={'cover'}/>
-                                <Image source={require('../../assets/images/events.jpg')}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                {
+                                    this.props.eventDet.images.map((img, i) =>{
+                                        return (
+                                            <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                        )
+                                    })
+                                }
                             </Swiper>
 
 
                             <View style={[styles.directionRowCenter ,  styles.mb15]}>
                                 <View style={[styles.directionRowAlignCenter , {paddingHorizontal:15}  ]}>
                                     <Image source={require('../../assets/images/feather_gray.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.grayText , styles.normalText , {fontSize:13}]}>الهيئة حكومية</Text>
+                                    <Text style={[styles.grayText , styles.normalText , {fontSize:13}]}>{this.props.eventDet.organization}</Text>
                                 </View>
                                 <View style={[styles.directionRowAlignCenter , { paddingHorizontal:15 ,borderLeftWidth:1 , borderLeftColor:COLORS.lightGray}]}>
                                     <Image source={require('../../assets/images/feather_gray.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.grayText , styles.normalText , {fontSize:13}]}>القسم ترفيه</Text>
+                                    <Text style={[styles.grayText , styles.normalText , {fontSize:13}]}>{this.props.eventDet.category}</Text>
                                 </View>
                             </View>
 
@@ -149,39 +191,49 @@ class OrderDetails extends Component {
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
                                     <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>3:30 AM _ 6:00 PM</Text>
+                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.time}</Text>
                                 </View>
                                 <View style={[styles.directionRowAlignCenter ]}>
                                     <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>9/7/2020</Text>
+                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.date}</Text>
                                 </View>
                             </View>
 
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('normalPrice') } 144 ريال</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('normalPrice') } {this.props.eventDet.tickets.normal_price} { i18n.t('RS') }</Text>
                             </View>
 
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/ticket_yellow.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.orangeText , styles.normalText]}>{ i18n.t('vipPrice') } 144 ريال</Text>
+                                <Text style={[styles.orangeText , styles.normalText]}>{ i18n.t('goldPrice') } {this.props.eventDet.tickets.golden_price} { i18n.t('RS') }</Text>
                             </View>
 
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/chair_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('normalChairs') } 44</Text>
+                                <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('vipPrice') } {this.props.eventDet.tickets.vip_price} { i18n.t('RS') }</Text>
                             </View>
 
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/chair_yellow.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.orangeText , styles.normalText]}>{ i18n.t('vipChairs') } 44</Text>
+                                <Text style={[styles.orangeText , styles.normalText]}>{ i18n.t('normalChairs') } {this.props.eventDet.tickets.normal_count}</Text>
+                            </View>
+
+                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                <Image source={require('../../assets/images/chair_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('goldChairs') } {this.props.eventDet.tickets.golden_count}</Text>
+                            </View>
+
+                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                <Image source={require('../../assets/images/chair_yellow.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                <Text style={[styles.orangeText , styles.normalText]}>{ i18n.t('vipChairs') } {this.props.eventDet.tickets.vip_count}</Text>
                             </View>
 
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>الرياض . جده . السعودية</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.address}</Text>
                             </View>
-                            <Text style={[styles.grayText , styles.normalText, styles.asfs, styles.writing , {fontSize:13}]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،</Text>
+                            <Text style={[styles.grayText , styles.normalText, styles.asfs, styles.writing , {fontSize:13}]}>{this.props.eventDet.details}</Text>
 
                             {
                                 this.renderBtn()
@@ -217,4 +269,12 @@ class OrderDetails extends Component {
     }
 }
 
-export default OrderDetails;
+const mapStateToProps = ({ lang , eventDetails , profile }) => {
+    return {
+        lang: lang.lang,
+        eventDet: eventDetails.eventDet,
+        user: profile.user,
+        key: eventDetails.key
+    };
+};
+export default connect(mapStateToProps, {getEventDetails , getAcceptEvent , getRejectEvent , deleteOrganizerEvent})(OrderDetails);

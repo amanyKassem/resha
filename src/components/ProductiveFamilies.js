@@ -4,15 +4,12 @@ import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getFamiliesCategories} from "../actions";
 
 
 const height = Dimensions.get('window').height;
-const productiveFamilies =[
-    {id:1 , name:'الاكل والسلطات', image:require('../../assets/images/event_image_tean.jpg') , families:'200'},
-    {id:2 , name:'القهوة و الحلي',  image:require('../../assets/images/factory.jpg')  , families:'200'},
-    {id:3 , name:'اعمال يدوية',  image:require('../../assets/images/image_eleven.jpg')  , families:'200'},
-]
-
 class ProductiveFamilies extends Component {
     constructor(props){
         super(props);
@@ -20,7 +17,7 @@ class ProductiveFamilies extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            productiveFamilies,
+            loader: 1
         }
     }
 
@@ -29,26 +26,52 @@ class ProductiveFamilies extends Component {
     });
 
 
+    componentWillMount() {
+        this.setState({ loader: 1});
+        this.props.getFamiliesCategories( this.props.lang )
+    }
+
+    renderLoader(){
+        if (this.state.loader == 1){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loader: nextProps.key });
+    }
+
     _keyExtractor = (item, index) => item.id;
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('families')} style={[styles.eventTouch ]}>
-                <Image source={item.image} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('families' , { category_id: item.id })} style={[styles.eventTouch ]}>
+                <Image source={{ uri: item.icon }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                 <View style={[styles.familiesCont ]}>
                    <View style={styles.directionColumn}>
                        <Text style={[styles.whiteText , styles.BoldText , styles.asfs , styles.writing , {fontSize:16}]}>{item.name}</Text>
                        <View style={styles.whiteLine}/>
                    </View>
                     <View style={styles.familiesEvent}>
-                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{ i18n.t('familiesNumber') } : {item.families}</Text>
+                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{ i18n.t('familiesNumber') } : {item.families_count}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
         );
     }
 
+    renderNoData(){
+        if (this.props.categories && (this.props.categories).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 20, alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
 
+        return <View />
+    }
     setAnimate(availabel){
         if (availabel === 0){
             Animated.timing(
@@ -104,21 +127,24 @@ class ProductiveFamilies extends Component {
 
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+                    { this.renderLoader() }
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
 
                         <View style={[styles.directionRowSpace , styles.w100  , styles.mt70, {paddingHorizontal:20 , paddingVertical:15}]}>
                             <View style={[styles.directionColumn , {flex: 1}]}>
                                 <Text style={[styles.whiteText, styles.normalText , styles.asfs , styles.writing ]}>{ i18n.t('productiveFamilies') }</Text>
-                                <Text style={[styles.whiteText, styles.normalText , styles.asfs , styles.writing , {fontSize:14}]}>{ i18n.t('familiesNumber') } : 512</Text>
-                                <Text style={[styles.whiteText, styles.normalText , styles.asfs , styles.writing , {fontSize:13} ]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،</Text>
+                                <Text style={[styles.whiteText, styles.normalText , styles.asfs , styles.writing , {fontSize:14}]}>{ i18n.t('familiesNumber') } : {this.props.count}</Text>
+                                <Text style={[styles.whiteText, styles.normalText , styles.asfs , styles.writing , {fontSize:13} ]}>{this.props.desc}</Text>
                             </View>
                             <Image source={require('../../assets/images/undraw_department.png')} style={{ width:135, height:135}} resizeMode={'contain'} />
                         </View>
 
                         <View style={[styles.homeSection , styles.whiteHome , {padding:15 ,  marginTop:15}]}>
-
+                            {
+                                this.renderNoData()
+                            }
                             <FlatList
-                                data={this.state.productiveFamilies}
+                                data={this.props.categories}
                                 renderItem={({item}) => this.renderItems(item)}
                                 numColumns={1}
                                 keyExtractor={this._keyExtractor}
@@ -133,4 +159,13 @@ class ProductiveFamilies extends Component {
     }
 }
 
-export default ProductiveFamilies;
+const mapStateToProps = ({ lang , familiesCategories }) => {
+    return {
+        lang: lang.lang,
+        categories: familiesCategories.categories,
+        desc: familiesCategories.desc,
+        count: familiesCategories.count,
+        key: familiesCategories.key
+    };
+};
+export default connect(mapStateToProps, {getFamiliesCategories})(ProductiveFamilies);

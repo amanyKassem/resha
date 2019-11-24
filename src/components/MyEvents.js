@@ -4,15 +4,12 @@ import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import {connect} from "react-redux";
+import {getOwnerEvent} from "../actions";
+import {DoubleBounce} from "react-native-loader";
 
 
 const height = Dimensions.get('window').height;
-const events =[
-    {id:1 , name:'أمسيات رمضان', price:'144 ريال', image:require('../../assets/images/event_image_tean.jpg') , time:'3:30 AM' , date:'9/7/2020'},
-    {id:2 , name:'أمسيات رمضان', price:'144 ريال', image:require('../../assets/images/events_pic_image.jpg') , time:'3:30 AM' , date:'9/7/2020'},
-    {id:3 , name:'أمسيات رمضان', price:'144 ريال', image:require('../../assets/images/image_eleven.jpg') , time:'3:30 AM' , date:'9/7/2020'},
-]
-
 class MyEvents extends Component {
     constructor(props){
         super(props);
@@ -20,8 +17,8 @@ class MyEvents extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            events,
             activeType:0,
+            loader: 1
         }
     }
 
@@ -35,8 +32,8 @@ class MyEvents extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={ () => this.props.navigation.navigate('showTicket')} style={[styles.notiBlock , styles.directionRow]}>
-                <Image source={item.image} resizeMode={'cover'} style={styles.eventImg}/>
+            <TouchableOpacity onPress={ () => this.props.navigation.navigate('showTicket' , {eventType: this.state.activeType , event_id: item.id})} style={[styles.notiBlock , styles.directionRow]}>
+                <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={styles.eventImg}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
                     <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
                     <View style={[styles.directionRowAlignCenter  ]}>
@@ -48,13 +45,43 @@ class MyEvents extends Component {
                         <Text style={[styles.blueText , styles.normalText]}>{item.date}</Text>
                     </View>
                     <View style={[styles.eventBtn]}>
-                        <Text style={[styles.whiteText , styles.normalText]}>{item.price}</Text>
+                        <Text style={[styles.whiteText , styles.normalText]}>{item.price} {i18n.t('RS')}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
         );
     }
+    renderLoader(){
+        if (this.state.loader == 1){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
 
+    renderNoData(){
+        if (this.props.ownerEvents && (this.props.ownerEvents).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 50, alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
+
+        return <View />
+    }
+
+    componentWillMount() {
+        this.getEvents(0);
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loader: nextProps.key });
+    }
+    getEvents(type){
+        this.setState({activeType:type, loader: 1});
+        const token =  this.props.user.token;
+        this.props.getOwnerEvent( this.props.lang , type , token )
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -107,30 +134,30 @@ class MyEvents extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>فاعلياتي</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{i18n.t('myEvents')}</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
-
+                    { this.renderLoader() }
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
 
                         <View style={styles.mainScroll}>
                             <ScrollView style={{}} horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <TouchableOpacity onPress={ () => this.setState({activeType:0})} style={styles.scrollView}>
+                                <TouchableOpacity onPress={ () => this.getEvents(0)} style={styles.scrollView}>
                                     <Text style={[styles.scrollText,{color:this.state.activeType === 0 ? COLORS.rose : COLORS.gray}]}>{i18n.t('underConfirmation')}</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 0 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={ () => this.setState({activeType:1})} style={styles.scrollView}>
+                                <TouchableOpacity onPress={ () => this.getEvents(1)} style={styles.scrollView}>
                                     <Text style={[styles.scrollText,{color:this.state.activeType === 1 ? COLORS.rose : COLORS.gray}]}>{i18n.t('approved')}</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 1 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={ () => this.setState({activeType:2})} style={styles.scrollView}>
-                                    <Text style={[styles.scrollText,{color:this.state.activeType === 2 ? COLORS.rose : COLORS.gray}]}>{i18n.t('executed')}</Text>
-                                    <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 2 ? COLORS.rose : 'transparent'}]} />
+                                <TouchableOpacity onPress={ () => this.getEvents(4)} style={styles.scrollView}>
+                                    <Text style={[styles.scrollText,{color:this.state.activeType === 4 ? COLORS.rose : COLORS.gray}]}>{i18n.t('executed')}</Text>
+                                    <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 4 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={ () => this.setState({activeType:3})} style={styles.scrollView}>
+                                <TouchableOpacity onPress={ () => this.getEvents(3)} style={styles.scrollView}>
                                     <Text style={[styles.scrollText,{color:this.state.activeType === 3 ? COLORS.rose : COLORS.gray}]}>{i18n.t('cancelled')}</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 3 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
@@ -138,9 +165,9 @@ class MyEvents extends Component {
                         </View>
 
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0 ,  marginTop:15}]}>
-
+                            { this.renderNoData() }
                             <FlatList
-                                data={this.state.events}
+                                data={this.props.ownerEvents}
                                 renderItem={({item}) => this.renderItems(item)}
                                 numColumns={1}
                                 keyExtractor={this._keyExtractor}
@@ -155,4 +182,12 @@ class MyEvents extends Component {
     }
 }
 
-export default MyEvents;
+const mapStateToProps = ({ lang , profile , ownerEvents }) => {
+    return {
+        lang: lang.lang,
+        user: profile.user,
+        ownerEvents: ownerEvents.ownerEvents,
+        key: ownerEvents.key
+    };
+};
+export default connect(mapStateToProps, {getOwnerEvent})(MyEvents);

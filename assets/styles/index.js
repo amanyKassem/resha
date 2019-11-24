@@ -34,6 +34,11 @@ const styles = ({
         height: null,
         flex: 1,
     },
+    imageBackground2: {
+        width,
+        height,
+        flex: 1,
+    },
     keyboardAvoid: {
         width:'100%',
         height: null,
@@ -877,7 +882,7 @@ const styles = ({
         alignItems:'center',
         height:60,
         marginHorizontal:5,
-        paddingHorizontal:10,
+        paddingHorizontal:5,
         width:70
     },
     reservationScrollText:{
@@ -896,7 +901,7 @@ const styles = ({
         alignSelf:'center',
     },
     eventCont : {
-        backgroundColor: '#cfcfcf6b' ,
+        backgroundColor: '#0000007d' ,
         position:'absolute' ,
         top:0 ,
         height:'100%' ,
@@ -911,8 +916,8 @@ const styles = ({
     },
     dateEvent : {
         backgroundColor:'#28939187',
-        paddingHorizontal:10 ,
-        width:50 ,
+        paddingHorizontal:1,
+        width:60 ,
         height:45 ,
         justifyContent:'center' ,
         alignItems:'center',

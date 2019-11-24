@@ -15,6 +15,9 @@ import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import Communications from 'react-native-communications';
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getContactUs} from "../actions";
 
 
 const height = Dimensions.get('window').height;
@@ -34,6 +37,19 @@ class ContactUs extends Component {
         drawerIcon: (<Image source={require('../../assets/images/phone_menu_icon.png')} style={styles.drawerImg} resizeMode={'contain'} /> )
     })
 
+    componentWillMount() {
+        this.props.getContactUs( this.props.lang )
+    }
+
+    renderLoader(){
+        if (this.props.loader == 0){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
 
 
 
@@ -96,6 +112,7 @@ class ContactUs extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <Image source={require('../../assets/images/undraw_contact_us.png')} style={[styles.faqImg]} resizeMode={'contain'} />
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20 , marginTop:15}]}>
@@ -107,36 +124,36 @@ class ContactUs extends Component {
                                            <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                            <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('mainNumber') }</Text>
                                        </View>
-                                       <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13 , marginLeft:25}]}>012345678</Text>
+                                       <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13 , marginLeft:25}]}>{this.props.phone}</Text>
                                    </View>
-                                    <TouchableOpacity onPress={() => Communications.phonecall('012345678', true)}>
+                                    <TouchableOpacity onPress={() => Communications.phonecall(this.props.phone, true)}>
                                         <Image source={require('../../assets/images/phone_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                                     </TouchableOpacity>
                                 </View>
 
                                 <View style={[styles.line ]}/>
 
-                                <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => Communications.phonecall('012345678911', true)}>
+                                <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => Communications.phonecall(this.props.mobile, true)}>
                                     <Image  source={require('../../assets/images/smartphone_call_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
-                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>012345678911</Text>
+                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.mobile}</Text>
                                 </TouchableOpacity>
                                 <View style={[styles.line ]}/>
 
-                                <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed('https://www.aait.sa')}>
+                                <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.website)}>
                                     <Image  source={require('../../assets/images/internet_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
-                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>www.aait.sa</Text>
+                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.website}</Text>
                                 </TouchableOpacity>
                                 <View style={[styles.line ]}/>
 
-                                <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed('https://www.facebook.com')}>
+                                <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.facebook)}>
                                     <Image  source={require('../../assets/images/facebook_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
-                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>www.facebook.com</Text>
+                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.facebook}</Text>
                                 </TouchableOpacity>
                                 <View style={[styles.line ]}/>
 
-                                <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed('https://www.twitter.com')}>
+                                <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.twitter)}>
                                     <Image  source={require('../../assets/images/tiwiter_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
-                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>www.twitter.com</Text>
+                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.twitter}</Text>
                                 </TouchableOpacity>
                                 <View style={[styles.line ]}/>
 
@@ -150,4 +167,15 @@ class ContactUs extends Component {
     }
 }
 
-export default ContactUs;
+const mapStateToProps = ({ lang , contactUs }) => {
+    return {
+        lang: lang.lang,
+        twitter: contactUs.twitter,
+        facebook: contactUs.facebook,
+        website: contactUs.website,
+        phone: contactUs.phone,
+        mobile: contactUs.mobile,
+        loader: contactUs.key
+    };
+};
+export default connect(mapStateToProps, {getContactUs})(ContactUs);

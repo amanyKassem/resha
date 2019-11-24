@@ -16,6 +16,7 @@ import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
 import Modal from "react-native-modal";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -35,6 +36,8 @@ class ConfirmTicket extends Component {
         drawerLabel: () => null
     });
 
+    componentWillMount() {
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -68,6 +71,9 @@ class ConfirmTicket extends Component {
             this.setAnimate(1)
         }
     }
+    onFocus(payload){
+        this.componentWillMount()
+    }
 
 
     render() {
@@ -76,6 +82,7 @@ class ConfirmTicket extends Component {
             inputRange: [0, 1],
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']
         });
+        // alert(this.props.navigation.state.params.ticket_type)
 
         return (
             <Container>
@@ -93,53 +100,58 @@ class ConfirmTicket extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:25} ]}>
 
                             <View style={styles.directionRowCenter}>
 
                                 <View style={styles.dateView}>
-                                    <Text style={[styles.boldGrayText , styles.normalText , {height:45 , lineHeight:45}]}>20 سبتمبر</Text>
+                                    <Text style={[styles.boldGrayText , styles.normalText , {height:45 , lineHeight:45}]}>{this.props.navigation.state.params.event_info.day}</Text>
                                 </View>
                                 <View style={styles.remainingView}>
-                                    <Text style={[styles.boldGrayText , styles.normalText , {height:45 , lineHeight:45}]}>{ i18n.t('remain') } ١٠ ايام</Text>
+                                    <Text style={[styles.boldGrayText , styles.normalText , {height:45 , lineHeight:45}]}>{ i18n.t('remain') } {this.props.navigation.state.params.event_info.day_remaining}</Text>
                                 </View>
 
                             </View>
 
                             <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
                                     containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
-                                <Image source={require('../../assets/images/image_eleven.jpg')} style={styles.swiperImg} resizeMode={'cover'}/>
-                                <Image source={require('../../assets/images/image_one.png')} style={styles.swiperImg} resizeMode={'cover'}/>
-                                <Image source={require('../../assets/images/events.jpg')}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                {
+                                    this.props.navigation.state.params.event_info.images.map((img, i) =>{
+                                        return (
+                                            <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                        )
+                                    })
+                                }
                             </Swiper>
 
-                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing , styles.mb10]}>حفلة وسط البلد</Text>
+                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing , styles.mb10]}>{this.props.navigation.state.params.event_info.event_name}</Text>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
                                     <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>3:30 AM</Text>
+                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.event_info.time}</Text>
                                 </View>
                                 <View style={[styles.directionRowAlignCenter ]}>
                                     <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>9/7/2020</Text>
+                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.event_info.date}</Text>
                                 </View>
                             </View>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>144 ريال ( { i18n.t('ticketsNo') } 4 )</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.price * this.props.navigation.state.params.ticketsNo} { i18n.t('RS') } ( { i18n.t('ticketsNo') } {this.props.navigation.state.params.ticketsNo} )</Text>
                             </View>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>الرياض . جده . السعودية</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.event_info.address}</Text>
                             </View>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/receipt_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>حجز اونلاين</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('onlineBook') }</Text>
                             </View>
                             <View style={[styles.directionRowAlignCenter ]}>
                                 <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>القسم ترفيه</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.event_info.category}</Text>
                             </View>
 
                             <View style={styles.line}/>
@@ -147,9 +159,9 @@ class ConfirmTicket extends Component {
                             <View style={styles.directionRowSpace}>
                                 <View style={styles.directionRowAlignCenter}>
                                     <View style={styles.borderImg}>
-                                        <Image source={require('../../assets/images/profile_pic.png')} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                                        <Image source={{ uri: this.props.navigation.state.params.event_info.user.avatar }} style={[styles.footSearchImg]} resizeMode={'cover'} />
                                     </View>
-                                    <Text style={[styles.boldGrayText , styles.normalText ]}>{ i18n.t('username') }</Text>
+                                    <Text style={[styles.boldGrayText , styles.normalText ]}>{this.props.navigation.state.params.event_info.user.name }</Text>
                                 </View>
 
                                 <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookTicket')} >
@@ -160,7 +172,15 @@ class ConfirmTicket extends Component {
                             <View style={styles.line}/>
 
                             <View style={styles.directionRowSpace}>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('ticketPayment')} style={[styles.blueBtn]}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('ticketPayment', {
+                                    event_info : this.props.navigation.state.params.event_info,
+                                    event_id : this.props.navigation.state.params.event_id ,
+                                    price : this.props.navigation.state.params.price,
+                                    ticket_type : this.props.navigation.state.params.ticket_type,
+                                    imgSrc : this.props.navigation.state.params.imgSrc,
+                                    ticketName : this.props.navigation.state.params.ticketName,
+                                    ticketsNo : this.props.navigation.state.params.ticketsNo,
+                                })} style={[styles.blueBtn]}>
                                     <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('continue') }</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate('events')} style={[styles.disabledBtn]}>

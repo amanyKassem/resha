@@ -4,14 +4,13 @@ import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getFamilies} from "../actions";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
-const families =[
-    {id:1 , name:'اسم الأسرة', category:'تصنيف حلويات', image:require('../../assets/images/event_image_tean.jpg') , productsNo:'144 منتج' , rate:'3/5'},
-    {id:1 , name:'اسم الأسرة', category:'تصنيف حلويات', image:require('../../assets/images/events_pic_image.jpg') , productsNo:'144 منتج' , rate:'3/5'},
-    {id:1 , name:'اسم الأسرة', category:'تصنيف حلويات', image:require('../../assets/images/image_eleven.jpg') , productsNo:'144 منتج' , rate:'3/5'},
-]
 
 class Families extends Component {
     constructor(props){
@@ -20,7 +19,6 @@ class Families extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            families,
             search:'',
         }
     }
@@ -29,13 +27,26 @@ class Families extends Component {
         drawerLabel: () => null
     });
 
+    componentWillMount() {
+        this.props.getFamilies( this.props.lang , this.props.navigation.state.params.category_id )
+    }
+
+    renderLoader(){
+        if (this.props.key === 0){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
 
     _keyExtractor = (item, index) => item.id;
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={ () => this.props.navigation.navigate('familyDetails')} style={[styles.notiBlock , styles.directionRow]}>
-                <Image source={item.image} resizeMode={'cover'} style={[styles.eventImg , {height:110}]}/>
+            <TouchableOpacity onPress={ () => this.props.navigation.navigate('familyDetails' , {user_id: item.user_id})} style={[styles.notiBlock , styles.directionRow]}>
+                <Image source={{ uri: item.thumbanil }} resizeMode={'cover'} style={[styles.eventImg , {height:110}]}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
                     <Text style={[styles.headerText , styles.asfs, styles.writing  , {color:'#272727'}]}>{item.name}</Text>
                     <View style={[styles.directionRowAlignCenter, {marginVertical:10}  ]}>
@@ -44,18 +55,26 @@ class Families extends Component {
                     </View>
                     <View style={styles.directionRowAlignCenter}>
                         <View style={[styles.eventBtn]}>
-                            <Text style={[styles.whiteText , styles.normalText]}>{item.productsNo}</Text>
+                            <Text style={[styles.whiteText , styles.normalText]}>{item.products_count} { i18n.t('product') }</Text>
                         </View>
                         <View style={[styles.eventBtn , {backgroundColor:'#f0ac3f' , flexDirection:'row' , marginLeft:10}]}>
                             <Image source={require('../../assets/images/star_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                            <Text style={[styles.whiteText , styles.normalText]}>{item.rate}</Text>
+                            <Text style={[styles.whiteText , styles.normalText]}>{item.rates} / 5</Text>
                         </View>
                     </View>
                 </View>
             </TouchableOpacity>
         );
     }
+    renderNoData(){
+        if (this.props.families && (this.props.families).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 60, alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
 
+        return <View />
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -93,6 +112,10 @@ class Families extends Component {
     submitSearch(){
         // this.props.navigation.navigate('searchResult', { search : this.state.search } );
     }
+    onFocus(payload){
+        this.componentWillMount()
+    }
+
     render() {
 
         const backgroundColor = this.state.backgroundColor.interpolate({
@@ -116,7 +139,9 @@ class Families extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+                    { this.renderLoader() }
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
 
                             <View style={[styles.inputView , {marginHorizontal:10}]}>
@@ -128,8 +153,12 @@ class Families extends Component {
                                 </TouchableOpacity>
                             </View>
 
+                            {
+                                this.renderNoData()
+                            }
+
                             <FlatList
-                                data={this.state.families}
+                                data={this.props.families}
                                 renderItem={({item}) => this.renderItems(item)}
                                 numColumns={1}
                                 keyExtractor={this._keyExtractor}
@@ -144,4 +173,12 @@ class Families extends Component {
     }
 }
 
-export default Families;
+
+const mapStateToProps = ({ lang , families }) => {
+    return {
+        lang: lang.lang,
+        families: families.families,
+        key: families.key
+    };
+};
+export default connect(mapStateToProps, {getFamilies})(Families);

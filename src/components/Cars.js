@@ -4,14 +4,13 @@ import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getFoodTrucks} from "../actions";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
-const cars =[
-    {id:1 , name:'اسم العربة', image:require('../../assets/images/event_image_tean.jpg') , families:'200'},
-    {id:2 , name:'اسم العربة',  image:require('../../assets/images/factory.jpg')  , families:'200'},
-    {id:3 , name:'اسم العربة',  image:require('../../assets/images/image_eleven.jpg')  , families:'200'},
-]
 
 class Cars extends Component {
     constructor(props){
@@ -20,7 +19,7 @@ class Cars extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            cars,
+            loader: 1
         }
     }
 
@@ -28,23 +27,48 @@ class Cars extends Component {
         drawerLabel: () => null
     });
 
+    componentWillMount() {
+        this.props.getFoodTrucks( this.props.lang )
+    }
+
+    renderLoader(){
+        if (this.state.loader == 1){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loader: nextProps.key });
+    }
 
     _keyExtractor = (item, index) => item.id;
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('carDetails')} style={[styles.eventTouch ]}>
-                <Image source={item.image} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('carDetails' , { user_id: item.user_id })} style={[styles.eventTouch ]}>
+                <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                 <View style={[styles.eventCont , { backgroundColor: '#b1aba940'}]}>
                     <Text style={[styles.whiteText , styles.BoldText , {top:-5}]}>{item.name}</Text>
                     <View style={styles.familiesEvent}>
-                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{ i18n.t('prodNo') } : {item.families}</Text>
+                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{ i18n.t('prodNo') } : {item.products_count}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
         );
     }
 
+    renderNoData(){
+        if (this.props.trucks && (this.props.trucks).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 20, alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
+
+        return <View />
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -78,7 +102,9 @@ class Cars extends Component {
             this.setAnimate(1)
         }
     }
-
+    onFocus(payload){
+        this.componentWillMount()
+    }
 
     render() {
 
@@ -104,21 +130,23 @@ class Cars extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+                    { this.renderLoader() }
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
 
                         <View style={[styles.directionRowSpace , styles.w100  , styles.mt70, {paddingHorizontal:20 , paddingVertical:15}]}>
                             <View style={[styles.directionColumn , {flex: 1}]}>
                                 <Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing ]}>{ i18n.t('foodTrack') }</Text>
-                                <Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing , {fontSize:14}]}>{ i18n.t('number') } : 512</Text>
-                                <Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing , {fontSize:13} ]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،</Text>
+                                <Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing , {fontSize:14}]}>{ i18n.t('number') } : {this.props.count}</Text>
+                                <Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing , {fontSize:13} ]}>{this.props.desc}</Text>
                             </View>
                             <Image source={require('../../assets/images/undraw_car.png')} style={{ width:135, height:135}} resizeMode={'contain'} />
                         </View>
 
                         <View style={[styles.homeSection , styles.whiteHome , {padding:15 ,  marginTop:15}]}>
-
+                            {this.renderNoData()}
                             <FlatList
-                                data={this.state.cars}
+                                data={this.props.trucks}
                                 renderItem={({item}) => this.renderItems(item)}
                                 numColumns={1}
                                 keyExtractor={this._keyExtractor}
@@ -133,4 +161,14 @@ class Cars extends Component {
     }
 }
 
-export default Cars;
+
+const mapStateToProps = ({ lang , foodTrucks }) => {
+    return {
+        lang: lang.lang,
+        trucks: foodTrucks.trucks,
+        desc: foodTrucks.desc,
+        count: foodTrucks.count,
+        key: foodTrucks.key
+    };
+};
+export default connect(mapStateToProps, {getFoodTrucks})(Cars);

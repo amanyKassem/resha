@@ -32,6 +32,9 @@ import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import {ImageBrowser, CameraBrowser} from 'expo-multiple-imagepicker';
 import Modal from "react-native-modal";
+import {connect} from "react-redux";
+import {getStoreEvent} from "../actions";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -59,16 +62,46 @@ class AddEventImage extends Component {
         drawerLabel: () => null
     });
 
-    _modalEvent = () => this.setState({ modalEvent: !this.state.modalEvent });
+    componentWillMount() {
+        // this.setState({eventImg:''})
+    }
+
+    _modalEvent = () =>{
+        // this.setState({ modalEvent: !this.state.modalEvent })
+        this.props.getStoreEvent( this.props.lang ,
+            this.props.navigation.state.params.ar_name ,
+            this.props.navigation.state.params.en_name ,
+            this.props.navigation.state.params.date ,
+            this.props.navigation.state.params.time ,
+            this.props.navigation.state.params.event_hours ,
+            this.props.navigation.state.params.address ,
+            this.props.navigation.state.params.latitude ,
+            this.props.navigation.state.params.longitude ,
+            this.props.navigation.state.params.ar_description,
+            this.props.navigation.state.params.en_description,
+            this.props.navigation.state.params.organization_id,
+            this.props.navigation.state.params.category_id,
+            this.props.navigation.state.params.tickets,
+            base64,
+            this.props.user.token
+        )
+    }
 
     backHome() {
         this.setState({ modalEvent: !this.state.modalEvent });
-        this.props.navigation.navigate('drawerNavigator')
+        this.props.navigation.navigate('home')
     };
     showTicket() {
         this.setState({ modalEvent: !this.state.modalEvent });
-        this.props.navigation.navigate('showTicket')
+        this.props.navigation.navigate('showTicket', {eventType: this.props.storeEvent.eventType , event_id : this.props.storeEvent.event_id})
     };
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.storeEvent)
+            this.setState({ modalEvent: !this.state.modalEvent });
+
+
+        console.log('nextPropsnextProps' , nextProps)
+    }
 
     askPermissionsAsync = async () => {
         await Permissions.askAsync(Permissions.CAMERA);
@@ -86,7 +119,7 @@ class AddEventImage extends Component {
             base64:true,
 
         });
-
+        base64.push(result.base64)
         let localUri = result.uri;
         let filename = localUri.split('/').pop();
         console.log(result);
@@ -221,8 +254,28 @@ class AddEventImage extends Component {
         }
     }
 
+    onFocus(payload){
+        this.componentWillMount()
+    }
 
     render() {
+
+
+
+        // console.log( this.props.navigation.state.params.ar_name ,
+        //     this.props.navigation.state.params.en_name ,
+        //     this.props.navigation.state.params.date ,
+        //     this.props.navigation.state.params.time ,
+        //     this.props.navigation.state.params.event_hours ,
+        //     this.props.navigation.state.params.address ,
+        //     this.props.navigation.state.params.latitude ,
+        //     this.props.navigation.state.params.longitude ,
+        //     this.props.navigation.state.params.ar_description,
+        //     this.props.navigation.state.params.en_description,
+        //     this.props.navigation.state.params.organization_id,
+        //     this.props.navigation.state.params.category_id,
+        //     this.props.navigation.state.params.tickets,
+        //     )
 
         const backgroundColor = this.state.backgroundColor.interpolate({
             inputRange: [0, 1],
@@ -255,6 +308,7 @@ class AddEventImage extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20} ]}>
                                     <View style={[styles.inputParent , styles.mb15]}>
@@ -309,4 +363,12 @@ class AddEventImage extends Component {
     }
 }
 
-export default AddEventImage;
+const mapStateToProps = ({ lang , profile , storeEvent }) => {
+    return {
+        lang: lang.lang,
+        user: profile.user,
+        storeEvent: storeEvent.storeEvent,
+        key: storeEvent.key
+    };
+};
+export default connect(mapStateToProps, {getStoreEvent})(AddEventImage);

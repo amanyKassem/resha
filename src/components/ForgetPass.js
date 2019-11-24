@@ -1,9 +1,21 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions,  ImageBackground , KeyboardAvoidingView} from "react-native";
-import {Container, Content, Form, Icon, Input, Item, Label} from 'native-base'
+import {
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    Dimensions,
+    ImageBackground,
+    KeyboardAvoidingView,
+    AsyncStorage
+} from "react-native";
+import {Container, Content, Form, Icon, Input, Item, Label, Toast} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getSendForgetCode} from "../actions";
 
 
 const height = Dimensions.get('window').height;
@@ -14,9 +26,44 @@ class ForgetPass extends Component {
 
         this.state={
             phone: '',
+            isSubmitted: false,
         }
     }
 
+    renderSubmit(){
+        if (this.state.phone == '') {
+            return (
+                <TouchableOpacity style={[styles.blueBtn, styles.mt50 ,  {backgroundColor: '#999'}]}>
+                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('sendButton') }</Text>
+                </TouchableOpacity>
+            );
+        }
+        if (this.state.isSubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt50, ]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity onPress={() => this.checkPhone()} style={[styles.blueBtn, styles.mt50]}>
+                <Text style={[styles.whiteText, styles.normalText]}>{i18n.t('sendButton')}</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+
+    checkPhone(){
+        this.setState({isSubmitted:true})
+        this.props.getSendForgetCode( this.props.lang ,
+            this.state.phone,
+            this.props
+        )
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({isSubmitted:false})
+    }
 
     render() {
 
@@ -45,9 +92,9 @@ class ForgetPass extends Component {
                                         </Item>
                                     </View>
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('verifyCode')} style={[styles.blueBtn, styles.mt50]}>
-                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('sendButton') }</Text>
-                                    </TouchableOpacity>
+                                    {
+                                        this.renderSubmit()
+                                    }
                                 </Form>
                             </KeyboardAvoidingView>
 
@@ -61,5 +108,11 @@ class ForgetPass extends Component {
         );
     }
 }
-
-export default ForgetPass;
+const mapStateToProps = ({ lang , sendForgetCode }) => {
+    return {
+        lang: lang.lang,
+        sendForgetCode: sendForgetCode.sendForgetCode,
+        key: sendForgetCode.key
+    };
+};
+export default connect(mapStateToProps, {getSendForgetCode})(ForgetPass);

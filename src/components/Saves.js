@@ -5,14 +5,13 @@ import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import FooterSection from './FooterSection';
+import {DoubleBounce} from "react-native-loader";
+import {connect} from "react-redux";
+import {getFavouriteEvents , getFavouriteFamilies , getFavouriteRestaurants , getFavouriteFoodTrucks} from "../actions";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
-const events =[
-    {id:1 , name:'أمسيات رمضان', image:require('../../assets/images/event_image_tean.jpg') , date:'15 مايو'},
-    {id:2 , name:'مؤتمرات عالمية',  image:require('../../assets/images/events_pic_image.jpg')  , date:'15 مايو'},
-    {id:3 , name:'حفلات موسيقية',  image:require('../../assets/images/image_eleven.jpg')  , date:'15 مايو'},
-]
 
 class Saves extends Component {
     constructor(props){
@@ -21,10 +20,10 @@ class Saves extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            events,
             activeType:0,
             savedEvent: true,
             refreshed: false,
+            loader: 1
         }
     }
 
@@ -33,38 +32,160 @@ class Saves extends Component {
     });
 
 
+    componentWillMount() {
+        this.getEvents(0);
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loader: nextProps.key });
+    }
+    getEvents(type){
+        this.setState({activeType:type, loader: 1});
+        const token =  this.props.user.token;
+        if (type === 0){
+            this.props.getFavouriteEvents( this.props.lang , token )
+        }
+        else if (type === 1){
+            this.props.getFavouriteFamilies( this.props.lang , token )
+        }
+        else if (type === 2){
+            this.props.getFavouriteRestaurants( this.props.lang , token )
+        }
+        else {
+            this.props.getFavouriteFoodTrucks( this.props.lang , token )
+        }
 
-    savedEvent() {
-        this.setState({savedEvent: !this.state.savedEvent , refreshed: !this.state.refreshed})
     }
 
-    renderImage() {
-        let source = '';
-        if (this.state.savedEvent) {
-            source = require('../../assets/images/bookmark_bink.png')
-        } else {
-            source = require('../../assets/images/bookmark_white.png')
+    renderEventsNoData(){
+        if (this.props.favouriteEvents && (this.props.favouriteEvents).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 70, alignSelf: 'center', width: 200, height: 200 }} />
+            );
         }
-        return source;
+
+        return <View />
+    }
+
+    renderFamiliesNoData(){
+        if (this.props.favouriteFamilies && (this.props.favouriteFamilies).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 70, alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
+
+        return <View />
+    }
+
+    renderRestaurantsNoData(){
+        if (this.props.favouriteRestaurants && (this.props.favouriteRestaurants).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 70, alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
+
+        return <View />
+    }
+
+
+    renderFoodTrucksNoData(){
+        if (this.props.favouriteFoodTrucks && (this.props.favouriteFoodTrucks).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 70, alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
+
+        return <View />
     }
 
     _keyExtractor = (item, index) => item.id;
+    _keyExtractor2 = (item, index) => item.id;
+    _keyExtractor3 = (item, index) => item.id;
+    _keyExtractor4 = (item, index) => item.id;
 
-    renderItems = (item) => {
+    renderFavsEvents = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('bookTicket')} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
-                <TouchableOpacity onPress={() => this.savedEvent()} style={styles.saveBtn}>
-                    <Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />
-                </TouchableOpacity>
-                <Image source={item.image} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('bookTicket', { event_id: item.id })} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+                <View  style={styles.saveBtn}>
+                    {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
+                    <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+                </View>
+                <Image source={{uri:item.thumbnail}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                 <View style={[styles.eventCont]}>
                     <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
                     <View style={styles.dateEvent}>
-                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{item.date}</Text>
+                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:11 , lineHeight:18 }]}>{item.date}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
         );
+    }
+
+    renderFavsFamilies = (item) => {
+        return(
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+                <View  style={styles.saveBtn}>
+                    {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
+                    <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+                </View>
+                <Image source={{uri:item.thumbnail}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                <View style={[styles.eventCont]}>
+                    <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
+
+                    {/*<View style={styles.familiesEvent}>*/}
+                        {/*<Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:11 , lineHeight:18 }]}>{item.products_count} { i18n.t('product') }</Text>*/}
+                    {/*</View>*/}
+                </View>
+            </TouchableOpacity>
+        );
+    }
+
+    renderFavsRestaurants = (item) => {
+        return(
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+                <View  style={styles.saveBtn}>
+                    {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
+                    <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+                </View>
+                <Image source={{uri:item.thumbnail}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                <View style={[styles.eventCont]}>
+                    <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
+
+                    {/*<View style={styles.familiesEvent}>*/}
+                        {/*<Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:11 , lineHeight:18 }]}>{item.products_count} { i18n.t('product') }</Text>*/}
+                    {/*</View>*/}
+                </View>
+            </TouchableOpacity>
+        );
+    }
+
+    renderFavsFoodTrucks = (item) => {
+        return(
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+                <View  style={styles.saveBtn}>
+                    {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
+                    <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+                </View>
+                <Image source={{uri:item.thumbnail}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                <View style={[styles.eventCont]}>
+                    <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
+
+                    {/*<View style={styles.familiesEvent}>*/}
+                        {/*<Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:11 , lineHeight:18 }]}>{item.products_count} { i18n.t('product') }</Text>*/}
+                    {/*</View>*/}
+                </View>
+            </TouchableOpacity>
+        );
+    }
+
+
+    renderLoader(){
+        if (this.state.loader == 1){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
     }
 
 
@@ -101,6 +222,66 @@ class Saves extends Component {
         }
     }
 
+    renderSaves(){
+        if (this.state.activeType === 0){
+            return(
+                <View>
+                    { this.renderEventsNoData() }
+                    <FlatList
+                        data={this.props.favouriteEvents}
+                        renderItem={({item}) => this.renderFavsEvents(item)}
+                        numColumns={1}
+                        keyExtractor={this._keyExtractor}
+                        extraData={this.state.refreshed}
+                    />
+                </View>
+            )
+        }
+        else if (this.state.activeType === 1){
+            return(
+                <View>
+                    { this.renderFamiliesNoData() }
+                    <FlatList
+                        data={this.props.favouriteFamilies}
+                        renderItem={({item}) => this.renderFavsFamilies(item)}
+                        numColumns={1}
+                        keyExtractor={this._keyExtractor2}
+                        extraData={this.state.refreshed}
+                    />
+                </View>
+            )
+        } else if (this.state.activeType === 2){
+            return(
+                <View>
+                    { this.renderRestaurantsNoData() }
+                    <FlatList
+                        data={this.props.favouriteRestaurants}
+                        renderItem={({item}) => this.renderFavsRestaurants(item)}
+                        numColumns={1}
+                        keyExtractor={this._keyExtractor3}
+                        extraData={this.state.refreshed}
+                    />
+                </View>
+            )
+        } else {
+            return(
+                <View>
+                    { this.renderFoodTrucksNoData() }
+                    <FlatList
+                        data={this.props.favouriteFoodTrucks}
+                        renderItem={({item}) => this.renderFavsFoodTrucks(item)}
+                        numColumns={1}
+                        keyExtractor={this._keyExtractor4}
+                        extraData={this.state.refreshed}
+                    />
+                </View>
+            )
+        }
+    }
+    onFocus(payload){
+        this.componentWillMount()
+    }
+
     render() {
 
         const backgroundColor = this.state.backgroundColor.interpolate({
@@ -124,35 +305,35 @@ class Saves extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
 
 
                         <View style={styles.mainScroll}>
                             <ScrollView style={{}} horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <TouchableOpacity onPress={ () => this.setState({activeType:0})} style={styles.scrollView}>
+                                <TouchableOpacity onPress={ () => this.getEvents(0)} style={styles.scrollView}>
                                     <Text style={[styles.scrollText,{color:this.state.activeType === 0 ? COLORS.rose : COLORS.gray}]}>{ i18n.t('events') }</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 0 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={ () => this.setState({activeType:1})} style={styles.scrollView}>
+                                <TouchableOpacity onPress={ () => this.getEvents(1)} style={styles.scrollView}>
                                     <Text style={[styles.scrollText,{color:this.state.activeType === 1 ? COLORS.rose : COLORS.gray}]}>{ i18n.t('productiveFamilies') }</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 1 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={ () => this.setState({activeType:2})} style={styles.scrollView}>
+                                <TouchableOpacity onPress={ () => this.getEvents(2)} style={styles.scrollView}>
                                     <Text style={[styles.scrollText,{color:this.state.activeType === 2 ? COLORS.rose : COLORS.gray}]}>{ i18n.t('rest&cafe') }</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 2 ? COLORS.rose : 'transparent'}]} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={ () => this.getEvents(3)} style={styles.scrollView}>
+                                    <Text style={[styles.scrollText,{color:this.state.activeType === 3 ? COLORS.rose : COLORS.gray}]}>{ i18n.t('foodTrack') }</Text>
+                                    <View style={[styles.activeLine , {backgroundColor:this.state.activeType === 3 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
                             </ScrollView>
                         </View>
 
                         <View style={[styles.homeSection , {paddingHorizontal:10 ,   marginTop:15}]}>
 
-                            <FlatList
-                                data={this.state.events}
-                                renderItem={({item}) => this.renderItems(item)}
-                                numColumns={1}
-                                keyExtractor={this._keyExtractor}
-                                extraData={this.state.refreshed}
-                            />
+                            {this.renderSaves()}
 
                         </View>
                     </ImageBackground>
@@ -164,4 +345,15 @@ class Saves extends Component {
     }
 }
 
-export default Saves;
+const mapStateToProps = ({ lang , profile , favouriteEvents }) => {
+    return {
+        lang: lang.lang,
+        user: profile.user,
+        favouriteEvents: favouriteEvents.favouriteEvents,
+        favouriteFamilies: favouriteEvents.favouriteFamilies,
+        favouriteRestaurants: favouriteEvents.favouriteRestaurants,
+        favouriteFoodTrucks: favouriteEvents.favouriteFoodTrucks,
+        key: favouriteEvents.key
+    };
+};
+export default connect(mapStateToProps, {getFavouriteEvents , getFavouriteFamilies , getFavouriteRestaurants , getFavouriteFoodTrucks})(Saves);

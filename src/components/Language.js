@@ -4,6 +4,8 @@ import {Container, Content} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import {connect} from "react-redux";
+import {chooseLang} from "../actions";
 
 
 const height = Dimensions.get('window').height;
@@ -13,12 +15,15 @@ class Language extends Component {
         super(props);
 
         this.state={
-            lang:'ar'
+            lang:this.props.lang
         }
     }
 
     selectLang(type){
         this.setState({lang:type})
+        if (this.props.lang != type){
+            this.props.chooseLang(type);
+        }
     }
 
     render() {
@@ -66,4 +71,11 @@ class Language extends Component {
     }
 }
 
-export default Language;
+
+const mapStateToProps = ({ lang }) => {
+    return {
+        lang: lang.lang
+    };
+};
+
+export default connect(mapStateToProps, {chooseLang})(Language);

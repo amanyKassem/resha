@@ -5,6 +5,10 @@ import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import FooterSection from './FooterSection';
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getHomeCounts} from "../actions";
+import homeCounts from "../reducers/HomeCountsReducer";
 
 
 const height = Dimensions.get('window').height;
@@ -23,6 +27,22 @@ class Home extends Component {
         drawerLabel: i18n.t('home') ,
         drawerIcon: (<Image source={require('../../assets/images/home_menu.png')} style={styles.drawerImg} resizeMode={'contain'} /> )
     })
+
+
+    componentWillMount() {
+        this.props.getHomeCounts( this.props.lang )
+    }
+
+    renderLoader(){
+        if (this.props.loader == 0){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -81,6 +101,7 @@ class Home extends Component {
 
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={styles.homeSection}>
 
@@ -89,7 +110,7 @@ class Home extends Component {
                                 <View style={styles.overlay}>
                                     <Image source={require('../../assets/images/fireworks_wite_descrpion.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
                                     <Text style={[styles.whiteText, styles.normalText , {fontSize:24}]}>{ i18n.t('events') }</Text>
-                                    <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>{ i18n.t('eventsNo') } : 512</Text>
+                                    <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>{ i18n.t('eventsNo') } : {this.props.events}</Text>
                                 </View>
                             </TouchableOpacity>
 
@@ -100,7 +121,7 @@ class Home extends Component {
                                         <View style={[styles.overlay , {justifyContent:'flex-end' , paddingBottom:30}]}>
                                             <Image source={require('../../assets/images/shop_white.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
                                             <Text style={[styles.whiteText, styles.normalText , {fontSize:16}]}>{ i18n.t('coffeeRest') }</Text>
-                                            <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>{ i18n.t('number') } : 512</Text>
+                                            <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>{ i18n.t('number') } : {this.props.resturants}</Text>
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => this.props.navigation.navigate('cars')} style={[styles.imgParent , {width: '100%'}]}>
@@ -108,7 +129,7 @@ class Home extends Component {
                                         <View style={[styles.overlay , {justifyContent:'flex-end' , paddingBottom:30}]}>
                                             <Image source={require('../../assets/images/delivery_truck_icon.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
                                             <Text style={[styles.whiteText, styles.normalText , {fontSize:20}]}>{ i18n.t('foodTrack') }</Text>
-                                            <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>{ i18n.t('number') } : 512</Text>
+                                            <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>{ i18n.t('number') } : {this.props.food_trucks}</Text>
                                         </View>
                                     </TouchableOpacity>
                                 </View>
@@ -117,7 +138,7 @@ class Home extends Component {
                                     <View style={[styles.overlay , {justifyContent:'flex-end' , paddingBottom:30}]}>
                                         <Image source={require('../../assets/images/family_icon.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
                                         <Text style={[styles.whiteText, styles.normalText , {fontSize:19}]}>{ i18n.t('productiveFamilies') }</Text>
-                                        <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>{ i18n.t('familiesNumber') } : 512</Text>
+                                        <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>{ i18n.t('familiesNumber') } : {this.props.families}</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>
@@ -131,4 +152,15 @@ class Home extends Component {
     }
 }
 
-export default Home;
+
+const mapStateToProps = ({ lang , homeCounts }) => {
+    return {
+        lang: lang.lang,
+        resturants: homeCounts.resturants,
+        families: homeCounts.families,
+        food_trucks: homeCounts.food_trucks,
+        events: homeCounts.events,
+        loader: homeCounts.key
+    };
+};
+export default connect(mapStateToProps, {getHomeCounts})(Home);

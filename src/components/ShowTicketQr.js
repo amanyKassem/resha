@@ -17,6 +17,9 @@ import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
 import Modal from "react-native-modal";
 import QRCode from 'react-native-qrcode';
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getDeleteTicket} from "../actions";
 
 
 const height = Dimensions.get('window').height;
@@ -29,6 +32,7 @@ class ShowTicketQr extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
+            isSubmitted: false
         }
     }
 
@@ -36,6 +40,38 @@ class ShowTicketQr extends Component {
         drawerLabel: () => null
     });
 
+    renderSubmit(){
+        if (this.state.isSubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt50, ]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity  onPress={() => this.deleteTicket()} style={[styles.blueBtn , styles.mt50]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('deleteTicket') }</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.deleteTicket) {
+            this.setState({isSubmitted: false});
+            this.props.navigation.navigate('reservations')
+        }
+        console.log('nextProps.deleteTicket' , nextProps.deleteTicket)
+    }
+
+    deleteTicket(){
+        this.setState({ isSubmitted: true });
+        this.props.getDeleteTicket( this.props.lang ,
+            this.props.navigation.state.params.ticketsInfo.ticket_id,
+            this.props.user.token
+        )
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -100,7 +136,7 @@ class ShowTicketQr extends Component {
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:25 , flex:0} ]}>
                             <View style={styles.QR}>
                                 <QRCode
-                                    value={'http://facebook.github.io/react-native/'}
+                                    value={'/' + this.props.navigation.state.params.ticketsInfo.ticket_id + '/'}
                                     size={80}
                                     bgColor='#000'
                                     fgColor='white'/>
@@ -108,43 +144,47 @@ class ShowTicketQr extends Component {
                             <View style={styles.directionRowCenter}>
 
                                 <View style={styles.dateView}>
-                                    <Text style={[styles.boldGrayText , styles.normalText , {height:45 , lineHeight:45}]}>20 سبتمبر</Text>
+                                    <Text style={[styles.boldGrayText , styles.normalText , {height:45 , lineHeight:45}]}>{ this.props.navigation.state.params.ticketsInfo.day}</Text>
                                 </View>
                                 <View style={styles.remainingView}>
-                                    <Text style={[styles.boldGrayText , styles.normalText , {height:45 , lineHeight:45}]}>{ i18n.t('remain') } ١٠ ايام</Text>
+                                    <Text style={[styles.boldGrayText , styles.normalText , {height:45 , lineHeight:45}]}>{ i18n.t('remain') } { this.props.navigation.state.params.ticketsInfo.day_remaining}</Text>
                                 </View>
 
                             </View>
 
                             <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
                                     containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
-                                <Image source={require('../../assets/images/image_eleven.jpg')} style={styles.swiperImg} resizeMode={'cover'}/>
-                                <Image source={require('../../assets/images/image_one.png')} style={styles.swiperImg} resizeMode={'cover'}/>
-                                <Image source={require('../../assets/images/events.jpg')}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                {
+                                    this.props.navigation.state.params.ticketsInfo.images.map((img, i) =>{
+                                        return (
+                                            <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                        )
+                                    })
+                                }
                             </Swiper>
 
-                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing , styles.mb10]}>حفلة وسط البلد</Text>
+                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing , styles.mb10]}>{ this.props.navigation.state.params.ticketsInfo.event_name}</Text>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
                                     <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>3:30 AM</Text>
+                                    <Text style={[styles.blueText , styles.normalText]}>{ this.props.navigation.state.params.ticketsInfo.time}</Text>
                                 </View>
                                 <View style={[styles.directionRowAlignCenter ]}>
                                     <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>9/7/2020</Text>
+                                    <Text style={[styles.blueText , styles.normalText]}>{ this.props.navigation.state.params.ticketsInfo.date}</Text>
                                 </View>
                             </View>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>144 ريال</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>{ this.props.navigation.state.params.ticketsInfo.tickets_total_price} { i18n.t('RS') }</Text>
                             </View>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>الرياض . جده . السعودية</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>{ this.props.navigation.state.params.ticketsInfo.address}</Text>
                             </View>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/receipt_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>حجز اونلاين</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('onlineBook') }</Text>
                             </View>
 
 
@@ -152,9 +192,9 @@ class ShowTicketQr extends Component {
 
                             <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing, styles.mb100]}>{ i18n.t('scanQr') }</Text>
 
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('reservations')} style={[styles.blueBtn , styles.mt50]}>
-                                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('deleteTicket') }</Text>
-                            </TouchableOpacity>
+                            {
+                                this.renderSubmit()
+                            }
 
                         </View>
                     </ImageBackground>
@@ -165,4 +205,12 @@ class ShowTicketQr extends Component {
     }
 }
 
-export default ShowTicketQr;
+const mapStateToProps = ({ lang , profile , deleteTicket }) => {
+    return {
+        lang: lang.lang,
+        user: profile.user,
+        deleteTicket: deleteTicket.deleteTicket,
+        key: deleteTicket.key
+    };
+};
+export default connect(mapStateToProps, {getDeleteTicket})(ShowTicketQr);

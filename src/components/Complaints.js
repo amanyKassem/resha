@@ -10,10 +10,27 @@ import {
     ImageBackground,
     KeyboardAvoidingView, Platform, I18nManager
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label, Textarea} from 'native-base'
+import {
+    Container,
+    Content,
+    Header,
+    Button,
+    Item,
+    Input,
+    Right,
+    Icon,
+    Left,
+    Form,
+    Label,
+    Textarea,
+    Toast
+} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getSendComplaint} from "../actions";
 
 
 const height = Dimensions.get('window').height;
@@ -27,6 +44,7 @@ class Complaints extends Component {
             availabel: 0,
             title:'',
             desc:'',
+            isSubmitted: false
         }
     }
 
@@ -36,6 +54,47 @@ class Complaints extends Component {
     })
 
 
+    renderSubmit(){
+        if (this.state.title == '' || this.state.desc == '') {
+            return (
+                <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15, {backgroundColor: '#999'}]}>
+                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('sendButton') }</Text>
+                </TouchableOpacity>
+            );
+        }
+        if (this.state.isSubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt50, styles.mb15]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity onPress={() => this.sendComp()} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('sendButton') }</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.sendComplaint) {
+            this.setState({isSubmitted: false});
+            this.props.navigation.navigate('home')
+        }
+        console.log('nextProps.sendComplaint' , nextProps.sendComplaint)
+    }
+
+    sendComp(){
+        this.setState({ isSubmitted: true });
+        this.props.getSendComplaint( this.props.lang ,
+            this.state.title,
+            this.state.desc,
+            this.props.user.token
+        )
+    }
 
 
     setAnimate(availabel){
@@ -121,9 +180,9 @@ class Complaints extends Component {
                                             </Item>
                                         </View>
 
-                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('drawerNavigator')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                            <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('sendButton') }</Text>
-                                        </TouchableOpacity>
+                                        {
+                                            this.renderSubmit()
+                                        }
 
                                     </Form>
                                 </KeyboardAvoidingView>
@@ -137,4 +196,12 @@ class Complaints extends Component {
     }
 }
 
-export default Complaints;
+const mapStateToProps = ({ lang , profile , sendComplaint }) => {
+    return {
+        lang: lang.lang,
+        user: profile.user,
+        sendComplaint: sendComplaint.sendComplaint,
+        key: sendComplaint.key
+    };
+};
+export default connect(mapStateToProps, {getSendComplaint})(Complaints);

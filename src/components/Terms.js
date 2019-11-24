@@ -4,15 +4,12 @@ import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Chec
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getRules} from "../actions";
 
 
 const height = Dimensions.get('window').height;
-const terms =[
-    {id:1 , ques:'البند الأول' , ans:'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،'},
-    {id:2 , ques:'البند الثاني' , ans:'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،'},
-    {id:3 , ques:'البند الثالث' , ans:'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،'},
-    {id:4 , ques:'البند الرابع' , ans:'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،'},
-]
 
 class Terms extends Component {
     constructor(props){
@@ -21,7 +18,6 @@ class Terms extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            terms,
             checkTerms:false,
         }
     }
@@ -31,16 +27,31 @@ class Terms extends Component {
         drawerIcon: (<Image source={require('../../assets/images/balance_menu.png')} style={styles.drawerImg} resizeMode={'contain'} /> )
     })
 
-    _keyExtractor = (item, index) => item.id;
 
-    renderItems = (item) => {
-        return(
-            <View style={styles.faqBlock}>
-                <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727'}]}>{item.ques}</Text>
-                <Text style={[styles.grayText , styles.asfs , styles.writing , styles.normalText]}>{item.ans}</Text>
-            </View>
-        );
+    componentWillMount() {
+        this.props.getRules( this.props.lang )
     }
+
+    renderLoader(){
+        if (this.props.loader == 0){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+
+    // _keyExtractor = (item, index) => item.id;
+    //
+    // renderItems = (item) => {
+    //     return(
+    //         <View style={styles.faqBlock}>
+    //             <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727'}]}>{item.rules}</Text>
+    //             {/*<Text style={[styles.grayText , styles.asfs , styles.writing , styles.normalText]}>{item.answer}</Text>*/}
+    //         </View>
+    //     );
+    // }
 
 
     setAnimate(availabel){
@@ -100,16 +111,23 @@ class Terms extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <Image source={require('../../assets/images/rules_undraw.png')} style={[styles.faqImg]} resizeMode={'contain'} />
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20 , marginTop:15}]}>
                             <ImageBackground source={require('../../assets/images/bg_feather.png')} resizeMode={'cover'} style={styles.imageBackground}>
-                                <FlatList
-                                    data={this.state.terms}
-                                    renderItem={({item}) => this.renderItems(item)}
-                                    numColumns={1}
-                                    keyExtractor={this._keyExtractor}
-                                />
+                                {/*<FlatList*/}
+                                    {/*data={this.props.rules}*/}
+                                    {/*renderItem={({item}) => this.renderItems(item)}*/}
+                                    {/*numColumns={1}*/}
+                                    {/*keyExtractor={this._keyExtractor}*/}
+                                {/*/>*/}
+
+                                <View style={styles.faqBlock}>
+                                    <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727'}]}>{this.props.rules}</Text>
+                                    {/*<Text style={[styles.grayText , styles.asfs , styles.writing , styles.normalText]}>{item.answer}</Text>*/}
+                                </View>
+
                                 <View style={[styles.directionRowAlignCenter , styles.mb15 ]}>
                                     <CheckBox onPress={() => this.setState({checkTerms: !this.state.checkTerms})} checked={this.state.checkTerms} color={'#2f9694'} style={styles.checkBox} />
                                     <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('acceptTerms') }</Text>
@@ -125,4 +143,12 @@ class Terms extends Component {
     }
 }
 
-export default Terms;
+
+const mapStateToProps = ({ lang , rules }) => {
+    return {
+        lang: lang.lang,
+        rules: rules.rules,
+        loader: rules.key
+    };
+};
+export default connect(mapStateToProps, {getRules})(Terms);

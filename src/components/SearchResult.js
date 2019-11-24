@@ -4,14 +4,12 @@ import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import { DoubleBounce } from 'react-native-loader';
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
-const events =[
-    {id:1 , name:'أمسيات رمضان', price:'144 ريال', image:require('../../assets/images/event_image_tean.jpg') , time:'3:30 AM' , date:'9/7/2020'},
-    {id:2 , name:'أمسيات رمضان', price:'144 ريال', image:require('../../assets/images/events_pic_image.jpg') , time:'3:30 AM' , date:'9/7/2020'},
-    {id:3 , name:'أمسيات رمضان', price:'144 ريال', image:require('../../assets/images/image_eleven.jpg') , time:'3:30 AM' , date:'9/7/2020'},
-]
+
 
 class SearchResult extends Component {
     constructor(props){
@@ -20,7 +18,7 @@ class SearchResult extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            events,
+            searchResult : []
         }
     }
 
@@ -29,12 +27,36 @@ class SearchResult extends Component {
     });
 
 
+    componentWillMount() {
+        this.setState({searchResult : this.props.navigation.state.params.searchResult})
+    }
+
+
+    renderLoader(){
+        if (this.props.key === 0){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+    renderNoData(){
+        if (this.state.searchResult && (this.state.searchResult).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 60, alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
+
+        return <View />
+    }
+
     _keyExtractor = (item, index) => item.id;
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookTicket')} style={[styles.notiBlock , styles.directionRow]}>
-                <Image source={item.image} resizeMode={'cover'} style={styles.eventImg}/>
+            <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookTicket' , {event_id :item.id})} style={[styles.notiBlock , styles.directionRow]}>
+                <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={styles.eventImg}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
                     <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
                     <View style={[styles.directionRowAlignCenter  ]}>
@@ -46,7 +68,7 @@ class SearchResult extends Component {
                         <Text style={[styles.blueText , styles.normalText]}>{item.date}</Text>
                     </View>
                     <View style={[styles.eventBtn]}>
-                        <Text style={[styles.whiteText , styles.normalText]}>{item.price}</Text>
+                        <Text style={[styles.whiteText , styles.normalText]}>{item.price} { i18n.t('RS') }</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -87,6 +109,9 @@ class SearchResult extends Component {
         }
     }
 
+    onFocus(payload){
+        this.componentWillMount()
+    }
 
     render() {
 
@@ -111,11 +136,15 @@ class SearchResult extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+                    { this.renderLoader() }
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
-
+                            {
+                                this.renderNoData()
+                            }
                             <FlatList
-                                data={this.state.events}
+                                data={this.state.searchResult}
                                 renderItem={({item}) => this.renderItems(item)}
                                 numColumns={1}
                                 keyExtractor={this._keyExtractor}
@@ -129,5 +158,6 @@ class SearchResult extends Component {
         );
     }
 }
+
 
 export default SearchResult;

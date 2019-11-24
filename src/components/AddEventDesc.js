@@ -15,6 +15,9 @@ import {Container, Content, Header, Button, Item, Input, Right, Textarea, Left, 
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import {getEventCategories , getOrganizations} from "../actions";
+import {connect} from "react-redux";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -39,7 +42,10 @@ class AddEventDesc extends Component {
     });
 
 
-
+    async componentWillMount() {
+        this.props.getEventCategories(this.props.lang);
+        this.props.getOrganizations(this.props.lang);
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -75,6 +81,39 @@ class AddEventDesc extends Component {
     }
 
 
+    renderNextBtn(){
+        if (this.state.arabicDesc == '' || this.state.englishDesc == '' ){
+            return (
+                <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , {backgroundColor:'#999'}]}>
+                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
+                </TouchableOpacity>
+            );
+        }
+
+        return (
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('addEventPrice' , {
+                ar_name : this.props.navigation.state.params.ar_name ,
+                en_name : this.props.navigation.state.params.en_name ,
+                date :this.props.navigation.state.params.date ,
+                time : this.props.navigation.state.params.time ,
+                event_hours : this.props.navigation.state.params.event_hours ,
+                address : this.props.navigation.state.params.address ,
+                latitude : this.props.navigation.state.params.latitude ,
+                longitude : this.props.navigation.state.params.longitude ,
+                ar_description : this.state.arabicDesc,
+                en_description : this.state.englishDesc,
+                organization_id: this.state.organization,
+                category_id: this.state.category})}
+                              style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
+            </TouchableOpacity>
+        );
+    }
+
+    onFocus(payload){
+        this.componentWillMount()
+    }
+
     render() {
 
         const backgroundColor = this.state.backgroundColor.interpolate({
@@ -98,6 +137,7 @@ class AddEventDesc extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
                             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'height' : 'padding'} style={styles.keyboardAvoid}>
@@ -138,9 +178,14 @@ class AddEventDesc extends Component {
                                                 selectedValue={this.state.category}
                                                 onValueChange={(value) => this.setState({ category: value })}
                                             >
-                                                <Picker.Item label={'قسم ١'} value={1} />
-                                                <Picker.Item label={'قسم ٢'}  value={2} />
-                                                <Picker.Item label={'قسم ٣'} value={3} />
+                                                <Picker.Item label={ i18n.t('chooseCategory') } value={null} />
+                                                {
+                                                    this.props.eventCategories.map((cat, i) => (
+                                                        <Picker.Item key={i} label={cat.name} value={cat.id} />
+                                                    ))
+
+                                                }
+
                                             </Picker>
                                             <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
                                         </Item>
@@ -162,17 +207,21 @@ class AddEventDesc extends Component {
                                                 selectedValue={this.state.organization}
                                                 onValueChange={(value) => this.setState({ organization: value })}
                                             >
-                                                <Picker.Item label={'الهيئة ١'} value={1} />
-                                                <Picker.Item label={'الهيئة ٢'}  value={2} />
-                                                <Picker.Item label={'الهيئة ٣'} value={3} />
+                                                <Picker.Item label={ i18n.t('chooseOrganizations') } value={null} />
+                                                {
+                                                    this.props.organizations.map((org, i) => (
+                                                        <Picker.Item key={i} label={org.name} value={org.id} />
+                                                    ))
+
+                                                }
                                             </Picker>
                                             <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
                                         </Item>
                                     </View>
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('addEventPrice')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
-                                    </TouchableOpacity>
+                                    { this.renderNextBtn()}
+
+
                                 </Form>
                             </KeyboardAvoidingView>
 
@@ -186,4 +235,12 @@ class AddEventDesc extends Component {
     }
 }
 
-export default AddEventDesc;
+
+const mapStateToProps = ({ lang , eventCategories , organizations }) => {
+    return {
+        lang: lang.lang,
+        eventCategories: eventCategories.eventCategories,
+        organizations: organizations.organizations,
+    };
+};
+export default connect(mapStateToProps, {getEventCategories , getOrganizations})(AddEventDesc);

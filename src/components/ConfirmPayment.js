@@ -15,6 +15,9 @@ import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import Modal from "react-native-modal";
+import {connect} from "react-redux";
+import {getSaveTicket} from "../actions";
+import {DoubleBounce} from "react-native-loader";
 
 
 const height = Dimensions.get('window').height;
@@ -28,6 +31,7 @@ class ConfirmPayment extends Component {
             backgroundColor: new Animated.Value(0),
             availabel: 0,
             modalEvent: false,
+            isSubmitted: false
         }
     }
 
@@ -35,15 +39,49 @@ class ConfirmPayment extends Component {
         drawerLabel: () => null
     });
 
-    _modalEvent = () => this.setState({ modalEvent: !this.state.modalEvent });
+    _modalEvent = () =>{
+        // this.setState({ modalEvent: !this.state.modalEvent })
+        this.setState({ isSubmitted: true });
+        this.props.getSaveTicket( this.props.lang ,
+            this.props.navigation.state.params.event_id,
+            this.props.navigation.state.params.ticket_type,
+            this.props.navigation.state.params.ticketsNo,
+            this.props.user.token
+        )
+    }
 
+    renderSubmit(){
+        if (this.state.isSubmitted){
+            return(
+                <View style={[{ justifyContent: 'center', alignItems: 'center' } , styles.mt50 , styles.mb15]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{ alignSelf: 'center' }} />
+                </View>
+            )
+        }
+
+        return (
+            <TouchableOpacity onPress={this._modalEvent} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.saveTicket)
+            this.setState({ modalEvent: !this.state.modalEvent , isSubmitted: false});
+
+        console.log('confirmnextProps' , nextProps)
+    }
     backHome() {
         this.setState({ modalEvent: !this.state.modalEvent });
         this.props.navigation.navigate('drawerNavigator')
     };
     showTicket() {
         this.setState({ modalEvent: !this.state.modalEvent });
-        this.props.navigation.navigate('showTicketQr')
+        this.props.navigation.navigate('showTicketQr', {
+            ticketsInfo : this.props.saveTicket,
+        })
     };
 
     setAnimate(availabel){
@@ -109,9 +147,7 @@ class ConfirmPayment extends Component {
 
                             <Text style={[styles.headerText , styles.asc  , styles.tac , styles.mt30 , {color:'#272727' , width:'70%' , lineHeight:30}]}>لا يمكن استرجاع المبلغ اذا تم الموافقة علي التأكيد</Text>
 
-                            <TouchableOpacity onPress={this._modalEvent} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
-                            </TouchableOpacity>
+                            { this.renderSubmit()}
 
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('confirmTicket')} style={[styles.blueBtn,  styles.mb15 , {backgroundColor:'transparent'}]}>
                                 <Text style={[styles.blueText , styles.normalText ]}>{ i18n.t('backToTicket') }</Text>
@@ -147,4 +183,12 @@ class ConfirmPayment extends Component {
     }
 }
 
-export default ConfirmPayment;
+const mapStateToProps = ({ lang , profile , saveTicket }) => {
+    return {
+        lang: lang.lang,
+        user: profile.user,
+        saveTicket: saveTicket.saveTicket,
+        key: saveTicket.key
+    };
+};
+export default connect(mapStateToProps, {getSaveTicket})(ConfirmPayment);

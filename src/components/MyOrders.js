@@ -15,14 +15,13 @@ import {Container, Content,  Header, Button, Item, Input} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import {getOrganizerEvents, getOrganizerRejectedEvents} from "../actions";
+import { DoubleBounce } from 'react-native-loader';
+import {NavigationEvents} from "react-navigation";
+import {connect} from "react-redux";
 
 const height = Dimensions.get('window').height;
-
-const orders =[
-    {id:1 , name:'أمسيات رمضان', image:require('../../assets/images/event_image_tean.jpg') , date:'15 مايو'},
-    {id:2 , name:'مؤتمرات عالمية',  image:require('../../assets/images/events_pic_image.jpg')  , date:'15 مايو'},
-    {id:3 , name:'حفلات موسيقية',  image:require('../../assets/images/image_eleven.jpg')  , date:'15 مايو'},
-]
+const width = Dimensions.get('window').width;
 
 
 class MyOrders extends Component {
@@ -32,9 +31,9 @@ class MyOrders extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            activeType:0,
-            tabActiveType:0,
-            orders,
+            tabActiveType:1,
+            activeDate:null,
+            loader: 1
 
         }
     }
@@ -45,6 +44,50 @@ class MyOrders extends Component {
     })
 
 
+    componentWillMount() {
+        this.getEvents(1)
+    }
+
+
+    getEvents(type){
+        this.setState({tabActiveType:type, loader: 1});
+        const token =  this.props.user.token;
+        this.props.getOrganizerEvents( this.props.lang , type , null , token)
+
+        if(type === 3){
+            this.props.getOrganizerRejectedEvents( this.props.lang , null , token)
+        }
+
+
+    }
+
+    renderLoader(){
+        if (this.state.loader == 1){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loader: 0 });
+        console.log('nextprops organizer' , nextProps.organizerEvents)
+    }
+    pressedDate(date){
+        this.setState({activeDate :date})
+        this.props.getOrganizerEvents( this.props.lang , this.state.tabActiveType , date , this.props.user.token)
+    }
+
+    renderNoData(){
+        if (this.props.organizerEvents.events && (this.props.organizerEvents.events).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 50, alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
+
+        return <View />
+    }
 
 
     setAnimate(availabel){
@@ -84,8 +127,8 @@ class MyOrders extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('orderDetails')} style={[styles.eventTouch ]}>
-                <Image source={item.image} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('orderDetails' , {orderType: this.state.tabActiveType ,event_id: item.id} )} style={[styles.eventTouch ]}>
+                <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                 <View style={[styles.eventCont ]}>
                     <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
                     <View style={styles.dateEvent}>
@@ -94,6 +137,10 @@ class MyOrders extends Component {
                 </View>
             </TouchableOpacity>
         );
+    }
+
+    onFocus(payload){
+        this.componentWillMount()
     }
 
     render() {
@@ -128,23 +175,23 @@ class MyOrders extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
-
                         <View style={styles.mainScroll}>
                             <ScrollView style={{}} horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <TouchableOpacity onPress={ () => this.setState({tabActiveType:0})} style={styles.scrollView}>
-                                    <Text style={[styles.scrollText,{color:this.state.tabActiveType === 0 ? COLORS.rose : COLORS.gray}]}>{ i18n.t('newOrders') }</Text>
-                                    <View style={[styles.activeLine , {backgroundColor:this.state.tabActiveType === 0 ? COLORS.rose : 'transparent'}]} />
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={ () => this.setState({tabActiveType:1})} style={styles.scrollView}>
-                                    <Text style={[styles.scrollText,{color:this.state.tabActiveType === 1 ? COLORS.rose : COLORS.gray}]}>{ i18n.t('accepted') }</Text>
+                                <TouchableOpacity onPress={ () => this.getEvents(1)} style={styles.scrollView}>
+                                    <Text style={[styles.scrollText,{color:this.state.tabActiveType === 1 ? COLORS.rose : COLORS.gray}]}>{ i18n.t('newOrders') }</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.tabActiveType === 1 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={ () => this.setState({tabActiveType:2})} style={styles.scrollView}>
-                                    <Text style={[styles.scrollText,{color:this.state.tabActiveType === 2 ? COLORS.rose : COLORS.gray}]}>{ i18n.t('executed') }</Text>
+                                <TouchableOpacity onPress={ () => this.getEvents(2)} style={styles.scrollView}>
+                                    <Text style={[styles.scrollText,{color:this.state.tabActiveType === 2 ? COLORS.rose : COLORS.gray}]}>{ i18n.t('accepted') }</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.tabActiveType === 2 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={ () => this.setState({tabActiveType:3})} style={styles.scrollView}>
+                                <TouchableOpacity onPress={ () => this.getEvents(4)} style={styles.scrollView}>
+                                    <Text style={[styles.scrollText,{color:this.state.tabActiveType === 4 ? COLORS.rose : COLORS.gray}]}>{ i18n.t('executed') }</Text>
+                                    <View style={[styles.activeLine , {backgroundColor:this.state.tabActiveType === 4 ? COLORS.rose : 'transparent'}]} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={ () => this.getEvents(3)} style={styles.scrollView}>
                                     <Text style={[styles.scrollText,{color:this.state.tabActiveType === 3 ? COLORS.rose : COLORS.gray}]}>{ i18n.t('refused') }</Text>
                                     <View style={[styles.activeLine , {backgroundColor:this.state.tabActiveType === 3 ? COLORS.rose : 'transparent'}]} />
                                 </TouchableOpacity>
@@ -156,30 +203,17 @@ class MyOrders extends Component {
 
                             <View style={styles.reservationScroll}>
                                 <ScrollView style={{}} horizontal={true} showsHorizontalScrollIndicator={false}>
-                                    <TouchableOpacity onPress={ () => this.setState({activeType:0})} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeType === 0 ?'#6b4d6b' : 'transparent'}]}>
-                                        <Text style={[styles.reservationScrollText]}>15</Text>
-                                        <Text style={[styles.reservationScrollText]}>مايو</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={ () => this.setState({activeType:1})} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeType === 1 ?'#6b4d6b' : 'transparent'}]}>
-                                        <Text style={[styles.reservationScrollText]}>16</Text>
-                                        <Text style={[styles.reservationScrollText]}>مايو</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={ () => this.setState({activeType:2})} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeType === 2 ?'#6b4d6b' : 'transparent'}]}>
-                                        <Text style={[styles.reservationScrollText ]}>17</Text>
-                                        <Text style={[styles.reservationScrollText ]}>مايو</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={ () => this.setState({activeType:3})} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeType === 3 ?'#6b4d6b' : 'transparent'}]}>
-                                        <Text style={[styles.reservationScrollText ]}>18</Text>
-                                        <Text style={[styles.reservationScrollText ]}>مايو</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={ () => this.setState({activeType:4})} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeType === 4 ?'#6b4d6b' : 'transparent'}]}>
-                                        <Text style={[styles.reservationScrollText ]}>19</Text>
-                                        <Text style={[styles.reservationScrollText ]}>مايو</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={ () => this.setState({activeType:5})} style={[styles.reservationScrollView ,   {backgroundColor:this.state.activeType === 5 ?'#6b4d6b' : 'transparent'}]}>
-                                        <Text style={[styles.reservationScrollText ]}>20</Text>
-                                        <Text style={[styles.reservationScrollText ]}>مايو</Text>
-                                    </TouchableOpacity>
+                                    {
+                                        this.props.organizerEvents.dates.map((date, i) => {
+                                                return(
+                                                    <TouchableOpacity onPress={ () => this.pressedDate(date.date)} key={i} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeDate === date.date ?'#6b4d6b' : 'transparent'}]}>
+                                                        <Text style={[styles.reservationScrollText]}>{date.day}</Text>
+                                                        <Text style={[styles.reservationScrollText]}>{date.month}</Text>
+                                                    </TouchableOpacity>
+                                                )
+                                            }
+                                        )
+                                    }
                                 </ScrollView>
                             </View>
 
@@ -187,8 +221,9 @@ class MyOrders extends Component {
 
 
                             <View style={{paddingHorizontal:10}}>
+                                { this.renderNoData() }
                                 <FlatList
-                                    data={this.state.orders}
+                                    data={this.props.organizerEvents.events}
                                     renderItem={({item}) => this.renderItems(item)}
                                     numColumns={1}
                                     keyExtractor={this._keyExtractor}
@@ -205,4 +240,12 @@ class MyOrders extends Component {
 
 }
 
-export default MyOrders;
+const mapStateToProps = ({ lang , profile , organizerEvents }) => {
+    return {
+        lang: lang.lang,
+        user: profile.user,
+        organizerEvents: organizerEvents.organizerEvents,
+        key: organizerEvents.key,
+    };
+};
+export default connect(mapStateToProps, {getOrganizerEvents , getOrganizerRejectedEvents})(MyOrders);

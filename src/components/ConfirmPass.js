@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import {View, Text, Image, TouchableOpacity, Dimensions,  ImageBackground , KeyboardAvoidingView} from "react-native";
-import {Container, Content, Form, Icon, Input, Item, Label} from 'native-base'
+import {Container, Content, Form, Icon, Input, Item, Label, Toast} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getCheckForgetCode, getResetPassword} from "../actions";
 
 
 const height = Dimensions.get('window').height;
@@ -15,9 +18,45 @@ class ConfirmPass extends Component {
         this.state={
             password: '',
             rePassword: '',
+            isSubmitted: false,
         }
     }
 
+    renderSubmit(){
+        if (this.state.code == '') {
+            return (
+                <TouchableOpacity style={[styles.blueBtn, styles.mt50 ,  {backgroundColor: '#999'}]}>
+                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('sendButton') }</Text>
+                </TouchableOpacity>
+            );
+        }
+        if (this.state.isSubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt50, ]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity onPress={() => this.resetPass()} style={[styles.blueBtn, styles.mt50]}>
+                <Text style={[styles.whiteText, styles.normalText]}>{i18n.t('sendButton')}</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+    resetPass(){
+        this.setState({isSubmitted:true})
+        this.props.getResetPassword( this.props.lang ,
+            this.props.navigation.state.params.user_id ,
+            this.state.rePassword ,
+            this.props
+        )
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({isSubmitted:false})
+    }
 
     render() {
 
@@ -56,9 +95,9 @@ class ConfirmPass extends Component {
                                         </Item>
                                     </View>
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('login')} style={[styles.blueBtn, styles.mt50]}>
-                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('sendButton') }</Text>
-                                    </TouchableOpacity>
+                                    {
+                                        this.renderSubmit()
+                                    }
                                 </Form>
                             </KeyboardAvoidingView>
 
@@ -73,4 +112,9 @@ class ConfirmPass extends Component {
     }
 }
 
-export default ConfirmPass;
+const mapStateToProps = ({ lang  }) => {
+    return {
+        lang: lang.lang,
+    };
+};
+export default connect(mapStateToProps, {getResetPassword})(ConfirmPass);

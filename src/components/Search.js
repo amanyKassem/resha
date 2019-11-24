@@ -4,6 +4,9 @@ import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import {getSearchResult} from "../actions";
+import {connect} from "react-redux";
+import { DoubleBounce } from 'react-native-loader';
 
 
 const height = Dimensions.get('window').height;
@@ -16,13 +19,13 @@ class Search extends Component {
             backgroundColor: new Animated.Value(0),
             availabel: 0,
             search:'',
+            isSubmitted: false
         }
     }
 
     static navigationOptions = () => ({
         drawerLabel: () => null
     });
-
 
 
     setAnimate(availabel){
@@ -57,8 +60,36 @@ class Search extends Component {
             this.setAnimate(1)
         }
     }
+
+
+    renderSubmit(){
+        if (this.state.isSubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt50, styles.mb15 ]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity  onPress={() => this.submitSearch()} style={[styles.blueBtn , styles.mt50, styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.searchResult) {
+            this.setState({isSubmitted: false});
+            this.props.navigation.navigate('searchResult', { searchResult : nextProps.searchResult } );
+        }
+        console.log('nextProps.searchResult' , nextProps.searchResult)
+    }
+
     submitSearch(){
-        this.props.navigation.navigate('searchResult', { search : this.state.search } );
+        this.setState({ isSubmitted: true });
+        this.props.getSearchResult( this.props.lang , this.state.search )
     }
 
     render() {
@@ -88,30 +119,32 @@ class Search extends Component {
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20} ]}>
                             <View style={styles.inputView}>
                                 <Item  style={styles.inputItem} bordered>
-                                    <Input autoCapitalize='none' onSubmitEditing={() => this.submitSearch() } onChangeText={(search) => this.setState({ search })} placeholder={ i18n.t('search') } placeholderTextColor={'#acabae'} style={styles.modalInput}   />
+                                    {/*<Input autoCapitalize='none' onSubmitEditing={() => this.submitSearch() } onChangeText={(search) => this.setState({ search })} placeholder={ i18n.t('search') } placeholderTextColor={'#acabae'} style={styles.modalInput}   />*/}
+                                    <Input autoCapitalize='none' onChangeText={(search) => this.setState({ search })} placeholder={ i18n.t('search') } placeholderTextColor={'#acabae'} style={styles.modalInput}   />
                                 </Item>
-                                <TouchableOpacity style={[styles.searchToch]} onPress={() => this.submitSearch()}>
+                                {/*<TouchableOpacity style={[styles.searchToch]} onPress={() => this.submitSearch()}>*/}
+                                <View style={[styles.searchToch]} >
                                     <Image source={require('../../assets/images/search_floting.png')} style={[styles.searchImg , styles.transform]} resizeMode={'contain'}/>
-                                </TouchableOpacity>
+                                </View>
                             </View>
 
-                            <TouchableOpacity style={[styles.directionRowAlignCenter, styles.mb15]}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('proposedEvents')} style={[styles.directionRowAlignCenter, styles.mb15]}>
                                 <Image source={require('../../assets/images/image_one_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
                                 <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('proposedEvents') }</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.directionRowAlignCenter, styles.mb15]}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('commonEvents')} style={[styles.directionRowAlignCenter, styles.mb15]}>
                                 <Image source={require('../../assets/images/image_two_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
                                 <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('commonEvents') }</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.directionRowAlignCenter, styles.mb15]}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('saves')} style={[styles.directionRowAlignCenter, styles.mb15]}>
                                 <Image source={require('../../assets/images/image_three_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
                                 <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('favsEvents') }</Text>
                             </TouchableOpacity>
 
 
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('searchResult', { search : this.state.search } )} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
-                            </TouchableOpacity>
+                            {
+                                this.renderSubmit()
+                            }
                         </View>
                     </ImageBackground>
                 </Content>
@@ -121,4 +154,11 @@ class Search extends Component {
     }
 }
 
-export default Search;
+const mapStateToProps = ({ lang  , searchResult}) => {
+    return {
+        lang: lang.lang,
+        searchResult: searchResult.searchResult,
+        loader: searchResult.loader
+    };
+};
+export default connect(mapStateToProps, {getSearchResult})(Search);

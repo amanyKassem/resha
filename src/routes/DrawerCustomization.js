@@ -3,6 +3,9 @@ import {View, Text, Image, TouchableOpacity, Share, ImageBackground, Dimensions}
 import {Container, Content, Icon} from 'native-base';
 import {DrawerItems} from 'react-navigation';
 import styles from "../../assets/styles";
+import {connect} from "react-redux";
+import { logout, tempAuth } from '../actions'
+import i18n from "../../locale/i18n";
 
 
 const height = Dimensions.get('window').height;
@@ -19,7 +22,7 @@ class DrawerCustomization extends Component {
         try {
             const result = await Share.share({
                 message:
-                    'React Native | A framework for building native apps using React',
+                    'Resha App',
             })
 
             if (result.action === Share.sharedAction) {
@@ -37,13 +40,43 @@ class DrawerCustomization extends Component {
     };
 
     logout(){
+        this.props.logout({ token: this.props.user.token })
+        this.props.tempAuth();
         this.props.navigation.closeDrawer();
         this.props.navigation.navigate('login');
     }
 
+    filterItems(item){
+        if (this.props.user == null)
+            return item.routeName !== 'settings' && item.routeName !== 'logout' && item.routeName !== 'myEvents' && item.routeName !== 'addEvent'
+            && item.routeName !== 'myResturant' && item.routeName !== 'myCar' && item.routeName !== 'myFamily' && item.routeName !== 'myOrders' && item.routeName !== 'complaints';
+        else if(this.props.user.type == 0 )
+            return  item.routeName !== 'signIn' && item.routeName !== 'myEvents' && item.routeName !== 'addEvent' && item.routeName !== 'myResturant' && item.routeName !== 'myCar' && item.routeName !== 'myFamily' && item.routeName !== 'myOrders' ;
+        else if(this.props.user.type == 1 )
+            return  item.routeName !== 'signIn' && item.routeName !== 'myResturant' && item.routeName !== 'myCar' && item.routeName !== 'myFamily' && item.routeName !== 'myOrders' ;
+        else if(this.props.user.type == 2 )
+            return  item.routeName !== 'signIn' && item.routeName !== 'myResturant' && item.routeName !== 'myCar' && item.routeName !== 'myFamily' && item.routeName !== 'myEvents' && item.routeName !== 'addEvent' ;
+        else if(this.props.user.type == 3 )
+            return  item.routeName !== 'signIn' && item.routeName !== 'myCar' && item.routeName !== 'myFamily' && item.routeName !== 'myEvents' && item.routeName !== 'addEvent'  && item.routeName !== 'myOrders' ;
+        else if(this.props.user.type == 4 )
+            return  item.routeName !== 'signIn' && item.routeName !== 'myEvents' && item.routeName !== 'addEvent' && item.routeName !== 'myResturant' && item.routeName !== 'myCar' && item.routeName !== 'myOrders' ;
+        else if(this.props.user.type == 5 )
+            return  item.routeName !== 'signIn' && item.routeName !== 'myEvents' && item.routeName !== 'addEvent' && item.routeName !== 'myResturant' && item.routeName !== 'myFamily' && item.routeName !== 'myOrders' ;
+    }
 
+    returnItems(){
+        return this.props.items.filter((item) =>  this.filterItems(item) )
+    }
 
     render() {
+
+        let { user } = this.props;
+        if (user === null)
+            user = {
+                avatar:  'https://www.timeshighereducation.com/sites/default/files/default_images/default-avatar_1.png',
+                name: i18n.t('guest')
+            }
+
         return (
             <Container>
                 <Content  >
@@ -54,10 +87,10 @@ class DrawerCustomization extends Component {
                          <View style={styles.sideImgView}>
                             <View style={styles.cutCircle}>
                                 <View style={styles.sideProfileImg}>
-                                    <Image source={require('../../assets/images/profile_pic.png')} resizeMode={'cover'} style={styles.drawImg}/>
+                                    <Image  source={{ uri: user.avatar }} resizeMode={'cover'} style={styles.drawImg}/>
                                 </View>
                             </View>
-                            <Text style={styles.sideName}>اماني قاسم</Text>
+                            <Text style={styles.sideName}>{ user.name }</Text>
                          </View>
 
 
@@ -66,13 +99,15 @@ class DrawerCustomization extends Component {
                                          (route, focused) => {
                                              if (route.route.key === 'logout') {
                                                  this.logout()
+                                             } else if (route.route.key === 'signIn') {
+                                                 this.props.navigation.navigate('login');
                                              }else {
                                                  route.route.key === 'shareApp' ? this.onShare(): this.props.navigation.navigate(route.route.key)
                                              }
                                          }
                                      }
 
-
+                                     items={this.returnItems()}
                                      activeBackgroundColor='transparent' inactiveBackgroundColor='transparent' activeLabelStyle={{color:'#5d5d5d'}}
                                      labelStyle={styles.drawerLabel} iconContainerStyle ={styles.drawerIcon}
                                      itemStyle  = {styles.drawerItemStyle} itemsContainerStyle ={styles.drawerContainer}
@@ -85,5 +120,10 @@ class DrawerCustomization extends Component {
     }
 }
 
+const mapStateToProps = ({ profile }) => {
+    return {
+        user: profile.user
+    };
+};
 
-export default DrawerCustomization;
+export default connect(mapStateToProps, { logout, tempAuth })(DrawerCustomization);
