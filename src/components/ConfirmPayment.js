@@ -145,7 +145,7 @@ class ConfirmPayment extends Component {
                         <Image source={require('../../assets/images/payment_logo_undraw.png')} style={[styles.faqImg]} resizeMode={'contain'} />
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:25 , paddingVertical:20 , marginTop:15}]}>
 
-                            <Text style={[styles.headerText , styles.asc  , styles.tac , styles.mt30 , {color:'#272727' , width:'70%' , lineHeight:30}]}>لا يمكن استرجاع المبلغ اذا تم الموافقة علي التأكيد</Text>
+                            <Text style={[styles.headerText , styles.asc  , styles.tac , styles.mt30 , {color:'#272727' , width:'70%' , lineHeight:30}]}>{ i18n.t('confirmPay') }</Text>
 
                             { this.renderSubmit()}
 

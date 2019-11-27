@@ -51,7 +51,7 @@ class Events extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookTicket', { event_id: item.id })} style={[styles.notiBlock , styles.directionRow]}>
+            <TouchableOpacity onPress={ () => this.props.navigation.navigate( this.props.user ? 'bookTicket' : 'login', { event_id: item.id })} style={[styles.notiBlock , styles.directionRow]}>
                 <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={styles.eventImg}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
                     <Text style={[styles.headerText, styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
@@ -176,9 +176,10 @@ class Events extends Component {
 }
 
 
-const mapStateToProps = ({ lang , events }) => {
+const mapStateToProps = ({ lang , profile , events }) => {
     return {
         lang: lang.lang,
+        user: profile.user,
         events: events.events,
         desc: events.desc,
         count: events.count,

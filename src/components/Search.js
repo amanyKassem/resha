@@ -128,7 +128,7 @@ class Search extends Component {
                                 </View>
                             </View>
 
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('proposedEvents')} style={[styles.directionRowAlignCenter, styles.mb15]}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user ? 'proposedEvents' : 'login')} style={[styles.directionRowAlignCenter, styles.mb15]}>
                                 <Image source={require('../../assets/images/image_one_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
                                 <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('proposedEvents') }</Text>
                             </TouchableOpacity>
@@ -136,7 +136,7 @@ class Search extends Component {
                                 <Image source={require('../../assets/images/image_two_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
                                 <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('commonEvents') }</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('saves')} style={[styles.directionRowAlignCenter, styles.mb15]}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user ? 'saves' : 'login')} style={[styles.directionRowAlignCenter, styles.mb15]}>
                                 <Image source={require('../../assets/images/image_three_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
                                 <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('favsEvents') }</Text>
                             </TouchableOpacity>
@@ -154,10 +154,11 @@ class Search extends Component {
     }
 }
 
-const mapStateToProps = ({ lang  , searchResult}) => {
+const mapStateToProps = ({ lang , profile , searchResult}) => {
     return {
         lang: lang.lang,
         searchResult: searchResult.searchResult,
+        user: profile.user,
         loader: searchResult.loader
     };
 };

@@ -53,6 +53,7 @@ import storeProduct from './StoreProductReducer';
 import productAvailability from './ProductAvailabilityReducer';
 import authProducts from './AuthProductsReducer';
 import filterRestaurants from './FilterRestaurantsReducer';
+import stopNotification from './StopNotificationReducer';
 
 export default combineReducers({
     lang,
@@ -109,4 +110,5 @@ export default combineReducers({
     productAvailability,
     authProducts,
     filterRestaurants,
+    stopNotification,
 });

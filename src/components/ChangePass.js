@@ -90,7 +90,7 @@ class ChangePass extends Component {
     changePass(){
         if (this.state.newPass.length < 8){
             Toast.show({
-                text: i18n.t('phoneValidation'),
+                text: i18n.t('passwordLength'),
                 type: "danger",
                 duration: 3000
             });

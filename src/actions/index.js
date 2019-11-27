@@ -60,3 +60,4 @@ export * from './ProductAvailabilityAction';
 export * from './AuthProductsAction';
 export * from './FilterRestaurantsAction';
 export * from './ConfirmSubscriptionAction';
+export * from './StopNotificationAction';

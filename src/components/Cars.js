@@ -48,7 +48,7 @@ class Cars extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('carDetails' , { user_id: item.user_id })} style={[styles.eventTouch ]}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user ? 'carDetails' : 'login' , { user_id: item.user_id })} style={[styles.eventTouch ]}>
                 <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                 <View style={[styles.eventCont , { backgroundColor: '#b1aba940'}]}>
                     <Text style={[styles.whiteText , styles.BoldText , {top:-5}]}>{item.name}</Text>
@@ -162,10 +162,11 @@ class Cars extends Component {
 }
 
 
-const mapStateToProps = ({ lang , foodTrucks }) => {
+const mapStateToProps = ({ lang , profile , foodTrucks }) => {
     return {
         lang: lang.lang,
         trucks: foodTrucks.trucks,
+        user: profile.user,
         desc: foodTrucks.desc,
         count: foodTrucks.count,
         key: foodTrucks.key

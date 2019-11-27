@@ -52,6 +52,9 @@ class ChangePassCode extends Component {
         drawerLabel: () => null
     });
 
+    componentWillMount() {
+        alert(this.props.navigation.state.params.code)
+    }
 
     renderSubmit(){
         if (this.state.verifyCode == '') {

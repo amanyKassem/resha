@@ -15,7 +15,7 @@ import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import {connect} from "react-redux";
-import {chooseLang , getDeleteAccount} from "../actions";
+import {chooseLang , getDeleteAccount , getStopNotification} from "../actions";
 
 
 const height = Dimensions.get('window').height;
@@ -45,8 +45,9 @@ class Settings extends Component {
         }
     }
 
-    stopNotification = (value) =>{
-        this.setState({  SwitchOnValueHolder:!this.state.SwitchOnValueHolder})
+    stopNotification = () =>{
+        this.props.getStopNotification( this.props.lang , this.props.user.token)
+        this.setState({SwitchOnValueHolder:!this.state.SwitchOnValueHolder})
     }
 
 
@@ -119,10 +120,10 @@ class Settings extends Component {
                             <ImageBackground source={require('../../assets/images/bg_feather.png')} resizeMode={'cover'} style={styles.imageBackground}>
 
                                 <View style={styles.directionRowSpace}>
-                                    <Text style={[styles.boldGrayText , styles.normalText  ]}>{ i18n.t('notifications') }</Text>
+                                    <Text style={[styles.boldGrayText , styles.normalText  ]}>{ i18n.t('stopNotification') }</Text>
                                     <Switch
-                                        onValueChange={(value) => this.stopNotification(value)}
-                                        value={this.state.SwitchOnValueHolder}
+                                        onValueChange={() => this.stopNotification()}
+                                        value={!this.state.SwitchOnValueHolder}
                                         onTintColor={COLORS.gray}
                                         thumbTintColor={COLORS.blue}
                                         tintColor={'#c5c5c5'}
@@ -181,4 +182,4 @@ const mapStateToProps = ({ lang , profile }) => {
     };
 };
 
-export default connect(mapStateToProps, {chooseLang , getDeleteAccount})(Settings);
+export default connect(mapStateToProps, {chooseLang , getDeleteAccount , getStopNotification})(Settings);

@@ -126,13 +126,13 @@ class Login extends Component {
 
         }
 
-        if (newProps.auth !== null) {
-            Toast.show({
-                text: newProps.auth.msg,
-                type: newProps.auth.key == 1 ? "success" : "danger",
-                duration: 3000
-            });
-        }
+        // if (newProps.auth !== null) {
+        //     Toast.show({
+        //         text: newProps.auth.msg,
+        //         type: newProps.auth.key == 1 ? "success" : "danger",
+        //         duration: 3000
+        //     });
+        // }
 
     }
 

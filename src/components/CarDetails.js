@@ -160,47 +160,53 @@ class CarDetails extends Component {
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
-                        <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
-                            <View style={styles.directionRowSpace}>
-                                <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.profileDetails.details}</Text>
+                        {
+                            this.props.profileDetails?
+                                <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
+                                    <View style={styles.directionRowSpace}>
+                                        <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.profileDetails.details}</Text>
 
-                                <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.profileDetails.mobile)}>
-                                    <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
-                                </TouchableOpacity>
-                            </View>
+                                        <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.profileDetails.mobile)}>
+                                            <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
+                                        </TouchableOpacity>
+                                    </View>
 
-                            <Image source={{ uri: this.props.profileDetails.image }}  style={[styles.restImg , {width:'100%'}]} resizeMode={'cover'}/>
-
-
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{this.props.profileDetails.address}</Text>
-                            </View>
+                                    <Image source={{ uri: this.props.profileDetails.image }}  style={[styles.restImg , {width:'100%'}]} resizeMode={'cover'}/>
 
 
-                            <Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing  , {fontSize:13}]}>{this.props.profileDetails.details}</Text>
+                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                        <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.profileDetails.address}</Text>
+                                    </View>
 
-                            <View style={[styles.directionRowAlignCenter , styles.mt15 , styles.mb15]}>
-                                <Image source={require('../../assets/images/feather_color.png')} style={[styles.resha]} resizeMode={'contain'} />
-                                <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('products') }</Text>
-                            </View>
 
-                            <View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>
-                                {
-                                    this.props.profileDetails.products.map((product, i) =>{
-                                        return (
-                                            <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('productDetails', {product_id:product.product_id})}>
-                                                <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
-                                            </TouchableOpacity>
-                                        )
-                                    })
-                                }
-                            </View>
+                                    <Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing  , {fontSize:13}]}>{this.props.profileDetails.details}</Text>
 
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('products' , {user_id :this.props.navigation.state.params.user_id })} style={styles.delAcc}>
-                                <Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>
-                            </TouchableOpacity>
-                        </View>
+                                    <View style={[styles.directionRowAlignCenter , styles.mt15 , styles.mb15]}>
+                                        <Image source={require('../../assets/images/feather_color.png')} style={[styles.resha]} resizeMode={'contain'} />
+                                        <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('products') }</Text>
+                                    </View>
+
+                                    <View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>
+                                        {
+                                            this.props.profileDetails.products.map((product, i) =>{
+                                                return (
+                                                    <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('productDetails', {product_id:product.product_id})}>
+                                                        <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
+                                                    </TouchableOpacity>
+                                                )
+                                            })
+                                        }
+                                    </View>
+
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('products' , {user_id :this.props.navigation.state.params.user_id })} style={styles.delAcc}>
+                                        <Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                :
+                                <View/>
+                        }
+
                     </ImageBackground>
 
                 </Content>

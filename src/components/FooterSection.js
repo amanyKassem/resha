@@ -56,12 +56,23 @@ class FooterSection extends Component {
             case 'profile': path = require('../../assets/images/user_non_active.png');
                 break;
         }
+
+        if(tabName == 'reservations' || tabName == 'saves' || tabName == 'profile'){
+            return(
+
+                <Button transparent onPress={() => this.props.navigation.navigate('login')} >
+                    <Image style={styles.footImg} resizeMode={'contain'} source={path}/>
+                </Button>
+            );
+        }
+
         return(
 
             <Button transparent onPress={() => this.props.navigation.navigate(tabName)} >
                 <Image style={styles.footImg} resizeMode={'contain'} source={path}/>
             </Button>
         );
+
     }
 
 

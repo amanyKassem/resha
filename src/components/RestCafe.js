@@ -50,7 +50,7 @@ class RestCafe extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('restCafeDetails' , {user_id: item.user_id})} style={[styles.eventTouch ]}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user ? 'restCafeDetails' : 'login' , {user_id: item.user_id})} style={[styles.eventTouch ]}>
                 <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                 <View style={[styles.eventCont , { backgroundColor: '#b1aba940'}]}>
                     <Text style={[styles.whiteText , styles.BoldText , {top:-5}]}>{item.name}</Text>
@@ -164,9 +164,10 @@ class RestCafe extends Component {
 }
 
 
-const mapStateToProps = ({ lang , restaurants }) => {
+const mapStateToProps = ({ lang , profile , restaurants }) => {
     return {
         lang: lang.lang,
+        user: profile.user,
         restaurants: restaurants.restaurants,
         desc: restaurants.desc,
         count: restaurants.count,

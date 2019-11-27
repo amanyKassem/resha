@@ -129,75 +129,81 @@ class ShowTicket extends Component {
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
-                        <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
-                            <View style={styles.directionRowSpace}>
-                                <View style={styles.directionRowAlignCenter}>
-                                    <View style={styles.borderImg}>
-                                        <Image source={require('../../assets/images/profile_pic.png')} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                        {
+                            this.props.ownerEventsDetails?
+                                <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
+                                    <View style={styles.directionRowSpace}>
+                                        <View style={styles.directionRowAlignCenter}>
+                                            <View style={styles.borderImg}>
+                                                <Image source={require('../../assets/images/profile_pic.png')} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                                            </View>
+                                            <View style={styles.directionColumn}>
+                                                <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.ownerEventsDetails.user.user_name}</Text>
+                                                <StarRating
+                                                    disabled={false}
+                                                    maxStars={5}
+                                                    rating={this.props.ownerEventsDetails.user.rates}
+                                                    fullStarColor={'#f0aa0b'}
+                                                    selectedStar={(rating) => this.onStarRatingPress(rating)}
+                                                    starSize={18}
+                                                    starStyle={styles.starStyle}
+                                                />
+                                            </View>
+                                        </View>
+
+                                        <TouchableOpacity >
+                                            <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
+                                        </TouchableOpacity>
                                     </View>
-                                    <View style={styles.directionColumn}>
-                                        <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.ownerEventsDetails.user.user_name}</Text>
-                                        <StarRating
-                                            disabled={false}
-                                            maxStars={5}
-                                            rating={this.props.ownerEventsDetails.user.rates}
-                                            fullStarColor={'#f0aa0b'}
-                                            selectedStar={(rating) => this.onStarRatingPress(rating)}
-                                            starSize={18}
-                                            starStyle={styles.starStyle}
-                                        />
+
+                                    <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
+                                            containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
+                                        {
+                                            this.props.ownerEventsDetails.images.map((img, i) =>{
+                                                return (
+                                                    <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                )
+                                            })
+                                        }
+                                    </Swiper>
+
+                                    <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing, styles.mb10]}>{this.props.ownerEventsDetails.name}</Text>
+                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                        <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
+                                            <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                            <Text style={[styles.blueText , styles.normalText]}>{this.props.ownerEventsDetails.time}</Text>
+                                        </View>
+                                        <View style={[styles.directionRowAlignCenter ]}>
+                                            <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                            <Text style={[styles.blueText , styles.normalText]}>{this.props.ownerEventsDetails.date}</Text>
+                                        </View>
                                     </View>
+                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                        <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.ownerEventsDetails.normal_price} { i18n.t('RS') }</Text>
+                                    </View>
+                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                        <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.ownerEventsDetails.address}</Text>
+                                    </View>
+                                    <Text style={[styles.grayText , styles.normalText, styles.asfs , styles.writing , {fontSize:13}]}>{this.props.ownerEventsDetails.details}</Text>
+
+
+                                    { this.props.navigation.state.params.eventType === 0 ?
+                                        <TouchableOpacity onPress={this._cancelEvent} style={[styles.disabledBtn, styles.mt50 , styles.mb15]}>
+                                            <Text style={[styles.boldGrayText , styles.normalText ]}>{ i18n.t('cancel') }</Text>
+                                        </TouchableOpacity>
+                                        :
+                                        <View/>
+                                    }
+
+
+
                                 </View>
-
-                                <TouchableOpacity >
-                                    <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
-                                </TouchableOpacity>
-                            </View>
-
-                            <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                     containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
-                                {
-                                    this.props.ownerEventsDetails.images.map((img, i) =>{
-                                        return (
-                                            <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
-                                        )
-                                    })
-                                }
-                            </Swiper>
-
-                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing, styles.mb10]}>{this.props.ownerEventsDetails.name}</Text>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
-                                    <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.ownerEventsDetails.time}</Text>
-                                </View>
-                                <View style={[styles.directionRowAlignCenter ]}>
-                                    <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.ownerEventsDetails.date}</Text>
-                                </View>
-                            </View>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{this.props.ownerEventsDetails.normal_price} { i18n.t('RS') }</Text>
-                            </View>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{this.props.ownerEventsDetails.address}</Text>
-                            </View>
-                            <Text style={[styles.grayText , styles.normalText, styles.asfs , styles.writing , {fontSize:13}]}>{this.props.ownerEventsDetails.details}</Text>
-
-
-                            { this.props.navigation.state.params.eventType === 0 ?
-                                <TouchableOpacity onPress={this._cancelEvent} style={[styles.disabledBtn, styles.mt50 , styles.mb15]}>
-                                    <Text style={[styles.boldGrayText , styles.normalText ]}>{ i18n.t('cancel') }</Text>
-                                </TouchableOpacity>
                                 :
                                 <View/>
-                            }
+                        }
 
-
-
-                        </View>
                     </ImageBackground>
                     <Modal onBackdropPress={()=> this.setState({ cancelEvent : false })} isVisible={this.state.cancelEvent}>
                         <View style={styles.modalEvent}>

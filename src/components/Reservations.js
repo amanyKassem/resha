@@ -175,43 +175,49 @@ class Reservations extends Component {
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
-                        <View style={[styles.homeSection  , {paddingHorizontal:0}]}>
+                        {
+                            this.props.reservations ?
+                                <View style={[styles.homeSection  , {paddingHorizontal:0}]}>
 
-                            <View style={styles.reservationScroll}>
-                                <ScrollView style={{}} horizontal={true} showsHorizontalScrollIndicator={false}>
-                                    {/*<TouchableOpacity onPress={ () => this.setState({activeType:0})} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeType === 0 ?'#6b4d6b' : 'transparent'}]}>*/}
-                                        {/*<Text style={[styles.reservationScrollText]}>15</Text>*/}
-                                        {/*<Text style={[styles.reservationScrollText]}>December</Text>*/}
-                                    {/*</TouchableOpacity>*/}
+                                    <View style={styles.reservationScroll}>
+                                        <ScrollView style={{}} horizontal={true} showsHorizontalScrollIndicator={false}>
+                                            {/*<TouchableOpacity onPress={ () => this.setState({activeType:0})} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeType === 0 ?'#6b4d6b' : 'transparent'}]}>*/}
+                                            {/*<Text style={[styles.reservationScrollText]}>15</Text>*/}
+                                            {/*<Text style={[styles.reservationScrollText]}>December</Text>*/}
+                                            {/*</TouchableOpacity>*/}
 
-                                    {
-                                        this.props.reservations.dates.map((date, i) => {
-                                                return(
-                                                    <TouchableOpacity onPress={ () => this.pressedDate(date.date)} key={i} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeDate === date.date ?'#6b4d6b' : 'transparent'}]}>
-                                                        <Text style={[styles.reservationScrollText]}>{date.day}</Text>
-                                                        <Text style={[styles.reservationScrollText]}>{date.month}</Text>
-                                                    </TouchableOpacity>
+                                            {
+                                                this.props.reservations.dates.map((date, i) => {
+                                                        return(
+                                                            <TouchableOpacity onPress={ () => this.pressedDate(date.date)} key={i} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeDate === date.date ?'#6b4d6b' : 'transparent'}]}>
+                                                                <Text style={[styles.reservationScrollText]}>{date.day}</Text>
+                                                                <Text style={[styles.reservationScrollText]}>{date.month}</Text>
+                                                            </TouchableOpacity>
+                                                        )
+                                                    }
                                                 )
                                             }
-                                        )
-                                    }
 
-                                </ScrollView>
-                            </View>
+                                        </ScrollView>
+                                    </View>
 
-                           <View style={{paddingHorizontal:10}}>
-                               {
-                                   this.renderNoData()
-                               }
-                               <FlatList
-                                   data={this.props.reservations.tickets}
-                                   renderItem={({item}) => this.renderItems(item)}
-                                   numColumns={1}
-                                   keyExtractor={this._keyExtractor}
-                               />
-                           </View>
+                                    <View style={{paddingHorizontal:10}}>
+                                        {
+                                            this.renderNoData()
+                                        }
+                                        <FlatList
+                                            data={this.props.reservations.tickets}
+                                            renderItem={({item}) => this.renderItems(item)}
+                                            numColumns={1}
+                                            keyExtractor={this._keyExtractor}
+                                        />
+                                    </View>
 
-                        </View>
+                                </View>
+                                :
+                                <View/>
+                        }
+
                     </ImageBackground>
                 </Content>
                 <FooterSection routeName={'reservations'} navigation={this.props.navigation}/>
