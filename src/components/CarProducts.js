@@ -16,17 +16,13 @@ import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import Modal from "react-native-modal";
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getAuthProducts , getDeleteProduct} from "../actions";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
-const products =[
-    {key:1 , product:'اسم المنتج', family:'اسم الأسرة', category:'تصنيف حلويات', image:require('../../assets/images/event_image_tean.jpg') , price:'144 ريال' , rate:'3/5'},
-    {key:2 , product:'اسم المنتج', family:'اسم الأسرة', category:'تصنيف حلويات', image:require('../../assets/images/events_pic_image.jpg') , price:'144 ريال' , rate:'3/5'},
-    {key:3 , product:'اسم المنتج', family:'اسم الأسرة', category:'تصنيف حلويات', image:require('../../assets/images/image_eleven.jpg') , price:'144 ريال' , rate:'3/5'},
-    {key:4 , product:'اسم المنتج', family:'اسم الأسرة', category:'تصنيف حلويات', image:require('../../assets/images/event_image_tean.jpg') , price:'144 ريال' , rate:'3/5'},
-    {key:5 , product:'اسم المنتج', family:'اسم الأسرة', category:'تصنيف حلويات', image:require('../../assets/images/events_pic_image.jpg') , price:'144 ريال' , rate:'3/5'},
-    {key:6 , product:'اسم المنتج', family:'اسم الأسرة', category:'تصنيف حلويات', image:require('../../assets/images/image_eleven.jpg') , price:'144 ريال' , rate:'3/5'},
-]
 
 class CarProducts extends Component {
     constructor(props){
@@ -35,9 +31,10 @@ class CarProducts extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            products,
+            loader: 1,
             search:'',
             deleteProduct: false,
+            prodID:''
         }
     }
 
@@ -45,7 +42,34 @@ class CarProducts extends Component {
         drawerLabel: () => null
     });
 
-    _deleteProduct = () => this.setState({ deleteProduct: !this.state.deleteProduct });
+    componentWillMount() {
+        this.setState({ loader: 1});
+        this.props.getAuthProducts( this.props.lang , this.props.user.token  )
+    }
+
+    renderLoader(){
+        if (this.state.loader == 1){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loader: nextProps.key });
+    }
+
+    _deleteProduct = (product_id) => {
+        this.setState({ deleteProduct: !this.state.deleteProduct , prodID:product_id});
+    }
+
+    confirmDelete = () => {
+        this.setState({ deleteProduct: !this.state.deleteProduct });
+        this.props.getDeleteProduct( this.props.lang , this.state.prodID , this.props.user.token )
+    }
 
     _keyExtractor = (item, index) => item.id;
 
@@ -53,17 +77,17 @@ class CarProducts extends Component {
         return(
             <View style={[styles.notiBlock , styles.directionRow]}>
 
-                <TouchableOpacity style={[styles.touchImg ]} onPress={ () => this.props.navigation.navigate('restProductDetails')}>
-                    <Image source={item.image} resizeMode={'cover'} style={[styles.sideDrawerImg ]}/>
+                <TouchableOpacity style={[styles.touchImg ]} onPress={ () => this.props.navigation.navigate('restProductDetails', {product_id:item.id})}>
+                    <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={[styles.sideDrawerImg ]}/>
                 </TouchableOpacity>
 
                 <View style={[styles.directionColumn , {flex:1}]}>
 
-                    <TouchableOpacity onPress={this._deleteProduct} style={styles.deleteProduct}>
+                    <TouchableOpacity onPress={() => this._deleteProduct(item.id)} style={styles.deleteProduct}>
                         <Image source={require('../../assets/images/garbage_red.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                     </TouchableOpacity>
 
-                    <Text style={[styles.headerText , styles.writing , styles.asfs , {color:'#272727'}]}>{item.product}</Text>
+                    <Text style={[styles.headerText , styles.writing , styles.asfs , {color:'#272727'}]}>{item.name}</Text>
 
                     <View style={[styles.directionRowAlignCenter]}>
                         <Image source={require('../../assets/images/category.png')} style={[styles.notiImg]} resizeMode={'contain'} />
@@ -71,7 +95,7 @@ class CarProducts extends Component {
                     </View>
                     <View style={[styles.directionRowAlignCenter]}>
                         <Image source={require('../../assets/images/identification.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                        <Text style={[styles.blueText , styles.normalText , {color:COLORS.gray}]}>{item.family}</Text>
+                        <Text style={[styles.blueText , styles.normalText , {color:COLORS.gray}]}>{item.profile_name}</Text>
                     </View>
                     <View style={styles.directionRowAlignCenter}>
                         <View style={[styles.eventBtn]}>
@@ -79,7 +103,7 @@ class CarProducts extends Component {
                         </View>
                         <View style={[styles.eventBtn , {backgroundColor:'#f0ac3f' , flexDirection:'row' , marginLeft:10}]}>
                             <Image source={require('../../assets/images/star_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                            <Text style={[styles.whiteText , styles.normalText]}>{item.rate}</Text>
+                            <Text style={[styles.whiteText , styles.normalText]}>{item.rates} / 5</Text>
                         </View>
                     </View>
                 </View>
@@ -87,6 +111,16 @@ class CarProducts extends Component {
         );
     }
 
+
+    renderNoData(){
+        if (this.props.authProducts && (this.props.authProducts).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ marginTop: 60, alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
+
+        return <View />
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -121,9 +155,10 @@ class CarProducts extends Component {
         }
     }
 
-    submitSearch(){
-        // this.props.navigation.navigate('searchResult', { search : this.state.search } );
+    onFocus(payload){
+        this.componentWillMount()
     }
+
     render() {
 
         const backgroundColor = this.state.backgroundColor.interpolate({
@@ -147,13 +182,16 @@ class CarProducts extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
 
-
-
+                            {
+                                this.renderNoData()
+                            }
                             <FlatList
-                                data={this.state.products}
+                                data={this.props.authProducts}
                                 renderItem={({item}) => this.renderItems(item)}
                                 numColumns={1}
                                 keyExtractor={this._keyExtractor}
@@ -174,10 +212,10 @@ class CarProducts extends Component {
                             <View style={styles.line}/>
 
                             <View style={styles.directionRowSpace}>
-                                <TouchableOpacity onPress={() => this._deleteProduct()} style={[styles.centerBlock ,{width:'50%' , borderRightWidth:.5 , borderColor:COLORS.lightGray ,}]}>
+                                <TouchableOpacity onPress={() => this.confirmDelete()} style={[styles.centerBlock ,{width:'50%' , borderRightWidth:.5 , borderColor:COLORS.lightGray ,}]}>
                                     <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('confirm') }</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this._deleteProduct()} style={[styles.centerBlock ,{width:'50%'}]}>
+                                <TouchableOpacity onPress={() => this.setState({ deleteProduct: !this.state.deleteProduct })} style={[styles.centerBlock ,{width:'50%'}]}>
                                     <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('cancel') }</Text>
                                 </TouchableOpacity>
                             </View>
@@ -190,5 +228,12 @@ class CarProducts extends Component {
     }
 }
 
-
-export default CarProducts;
+const mapStateToProps = ({ lang , authProducts , profile}) => {
+    return {
+        lang: lang.lang,
+        authProducts: authProducts.authProducts,
+        key: authProducts.key,
+        user: profile.user,
+    };
+};
+export default connect(mapStateToProps, {getAuthProducts , getDeleteProduct})(CarProducts);

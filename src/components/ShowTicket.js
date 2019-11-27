@@ -56,7 +56,7 @@ class ShowTicket extends Component {
     }
     myEvents() {
         this.setState({ cancelEvent: !this.state.cancelEvent });
-        this.props.getCancelEvent( this.props.lang , this.props.navigation.state.params.event_id , this.props.user.token)
+        this.props.getCancelEvent( this.props.lang , this.props.navigation.state.params.event_id , this.props.user.token , this.props)
         this.props.navigation.navigate('myEvents')
     };
 

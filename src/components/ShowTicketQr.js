@@ -60,7 +60,7 @@ class ShowTicketQr extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.deleteTicket) {
             this.setState({isSubmitted: false});
-            this.props.navigation.navigate('reservations')
+            // this.props.navigation.navigate('reservations')
         }
         console.log('nextProps.deleteTicket' , nextProps.deleteTicket)
     }
@@ -69,7 +69,8 @@ class ShowTicketQr extends Component {
         this.setState({ isSubmitted: true });
         this.props.getDeleteTicket( this.props.lang ,
             this.props.navigation.state.params.ticketsInfo.ticket_id,
-            this.props.user.token
+            this.props.user.token,
+            this.props
         )
     }
 

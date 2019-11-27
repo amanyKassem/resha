@@ -7,6 +7,7 @@ import COLORS from '../../src/consts/colors'
 import {connect} from "react-redux";
 import {getOwnerEvent} from "../actions";
 import {DoubleBounce} from "react-native-loader";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -116,6 +117,9 @@ class MyEvents extends Component {
         }
     }
 
+    onFocus(payload){
+        this.componentWillMount()
+    }
 
     render() {
 
@@ -126,6 +130,7 @@ class MyEvents extends Component {
 
         return (
             <Container>
+                { this.renderLoader() }
 
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
@@ -140,7 +145,7 @@ class MyEvents extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
-                    { this.renderLoader() }
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
 
                         <View style={styles.mainScroll}>

@@ -24,6 +24,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import {getEventCategories, getEventsPrices , getFilterEvents} from "../actions";
 import {connect} from "react-redux";
 import { DoubleBounce } from 'react-native-loader';
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -226,7 +227,9 @@ class SearchFilter extends Component {
         this.props.getFilterEvents( this.props.lang , this.state.value , this.state.mapRegion.latitude , this.state.mapRegion.longitude , this.state.eventType , this.props.user.token , this.props)
     }
 
-
+    onFocus(payload){
+        this.componentWillMount()
+    }
 
     render() {
 
@@ -240,17 +243,18 @@ class SearchFilter extends Component {
 
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
-                        <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
-                            <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
-                        </TouchableOpacity>
-                        <Text style={[styles.headerText]}>{ i18n.t('searchFilter') }</Text>
-                        <TouchableOpacity style={styles.headerBtn}>
-                            <Image source={require('../../assets/images/reload_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
-                        </TouchableOpacity>
+                        <Right style={styles.flex0}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                                <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
+                            </TouchableOpacity>
+                        </Right>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('searchFilter') }</Text>
+                        <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
                             <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
@@ -341,6 +345,7 @@ class SearchFilter extends Component {
                                     <View style={styles.sliderParent}>
                                         <Slider
                                             step={10}
+                                            minimumValue={this.props.eventsPrices.min}
                                             maximumValue={this.props.eventsPrices.max}
                                             onValueChange={(value) => this.change(value)}
                                             // value={this.state.value}

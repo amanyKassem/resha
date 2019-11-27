@@ -16,9 +16,14 @@ import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import {getTypeCategories, getStoreProduct} from "../actions";
+import {connect} from "react-redux";
+import { DoubleBounce } from 'react-native-loader';
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
+let base64   = [];
 
 class AddProduct extends Component {
     constructor(props){
@@ -37,6 +42,7 @@ class AddProduct extends Component {
             price: '',
             category: null,
             moreDet: '',
+            isSubmitted: false
         }
     }
 
@@ -50,6 +56,14 @@ class AddProduct extends Component {
 
     };
 
+
+    componentWillMount() {
+        this.props.getTypeCategories(this.props.lang , this.props.user.type );
+        base64 = [];
+        this.setState({prodName:'' ,price :'' , category: null, moreDet: '' , prodImg1: null, base64_1: null, prodImg2: null, base64_2: null, prodImg3: null, base64_3: null , isSubmitted: false})
+    }
+
+
     _pickImage = async () => {
 
         this.askPermissionsAsync();
@@ -59,7 +73,7 @@ class AddProduct extends Component {
             aspect: [4, 3],
             base64:true
         });
-
+        base64.push(result.base64)
         console.log(result);
 
         // check if there is image then set it and make button not disabled
@@ -77,7 +91,7 @@ class AddProduct extends Component {
             aspect: [4, 3],
             base64:true
         });
-
+        base64.push(result.base64)
         console.log(result);
 
         // check if there is image then set it and make button not disabled
@@ -95,7 +109,7 @@ class AddProduct extends Component {
             aspect: [4, 3],
             base64:true
         });
-
+        base64.push(result.base64)
         console.log(result);
 
         // check if there is image then set it and make button not disabled
@@ -140,6 +154,48 @@ class AddProduct extends Component {
     }
 
 
+    renderSubmit(){
+        if (this.state.prodName == '' || this.state.price == '' || this.state.category == '' || this.state.moreDet == '' || base64.length <= 0 ){
+            return (
+                <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , { backgroundColor: '#999' }]}>
+                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
+                </TouchableOpacity>
+            );
+        }
+
+        if (this.state.isSubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt50, styles.mb15 ]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity  onPress={() => this.submitData()} style={[styles.blueBtn , styles.mt50, styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.key == 1) {
+            this.setState({isSubmitted: false});
+        }
+        console.log('nextProps.storeProduct' , nextProps.storeProduct)
+    }
+
+    submitData(){
+        this.setState({ isSubmitted: true });
+        this.props.getStoreProduct( this.props.lang , this.state.prodName , this.state.price , this.state.category , this.state.moreDet , base64 , this.props.user.token , this.props)
+    }
+
+
+    onFocus(payload){
+        this.componentWillMount()
+    }
+
+
     render() {
         let image1 = this.state.prodImg1;
         let image2 = this.state.prodImg2;
@@ -165,6 +221,7 @@ class AddProduct extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
                           
@@ -247,8 +304,13 @@ class AddProduct extends Component {
                                                 selectedValue={this.state.category}
                                                 onValueChange={(value) => this.setState({ category: value })}
                                             >
-                                                <Picker.Item label={'حلويات'} value={1} />
-                                                <Picker.Item label={'مشروبات'}  value={2} />
+                                                <Picker.Item label={ i18n.t('category') } value={null} />
+                                                {
+                                                    this.props.typeCategories.map((cat, i) => (
+                                                        <Picker.Item key={i} label={cat.name} value={cat.id} />
+                                                    ))
+
+                                                }
                                             </Picker>
                                             <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
                                         </Item>
@@ -264,9 +326,9 @@ class AddProduct extends Component {
                                         </Item>
                                     </View>
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('restProductDetails')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
-                                    </TouchableOpacity>
+                                    {
+                                        this.renderSubmit()
+                                    }
 
 
                                 </Form>
@@ -280,4 +342,13 @@ class AddProduct extends Component {
     }
 }
 
-export default AddProduct;
+const mapStateToProps = ({ lang , typeCategories , storeProduct , profile}) => {
+    return {
+        lang: lang.lang,
+        typeCategories: typeCategories.typeCategories,
+        storeProduct: storeProduct.storeProduct,
+        user: profile.user,
+        key:storeProduct.key
+    };
+};
+export default connect(mapStateToProps, {getTypeCategories , getStoreProduct})(AddProduct);

@@ -43,6 +43,16 @@ import profileDetails from './ProfileDetailsReducer';
 import profileProducts from './ProfileProductsReducer';
 import showProduct from './ShowProductReducer';
 import rateProduct from './RateProductReducer';
+import filterFamilies from './FilterFamiliesReducer';
+import showProfile from './ShowProfileReducer';
+import filterProducts from './FilterProductsReducer';
+import productPrices from './ProductPricesReducer';
+import typeCategories from './TypeCategoriesReducer';
+import updateProfileMain from './UpdateProfileMainReducer';
+import storeProduct from './StoreProductReducer';
+import productAvailability from './ProductAvailabilityReducer';
+import authProducts from './AuthProductsReducer';
+import filterRestaurants from './FilterRestaurantsReducer';
 
 export default combineReducers({
     lang,
@@ -89,4 +99,14 @@ export default combineReducers({
     profileProducts,
     showProduct,
     rateProduct,
+    filterFamilies,
+    showProfile,
+    filterProducts,
+    productPrices,
+    typeCategories,
+    updateProfileMain,
+    storeProduct,
+    productAvailability,
+    authProducts,
+    filterRestaurants,
 });

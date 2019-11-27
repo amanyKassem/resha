@@ -6,7 +6,7 @@ import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
-import {getProfileProducts} from "../actions";
+import {getProfileProducts , getFilterProducts} from "../actions";
 import {NavigationEvents} from "react-navigation";
 
 
@@ -67,7 +67,7 @@ class Products extends Component {
                     </View>
                     <View style={styles.directionRowAlignCenter}>
                         <View style={[styles.eventBtn]}>
-                            <Text style={[styles.whiteText , styles.normalText]}>{item.price}</Text>
+                            <Text style={[styles.whiteText , styles.normalText]}>{item.price} { i18n.t('RS') }</Text>
                         </View>
                         <View style={[styles.eventBtn , {backgroundColor:'#f0ac3f' , flexDirection:'row' , marginLeft:10}]}>
                             <Image source={require('../../assets/images/star_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
@@ -122,7 +122,7 @@ class Products extends Component {
     }
 
     submitSearch(){
-        // this.props.navigation.navigate('searchResult', { search : this.state.search } );
+        this.props.getFilterProducts( this.props.lang , this.props.navigation.state.params.user_id ,this.state.search , null , null , this.props)
     }
 
     onFocus(payload){
@@ -145,7 +145,7 @@ class Products extends Component {
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                         </TouchableOpacity>
                         <Text style={[styles.headerText]}>{ i18n.t('products') }</Text>
-                        <TouchableOpacity onPress={ () => this.props.navigation.navigate('productFilter')} style={styles.headerBtn}>
+                        <TouchableOpacity onPress={ () => this.props.navigation.navigate('productFilter' ,{user_id: this.props.navigation.state.params.user_id})} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/filter_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>
                     </Animated.View>
@@ -159,7 +159,7 @@ class Products extends Component {
 
                             <View style={[styles.inputView , {marginHorizontal:10}]}>
                                 <Item  style={styles.inputItem} bordered>
-                                    <Input autoCapitalize='none' onSubmitEditing={() => this.submitSearch() } onChangeText={(search) => this.setState({ search })} placeholder={ i18n.t('search') } placeholderTextColor={'#acabae'} style={styles.modalInput}   />
+                                    <Input autoCapitalize='none' onChangeText={(search) => this.setState({ search })} placeholder={ i18n.t('search') } placeholderTextColor={'#acabae'} style={styles.modalInput}   />
                                 </Item>
                                 <TouchableOpacity style={[styles.searchToch]} onPress={() => this.submitSearch()}>
                                     <Image source={require('../../assets/images/search_floting.png')} style={[styles.searchImg , styles.transform]} resizeMode={'contain'}/>
@@ -184,11 +184,13 @@ class Products extends Component {
     }
 }
 
-const mapStateToProps = ({ lang , profileProducts }) => {
+const mapStateToProps = ({ lang , profileProducts , filterProducts}) => {
     return {
         lang: lang.lang,
         profileProducts: profileProducts.profileProducts,
-        key: profileProducts.key
+        filterProducts: filterProducts.filterProducts,
+        key: profileProducts.key,
+        filterKey: filterProducts.key,
     };
 };
-export default connect(mapStateToProps, {getProfileProducts})(Products);
+export default connect(mapStateToProps, {getProfileProducts , getFilterProducts})(Products);

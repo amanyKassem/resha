@@ -6,7 +6,7 @@ import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
-import {getFamilies} from "../actions";
+import {getFamilies , getFilterFamilies} from "../actions";
 import {NavigationEvents} from "react-navigation";
 
 
@@ -20,6 +20,7 @@ class Families extends Component {
             backgroundColor: new Animated.Value(0),
             availabel: 0,
             search:'',
+            loader: 1
         }
     }
 
@@ -28,11 +29,12 @@ class Families extends Component {
     });
 
     componentWillMount() {
+        this.setState({ loader: 1});
         this.props.getFamilies( this.props.lang , this.props.navigation.state.params.category_id )
     }
 
     renderLoader(){
-        if (this.props.key === 0){
+        if (this.state.loader == 1){
             return(
                 <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
                     <DoubleBounce size={20} color={COLORS.mov} />
@@ -42,6 +44,10 @@ class Families extends Component {
     }
 
     _keyExtractor = (item, index) => item.id;
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loader: nextProps.key });
+    }
 
     renderItems = (item) => {
         return(
@@ -110,7 +116,7 @@ class Families extends Component {
     }
 
     submitSearch(){
-        // this.props.navigation.navigate('searchResult', { search : this.state.search } );
+        this.props.getFilterFamilies( this.props.lang ,this.state.search , null , null , this.props)
     }
     onFocus(payload){
         this.componentWillMount()
@@ -146,7 +152,7 @@ class Families extends Component {
 
                             <View style={[styles.inputView , {marginHorizontal:10}]}>
                                 <Item  style={styles.inputItem} bordered>
-                                    <Input autoCapitalize='none' onSubmitEditing={() => this.submitSearch() } onChangeText={(search) => this.setState({ search })} placeholder={ i18n.t('search') } placeholderTextColor={'#acabae'} style={styles.modalInput}   />
+                                    <Input autoCapitalize='none' onChangeText={(search) => this.setState({ search })} placeholder={ i18n.t('search') } placeholderTextColor={'#acabae'} style={styles.modalInput}   />
                                 </Item>
                                 <TouchableOpacity style={[styles.searchToch]} onPress={() => this.submitSearch()}>
                                     <Image source={require('../../assets/images/search_floting.png')} style={[styles.searchImg , styles.transform]} resizeMode={'contain'}/>
@@ -174,11 +180,14 @@ class Families extends Component {
 }
 
 
-const mapStateToProps = ({ lang , families }) => {
+const mapStateToProps = ({ lang , families , profile , filterFamilies}) => {
     return {
         lang: lang.lang,
         families: families.families,
-        key: families.key
+        key: families.key,
+        user: profile.user,
+        filterFamilies: filterFamilies.filterFamilies,
+        filterKey: filterFamilies.key,
     };
 };
-export default connect(mapStateToProps, {getFamilies})(Families);
+export default connect(mapStateToProps, {getFamilies , getFilterFamilies})(Families);

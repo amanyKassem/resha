@@ -80,6 +80,11 @@ import ProposedEvents from "../components/ProposedEvents";
 import CommonEvents from "../components/CommonEvents";
 import InitScreen from "../components/InitScreen";
 import SignIn from "../components/SignIn";
+import SearchFamiliesResult from "../components/SearchFamiliesResult";
+import SearchProductsResult from "../components/SearchProductsResult";
+import EditProduct from "../components/EditProduct";
+import RestFilter from "../components/RestFilter";
+import SearchRestResult from "../components/SearchRestResult";
 
 
 const width = Dimensions.get('window').width;
@@ -151,6 +156,11 @@ const drawerNavigator = createDrawerNavigator({
     proposedEvents:ProposedEvents,
     commonEvents:CommonEvents,
     signIn:SignIn,
+    searchFamiliesResult:SearchFamiliesResult,
+    searchProductsResult:SearchProductsResult,
+    editProduct:EditProduct,
+    restFilter:RestFilter,
+    searchRestResult:SearchRestResult,
 
 },{
     initialRouteName:'home',
@@ -168,14 +178,32 @@ const drawerNavigator = createDrawerNavigator({
 const appStack = createStackNavigator({
 
 
+    drawerNavigator: {
+        screen: drawerNavigator,
+        navigationOptions: {
+            header: null
+        }
+    },
     language: {
         screen: Language,
         navigationOptions: {
             header: null
         }
     },
-    drawerNavigator: {
-        screen: drawerNavigator,
+    searchRestResult: {
+        screen: SearchRestResult,
+        navigationOptions: {
+            header: null
+        }
+    },
+    restFilter: {
+        screen: RestFilter,
+        navigationOptions: {
+            header: null
+        }
+    },
+    editProduct: {
+        screen: EditProduct,
         navigationOptions: {
             header: null
         }
@@ -188,6 +216,18 @@ const appStack = createStackNavigator({
     },
     proposedEvents: {
         screen: ProposedEvents,
+        navigationOptions: {
+            header: null
+        }
+    },
+    searchFamiliesResult: {
+        screen: SearchFamiliesResult,
+        navigationOptions: {
+            header: null
+        }
+    },
+    searchProductsResult: {
+        screen: SearchProductsResult,
         navigationOptions: {
             header: null
         }
@@ -282,14 +322,14 @@ const appStack = createStackNavigator({
             header: null
         }
     },
-    foodPayMethod: {
-        screen: FoodPayMethod,
+    foodPayment: {
+        screen: FoodPayment,
         navigationOptions: {
             header: null
         }
     },
-    foodPayment: {
-        screen: FoodPayment,
+    foodPayMethod: {
+        screen: FoodPayMethod,
         navigationOptions: {
             header: null
         }
@@ -649,6 +689,7 @@ const authStack = createStackNavigator({
 
 
 const AppNavigator = createSwitchNavigator({
+
     initScreen: {
         screen: InitScreen,
         navigationOptions: {

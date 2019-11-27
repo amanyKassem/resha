@@ -2,7 +2,7 @@ import axios from "axios";
 import CONST from "../consts";
 
 
-export const getDeleteTicket = (lang , ticket_id , token) => {
+export const getDeleteTicket = (lang , ticket_id , token , props) => {
     return (dispatch) => {
 
         axios({
@@ -12,6 +12,9 @@ export const getDeleteTicket = (lang , ticket_id , token) => {
             data: {lang ,ticket_id}
         }).then(response => {
             dispatch({type: 'getDeleteTicket', payload: response.data})
+            if (response.data.key == 1){
+                props.navigation.navigate('reservations')
+            }
         })
 
     }

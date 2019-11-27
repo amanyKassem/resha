@@ -4,7 +4,7 @@ export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case 'getProfileDetails':{
             return {
-                profileDetails: action.payload,
+                profileDetails: action.payload.data,
                 key: action.payload.key,
             };
         }

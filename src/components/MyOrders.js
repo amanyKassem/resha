@@ -45,6 +45,7 @@ class MyOrders extends Component {
 
 
     componentWillMount() {
+        this.setState({activeDate:null});
         this.getEvents(1)
     }
 
@@ -71,11 +72,11 @@ class MyOrders extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        this.setState({ loader: 0 });
+        this.setState({ loader: nextProps.key });
         console.log('nextprops organizer' , nextProps.organizerEvents)
     }
     pressedDate(date){
-        this.setState({activeDate :date})
+        this.setState({activeDate :date , loader: 1})
         this.props.getOrganizerEvents( this.props.lang , this.state.tabActiveType , date , this.props.user.token)
     }
 
@@ -155,6 +156,7 @@ class MyOrders extends Component {
 
         return (
             <Container>
+                { this.renderLoader() }
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <TouchableOpacity  onPress={() => this.props.navigation.openDrawer()} style={styles.headerBtn}>

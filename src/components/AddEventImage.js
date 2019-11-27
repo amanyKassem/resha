@@ -35,6 +35,7 @@ import Modal from "react-native-modal";
 import {connect} from "react-redux";
 import {getStoreEvent} from "../actions";
 import {NavigationEvents} from "react-navigation";
+import {DoubleBounce} from "react-native-loader";
 
 
 const height = Dimensions.get('window').height;
@@ -55,6 +56,7 @@ class AddEventImage extends Component {
             imageId: null,
             refreshed: false,
             modalEvent: false,
+            isSubmitted: false
         }
     }
 
@@ -63,11 +65,43 @@ class AddEventImage extends Component {
     });
 
     componentWillMount() {
-        // this.setState({eventImg:''})
+        base64   = [];
+        this.setState({eventImg:'', isSubmitted: false , modalEvent: false})
+    }
+
+    renderSubmit(){
+        if (base64.length <= 0 ){
+            return (
+                <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , { backgroundColor: '#999' }]}>
+                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('sendButton') }</Text>
+                </TouchableOpacity>
+            );
+        }
+
+        if (this.state.isSubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt50, styles.mb15 ]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity onPress={this._modalEvent} style={[styles.blueBtn , styles.mt50, styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('sendButton') }</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.storeEvent) {
+            this.setState({isSubmitted: false ,  modalEvent: !this.state.modalEvent});
+        }
+        console.log('nextProps.storeEvent' , nextProps.storeEvent)
     }
 
     _modalEvent = () =>{
-        // this.setState({ modalEvent: !this.state.modalEvent })
+        this.setState({ isSubmitted: true });
         this.props.getStoreEvent( this.props.lang ,
             this.props.navigation.state.params.ar_name ,
             this.props.navigation.state.params.en_name ,
@@ -95,13 +129,6 @@ class AddEventImage extends Component {
         this.setState({ modalEvent: !this.state.modalEvent });
         this.props.navigation.navigate('showTicket', {eventType: this.props.storeEvent.eventType , event_id : this.props.storeEvent.event_id})
     };
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.storeEvent)
-            this.setState({ modalEvent: !this.state.modalEvent });
-
-
-        console.log('nextPropsnextProps' , nextProps)
-    }
 
     askPermissionsAsync = async () => {
         await Permissions.askAsync(Permissions.CAMERA);
@@ -330,10 +357,11 @@ class AddEventImage extends Component {
                                         extraData={this.state.refreshed}
                                     />
 
+                            {
+                                this.renderSubmit()
+                            }
 
-                            <TouchableOpacity onPress={this._modalEvent} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('sendButton') }</Text>
-                            </TouchableOpacity>
+
                         </View>
                     </ImageBackground>
                     <Modal onBackdropPress={()=> this.setState({ modalEvent : false })} isVisible={this.state.modalEvent}>

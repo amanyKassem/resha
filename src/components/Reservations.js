@@ -34,7 +34,8 @@ class Reservations extends Component {
             backgroundColor: new Animated.Value(0),
             availabel: 0,
             activeDate:null,
-            loader: 1
+            loader: 1,
+            submitTicket: false
         }
     }
 
@@ -44,8 +45,9 @@ class Reservations extends Component {
 
 
     componentWillMount() {
-        this.setState({ loader: 1});
+        this.setState({ loader: 1 ,submitTicket: false , activeDate:null});
         this.props.getReservations( this.props.lang , this.props.user.token)
+        // console.log('1')
     }
 
     renderLoader(){
@@ -58,24 +60,29 @@ class Reservations extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
+        // console.log('2')
         this.setState({ loader: nextProps.key });
-        console.log('nextprops reservations' , nextProps)
-        // if (nextProps.detKey == 1)
-        //     this.props.navigation.navigate('showTicketQr', {
-        //         ticketsInfo : nextProps.reservationDetails,
-        //     })
+        // console.log('nextprops reservations' , nextProps)
+        if (nextProps.detKey == 1){
+            // console.log('3')
+            this.setState({ submitTicket: false});
+        }
+
     }
     pressedDate(date){
-        this.setState({activeDate :date})
+        this.setState({activeDate :date , loader: 1 })
         this.props.getReservationsByDay( this.props.lang , date , this.props.user.token)
     }
 
 
     goToTicket(ticket_id){
+        this.setState({ submitTicket: true , loader: 1 });
         this.props.getReservationDetails( this.props.lang ,
             ticket_id,
-            this.props.user.token
+            this.props.user.token,
+            this.props
         )
+        // console.log('4')
     }
 
     setAnimate(availabel){
@@ -151,6 +158,7 @@ class Reservations extends Component {
 
         return (
             <Container>
+                { this.renderLoader() }
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <TouchableOpacity  onPress={() => this.props.navigation.openDrawer()} style={styles.headerBtn}>
@@ -166,7 +174,6 @@ class Reservations extends Component {
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
-                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection  , {paddingHorizontal:0}]}>
 

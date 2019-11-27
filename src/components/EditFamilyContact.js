@@ -19,6 +19,9 @@ import Modal from "react-native-modal";
 import MapView from 'react-native-maps';
 import * as Location from 'expo-location';
 import axios from 'axios';
+import { getUpdateFamilyProfileSocial} from "../actions";
+import {connect} from "react-redux";
+import { DoubleBounce } from 'react-native-loader';
 
 
 const height = Dimensions.get('window').height;
@@ -40,9 +43,10 @@ class EditFamilyContact extends Component {
             moreDet: '',
             mainNum: '',
             phone: '',
-            email: '',
+            website: '',
             facebook: '',
             twitter: '',
+            isSubmitted: false
         }
     }
 
@@ -51,88 +55,88 @@ class EditFamilyContact extends Component {
     });
 
 
-    _toggleModal = () => this.setState({ isModalVisible: !this.state.isModalVisible });
-
-
-    async componentWillMount() {
-
-
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-            alert('صلاحيات تحديد موقعك الحالي ملغاه');
-        }else {
-            const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
-            const userLocation = { latitude, longitude };
-            this.setState({  initMap: false, mapRegion: userLocation });
-
-        }
-
-        let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-        getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
-        getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
-
-        console.log(getCity);
-
-        try {
-            const { data } = await axios.get(getCity);
-            this.setState({ location: data.results[0].formatted_address });
-
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-
-
-    async componentDidMount(){
-        const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
-        const userLocation = { latitude, longitude };
-        this.setState({  initMap: false, mapRegion: userLocation });
-    }
-
-
-    _handleMapRegionChange  = async (mapRegion) =>  {
-        console.log(mapRegion);
-        this.setState({ mapRegion });
-
-        let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-        getCity += mapRegion.latitude + ',' + mapRegion.longitude;
-        getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
-
-        console.log('locations data', getCity);
-
-
-        try {
-            const { data } = await axios.get(getCity);
-            console.log(data);
-            this.setState({ location: data.results[0].formatted_address });
-
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    _getLocationAsync = async () => {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-            this.setState({
-                locationResult: 'Permission to access location was denied',
-            });
-        } else {
-            this.setState({ hasLocationPermissions: true });
-        }
-
-        let location = await Location.getCurrentPositionAsync({});
-
-        // Center the map on the location we just fetched.
-        this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
-    };
-
-
-
-    confirmLocation(){
-        this.setState({ isModalVisible: !this.state.isModalVisible })
-    }
+    // _toggleModal = () => this.setState({ isModalVisible: !this.state.isModalVisible });
+    //
+    //
+    // async componentWillMount() {
+    //
+    //
+    //     let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    //     if (status !== 'granted') {
+    //         alert('صلاحيات تحديد موقعك الحالي ملغاه');
+    //     }else {
+    //         const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
+    //         const userLocation = { latitude, longitude };
+    //         this.setState({  initMap: false, mapRegion: userLocation });
+    //
+    //     }
+    //
+    //     let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+    //     getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
+    //     getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
+    //
+    //     console.log(getCity);
+    //
+    //     try {
+    //         const { data } = await axios.get(getCity);
+    //         this.setState({ location: data.results[0].formatted_address });
+    //
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
+    //
+    //
+    //
+    // async componentDidMount(){
+    //     const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
+    //     const userLocation = { latitude, longitude };
+    //     this.setState({  initMap: false, mapRegion: userLocation });
+    // }
+    //
+    //
+    // _handleMapRegionChange  = async (mapRegion) =>  {
+    //     console.log(mapRegion);
+    //     this.setState({ mapRegion });
+    //
+    //     let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+    //     getCity += mapRegion.latitude + ',' + mapRegion.longitude;
+    //     getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
+    //
+    //     console.log('locations data', getCity);
+    //
+    //
+    //     try {
+    //         const { data } = await axios.get(getCity);
+    //         console.log(data);
+    //         this.setState({ location: data.results[0].formatted_address });
+    //
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
+    //
+    // _getLocationAsync = async () => {
+    //     let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    //     if (status !== 'granted') {
+    //         this.setState({
+    //             locationResult: 'Permission to access location was denied',
+    //         });
+    //     } else {
+    //         this.setState({ hasLocationPermissions: true });
+    //     }
+    //
+    //     let location = await Location.getCurrentPositionAsync({});
+    //
+    //     // Center the map on the location we just fetched.
+    //     this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
+    // };
+    //
+    //
+    //
+    // confirmLocation(){
+    //     this.setState({ isModalVisible: !this.state.isModalVisible })
+    // }
 
 
     setAnimate(availabel){
@@ -168,6 +172,42 @@ class EditFamilyContact extends Component {
         }
     }
 
+    renderSubmit(){
+        if (this.state.mainNum == '' || this.state.phone == '' || this.state.website == '' || this.state.facebook == '' || this.state.twitter == ''){
+            return (
+                <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , { backgroundColor: '#999' }]}>
+                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
+                </TouchableOpacity>
+            );
+        }
+
+        if (this.state.isSubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt50, styles.mb15 ]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity  onPress={() => this.submitData()} style={[styles.blueBtn , styles.mt50, styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.key == 1) {
+            this.setState({isSubmitted: false});
+        }
+        console.log('nextProps.updateFamilyProfileSocial' , nextProps.updateFamilyProfileSocial)
+    }
+
+    submitData(){
+        this.setState({ isSubmitted: true });
+        this.props.getUpdateFamilyProfileSocial( this.props.lang , this.state.phone , this.state.mainNum , this.state.website , this.state.facebook , this.state.twitter , this.props.user.token , this.props)
+    }
+
 
     render() {
         let image = this.state.userImage;
@@ -197,16 +237,16 @@ class EditFamilyContact extends Component {
                             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'height' : 'padding'} style={styles.keyboardAvoid}>
                                 <Form style={{padding:20}}>
 
-                                    <View style={styles.inputParent}>
-                                        <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={() =>this._toggleModal()}>
-                                            <Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 ,
-                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
-                                                borderBottomColor:'#fff'}]}>{ i18n.t('location') }</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
-                                            <Text style={[styles.whiteText , styles.normalText , styles.itemText, {backgroundColor:'#f5f5f5',  color: COLORS.gray } ]}>{this.state.location}</Text>
-                                        </TouchableOpacity>
-                                        <Image source={require('../../assets/images/placeholder_blue.png')} style={styles.mapMarker} resizeMode={'contain'} />
-                                    </View>
+                                    {/*<View style={styles.inputParent}>*/}
+                                        {/*<TouchableOpacity stackedLabel style={styles.item } bordered  onPress={() =>this._toggleModal()}>*/}
+                                            {/*<Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 ,*/}
+                                                {/*backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,*/}
+                                                {/*borderBottomColor:'#fff'}]}>{ i18n.t('location') }</Label>*/}
+                                            {/*<Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>*/}
+                                            {/*<Text style={[styles.whiteText , styles.normalText , styles.itemText, {backgroundColor:'#f5f5f5',  color: COLORS.gray } ]}>{this.state.location}</Text>*/}
+                                        {/*</TouchableOpacity>*/}
+                                        {/*<Image source={require('../../assets/images/placeholder_blue.png')} style={styles.mapMarker} resizeMode={'contain'} />*/}
+                                    {/*</View>*/}
 
                                     <View style={styles.inputParent}>
                                         <Item stackedLabel style={styles.item } bordered>
@@ -233,8 +273,8 @@ class EditFamilyContact extends Component {
                                             <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
                                                 { i18n.t('website') }
                                             </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={styles.labelImg}/>
-                                            <Input autoCapitalize='none'  value={this.state.email} onChangeText={(email) => this.setState({email})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
+                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform]}/>
+                                            <Input autoCapitalize='none' value={this.state.website} onChangeText={(website) => this.setState({website})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                         </Item>
                                     </View>
 
@@ -260,10 +300,9 @@ class EditFamilyContact extends Component {
 
 
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('myFamily')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
-                                    </TouchableOpacity>
-
+                                    {
+                                        this.renderSubmit()
+                                    }
 
                                 </Form>
                             </KeyboardAvoidingView>
@@ -303,4 +342,13 @@ class EditFamilyContact extends Component {
     }
 }
 
-export default EditFamilyContact;
+const mapStateToProps = ({ lang , typeCategories , updateProfileMain , profile}) => {
+    return {
+        lang: lang.lang,
+        typeCategories: typeCategories.typeCategories,
+        updateFamilyProfileSocial: updateProfileMain.updateFamilyProfileSocial,
+        user: profile.user,
+        key:updateProfileMain.key
+    };
+};
+export default connect(mapStateToProps, {getUpdateFamilyProfileSocial})(EditFamilyContact);

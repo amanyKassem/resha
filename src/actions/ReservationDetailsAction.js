@@ -2,7 +2,7 @@ import axios from "axios";
 import CONST from "../consts";
 
 
-export const getReservationDetails = (lang , ticket_id , token) => {
+export const getReservationDetails = (lang , ticket_id , token , props) => {
     return (dispatch) => {
 
         axios({
@@ -12,6 +12,12 @@ export const getReservationDetails = (lang , ticket_id , token) => {
             data: {lang ,ticket_id}
         }).then(response => {
             dispatch({type: 'getReservationDetails', payload: response.data})
+            if (response.data.key == 1){
+                props.navigation.navigate('showTicketQr', {
+                    ticketsInfo : response.data.data,
+                })
+            }
+
         })
 
     }

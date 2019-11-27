@@ -113,6 +113,19 @@ class Login extends Component {
             this.props.navigation.navigate('home');
         }
 
+        if (newProps.auth !== null && newProps.auth.key == 3){
+
+            console.log('this is user id...', this.state.userId);
+
+            if (this.state.userId === null){
+                this.setState({ userId: newProps.auth.data.id });
+                this.props.profile(newProps.auth.data.token);
+
+            }
+            this.props.navigation.navigate('foodPayment' , {user_id :newProps.auth.data.id});
+
+        }
+
         if (newProps.auth !== null) {
             Toast.show({
                 text: newProps.auth.msg,

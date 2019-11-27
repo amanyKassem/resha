@@ -19,6 +19,10 @@ import * as Permissions from 'expo-permissions';
 import MapView from 'react-native-maps';
 import * as Location from 'expo-location';
 import axios from 'axios';
+import {getFilterFamilies} from "../actions";
+import {connect} from "react-redux";
+import { DoubleBounce } from 'react-native-loader';
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -37,7 +41,7 @@ class FamilyFilter extends Component {
             mapRegion: null,
             hasLocationPermissions: false,
             initMap: true,
-            btnFamily:true
+            isFamilySubmitted: false
         }
     }
 
@@ -63,7 +67,7 @@ class FamilyFilter extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
-        getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
+        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
 
         console.log(getCity);
 
@@ -91,7 +95,7 @@ class FamilyFilter extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += mapRegion.latitude + ',' + mapRegion.longitude;
-        getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
+        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
 
         console.log('locations data', getCity);
 
@@ -161,6 +165,38 @@ class FamilyFilter extends Component {
         }
     }
 
+    renderFamilySubmit(){
+        if (this.state.isFamilySubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt50, styles.mb15 ]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity  onPress={() => this.submitSearch()} style={[styles.blueBtn , styles.mt50, styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.filterKey == 1) {
+            this.setState({isFamilySubmitted: false});
+        }
+        console.log('nextProps.filterFamilies' , nextProps.filterFamilies)
+    }
+
+    submitSearch(){
+        this.setState({ isFamilySubmitted: true });
+        this.props.getFilterFamilies( this.props.lang ,this.state.search , this.state.mapRegion.latitude , this.state.mapRegion.longitude , this.props)
+    }
+
+
+    onFocus(payload){
+        this.componentWillMount()
+    }
 
     render() {
 
@@ -174,44 +210,45 @@ class FamilyFilter extends Component {
 
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
-                        <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
-                            <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
-                        </TouchableOpacity>
-                        <Text style={[styles.headerText]}>{ i18n.t('searchFilter') }</Text>
-                        <TouchableOpacity style={styles.headerBtn}>
-                            <Image source={require('../../assets/images/reload_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
-                        </TouchableOpacity>
+                        <Right style={styles.flex0}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                                <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
+                            </TouchableOpacity>
+                        </Right>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('searchFilter') }</Text>
+                        <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
                             <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
                                 <Form style={{padding:20}}>
 
-                                    <View style={styles.inputParent}>
-                                        <Item style={styles.itemPicker} regular >
-                                            <Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,
-                                                paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,
-                                                paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10,
-                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
-                                                borderBottomColor:'#fff'}]}>{ i18n.t('sortBy') }</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>
-                                            <Picker
-                                                mode="dropdown"
-                                                style={[styles.picker , { color: COLORS.gray , backgroundColor:'#f5f5f5',}]}
-                                                placeholderStyle={{ color: COLORS.gray}}
-                                                placeholderIconColor={{color: COLORS.gray}}
-                                                selectedValue={this.state.category}
-                                                onValueChange={(value) => this.setState({ category: value })}
-                                            >
-                                                <Picker.Item label={'الاقرب لك'} value={1} />
-                                                <Picker.Item label={'بعيد'}  value={2} />
-                                            </Picker>
-                                            <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
-                                        </Item>
-                                    </View>
+                                    {/*<View style={styles.inputParent}>*/}
+                                        {/*<Item style={styles.itemPicker} regular >*/}
+                                            {/*<Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,*/}
+                                                {/*paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,*/}
+                                                {/*paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10,*/}
+                                                {/*backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,*/}
+                                                {/*borderBottomColor:'#fff'}]}>{ i18n.t('sortBy') }</Label>*/}
+                                            {/*<Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>*/}
+                                            {/*<Picker*/}
+                                                {/*mode="dropdown"*/}
+                                                {/*style={[styles.picker , { color: COLORS.gray , backgroundColor:'#f5f5f5',}]}*/}
+                                                {/*placeholderStyle={{ color: COLORS.gray}}*/}
+                                                {/*placeholderIconColor={{color: COLORS.gray}}*/}
+                                                {/*selectedValue={this.state.category}*/}
+                                                {/*onValueChange={(value) => this.setState({ category: value })}*/}
+                                            {/*>*/}
+                                                {/*<Picker.Item label={'الاقرب لك'} value={1} />*/}
+                                                {/*<Picker.Item label={'بعيد'}  value={2} />*/}
+                                            {/*</Picker>*/}
+                                            {/*<Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />*/}
+                                        {/*</Item>*/}
+                                    {/*</View>*/}
 
                                     <View style={styles.inputParent}>
                                         <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={() =>this._toggleModal()}>
@@ -225,14 +262,7 @@ class FamilyFilter extends Component {
                                     </View>
 
                                     {
-                                        this.state.btnFamily?
-                                            <TouchableOpacity onPress={() => this.props.navigation.navigate('families')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
-                                            </TouchableOpacity>
-                                            :
-                                            <TouchableOpacity onPress={() => this.props.navigation.navigate('restCafe')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
-                                            </TouchableOpacity>
+                                        this.renderFamilySubmit()
                                     }
 
 
@@ -275,4 +305,12 @@ class FamilyFilter extends Component {
     }
 }
 
-export default FamilyFilter;
+const mapStateToProps = ({ lang , filterFamilies , profile}) => {
+    return {
+        lang: lang.lang,
+        filterFamilies: filterFamilies.filterFamilies,
+        filterKey: filterFamilies.key,
+        user: profile.user,
+    };
+};
+export default connect(mapStateToProps, {getFilterFamilies})(FamilyFilter);

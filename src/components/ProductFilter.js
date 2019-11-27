@@ -15,6 +15,10 @@ import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Labe
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import {getProductPrices , getTypeCategories , getFilterProducts} from "../actions";
+import {connect} from "react-redux";
+import { DoubleBounce } from 'react-native-loader';
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -29,9 +33,10 @@ class ProductFilter extends Component {
             availabel: 0,
             category: null,
             value: null,
-            max: 2500,
-            step: 500,
-            min: 0,
+            isSubmitted: false
+            // max: 2500,
+            // step: 500,
+            // min: 0,
         }
     }
 
@@ -43,6 +48,12 @@ class ProductFilter extends Component {
     change(value){
         this.setState({value})
     }
+
+    componentWillMount() {
+        this.props.getProductPrices(this.props.lang);
+        this.props.getTypeCategories(this.props.lang , this.props.user.type );
+    }
+
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -77,6 +88,39 @@ class ProductFilter extends Component {
         }
     }
 
+    renderSubmit(){
+        if (this.state.isSubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt50, styles.mb15 ]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity  onPress={() => this.submitSearch()} style={[styles.blueBtn , styles.mt50, styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.filterKey == 1) {
+            this.setState({isSubmitted: false});
+            // this.props.navigation.navigate('searchResult', { searchResult : nextProps.filterEvents } );
+        }
+        console.log('nextProps.filterEvents' , nextProps.filterEvents)
+    }
+
+    submitSearch(){
+        this.setState({ isSubmitted: true });
+        this.props.getFilterProducts( this.props.lang , this.props.navigation.state.params.user_id , null , this.state.category , this.state.value , this.props)
+    }
+
+
+    onFocus(payload){
+        this.componentWillMount()
+    }
 
     render() {
 
@@ -90,17 +134,18 @@ class ProductFilter extends Component {
 
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
-                        <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
-                            <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
-                        </TouchableOpacity>
-                        <Text style={[styles.headerText]}>{ i18n.t('searchFilter') }</Text>
-                        <TouchableOpacity style={styles.headerBtn}>
-                            <Image source={require('../../assets/images/reload_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
-                        </TouchableOpacity>
+                        <Right style={styles.flex0}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                                <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
+                            </TouchableOpacity>
+                        </Right>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('searchFilter') }</Text>
+                        <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
                             <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
@@ -122,8 +167,13 @@ class ProductFilter extends Component {
                                                 selectedValue={this.state.category}
                                                 onValueChange={(value) => this.setState({ category: value })}
                                             >
-                                                <Picker.Item label={'حلويات'} value={1} />
-                                                <Picker.Item label={'مشروبات'}  value={2} />
+                                                <Picker.Item label={ i18n.t('category') } value={null} />
+                                                {
+                                                    this.props.typeCategories.map((cat, i) => (
+                                                        <Picker.Item key={i} label={cat.name} value={cat.id} />
+                                                    ))
+
+                                                }
                                             </Picker>
                                             <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
                                         </Item>
@@ -137,8 +187,9 @@ class ProductFilter extends Component {
 
                                     <View style={styles.sliderParent}>
                                         <Slider
-                                            step={this.state.step}
-                                            maximumValue={this.state.max}
+                                            step={10}
+                                            minimumValue={this.props.productPrices.min}
+                                            maximumValue={this.props.productPrices.max}
                                             onValueChange={(value) => this.change(value)}
                                             // value={this.state.value}
                                             thumbTintColor={COLORS.rose}
@@ -147,15 +198,17 @@ class ProductFilter extends Component {
                                             minimumTrackTintColor={COLORS.blue}
                                         />
                                         <View style={styles.range}>
-                                            <Left><Text style={[styles.headerText , {color:'#272727'}]}>{this.state.min}</Text></Left>
+                                            <Left><Text style={[styles.headerText , {color:'#272727'}]}>{this.props.productPrices.min}</Text></Left>
                                             <Text style={[styles.headerText , {color:'#272727'}]}>{this.state.value}</Text>
-                                            <Right><Text style={[styles.headerText , {color:'#272727'}]}>{this.state.max}</Text></Right>
+                                            <Right><Text style={[styles.headerText , {color:'#272727'}]}>{this.props.productPrices.max}</Text></Right>
                                         </View>
                                     </View>
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('products')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
-                                    </TouchableOpacity>
+
+                                    {
+                                        this.renderSubmit()
+                                    }
+
 
                                 </Form>
                             </KeyboardAvoidingView>
@@ -168,4 +221,14 @@ class ProductFilter extends Component {
     }
 }
 
-export default ProductFilter;
+const mapStateToProps = ({ lang , productPrices , typeCategories , filterProducts , profile}) => {
+    return {
+        lang: lang.lang,
+        typeCategories: typeCategories.typeCategories,
+        filterProducts: filterProducts.filterProducts,
+        filterKey: filterProducts.key,
+        user: profile.user,
+        productPrices: productPrices.productPrices,
+    };
+};
+export default connect(mapStateToProps, {getProductPrices , getTypeCategories , getFilterProducts})(ProductFilter);

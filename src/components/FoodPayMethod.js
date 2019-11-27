@@ -4,6 +4,10 @@ import {Container, Content} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import {getConfirmSub} from "../actions";
+import {connect} from "react-redux";
+import { DoubleBounce } from 'react-native-loader';
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -13,12 +17,51 @@ class FoodPayMethod extends Component {
         super(props);
 
         this.state={
-            payType:'visa'
+            payType:'visa',
+            isSubmitted: false
         }
     }
 
     selectPay(type){
         this.setState({payType:type})
+    }
+
+    componentWillMount() {
+        alert(this.props.navigation.state.params.subscription_id + " aaa "  +this.props.navigation.state.params.user_id)
+        this.setState({sSubmitted: false})
+    }
+
+    renderSubmit(){
+        if (this.state.isSubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt70]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity  onPress={() => this.submitData()} style={[styles.blueBtn , styles.mt70]}>
+                <Text style={[styles.whiteText , styles.normalText , styles.tAC]}>{ i18n.t('next') }</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.key == 1) {
+            this.setState({isSubmitted: false});
+        }
+        console.log('nextProps.updateProduct' , nextProps.updateProduct)
+    }
+
+    submitData(){
+        this.setState({ isSubmitted: true });
+        this.props.getConfirmSub( this.props.lang , this.props.navigation.state.params.user_id , this.props.navigation.state.params.subscription_id , this.props)
+    }
+
+
+    onFocus(payload){
+        this.componentWillMount()
     }
 
     render() {
@@ -27,6 +70,7 @@ class FoodPayMethod extends Component {
         return (
             <Container>
                 <Content contentContainerStyle={styles.flexGrow} >
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
 
                         <View style={[styles.langView ]}>
@@ -57,9 +101,9 @@ class FoodPayMethod extends Component {
 
 
 
-                            <TouchableOpacity  style={[styles.blueBtn , styles.mt70]}>
-                                <Text style={[styles.whiteText , styles.normalText , styles.tAC]}>{ i18n.t('next') }</Text>
-                            </TouchableOpacity>
+                            {
+                                this.renderSubmit()
+                            }
 
                         </View>
 
@@ -71,4 +115,10 @@ class FoodPayMethod extends Component {
     }
 }
 
-export default FoodPayMethod;
+const mapStateToProps = ({ lang  , profile }) => {
+    return {
+        lang: lang.lang,
+        user: profile.user,
+    };
+};
+export default connect(mapStateToProps, {getConfirmSub})(FoodPayMethod);

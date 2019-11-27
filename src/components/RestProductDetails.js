@@ -7,6 +7,10 @@ import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
 import StarRating from 'react-native-star-rating';
 import Communications from 'react-native-communications';
+import {connect} from "react-redux";
+import {getShowProduct , getProductAvailability} from "../actions";
+import {NavigationEvents} from "react-navigation";
+import {DoubleBounce} from "react-native-loader";
 
 
 const height = Dimensions.get('window').height;
@@ -20,6 +24,7 @@ class RestProductDetails extends Component {
             backgroundColor: new Animated.Value(0),
             availabel: 0,
             SwitchOnValueHolder:false,
+            loader: 1
         }
     }
 
@@ -28,8 +33,27 @@ class RestProductDetails extends Component {
     });
 
 
+    componentWillMount() {
+        this.setState({ loader: 1});
+        this.props.getShowProduct( this.props.lang , this.props.navigation.state.params.product_id , this.props.user.token)
+    }
+
+    renderLoader(){
+        if (this.state.loader == 1){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loader: nextProps.key , SwitchOnValueHolder: nextProps.showProduct.available });
+    }
+
     stopProduct = (value) =>{
-        this.setState({  SwitchOnValueHolder:!this.state.SwitchOnValueHolder})
+        this.props.getProductAvailability( this.props.lang , this.props.navigation.state.params.product_id , this.props.user.token)
+        this.setState({SwitchOnValueHolder:value})
     }
 
 
@@ -66,7 +90,9 @@ class RestProductDetails extends Component {
         }
     }
 
-
+    onFocus(payload){
+        this.componentWillMount()
+    }
     render() {
 
         const backgroundColor = this.state.backgroundColor.interpolate({
@@ -90,18 +116,24 @@ class RestProductDetails extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
                             
                             <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
                                     containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
-                                <Image source={require('../../assets/images/image_twienty.jpg')} style={styles.swiperImg} resizeMode={'cover'}/>
-                                <Image source={require('../../assets/images/image_one.png')} style={styles.swiperImg} resizeMode={'cover'}/>
-                                <Image source={require('../../assets/images/events.jpg')}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                {
+                                    this.props.showProduct.images.map((img, i) =>{
+                                        return (
+                                            <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                        )
+                                    })
+                                }
                             </Swiper>
 
                             <View style={[styles.directionRowSpace ,  styles.mb10]}>
-                                <Text style={[styles.boldGrayText , styles.normalText ]}>اسم المنتج بالتفصيل</Text>
+                                <Text style={[styles.boldGrayText , styles.normalText ]}>{this.props.showProduct.name}</Text>
                                 <View style={styles.directionRowAlignCenter}>
                                     <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('not') }</Text>
                                     <Switch
@@ -119,15 +151,15 @@ class RestProductDetails extends Component {
 
                             <View style={[styles.directionRowAlignCenter, styles.mb10 , {marginRight:10} ]}>
                                 <Image source={require('../../assets/images/star_border_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>3/5</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>{this.props.showProduct.rates}/5</Text>
                             </View>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>144 ريال</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>{this.props.showProduct.price} { i18n.t('RS') }</Text>
                             </View>
                             <View style={[styles.directionRowAlignCenter ]}>
                                 <Image source={require('../../assets/images/category.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>تصنيف حلويات</Text>
+                                <Text style={[styles.blueText , styles.normalText]}>{this.props.showProduct.category}</Text>
                             </View>
 
                             <View style={[styles.directionRowAlignCenter , styles.mt15, styles.mb10]}>
@@ -135,9 +167,10 @@ class RestProductDetails extends Component {
                                 <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('productInfo') }</Text>
                             </View>
 
-                            <Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing , {fontSize:13}]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،</Text>
+                            <Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing , {fontSize:13}]}>{this.props.showProduct.details}</Text>
 
-                            <TouchableOpacity style={styles.floatingEdit} onPress={() => this.props.navigation.navigate('addProduct')}>
+                            <TouchableOpacity style={styles.floatingEdit} onPress={() => this.props.navigation.navigate('editProduct' , {product_id:this.props.navigation.state.params.product_id,
+                                prodName :this.props.showProduct.name , price:this.props.showProduct.price , moreDet: this.props.showProduct.details ,base64:this.props.showProduct.images})}>
                                 <Image source={require('../../assets/images/edit_floting.png')} style={styles.editImg} resizeMode={'contain'}/>
                             </TouchableOpacity>
                         </View>
@@ -150,4 +183,12 @@ class RestProductDetails extends Component {
     }
 }
 
-export default RestProductDetails;
+const mapStateToProps = ({ lang , showProduct , profile }) => {
+    return {
+        lang: lang.lang,
+        showProduct: showProduct.showProduct,
+        user: profile.user,
+        key: showProduct.key,
+    };
+};
+export default connect(mapStateToProps, {getShowProduct , getProductAvailability})(RestProductDetails);

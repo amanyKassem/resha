@@ -44,9 +44,6 @@ class RestCafeDetails extends Component {
         this.setState({ loader: 1});
         this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id , this.props.user.token)
     }
-    _linkPressed (url){
-        Linking.openURL(url);
-    }
 
     renderLoader(){
         if (this.state.loader == 1){
@@ -169,25 +166,25 @@ class RestCafeDetails extends Component {
 
                     <View style={[styles.line ]}/>
 
-                    <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => Communications.phonecall('012345678911', true)}>
+                    <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => Communications.phonecall(this.props.profileDetails.phone, true)}>
                         <Image  source={require('../../assets/images/smartphone_call_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
                         <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.profileDetails.phone}</Text>
                     </TouchableOpacity>
                     <View style={[styles.line ]}/>
 
-                    <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed('https://www.aait.sa')}>
+                    <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.profileDetails.website)}>
                         <Image  source={require('../../assets/images/internet_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
                         <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.profileDetails.website}</Text>
                     </TouchableOpacity>
                     <View style={[styles.line ]}/>
 
-                    <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed('https://www.facebook.com')}>
+                    <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.profileDetails.facebook)}>
                         <Image  source={require('../../assets/images/facebook_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
                         <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.profileDetails.facebook}</Text>
                     </TouchableOpacity>
                     <View style={[styles.line ]}/>
 
-                    <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed('https://www.twitter.com')}>
+                    <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.profileDetails.twitter)}>
                         <Image  source={require('../../assets/images/tiwiter_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
                         <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.profileDetails.twitter}</Text>
                     </TouchableOpacity>

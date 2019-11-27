@@ -20,6 +20,11 @@ import Modal from "react-native-modal";
 import MapView from 'react-native-maps';
 import * as Location from 'expo-location';
 import axios from 'axios';
+import {getTypeCategories , getUpdateFamilyProfileMain} from "../actions";
+import {connect} from "react-redux";
+import { DoubleBounce } from 'react-native-loader';
+import {NavigationEvents} from "react-navigation";
+
 
 
 const height = Dimensions.get('window').height;
@@ -41,6 +46,7 @@ class EditFamilyProfile extends Component {
             hasLocationPermissions: false,
             initMap: true,
             moreDet: '',
+            isSubmitted: false
         }
     }
 
@@ -77,6 +83,7 @@ class EditFamilyProfile extends Component {
 
     async componentWillMount() {
 
+        this.props.getTypeCategories(this.props.lang , this.props.user.type );
 
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
@@ -90,7 +97,7 @@ class EditFamilyProfile extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
-        getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
+        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
 
         console.log(getCity);
 
@@ -118,7 +125,7 @@ class EditFamilyProfile extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += mapRegion.latitude + ',' + mapRegion.longitude;
-        getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
+        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
 
         console.log('locations data', getCity);
 
@@ -190,6 +197,48 @@ class EditFamilyProfile extends Component {
     }
 
 
+    renderSubmit(){
+        if (this.state.restName == '' || this.state.moreDet == '' || this.state.location == '' || this.state.category == null || this.state.base64 == null){
+            return (
+                <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , { backgroundColor: '#999' }]}>
+                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
+                </TouchableOpacity>
+            );
+        }
+
+        if (this.state.isSubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center'}, styles.mt50, styles.mb15 ]}>
+                    <DoubleBounce size={20} color={COLORS.blue} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity  onPress={() => this.submitData()} style={[styles.blueBtn , styles.mt50, styles.mb15]}>
+                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.key == 1) {
+            this.setState({isSubmitted: false});
+        }
+        console.log('nextProps.updateFamilyProfileMain' , nextProps.updateFamilyProfileMain)
+    }
+
+    submitData(){
+        this.setState({ isSubmitted: true });
+        this.props.getUpdateFamilyProfileMain( this.props.lang , this.state.restName , this.state.moreDet , this.state.mapRegion.latitude , this.state.mapRegion.longitude ,
+            this.state.category , this.state.location , this.state.base64 , this.props.user.token , this.props)
+    }
+
+
+    onFocus(payload){
+        this.componentWillMount()
+    }
+
     render() {
         let image = this.state.restImage;
         const backgroundColor = this.state.backgroundColor.interpolate({
@@ -213,6 +262,7 @@ class EditFamilyProfile extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
                             {image != null?
@@ -257,8 +307,13 @@ class EditFamilyProfile extends Component {
                                                 selectedValue={this.state.category}
                                                 onValueChange={(value) => this.setState({ category: value })}
                                             >
-                                                <Picker.Item label={'حلويات'} value={1} />
-                                                <Picker.Item label={'مشروبات'}  value={2} />
+                                                <Picker.Item label={ i18n.t('category') } value={null} />
+                                                {
+                                                    this.props.typeCategories.map((cat, i) => (
+                                                        <Picker.Item key={i} label={cat.name} value={cat.id} />
+                                                    ))
+
+                                                }
                                             </Picker>
                                             <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
                                         </Item>
@@ -284,9 +339,9 @@ class EditFamilyProfile extends Component {
                                         </Item>
                                     </View>
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('editFamilyContact')} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
-                                    </TouchableOpacity>
+                                    {
+                                        this.renderSubmit()
+                                    }
 
                                 </Form>
                             </KeyboardAvoidingView>
@@ -326,4 +381,14 @@ class EditFamilyProfile extends Component {
     }
 }
 
-export default EditFamilyProfile;
+
+const mapStateToProps = ({ lang , typeCategories , updateProfileMain , profile}) => {
+    return {
+        lang: lang.lang,
+        typeCategories: typeCategories.typeCategories,
+        updateFamilyProfileMain: updateProfileMain.updateFamilyProfileMain,
+        user: profile.user,
+        key:updateProfileMain.key
+    };
+};
+export default connect(mapStateToProps, {getTypeCategories , getUpdateFamilyProfileMain})(EditFamilyProfile);

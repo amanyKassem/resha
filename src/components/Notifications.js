@@ -19,6 +19,7 @@ class Notifications extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
+            loader:0
         }
     }
 
@@ -27,11 +28,17 @@ class Notifications extends Component {
     });
 
     componentWillMount() {
+        this.setState({loader:0})
         this.props.getNotifications( this.props.lang , this.props.user.token)
     }
 
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.notifications)
+            this.setState({loader:1})
+    }
+
     renderLoader(){
-        if (this.props.loader == 0){
+        if (this.state.loader === 0){
             return(
                 <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
                     <DoubleBounce size={20} color={COLORS.mov} />
@@ -130,7 +137,7 @@ class Notifications extends Component {
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     { this.renderLoader() }
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0}]}>
                             {this.renderNoData()}
                             <FlatList
