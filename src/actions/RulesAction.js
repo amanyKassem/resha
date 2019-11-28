@@ -7,7 +7,7 @@ export const getRules = lang => {
 
         axios({
             url: CONST.url + 'rules',
-            method: 'GET',
+            method: 'POST',
             data: {lang}
         }).then(response => {
             dispatch({type: 'getRules', payload: response.data})

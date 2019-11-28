@@ -8,7 +8,7 @@ export const getDeleteAccount = (lang , token) => {
         axios({
             url: CONST.url + 'delete-account',
             method: 'GET',
-            data: {lang},
+            // data: {lang},
             headers: {Authorization: token}
         }).then(response => {
             dispatch({type: 'getDeleteAccount', payload: response.data})

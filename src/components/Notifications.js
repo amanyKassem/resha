@@ -6,7 +6,7 @@ import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
-import {getNotifications} from "../actions";
+import {getNotifications , getDeleteNotification} from "../actions";
 import {NavigationEvents} from "react-navigation";
 
 
@@ -56,6 +56,10 @@ class Notifications extends Component {
         return <View />
     }
 
+    deleteNoti(notification_id){
+        this.props.getDeleteNotification( this.props.lang , notification_id , this.props.user.token)
+    }
+
     _keyExtractor = (item, index) => item.id;
 
     renderItems = (item) => {
@@ -66,7 +70,7 @@ class Notifications extends Component {
                         <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                         <Text style={[styles.headerText , {color:'#272727'}]}>{item.title}</Text>
                     </View>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.deleteNoti(item.notification_id)}>
                         <Image source={require('../../assets/images/close_notifcation.png')} style={[styles.notiClose]} resizeMode={'contain'} />
                     </TouchableOpacity>
                 </View>
@@ -162,4 +166,4 @@ const mapStateToProps = ({ lang , notifications , profile }) => {
         notifications: notifications.notifications,
     };
 };
-export default connect(mapStateToProps, {getNotifications})(Notifications);
+export default connect(mapStateToProps, {getNotifications , getDeleteNotification})(Notifications);

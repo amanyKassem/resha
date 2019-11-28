@@ -7,7 +7,7 @@ export const getFavouriteEvents = (lang , token) => {
 
         axios({
             url: CONST.url + 'favourite-events',
-            method: 'GET',
+            method: 'POST',
             headers: {Authorization: token},
             data: {lang}
         }).then(response => {
@@ -22,7 +22,7 @@ export const getFavouriteFamilies = (lang , token) => {
 
         axios({
             url: CONST.url + 'favourite-families',
-            method: 'GET',
+            method: 'POST',
             headers: {Authorization: token},
             data: {lang}
         }).then(response => {
@@ -37,7 +37,7 @@ export const getFavouriteRestaurants = (lang , token) => {
 
         axios({
             url: CONST.url + 'favourite-restaurants',
-            method: 'GET',
+            method: 'POST',
             headers: {Authorization: token},
             data: {lang}
         }).then(response => {
@@ -52,7 +52,7 @@ export const getFavouriteFoodTrucks = (lang , token) => {
 
         axios({
             url: CONST.url + 'favourite-food-trucks',
-            method: 'GET',
+            method: 'POST',
             headers: {Authorization: token},
             data: {lang}
         }).then(response => {

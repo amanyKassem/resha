@@ -7,7 +7,7 @@ export const getAboutApp = lang => {
 
         axios({
             url: CONST.url + 'about-app',
-            method: 'GET',
+            method: 'POST',
             data: {lang}
         }).then(response => {
             dispatch({type: 'getAboutApp', payload: response.data})

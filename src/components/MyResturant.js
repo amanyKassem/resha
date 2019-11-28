@@ -214,43 +214,49 @@ class MyResturant extends Component {
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
-                        <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0 , paddingTop:20} ]}>
+                        {
+                            this.props.showProfile?
+                                <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0 , paddingTop:20} ]}>
 
 
-                            <Image source={{ uri: this.props.showProfile.image }} style={styles.restImg} resizeMode={'cover'}/>
+                                    <Image source={{ uri: this.props.showProfile.image }} style={styles.restImg} resizeMode={'cover'}/>
 
 
-                            <View style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
-                                <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{this.props.showProfile.address}</Text>
-                            </View>
+                                    <View style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
+                                        <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.showProfile.address}</Text>
+                                    </View>
 
 
-                            <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13, paddingHorizontal:20}]}>{this.props.showProfile.details}</Text>
+                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13, paddingHorizontal:20}]}>{this.props.showProfile.details}</Text>
 
 
-                            <View style={[styles.directionRowAlignCenter , styles.mt30 , {backgroundColor:'#f2f2f2' , paddingTop:10} ]}>
-                                <TouchableOpacity onPress={() => this.selectAcive(0)} style={[styles.restTabs ,
-                                    {borderColor:this.state.active === 0 ?COLORS.rose : COLORS.lightGray , borderBottomWidth:this.state.active === 0 ?5: .5}
-                                ]}>
-                                    <Image source={ this.state.active === 0 ? require('../../assets/images/box_active.png') : require('../../assets/images/box_gray.png')} style={[styles.activeImg]} resizeMode={'contain'} />
-                                </TouchableOpacity>
+                                    <View style={[styles.directionRowAlignCenter , styles.mt30 , {backgroundColor:'#f2f2f2' , paddingTop:10} ]}>
+                                        <TouchableOpacity onPress={() => this.selectAcive(0)} style={[styles.restTabs ,
+                                            {borderColor:this.state.active === 0 ?COLORS.rose : COLORS.lightGray , borderBottomWidth:this.state.active === 0 ?5: .5}
+                                        ]}>
+                                            <Image source={ this.state.active === 0 ? require('../../assets/images/box_active.png') : require('../../assets/images/box_gray.png')} style={[styles.activeImg]} resizeMode={'contain'} />
+                                        </TouchableOpacity>
 
-                                <TouchableOpacity onPress={() => this.selectAcive(1)} style={[styles.restTabs ,
-                                    {borderColor:this.state.active === 1 ?COLORS.rose : COLORS.lightGray  , borderBottomWidth:this.state.active === 1 ?5: .5}
-                                ]}>
-                                    <Image source={ this.state.active === 1 ? require('../../assets/images/telephone_active.png') : require('../../assets/images/telephone_gray.png')} style={[styles.activeImg ]} resizeMode={'contain'} />
-                                </TouchableOpacity>
-                            </View>
+                                        <TouchableOpacity onPress={() => this.selectAcive(1)} style={[styles.restTabs ,
+                                            {borderColor:this.state.active === 1 ?COLORS.rose : COLORS.lightGray  , borderBottomWidth:this.state.active === 1 ?5: .5}
+                                        ]}>
+                                            <Image source={ this.state.active === 1 ? require('../../assets/images/telephone_active.png') : require('../../assets/images/telephone_gray.png')} style={[styles.activeImg ]} resizeMode={'contain'} />
+                                        </TouchableOpacity>
+                                    </View>
 
-                            <View style={styles.grayCont}>
-                                { this.renderCont()}
-                            </View>
-
-
+                                    <View style={styles.grayCont}>
+                                        { this.renderCont()}
+                                    </View>
 
 
-                        </View>
+
+
+                                </View>
+                                :
+                                <View/>
+                        }
+
                     </ImageBackground>
 
                 </Content>

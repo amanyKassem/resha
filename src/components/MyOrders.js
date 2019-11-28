@@ -200,39 +200,44 @@ class MyOrders extends Component {
                             </ScrollView>
                         </View>
 
+                        {
+                            this.props.organizerEvents?
+                                <View style={[styles.homeSection  , {paddingHorizontal:0 , marginTop:20}]}>
 
-                        <View style={[styles.homeSection  , {paddingHorizontal:0 , marginTop:20}]}>
-
-                            <View style={styles.reservationScroll}>
-                                <ScrollView style={{}} horizontal={true} showsHorizontalScrollIndicator={false}>
-                                    {
-                                        this.props.organizerEvents.dates.map((date, i) => {
-                                                return(
-                                                    <TouchableOpacity onPress={ () => this.pressedDate(date.date)} key={i} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeDate === date.date ?'#6b4d6b' : 'transparent'}]}>
-                                                        <Text style={[styles.reservationScrollText]}>{date.day}</Text>
-                                                        <Text style={[styles.reservationScrollText]}>{date.month}</Text>
-                                                    </TouchableOpacity>
+                                    <View style={styles.reservationScroll}>
+                                        <ScrollView style={{}} horizontal={true} showsHorizontalScrollIndicator={false}>
+                                            {
+                                                this.props.organizerEvents.dates.map((date, i) => {
+                                                        return(
+                                                            <TouchableOpacity onPress={ () => this.pressedDate(date.date)} key={i} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeDate === date.date ?'#6b4d6b' : 'transparent'}]}>
+                                                                <Text style={[styles.reservationScrollText]}>{date.day}</Text>
+                                                                <Text style={[styles.reservationScrollText]}>{date.month}</Text>
+                                                            </TouchableOpacity>
+                                                        )
+                                                    }
                                                 )
                                             }
-                                        )
-                                    }
-                                </ScrollView>
-                            </View>
+                                        </ScrollView>
+                                    </View>
 
 
 
 
-                            <View style={{paddingHorizontal:10}}>
-                                { this.renderNoData() }
-                                <FlatList
-                                    data={this.props.organizerEvents.events}
-                                    renderItem={({item}) => this.renderItems(item)}
-                                    numColumns={1}
-                                    keyExtractor={this._keyExtractor}
-                                />
-                            </View>
+                                    <View style={{paddingHorizontal:10}}>
+                                        { this.renderNoData() }
+                                        <FlatList
+                                            data={this.props.organizerEvents.events}
+                                            renderItem={({item}) => this.renderItems(item)}
+                                            numColumns={1}
+                                            keyExtractor={this._keyExtractor}
+                                        />
+                                    </View>
 
-                        </View>
+                                </View>
+                                :
+                                <View/>
+                        }
+
                     </ImageBackground>
                 </Content>
             </Container>

@@ -7,7 +7,7 @@ export const getProductPrices = lang => {
 
         axios({
             url: CONST.url + 'products-prices',
-            method: 'GET',
+            method: 'POST',
             data: {lang}
         }).then(response => {
             dispatch({type: 'getProductPrices', payload: response.data})

@@ -85,11 +85,11 @@ class DrawerCustomization extends Component {
                             <Image source={require('../../assets/images/cancel_white.png')} resizeMode={'contain'}  style={[styles.authImg]}/>
                         </TouchableOpacity>
                          <View style={styles.sideImgView}>
-                            <View style={styles.cutCircle}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('profile')} style={styles.cutCircle}>
                                 <View style={styles.sideProfileImg}>
                                     <Image  source={{ uri: user.avatar }} resizeMode={'cover'} style={styles.drawImg}/>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                             <Text style={styles.sideName}>{ user.name }</Text>
                          </View>
 

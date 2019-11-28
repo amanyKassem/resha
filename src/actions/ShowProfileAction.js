@@ -7,7 +7,7 @@ export const getShowProfile = (lang , token) => {
 
         axios({
             url: CONST.url + 'show-profile',
-            method: 'GET',
+            method: 'POST',
             data: {lang},
             headers: {Authorization: token}
         }).then(response => {

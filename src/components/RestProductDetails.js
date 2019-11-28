@@ -119,61 +119,67 @@ class RestProductDetails extends Component {
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
-                        <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
-                            
-                            <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                    containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
-                                {
-                                    this.props.showProduct.images.map((img, i) =>{
-                                        return (
-                                            <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
-                                        )
-                                    })
-                                }
-                            </Swiper>
+                        {
+                            this.props.showProduct?
+                                <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
 
-                            <View style={[styles.directionRowSpace ,  styles.mb10]}>
-                                <Text style={[styles.boldGrayText , styles.normalText ]}>{this.props.showProduct.name}</Text>
-                                <View style={styles.directionRowAlignCenter}>
-                                    <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('not') }</Text>
-                                    <Switch
-                                        onValueChange={(value) => this.stopProduct(value)}
-                                        value={this.state.SwitchOnValueHolder}
-                                        onTintColor={COLORS.gray}
-                                        thumbTintColor={COLORS.blue}
-                                        tintColor={'#c5c5c5'}
-                                        style={styles.switch}
-                                    />
-                                    <Text style={[styles.blueText , styles.normalText  ]}>{ i18n.t('available') }</Text>
+                                    <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
+                                            containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
+                                        {
+                                            this.props.showProduct.images.map((img, i) =>{
+                                                return (
+                                                    <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                )
+                                            })
+                                        }
+                                    </Swiper>
+
+                                    <View style={[styles.directionRowSpace ,  styles.mb10]}>
+                                        <Text style={[styles.boldGrayText , styles.normalText ]}>{this.props.showProduct.name}</Text>
+                                        <View style={styles.directionRowAlignCenter}>
+                                            <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('not') }</Text>
+                                            <Switch
+                                                onValueChange={(value) => this.stopProduct(value)}
+                                                value={this.state.SwitchOnValueHolder}
+                                                onTintColor={COLORS.gray}
+                                                thumbTintColor={COLORS.blue}
+                                                tintColor={'#c5c5c5'}
+                                                style={styles.switch}
+                                            />
+                                            <Text style={[styles.blueText , styles.normalText  ]}>{ i18n.t('available') }</Text>
+                                        </View>
+                                    </View>
+
+
+                                    <View style={[styles.directionRowAlignCenter, styles.mb10 , {marginRight:10} ]}>
+                                        <Image source={require('../../assets/images/star_border_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.showProduct.rates}/5</Text>
+                                    </View>
+                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                        <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.showProduct.price} { i18n.t('RS') }</Text>
+                                    </View>
+                                    <View style={[styles.directionRowAlignCenter ]}>
+                                        <Image source={require('../../assets/images/category.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.showProduct.category}</Text>
+                                    </View>
+
+                                    <View style={[styles.directionRowAlignCenter , styles.mt15, styles.mb10]}>
+                                        <Image source={require('../../assets/images/feather_color.png')} style={[styles.resha , styles.transform]} resizeMode={'contain'} />
+                                        <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('productInfo') }</Text>
+                                    </View>
+
+                                    <Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing , {fontSize:13}]}>{this.props.showProduct.details}</Text>
+
+                                    <TouchableOpacity style={styles.floatingEdit} onPress={() => this.props.navigation.navigate('editProduct' , {product_id:this.props.navigation.state.params.product_id,
+                                        prodName :this.props.showProduct.name , price:this.props.showProduct.price , moreDet: this.props.showProduct.details ,base64:this.props.showProduct.images})}>
+                                        <Image source={require('../../assets/images/edit_floting.png')} style={styles.editImg} resizeMode={'contain'}/>
+                                    </TouchableOpacity>
                                 </View>
-                            </View>
+                                :
+                                <View/>
+                        }
 
-
-                            <View style={[styles.directionRowAlignCenter, styles.mb10 , {marginRight:10} ]}>
-                                <Image source={require('../../assets/images/star_border_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{this.props.showProduct.rates}/5</Text>
-                            </View>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{this.props.showProduct.price} { i18n.t('RS') }</Text>
-                            </View>
-                            <View style={[styles.directionRowAlignCenter ]}>
-                                <Image source={require('../../assets/images/category.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{this.props.showProduct.category}</Text>
-                            </View>
-
-                            <View style={[styles.directionRowAlignCenter , styles.mt15, styles.mb10]}>
-                                <Image source={require('../../assets/images/feather_color.png')} style={[styles.resha , styles.transform]} resizeMode={'contain'} />
-                                <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('productInfo') }</Text>
-                            </View>
-
-                            <Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing , {fontSize:13}]}>{this.props.showProduct.details}</Text>
-
-                            <TouchableOpacity style={styles.floatingEdit} onPress={() => this.props.navigation.navigate('editProduct' , {product_id:this.props.navigation.state.params.product_id,
-                                prodName :this.props.showProduct.name , price:this.props.showProduct.price , moreDet: this.props.showProduct.details ,base64:this.props.showProduct.images})}>
-                                <Image source={require('../../assets/images/edit_floting.png')} style={styles.editImg} resizeMode={'contain'}/>
-                            </TouchableOpacity>
-                        </View>
                     </ImageBackground>
 
                 </Content>

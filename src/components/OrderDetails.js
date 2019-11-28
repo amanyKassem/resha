@@ -160,89 +160,95 @@ class OrderDetails extends Component {
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
-                        <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
+                        {
+                            this.props.eventDet?
+                                <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
 
-                            <Text style={[styles.boldGrayText , styles.normalText , styles.mb10, styles.asfs, styles.writing]}>{this.props.eventDet.name}</Text>
+                                    <Text style={[styles.boldGrayText , styles.normalText , styles.mb10, styles.asfs, styles.writing]}>{this.props.eventDet.name}</Text>
 
-                            <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                    containerStyle={[styles.eventswiper , styles.mb15]} showsButtons={false} autoplay={true}>
-                                {
-                                    this.props.eventDet.images.map((img, i) =>{
-                                        return (
-                                            <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
-                                        )
-                                    })
-                                }
-                            </Swiper>
+                                    <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
+                                            containerStyle={[styles.eventswiper , styles.mb15]} showsButtons={false} autoplay={true}>
+                                        {
+                                            this.props.eventDet.images.map((img, i) =>{
+                                                return (
+                                                    <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                )
+                                            })
+                                        }
+                                    </Swiper>
 
 
-                            <View style={[styles.directionRowCenter ,  styles.mb15]}>
-                                <View style={[styles.directionRowAlignCenter , {paddingHorizontal:15}  ]}>
-                                    <Image source={require('../../assets/images/feather_gray.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.grayText , styles.normalText , {fontSize:13}]}>{this.props.eventDet.organization}</Text>
+                                    <View style={[styles.directionRowCenter ,  styles.mb15]}>
+                                        <View style={[styles.directionRowAlignCenter , {paddingHorizontal:15}  ]}>
+                                            <Image source={require('../../assets/images/feather_gray.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                            <Text style={[styles.grayText , styles.normalText , {fontSize:13}]}>{this.props.eventDet.organization}</Text>
+                                        </View>
+                                        <View style={[styles.directionRowAlignCenter , { paddingHorizontal:15 ,borderLeftWidth:1 , borderLeftColor:COLORS.lightGray}]}>
+                                            <Image source={require('../../assets/images/feather_gray.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                            <Text style={[styles.grayText , styles.normalText , {fontSize:13}]}>{this.props.eventDet.category}</Text>
+                                        </View>
+                                    </View>
+
+
+                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                        <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
+                                            <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                            <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.time}</Text>
+                                        </View>
+                                        <View style={[styles.directionRowAlignCenter ]}>
+                                            <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                            <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.date}</Text>
+                                        </View>
+                                    </View>
+
+                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                        <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('normalPrice') } {this.props.eventDet.tickets.normal_price} { i18n.t('RS') }</Text>
+                                    </View>
+
+                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                        <Image source={require('../../assets/images/ticket_yellow.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.orangeText , styles.normalText]}>{ i18n.t('goldPrice') } {this.props.eventDet.tickets.golden_price} { i18n.t('RS') }</Text>
+                                    </View>
+
+                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                        <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('vipPrice') } {this.props.eventDet.tickets.vip_price} { i18n.t('RS') }</Text>
+                                    </View>
+
+                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                        <Image source={require('../../assets/images/chair_yellow.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.orangeText , styles.normalText]}>{ i18n.t('normalChairs') } {this.props.eventDet.tickets.normal_count}</Text>
+                                    </View>
+
+                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                        <Image source={require('../../assets/images/chair_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('goldChairs') } {this.props.eventDet.tickets.golden_count}</Text>
+                                    </View>
+
+                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                        <Image source={require('../../assets/images/chair_yellow.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.orangeText , styles.normalText]}>{ i18n.t('vipChairs') } {this.props.eventDet.tickets.vip_count}</Text>
+                                    </View>
+
+                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                        <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.address}</Text>
+                                    </View>
+                                    <Text style={[styles.grayText , styles.normalText, styles.asfs, styles.writing , {fontSize:13}]}>{this.props.eventDet.details}</Text>
+
+                                    {
+                                        this.renderBtn()
+                                    }
+
+
+
+
                                 </View>
-                                <View style={[styles.directionRowAlignCenter , { paddingHorizontal:15 ,borderLeftWidth:1 , borderLeftColor:COLORS.lightGray}]}>
-                                    <Image source={require('../../assets/images/feather_gray.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.grayText , styles.normalText , {fontSize:13}]}>{this.props.eventDet.category}</Text>
-                                </View>
-                            </View>
+                                :
+                                <View/>
+                        }
 
-
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
-                                    <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.time}</Text>
-                                </View>
-                                <View style={[styles.directionRowAlignCenter ]}>
-                                    <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.date}</Text>
-                                </View>
-                            </View>
-
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('normalPrice') } {this.props.eventDet.tickets.normal_price} { i18n.t('RS') }</Text>
-                            </View>
-
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/ticket_yellow.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.orangeText , styles.normalText]}>{ i18n.t('goldPrice') } {this.props.eventDet.tickets.golden_price} { i18n.t('RS') }</Text>
-                            </View>
-
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('vipPrice') } {this.props.eventDet.tickets.vip_price} { i18n.t('RS') }</Text>
-                            </View>
-
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/chair_yellow.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.orangeText , styles.normalText]}>{ i18n.t('normalChairs') } {this.props.eventDet.tickets.normal_count}</Text>
-                            </View>
-
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/chair_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('goldChairs') } {this.props.eventDet.tickets.golden_count}</Text>
-                            </View>
-
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/chair_yellow.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.orangeText , styles.normalText]}>{ i18n.t('vipChairs') } {this.props.eventDet.tickets.vip_count}</Text>
-                            </View>
-
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.address}</Text>
-                            </View>
-                            <Text style={[styles.grayText , styles.normalText, styles.asfs, styles.writing , {fontSize:13}]}>{this.props.eventDet.details}</Text>
-
-                            {
-                                this.renderBtn()
-                            }
-
-
-
-
-                        </View>
                     </ImageBackground>
                     <Modal onBackdropPress={()=> this.setState({ deleteProduct : false })} isVisible={this.state.deleteProduct}>
                         <View style={styles.modalEvent}>

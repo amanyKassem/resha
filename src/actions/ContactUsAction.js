@@ -7,7 +7,7 @@ export const getContactUs = lang => {
 
         axios({
             url: CONST.url + 'contact-admin',
-            method: 'GET',
+            method: 'POST',
             data: {lang}
         }).then(response => {
             dispatch({type: 'getContactUs', payload: response.data})

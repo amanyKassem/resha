@@ -82,7 +82,7 @@ class ChangePass extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.changePassword) {
             this.setState({isSubmitted: false});
-            this.props.navigation.navigate('changePassCode' , { new_password : nextProps.changePassword.new_password , code : nextProps.changePassword.code})
+            this.props.navigation.navigate('changePassCode', {new_password : nextProps.changePassword.new_password , code : nextProps.changePassword.code})
         }
         console.log('confirmnextProps' , nextProps)
     }
@@ -172,12 +172,10 @@ class ChangePass extends Component {
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <Image source={require('../../assets/images/undraw_pass.png')} style={[styles.faqImg]} resizeMode={'contain'} />
-                        <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20 , marginTop:15}]}>
-                            <ImageBackground source={require('../../assets/images/bg_feather.png')} resizeMode={'cover'} style={styles.imageBackground}>
-
-                                <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
+                        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'absolute' : 'padding'} style={styles.keyboardAvoid}>
+                            <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20 , marginTop:15}]}>
+                                <ImageBackground source={require('../../assets/images/bg_feather.png')} resizeMode={'cover'} style={styles.imageBackground}>
                                     <Form style={{padding:20}}>
-
                                         <View style={styles.inputParent}>
                                             <Item stackedLabel style={styles.item } bordered>
                                                 <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
@@ -206,14 +204,12 @@ class ChangePass extends Component {
                                             </Item>
                                         </View>
                                     </Form>
-                                </KeyboardAvoidingView>
-
-                                {
-                                    this.renderSubmit()
-                                }
-
-                            </ImageBackground>
-                        </View>
+                                    {
+                                        this.renderSubmit()
+                                    }
+                                </ImageBackground>
+                            </View>
+                        </KeyboardAvoidingView>
                     </ImageBackground>
                 </Content>
             </Container>

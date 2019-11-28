@@ -7,7 +7,7 @@ export const getEventsPrices = lang => {
 
         axios({
             url: CONST.url + 'events-prices',
-            method: 'GET',
+            method: 'POST',
             data: {lang}
         }).then(response => {
             dispatch({type: 'getEventsPrices', payload: response.data})

@@ -32,7 +32,7 @@ class ProductFilter extends Component {
             backgroundColor: new Animated.Value(0),
             availabel: 0,
             category: null,
-            value: null,
+            value: '',
             isSubmitted: false
             // max: 2500,
             // step: 500,

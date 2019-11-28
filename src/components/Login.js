@@ -51,7 +51,7 @@ class Login extends Component {
     renderSubmit(){
         if (this.state.isSubmitted){
             return(
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ justifyContent: 'center', alignItems: 'center' , marginTop:30 }}>
                     <DoubleBounce size={20} color={COLORS.blue} style={{ alignSelf: 'center' }} />
                 </View>
             )
@@ -126,13 +126,13 @@ class Login extends Component {
 
         }
 
-        // if (newProps.auth !== null) {
-        //     Toast.show({
-        //         text: newProps.auth.msg,
-        //         type: newProps.auth.key == 1 ? "success" : "danger",
-        //         duration: 3000
-        //     });
-        // }
+        if (newProps.auth !== null) {
+            Toast.show({
+                text: newProps.auth.msg,
+                type: newProps.auth.key == 1 ? "success" : "danger",
+                duration: 3000
+            });
+        }
 
     }
 

@@ -4,6 +4,7 @@ import {  Button, Footer, Icon, FooterTab } from 'native-base'
 import styles from '../../assets/styles'
 import COLORS from "../consts/colors";
 import i18n from '../../locale/i18n'
+import {connect} from "react-redux";
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -57,7 +58,7 @@ class FooterSection extends Component {
                 break;
         }
 
-        if(tabName == 'reservations' || tabName == 'saves' || tabName == 'profile'){
+        if((tabName == 'reservations' || tabName == 'saves' || tabName == 'profile') && !this.props.user ){
             return(
 
                 <Button transparent onPress={() => this.props.navigation.navigate('login')} >
@@ -102,5 +103,10 @@ class FooterSection extends Component {
     }
 }
 
-
-export default FooterSection;
+const mapStateToProps = ({ lang , profile }) => {
+    return {
+        lang: lang.lang,
+        user: profile.user,
+    };
+};
+export default connect(mapStateToProps)(FooterSection);

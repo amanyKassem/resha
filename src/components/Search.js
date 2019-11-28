@@ -82,7 +82,7 @@ class Search extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.searchResult) {
             this.setState({isSubmitted: false});
-            this.props.navigation.navigate('searchResult', { searchResult : nextProps.searchResult } );
+            this.props.navigation.navigate(this.props.user ? 'searchResult' : 'login', { searchResult : nextProps.searchResult } );
         }
         console.log('nextProps.searchResult' , nextProps.searchResult)
     }

@@ -82,7 +82,6 @@ class ChangePassCode extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.confirmChangePassword) {
             this.setState({isSubmitted: false});
-            this.props.navigation.navigate('settings')
         }
         console.log('ssss' , nextProps.confirmChangePassword)
     }
@@ -101,7 +100,8 @@ class ChangePassCode extends Component {
         this.props.getConfirmChangePassword( this.props.lang ,
             this.props.navigation.state.params.new_password ,
             this.props.navigation.state.params.code,
-            this.props.user.token
+            this.props.user.token,
+            this.props
         )
     }
 
@@ -141,7 +141,7 @@ class ChangePassCode extends Component {
 
     render() {
 
-        // alert(this.props.navigation.state.params.new_password + this.props.navigation.state.params.code)
+
         const backgroundColor = this.state.backgroundColor.interpolate({
             inputRange: [0, 1],
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']

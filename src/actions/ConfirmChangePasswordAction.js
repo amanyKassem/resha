@@ -2,7 +2,7 @@ import axios from "axios";
 import CONST from "../consts";
 
 
-export const getConfirmChangePassword = (lang , new_password , code , token) => {
+export const getConfirmChangePassword = (lang , new_password , code , token , props) => {
     return (dispatch) => {
 
         axios({
@@ -12,6 +12,9 @@ export const getConfirmChangePassword = (lang , new_password , code , token) => 
             headers: {Authorization: token}
         }).then(response => {
             dispatch({type: 'getConfirmChangePassword', payload: response.data})
+            if (response.data.key == 1){
+                props.navigation.navigate('settings')
+            }
         })
 
     }

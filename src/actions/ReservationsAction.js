@@ -7,7 +7,7 @@ export const getReservations = (lang , token)=> {
 
         axios({
             url: CONST.url + 'reservations',
-            method: 'GET',
+            method: 'POST',
             data: {lang},
             headers: {Authorization: token}
         }).then(response => {

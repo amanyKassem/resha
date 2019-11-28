@@ -7,7 +7,7 @@ export const getEventCategories = lang => {
 
         axios({
             url: CONST.url + 'event-categories',
-            method: 'GET',
+            method: 'POST',
             data: {lang}
         }).then(response => {
             dispatch({type: 'getEventCategories', payload: response.data})

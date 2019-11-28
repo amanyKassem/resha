@@ -46,7 +46,7 @@ class SearchFilter extends Component {
             initMap: true,
             date: '',
             isDatePickerVisible: false,
-            value: null,
+            value: '',
             isSubmitted: false
             // max: null,
             // step: null,

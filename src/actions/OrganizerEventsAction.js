@@ -22,7 +22,7 @@ export const getOrganizerRejectedEvents = (lang , date , token)=> {
 
         axios({
             url: CONST.url + 'rejected-events',
-            method: 'GET',
+            method: 'POST',
             data: {lang , date},
             headers: {Authorization: token}
         }).then(response => {

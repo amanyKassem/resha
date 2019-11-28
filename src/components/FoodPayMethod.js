@@ -27,7 +27,7 @@ class FoodPayMethod extends Component {
     }
 
     componentWillMount() {
-        alert(this.props.navigation.state.params.subscription_id + " aaa "  +this.props.navigation.state.params.user_id)
+        // alert(this.props.navigation.state.params.subscription_id + " aaa "  +this.props.navigation.state.params.user_id)
         this.setState({sSubmitted: false})
     }
 

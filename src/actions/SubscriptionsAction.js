@@ -7,7 +7,7 @@ export const getSubscriptions = lang => {
 
         axios({
             url: CONST.url + 'subscriptions',
-            method: 'GET',
+            method: 'POST',
             data: {lang}
         }).then(response => {
             dispatch({type: 'getSubscriptions', payload: response.data})

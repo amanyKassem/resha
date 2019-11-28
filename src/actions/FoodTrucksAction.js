@@ -7,7 +7,7 @@ export const getFoodTrucks = lang => {
 
         axios({
             url: CONST.url + 'food-trucks',
-            method: 'GET',
+            method: 'POST',
             data: {lang}
         }).then(response => {
             dispatch({type: 'getFoodTrucks', payload: response.data})

@@ -7,7 +7,7 @@ export const getFaq = lang => {
 
         axios({
             url: CONST.url + 'faq',
-            method: 'GET',
+            method: 'POST',
             data: {lang}
         }).then(response => {
             dispatch({type: 'getFaq', payload: response.data})

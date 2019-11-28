@@ -93,7 +93,7 @@ class Home extends Component {
                             <Image source={require('../../assets/images/menu.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>
                         <Text style={[styles.headerText]}>{ i18n.t('home') }</Text>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('notifications')}   style={styles.headerBtn}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user ? 'notifications' : 'login')}   style={styles.headerBtn}>
                             <Image source={require('../../assets/images/bell_active.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>
                     </Animated.View>
@@ -153,9 +153,10 @@ class Home extends Component {
 }
 
 
-const mapStateToProps = ({ lang , homeCounts }) => {
+const mapStateToProps = ({ lang , profile , homeCounts }) => {
     return {
         lang: lang.lang,
+        user: profile.user,
         resturants: homeCounts.resturants,
         families: homeCounts.families,
         food_trucks: homeCounts.food_trucks,

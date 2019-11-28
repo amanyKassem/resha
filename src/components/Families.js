@@ -138,7 +138,7 @@ class Families extends Component {
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                         </TouchableOpacity>
                         <Text style={[styles.headerText]}>{ i18n.t('families') }</Text>
-                        <TouchableOpacity onPress={ () => this.props.navigation.navigate('familyFilter')} style={styles.headerBtn}>
+                        <TouchableOpacity onPress={ () => this.props.navigation.navigate(this.props.user ? 'familyFilter' : 'login')} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/filter_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>
                     </Animated.View>

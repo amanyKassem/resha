@@ -7,7 +7,7 @@ export const getFamiliesCategories = lang => {
 
         axios({
             url: CONST.url + 'families-categories',
-            method: 'GET',
+            method: 'POST',
             data: {lang}
         }).then(response => {
             dispatch({type: 'getFamiliesCategories', payload: response.data})

@@ -7,7 +7,7 @@ export const getRestaurants = lang => {
 
         axios({
             url: CONST.url + 'restaurants',
-            method: 'GET',
+            method: 'POST',
             data: {lang}
         }).then(response => {
             dispatch({type: 'getRestaurants', payload: response.data})
