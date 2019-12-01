@@ -2,7 +2,7 @@ import axios from "axios";
 import CONST from "../consts";
 
 
-export const getFilterRestaurants = (lang , latitude , longitude , props) => {
+export const getFilterRestaurants = (lang , latitude , longitude , props , backRoute) => {
     return (dispatch) => {
 
         axios({
@@ -13,7 +13,7 @@ export const getFilterRestaurants = (lang , latitude , longitude , props) => {
         }).then(response => {
             dispatch({type: 'getFilterRestaurants', payload: response.data})
             if (response.data.key == 1){
-                props.navigation.navigate('searchRestResult', { searchResult : response.data.data } );
+                props.navigation.navigate('searchRestResult', { searchResult : response.data.data , backRoute } );
             }
         })
 

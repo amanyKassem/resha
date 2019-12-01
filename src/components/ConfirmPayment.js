@@ -18,6 +18,7 @@ import Modal from "react-native-modal";
 import {connect} from "react-redux";
 import {getSaveTicket} from "../actions";
 import {DoubleBounce} from "react-native-loader";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -38,6 +39,11 @@ class ConfirmPayment extends Component {
     static navigationOptions = () => ({
         drawerLabel: () => null
     });
+
+    componentWillMount() {
+        console.log('1')
+        this.setState({isSubmitted: false , modalEvent: false})
+    }
 
     _modalEvent = () =>{
         // this.setState({ modalEvent: !this.state.modalEvent })
@@ -68,10 +74,13 @@ class ConfirmPayment extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.saveTicket)
+        console.log('2')
+        if (nextProps.saveTicket){
             this.setState({ modalEvent: !this.state.modalEvent , isSubmitted: false});
+            console.log('3')
+        }
 
-        console.log('confirmnextProps' , nextProps)
+        // console.log('confirmnextProps' , nextProps)
     }
     backHome() {
         this.setState({ modalEvent: !this.state.modalEvent });
@@ -117,6 +126,9 @@ class ConfirmPayment extends Component {
         }
     }
 
+    onFocus(payload){
+        this.componentWillMount()
+    }
 
     render() {
 
@@ -131,7 +143,7 @@ class ConfirmPayment extends Component {
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate('ticketPayment')} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
@@ -141,6 +153,7 @@ class ConfirmPayment extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <Image source={require('../../assets/images/payment_logo_undraw.png')} style={[styles.faqImg]} resizeMode={'contain'} />
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:25 , paddingVertical:20 , marginTop:15}]}>

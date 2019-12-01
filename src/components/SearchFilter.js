@@ -83,6 +83,7 @@ class SearchFilter extends Component {
 
     async componentWillMount() {
 
+
         this.props.getEventCategories(this.props.lang);
         this.props.getEventsPrices(this.props.lang);
 
@@ -219,6 +220,10 @@ class SearchFilter extends Component {
             this.setState({isSubmitted: false});
             // this.props.navigation.navigate('searchResult', { searchResult : nextProps.filterEvents } );
         }
+        if (nextProps.eventsPrices) {
+            this.setState({value:this.props.eventsPrices.min})
+        }
+
         console.log('nextProps.filterEvents' , nextProps.filterEvents)
     }
 

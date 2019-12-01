@@ -66,7 +66,8 @@ class AddEventImage extends Component {
 
     componentWillMount() {
         base64   = [];
-        this.setState({eventImg:'', isSubmitted: false , modalEvent: false})
+        this.setState({eventImg:'', isSubmitted: false , modalEvent: false});
+        console.log('1')
     }
 
     renderSubmit(){
@@ -94,8 +95,10 @@ class AddEventImage extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log('2')
         if (nextProps.storeEvent) {
             this.setState({isSubmitted: false ,  modalEvent: !this.state.modalEvent});
+            console.log('3')
         }
         console.log('nextProps.storeEvent' , nextProps.storeEvent)
     }
@@ -325,7 +328,7 @@ class AddEventImage extends Component {
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate('addEventPrice')} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>

@@ -51,7 +51,7 @@ class ProductFilter extends Component {
 
     componentWillMount() {
         this.props.getProductPrices(this.props.lang);
-        this.props.getTypeCategories(this.props.lang , this.props.user.type );
+        this.props.getTypeCategories(this.props.lang , this.props.navigation.state.params.catType );
     }
 
 
@@ -109,12 +109,16 @@ class ProductFilter extends Component {
             this.setState({isSubmitted: false});
             // this.props.navigation.navigate('searchResult', { searchResult : nextProps.filterEvents } );
         }
+        if (nextProps.productPrices) {
+            this.setState({value: this.props.productPrices.min})
+        }
+
         console.log('nextProps.filterEvents' , nextProps.filterEvents)
     }
 
     submitSearch(){
         this.setState({ isSubmitted: true });
-        this.props.getFilterProducts( this.props.lang , this.props.navigation.state.params.user_id , null , this.state.category , this.state.value , this.props)
+        this.props.getFilterProducts( this.props.lang , this.props.navigation.state.params.user_id , null , this.state.category , this.state.value , this.props , 'productFilter' , this.props.navigation.state.params.catType)
     }
 
 
@@ -135,7 +139,7 @@ class ProductFilter extends Component {
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
@@ -187,7 +191,7 @@ class ProductFilter extends Component {
 
                                     <View style={styles.sliderParent}>
                                         <Slider
-                                            step={10}
+                                            step={5}
                                             minimumValue={this.props.productPrices.min}
                                             maximumValue={this.props.productPrices.max}
                                             onValueChange={(value) => this.change(value)}

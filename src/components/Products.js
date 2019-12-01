@@ -53,7 +53,7 @@ class Products extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={ () => this.props.navigation.navigate('productDetails' , {product_id:item.id})} style={[styles.notiBlock , styles.directionRow]}>
+            <TouchableOpacity onPress={ () => this.props.navigation.navigate('productDetails' , {product_id:item.id, backRoute:'products'})} style={[styles.notiBlock , styles.directionRow]}>
                 <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={[styles.eventImg ]}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
                     <Text style={[styles.headerText , styles.asfs, styles.writing  , {color:'#272727'}]}>{item.name}</Text>
@@ -122,7 +122,7 @@ class Products extends Component {
     }
 
     submitSearch(){
-        this.props.getFilterProducts( this.props.lang , this.props.navigation.state.params.user_id ,this.state.search , null , null , this.props)
+        this.props.getFilterProducts( this.props.lang , this.props.navigation.state.params.user_id ,this.state.search , null , null , this.props , 'products' , this.props.navigation.state.params.catType)
     }
 
     onFocus(payload){
@@ -139,13 +139,14 @@ class Products extends Component {
         return (
             <Container>
 
+                { this.renderLoader() }
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
-                        <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                        <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                         </TouchableOpacity>
                         <Text style={[styles.headerText]}>{ i18n.t('products') }</Text>
-                        <TouchableOpacity onPress={ () => this.props.navigation.navigate('productFilter' ,{user_id: this.props.navigation.state.params.user_id})} style={styles.headerBtn}>
+                        <TouchableOpacity onPress={ () => this.props.navigation.navigate('productFilter' ,{user_id: this.props.navigation.state.params.user_id, backRoute:'products' , catType:this.props.navigation.state.params.catType})} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/filter_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>
                     </Animated.View>
@@ -153,7 +154,6 @@ class Products extends Component {
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
-                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
 

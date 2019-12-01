@@ -136,10 +136,11 @@ class CarDetails extends Component {
 
         return (
             <Container>
+                { this.renderLoader() }
 
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
-                        <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                        <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                         </TouchableOpacity>
 
@@ -158,7 +159,6 @@ class CarDetails extends Component {
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
-                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         {
                             this.props.profileDetails?
@@ -191,7 +191,7 @@ class CarDetails extends Component {
                                         {
                                             this.props.profileDetails.products.map((product, i) =>{
                                                 return (
-                                                    <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('productDetails', {product_id:product.product_id})}>
+                                                    <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('productDetails', {product_id:product.product_id, backRoute:'carDetails'})}>
                                                         <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
                                                     </TouchableOpacity>
                                                 )
@@ -199,7 +199,7 @@ class CarDetails extends Component {
                                         }
                                     </View>
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('products' , {user_id :this.props.navigation.state.params.user_id })} style={styles.delAcc}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('products' , {user_id :this.props.navigation.state.params.user_id , backRoute:'carDetails', catType:this.props.navigation.state.params.catType})} style={styles.delAcc}>
                                         <Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>
                                     </TouchableOpacity>
                                 </View>

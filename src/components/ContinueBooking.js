@@ -76,7 +76,7 @@ class ContinueBooking extends Component {
     confirmTicketsNum(){
         if (this.state.ticketsNo > this.props.navigation.state.params.available_count || this.state.ticketsNo == '' || this.state.ticketsNo == null || this.state.ticketsNo.length == 0 ){
             Toast.show({
-                text: 'sorry , this number of tickets is not available',
+                text: i18n.t('availTicket') ,
                 type: "danger",
                 duration: 3000
             });
@@ -109,7 +109,7 @@ class ContinueBooking extends Component {
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate('bookType')} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>

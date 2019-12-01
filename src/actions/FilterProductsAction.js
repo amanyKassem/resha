@@ -2,7 +2,7 @@ import axios from "axios";
 import CONST from "../consts";
 
 
-export const getFilterProducts = (lang , user_id , keyword , category_id , price , props) => {
+export const getFilterProducts = (lang , user_id , keyword , category_id , price , props , backRoute , catType) => {
     return (dispatch) => {
 
         axios({
@@ -13,7 +13,7 @@ export const getFilterProducts = (lang , user_id , keyword , category_id , price
         }).then(response => {
             dispatch({type: 'getFilterProducts', payload: response.data})
             if (response.data.key == 1){
-                props.navigation.navigate('searchProductsResult', { searchResult : response.data.data , user_id } );
+                props.navigation.navigate('searchProductsResult', { searchResult : response.data.data , user_id , backRoute , catType} );
             }
         })
 

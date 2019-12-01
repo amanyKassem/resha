@@ -20,6 +20,7 @@ export default class App extends React.Component {
         };
 
         // I18nManager.forceRTL(true)
+        // AsyncStorage.clear();
 
     }
 

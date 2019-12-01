@@ -2,7 +2,7 @@ import axios from "axios";
 import CONST from "../consts";
 
 
-export const getFilterFamilies = (lang , keyword , latitude , longitude , props) => {
+export const getFilterFamilies = (lang , keyword , latitude , longitude , props , backRoute) => {
     return (dispatch) => {
 
         axios({
@@ -13,7 +13,7 @@ export const getFilterFamilies = (lang , keyword , latitude , longitude , props)
         }).then(response => {
             dispatch({type: 'getFilterFamilies', payload: response.data})
             if (response.data.key == 1){
-                props.navigation.navigate('searchFamiliesResult', { searchResult : response.data.data } );
+                props.navigation.navigate('searchFamiliesResult', { searchResult : response.data.data , backRoute } );
             }
         })
 

@@ -48,7 +48,7 @@ class ProductiveFamilies extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('families' , { category_id: item.id })} style={[styles.eventTouch ]}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('families' , { category_id: item.id, backRoute:'productiveFamilies' , catType:this.props.navigation.state.params.catType})} style={[styles.eventTouch ]}>
                 <Image source={{ uri: item.icon }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                 <View style={[styles.familiesCont ]}>
                    <View style={styles.directionColumn}>
@@ -116,6 +116,7 @@ class ProductiveFamilies extends Component {
         return (
             <Container>
 
+                { this.renderLoader() }
 
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
@@ -127,7 +128,6 @@ class ProductiveFamilies extends Component {
 
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
-                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
 
                         <View style={[styles.directionRowSpace , styles.w100  , styles.mt70, {paddingHorizontal:20 , paddingVertical:15}]}>

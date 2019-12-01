@@ -104,7 +104,7 @@ class Saves extends Component {
 
     renderFavsEvents = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('bookTicket', { event_id: item.id })} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('bookTicket', { event_id: item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
                 <View  style={styles.saveBtn}>
                     {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
                     <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
@@ -122,7 +122,7 @@ class Saves extends Component {
 
     renderFavsFamilies = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
                 <View  style={styles.saveBtn}>
                     {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
                     <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
@@ -141,7 +141,7 @@ class Saves extends Component {
 
     renderFavsRestaurants = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
                 <View  style={styles.saveBtn}>
                     {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
                     <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
@@ -160,7 +160,7 @@ class Saves extends Component {
 
     renderFavsFoodTrucks = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
                 <View  style={styles.saveBtn}>
                     {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
                     <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />

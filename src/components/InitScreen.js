@@ -10,7 +10,7 @@ class InitScreen extends Component {
     }
 
     async componentWillMount() {
-        console.log('auth..', this.props.auth , 'user profile ..', this.props.user);
+        console.log('auth..', this.props.auth , 'user profile ..', this.props.user , 'lang' , this.props.lang );
         if (this.props.lang == null)
             this.props.navigation.navigate('language')
         else if (this.props.auth == null || this.props.user == null)

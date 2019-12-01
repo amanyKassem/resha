@@ -8,7 +8,6 @@ import FooterSection from './FooterSection';
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getHomeCounts} from "../actions";
-import homeCounts from "../reducers/HomeCountsReducer";
 
 
 const height = Dimensions.get('window').height;
@@ -116,7 +115,7 @@ class Home extends Component {
 
                             <View style={[styles.directionRowSpace, styles.w100]}>
                                 <View style={[styles.directionColumn , {width: '47%'}] }>
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('restCafe')} style={[styles.imgParent , {width: '100%'}]}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('restCafe' ,{catType : 6})} style={[styles.imgParent , {width: '100%'}]}>
                                         <Image source={require('../../assets/images/lights.jpg')} style={[styles.w100 , {height:180}]} resizeMode={'cover'} />
                                         <View style={[styles.overlay , {justifyContent:'flex-end' , paddingBottom:30}]}>
                                             <Image source={require('../../assets/images/shop_white.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
@@ -124,7 +123,7 @@ class Home extends Component {
                                             <Text style={[styles.whiteText, styles.normalText , {fontSize:14}]}>{ i18n.t('number') } : {this.props.resturants}</Text>
                                         </View>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('cars')} style={[styles.imgParent , {width: '100%'}]}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('cars',{catType : 7})} style={[styles.imgParent , {width: '100%'}]}>
                                         <Image source={require('../../assets/images/track_blue.jpg')} style={[styles.w100 , {height:180}]} resizeMode={'cover'} />
                                         <View style={[styles.overlay , {justifyContent:'flex-end' , paddingBottom:30}]}>
                                             <Image source={require('../../assets/images/delivery_truck_icon.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
@@ -133,7 +132,7 @@ class Home extends Component {
                                         </View>
                                     </TouchableOpacity>
                                 </View>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('productiveFamilies')} style={[styles.imgParent , {width: '47%'}]}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('productiveFamilies',{catType : 8})} style={[styles.imgParent , {width: '47%'}]}>
                                     <Image source={require('../../assets/images/family_descrption.jpg')} style={[styles.w100 , {height:382}]} resizeMode={'cover'} />
                                     <View style={[styles.overlay , {justifyContent:'flex-end' , paddingBottom:30}]}>
                                         <Image source={require('../../assets/images/family_icon.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />

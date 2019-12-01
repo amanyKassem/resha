@@ -51,7 +51,7 @@ class Events extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={ () => this.props.navigation.navigate( this.props.user ? 'bookTicket' : 'login', { event_id: item.id })} style={[styles.notiBlock , styles.directionRow]}>
+            <TouchableOpacity onPress={ () => this.props.navigation.navigate( this.props.user ? 'bookTicket' : 'login', { event_id: item.id , backRoute:'events'})} style={[styles.notiBlock , styles.directionRow]}>
                 <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={styles.eventImg}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
                     <Text style={[styles.headerText, styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
@@ -128,6 +128,7 @@ class Events extends Component {
         return (
             <Container>
 
+                { this.renderLoader() }
 
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
@@ -143,7 +144,6 @@ class Events extends Component {
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
-                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
 
                         <View style={[styles.directionRowSpace , styles.w100  , styles.mt70, {paddingHorizontal:20 , paddingVertical:15}]}>
