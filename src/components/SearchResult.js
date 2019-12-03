@@ -55,7 +55,7 @@ class SearchResult extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookTicket' , {event_id :item.id})} style={[styles.notiBlock , styles.directionRow]}>
+            <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookTicket' , {event_id :item.id, backRoute:'searchResult'})} style={[styles.notiBlock , styles.directionRow]}>
                 <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={styles.eventImg}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
                     <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
@@ -125,11 +125,11 @@ class SearchResult extends Component {
 
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
-                        <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                        <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                         </TouchableOpacity>
                         <Text style={[styles.headerText]}>{ i18n.t('searchResult') }</Text>
-                        <TouchableOpacity onPress={ () => this.props.navigation.navigate('searchFilter')} style={styles.headerBtn}>
+                        <TouchableOpacity onPress={ () => this.props.navigation.navigate('searchFilter', {backRoute:'searchResult'})} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/filter_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>
                     </Animated.View>

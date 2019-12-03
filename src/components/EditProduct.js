@@ -188,7 +188,7 @@ class EditProduct extends Component {
 
     submitData(){
         this.setState({ isSubmitted: true });
-        this.props.getUpdateProduct( this.props.lang , this.props.navigation.state.params.product_id , this.state.prodName , this.state.price , this.state.category , this.state.moreDet , base64 , this.props.user.token , this.props)
+        this.props.getUpdateProduct( this.props.lang , this.props.navigation.state.params.product_id , this.state.prodName , this.state.price , this.state.category , this.state.moreDet , base64 , this.props.user.token , this.props , 'editProduct')
     }
 
 
@@ -212,7 +212,7 @@ class EditProduct extends Component {
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>

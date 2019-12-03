@@ -83,6 +83,7 @@ class EditFamilyProfile extends Component {
 
     async componentWillMount() {
 
+        this.setState({isSubmitted: false})
         this.props.getTypeCategories(this.props.lang , this.props.user.type );
 
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -231,7 +232,7 @@ class EditFamilyProfile extends Component {
     submitData(){
         this.setState({ isSubmitted: true });
         this.props.getUpdateFamilyProfileMain( this.props.lang , this.state.restName , this.state.moreDet , this.state.mapRegion.latitude , this.state.mapRegion.longitude ,
-            this.state.category , this.state.location , this.state.base64 , this.props.user.token , this.props)
+            this.state.category , this.state.location , this.state.base64 , this.props.user.token , this.props, 'myFamily')
     }
 
 
@@ -252,7 +253,7 @@ class EditFamilyProfile extends Component {
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate('myFamily')} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>

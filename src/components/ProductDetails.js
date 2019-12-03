@@ -155,7 +155,7 @@ class ProductDetails extends Component {
                                     <View style={styles.directionRowSpace}>
                                         <View style={styles.directionRowAlignCenter}>
                                             <View style={styles.borderImg}>
-                                                <Image source={require('../../assets/images/profile_pic.png')} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                                                <Image source={{ uri: this.props.showProduct.user.image }} style={[styles.footSearchImg]} resizeMode={'cover'} />
                                             </View>
                                             <View style={styles.directionColumn}>
                                                 <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.showProduct.user.user_name}</Text>

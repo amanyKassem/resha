@@ -121,7 +121,7 @@ class MyResturant extends Component {
                         {
                             this.props.showProfile.products.map((product, i) =>{
                                 return (
-                                    <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id})}>
+                                    <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id , backRoute:'myResturant'})}>
                                         <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
                                     </TouchableOpacity>
                                 )
@@ -129,7 +129,7 @@ class MyResturant extends Component {
                         }
                     </View>
 
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('restProducts', {user_id :this.props.showProfile.user_id})} style={[styles.delAcc , {backgroundColor:COLORS.white}]}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('restProducts', {user_id :this.props.showProfile.user_id , backRoute:'myResturant'})} style={[styles.delAcc , {backgroundColor:COLORS.white}]}>
                         <Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.floatingEdit} onPress={() => this.props.navigation.navigate('editRestProfile')}>
@@ -175,7 +175,9 @@ class MyResturant extends Component {
                     </TouchableOpacity>
 
 
-                    <TouchableOpacity style={styles.floatingEdit} onPress={() => this.props.navigation.navigate('editRestContact')}>
+                    <TouchableOpacity style={styles.floatingEdit} onPress={() => this.props.navigation.navigate('editRestContact' , {backRoute:'myResturant'
+                        , mobile:this.props.showProfile.mobile, phone:this.props.showProfile.phone, website:this.props.showProfile.website,
+                        facebook:this.props.showProfile.facebook , twitter:this.props.showProfile.twitter})}>
                         <Image source={require('../../assets/images/edit_floting.png')} style={styles.editImg} resizeMode={'contain'}/>
                     </TouchableOpacity>
                 </View>
@@ -198,6 +200,7 @@ class MyResturant extends Component {
         return (
             <Container>
 
+                { this.renderLoader() }
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
@@ -212,7 +215,6 @@ class MyResturant extends Component {
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
-                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         {
                             this.props.showProfile?

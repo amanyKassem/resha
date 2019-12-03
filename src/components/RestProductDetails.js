@@ -103,10 +103,11 @@ class RestProductDetails extends Component {
         return (
             <Container>
 
+                { this.renderLoader() }
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
@@ -117,7 +118,6 @@ class RestProductDetails extends Component {
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
-                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         {
                             this.props.showProduct?
@@ -172,7 +172,7 @@ class RestProductDetails extends Component {
                                     <Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing , {fontSize:13}]}>{this.props.showProduct.details}</Text>
 
                                     <TouchableOpacity style={styles.floatingEdit} onPress={() => this.props.navigation.navigate('editProduct' , {product_id:this.props.navigation.state.params.product_id,
-                                        prodName :this.props.showProduct.name , price:this.props.showProduct.price , moreDet: this.props.showProduct.details ,base64:this.props.showProduct.images})}>
+                                        prodName :this.props.showProduct.name , price:this.props.showProduct.price , moreDet: this.props.showProduct.details ,base64:this.props.showProduct.images, backRoute:'restProductDetails'})}>
                                         <Image source={require('../../assets/images/edit_floting.png')} style={styles.editImg} resizeMode={'contain'}/>
                                     </TouchableOpacity>
                                 </View>

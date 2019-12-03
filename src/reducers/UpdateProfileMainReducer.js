@@ -1,4 +1,5 @@
-const INITIAL_STATE = { updateProfileMain : null ,  updateProfileSocial : null , updateCarProfileMain : null ,  updateCarProfileSocial : null , updateFamilyProfileMain : null ,  updateFamilyProfileSocial : null , key : 0 };
+const INITIAL_STATE = { updateProfileMain : null ,  updateProfileSocial : null , updateCarProfileMain : null
+    ,  updateCarProfileSocial : null , updateFamilyProfileMain : null ,  updateFamilyProfileSocial : null , key : 0 , msg:''};
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -11,7 +12,8 @@ export default (state = INITIAL_STATE, action) => {
         case 'getUpdateProfileSocial':{
             return {
                 updateProfileSocial: action.payload.data,
-                key: action.payload.key,
+                keyRest: action.payload.key,
+                msg: action.payload.msg,
             };
         }
         case 'getUpdateCarProfileMain':{
@@ -23,7 +25,8 @@ export default (state = INITIAL_STATE, action) => {
         case 'getUpdateCarProfileSocial':{
             return {
                 updateCarProfileSocial: action.payload.data,
-                key: action.payload.key,
+                keyCar: action.payload.key,
+                msg: action.payload.msg,
             };
         }
         case 'getUpdateFamilyProfileMain':{
@@ -35,7 +38,8 @@ export default (state = INITIAL_STATE, action) => {
         case 'getUpdateFamilyProfileSocial':{
             return {
                 updateFamilyProfileSocial: action.payload.data,
-                key: action.payload.key,
+                keyFamily: action.payload.key,
+                msg: action.payload.msg,
             };
         }
 

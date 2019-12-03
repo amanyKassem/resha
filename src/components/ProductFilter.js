@@ -32,7 +32,7 @@ class ProductFilter extends Component {
             backgroundColor: new Animated.Value(0),
             availabel: 0,
             category: null,
-            value: '',
+            value: 0,
             isSubmitted: false
             // max: 2500,
             // step: 500,
@@ -110,7 +110,7 @@ class ProductFilter extends Component {
             // this.props.navigation.navigate('searchResult', { searchResult : nextProps.filterEvents } );
         }
         if (nextProps.productPrices) {
-            this.setState({value: this.props.productPrices.min})
+            this.setState({value: nextProps.productPrices.min})
         }
 
         console.log('nextProps.filterEvents' , nextProps.filterEvents)
@@ -163,22 +163,29 @@ class ProductFilter extends Component {
                                                 backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
                                                 borderBottomColor:'#fff'}]}>{ i18n.t('category') }</Label>
                                             <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>
-                                            <Picker
-                                                mode="dropdown"
-                                                style={[styles.picker , { color: COLORS.gray , backgroundColor: '#f5f5f5',}]}
-                                                placeholderStyle={{ color: COLORS.gray}}
-                                                placeholderIconColor={{color: COLORS.gray}}
-                                                selectedValue={this.state.category}
-                                                onValueChange={(value) => this.setState({ category: value })}
-                                            >
-                                                <Picker.Item label={ i18n.t('category') } value={null} />
-                                                {
-                                                    this.props.typeCategories.map((cat, i) => (
-                                                        <Picker.Item key={i} label={cat.name} value={cat.id} />
-                                                    ))
 
-                                                }
-                                            </Picker>
+                                            {
+                                                this.props.typeCategories ?
+                                                    <Picker
+                                                        mode="dropdown"
+                                                        style={[styles.picker , { color: COLORS.gray , backgroundColor: '#f5f5f5',}]}
+                                                        placeholderStyle={{ color: COLORS.gray}}
+                                                        placeholderIconColor={{color: COLORS.gray}}
+                                                        selectedValue={this.state.category}
+                                                        onValueChange={(value) => this.setState({ category: value })}
+                                                    >
+                                                        <Picker.Item label={ i18n.t('category') } value={null} />
+                                                        {
+                                                            this.props.typeCategories.map((cat, i) => (
+                                                                <Picker.Item key={i} label={cat.name} value={cat.id} />
+                                                            ))
+
+                                                        }
+                                                    </Picker>
+                                                    :
+                                                    <View/>
+                                            }
+
                                             <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
                                         </Item>
                                     </View>
@@ -188,25 +195,31 @@ class ProductFilter extends Component {
                                         <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('price') }</Text>
                                     </View>
 
+                                    {
+                                        this.props.productPrices?
+                                            <View style={styles.sliderParent}>
+                                                <Slider
+                                                    step={5}
+                                                    minimumValue={this.props.productPrices.min}
+                                                    maximumValue={this.props.productPrices.max}
+                                                    onValueChange={(value) => this.change(value)}
+                                                    // value={this.state.value}
+                                                    thumbTintColor={COLORS.rose}
+                                                    style={styles.slider}
+                                                    maximumTrackTintColor={"#000"}
+                                                    minimumTrackTintColor={COLORS.blue}
+                                                />
+                                                <View style={styles.range}>
+                                                    <Left><Text style={[styles.headerText , {color:'#272727'}]}>{this.props.productPrices.min}</Text></Left>
+                                                    <Text style={[styles.headerText , {color:'#272727'}]}>{this.state.value}</Text>
+                                                    <Right><Text style={[styles.headerText , {color:'#272727'}]}>{this.props.productPrices.max}</Text></Right>
+                                                </View>
+                                            </View>
+                                            :
+                                            <View/>
+                                    }
 
-                                    <View style={styles.sliderParent}>
-                                        <Slider
-                                            step={5}
-                                            minimumValue={this.props.productPrices.min}
-                                            maximumValue={this.props.productPrices.max}
-                                            onValueChange={(value) => this.change(value)}
-                                            // value={this.state.value}
-                                            thumbTintColor={COLORS.rose}
-                                            style={styles.slider}
-                                            maximumTrackTintColor={"#000"}
-                                            minimumTrackTintColor={COLORS.blue}
-                                        />
-                                        <View style={styles.range}>
-                                            <Left><Text style={[styles.headerText , {color:'#272727'}]}>{this.props.productPrices.min}</Text></Left>
-                                            <Text style={[styles.headerText , {color:'#272727'}]}>{this.state.value}</Text>
-                                            <Right><Text style={[styles.headerText , {color:'#272727'}]}>{this.props.productPrices.max}</Text></Right>
-                                        </View>
-                                    </View>
+
 
 
                                     {

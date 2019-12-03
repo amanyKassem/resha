@@ -22,6 +22,7 @@ import axios from 'axios';
 import { getUpdateCarProfileSocial} from "../actions";
 import {connect} from "react-redux";
 import { DoubleBounce } from 'react-native-loader';
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -55,89 +56,15 @@ class EditCarContact extends Component {
     });
 
 
-    // _toggleModal = () => this.setState({ isModalVisible: !this.state.isModalVisible });
-    //
-    //
-    // async componentWillMount() {
-    //
-    //
-    //     let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    //     if (status !== 'granted') {
-    //         alert('صلاحيات تحديد موقعك الحالي ملغاه');
-    //     }else {
-    //         const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
-    //         const userLocation = { latitude, longitude };
-    //         this.setState({  initMap: false, mapRegion: userLocation });
-    //
-    //     }
-    //
-    //     let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-    //     getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
-    //     getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
-    //
-    //     console.log(getCity);
-    //
-    //     try {
-    //         const { data } = await axios.get(getCity);
-    //         this.setState({ location: data.results[0].formatted_address });
-    //
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // }
-    //
-    //
-    //
-    // async componentDidMount(){
-    //     const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
-    //     const userLocation = { latitude, longitude };
-    //     this.setState({  initMap: false, mapRegion: userLocation });
-    // }
-    //
-    //
-    // _handleMapRegionChange  = async (mapRegion) =>  {
-    //     console.log(mapRegion);
-    //     this.setState({ mapRegion });
-    //
-    //     let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-    //     getCity += mapRegion.latitude + ',' + mapRegion.longitude;
-    //     getCity += '&key=AIzaSyDYjCVA8YFhqN2pGiW4I8BCwhlxThs1Lc0&language=ar&sensor=true';
-    //
-    //     console.log('locations data', getCity);
-    //
-    //
-    //     try {
-    //         const { data } = await axios.get(getCity);
-    //         console.log(data);
-    //         this.setState({ location: data.results[0].formatted_address });
-    //
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // }
-    //
-    // _getLocationAsync = async () => {
-    //     let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    //     if (status !== 'granted') {
-    //         this.setState({
-    //             locationResult: 'Permission to access location was denied',
-    //         });
-    //     } else {
-    //         this.setState({ hasLocationPermissions: true });
-    //     }
-    //
-    //     let location = await Location.getCurrentPositionAsync({});
-    //
-    //     // Center the map on the location we just fetched.
-    //     this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
-    // };
-    //
-    //
-    //
-    // confirmLocation(){
-    //     this.setState({ isModalVisible: !this.state.isModalVisible })
-    // }
+    componentWillMount() {
 
+        this.setState({isSubmitted: false ,
+            mainNum: this.props.navigation.state.params.mobile,
+            phone: this.props.navigation.state.params.phone,
+            website: this.props.navigation.state.params.website,
+            facebook: this.props.navigation.state.params.facebook,
+            twitter: this.props.navigation.state.params.twitter,})
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -199,15 +126,24 @@ class EditCarContact extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.key == 1) {
             this.setState({isSubmitted: false});
+        }else{
+            this.setState({isSubmitted: false});
+            // Toast.show({
+            //     text: i18n.t('validateData'),
+            //     type: "danger",
+            //     duration: 3000
+            // });
         }
         console.log('nextProps.updateCarProfileSocial' , nextProps.updateCarProfileSocial)
     }
 
     submitData(){
         this.setState({ isSubmitted: true });
-        this.props.getUpdateCarProfileSocial( this.props.lang , this.state.phone , this.state.mainNum , this.state.website , this.state.facebook , this.state.twitter , this.props.user.token , this.props)
+        this.props.getUpdateCarProfileSocial( this.props.lang , this.state.phone , this.state.mainNum , this.state.website , this.state.facebook , this.state.twitter , this.props.user.token , this.props, 'editCarContact')
     }
-
+    onFocus(payload){
+        this.componentWillMount()
+    }
     render() {
         let image = this.state.userImage;
         const backgroundColor = this.state.backgroundColor.interpolate({
@@ -221,7 +157,7 @@ class EditCarContact extends Component {
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
@@ -231,6 +167,7 @@ class EditCarContact extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
                             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'height' : 'padding'} style={styles.keyboardAvoid}>

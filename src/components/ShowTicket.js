@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, FlatList, ImageBackground} from "react-native";
+import {
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    Dimensions,
+    Animated,
+    FlatList,
+    ImageBackground,
+    Linking
+} from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -66,6 +76,9 @@ class ShowTicket extends Component {
         });
     }
 
+    _linkPressed (url){
+        Linking.openURL(url);
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -135,7 +148,7 @@ class ShowTicket extends Component {
                                     <View style={styles.directionRowSpace}>
                                         <View style={styles.directionRowAlignCenter}>
                                             <View style={styles.borderImg}>
-                                                <Image source={require('../../assets/images/profile_pic.png')} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                                                <Image source={{ uri: this.props.ownerEventsDetails.user.avatar }} style={[styles.footSearchImg]} resizeMode={'cover'} />
                                             </View>
                                             <View style={styles.directionColumn}>
                                                 <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.ownerEventsDetails.user.user_name}</Text>
@@ -151,7 +164,7 @@ class ShowTicket extends Component {
                                             </View>
                                         </View>
 
-                                        <TouchableOpacity >
+                                        <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.ownerEventsDetails.user.mobile)}>
                                             <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
                                         </TouchableOpacity>
                                     </View>

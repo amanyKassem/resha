@@ -46,7 +46,7 @@ class SearchFilter extends Component {
             initMap: true,
             date: '',
             isDatePickerVisible: false,
-            value: '',
+            value: 0,
             isSubmitted: false
             // max: null,
             // step: null,
@@ -143,22 +143,6 @@ class SearchFilter extends Component {
         }
     }
 
-    _getLocationAsync = async () => {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-            this.setState({
-                locationResult: 'Permission to access location was denied',
-            });
-        } else {
-            this.setState({ hasLocationPermissions: true });
-        }
-
-        let location = await Location.getCurrentPositionAsync({});
-
-        // Center the map on the location we just fetched.
-        this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
-    };
-
 
 
     confirmLocation(){
@@ -221,7 +205,7 @@ class SearchFilter extends Component {
             // this.props.navigation.navigate('searchResult', { searchResult : nextProps.filterEvents } );
         }
         if (nextProps.eventsPrices) {
-            this.setState({value:this.props.eventsPrices.min})
+            this.setState({value:nextProps.eventsPrices.min})
         }
 
         console.log('nextProps.filterEvents' , nextProps.filterEvents)
@@ -229,7 +213,7 @@ class SearchFilter extends Component {
 
     submitSearch(){
         this.setState({ isSubmitted: true });
-        this.props.getFilterEvents( this.props.lang , this.state.value , this.state.mapRegion.latitude , this.state.mapRegion.longitude , this.state.eventType , this.props.user.token , this.props)
+        this.props.getFilterEvents( this.props.lang , this.state.value , this.state.mapRegion.latitude , this.state.mapRegion.longitude , this.state.eventType , this.props.user.token , this.props, 'searchFilter')
     }
 
     onFocus(payload){
@@ -249,7 +233,7 @@ class SearchFilter extends Component {
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
@@ -295,22 +279,28 @@ class SearchFilter extends Component {
                                                 backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
                                                 borderBottomColor:'#fff'}]}>{ i18n.t('eventType') }</Label>
                                             <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>
-                                            <Picker
-                                                mode="dropdown"
-                                                style={[styles.picker , { color: COLORS.gray , backgroundColor:'#f5f5f5',}]}
-                                                placeholderStyle={{ color: COLORS.gray}}
-                                                placeholderIconColor={{color: COLORS.gray}}
-                                                selectedValue={this.state.eventType}
-                                                onValueChange={(value) => this.setState({ eventType: value })}
-                                            >
-                                                <Picker.Item label={ i18n.t('eventType') } value={null} />
-                                                {
-                                                    this.props.eventCategories.map((cat, i) => (
-                                                        <Picker.Item key={i} label={cat.name} value={cat.id} />
-                                                    ))
+                                            {
+                                                this.props.eventCategories?
+                                                    <Picker
+                                                        mode="dropdown"
+                                                        style={[styles.picker , { color: COLORS.gray , backgroundColor:'#f5f5f5',}]}
+                                                        placeholderStyle={{ color: COLORS.gray}}
+                                                        placeholderIconColor={{color: COLORS.gray}}
+                                                        selectedValue={this.state.eventType}
+                                                        onValueChange={(value) => this.setState({ eventType: value })}
+                                                    >
+                                                        <Picker.Item label={ i18n.t('eventType') } value={null} />
+                                                        {
+                                                            this.props.eventCategories.map((cat, i) => (
+                                                                <Picker.Item key={i} label={cat.name} value={cat.id} />
+                                                            ))
 
-                                                }
-                                            </Picker>
+                                                        }
+                                                    </Picker>
+                                                    :
+                                                    <View/>
+                                            }
+
                                             <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
                                         </Item>
                                     </View>
@@ -346,25 +336,31 @@ class SearchFilter extends Component {
                                         <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('price') }</Text>
                                     </View>
 
+                                    {
+                                        this.props.eventsPrices?
+                                            <View style={styles.sliderParent}>
+                                                <Slider
+                                                    step={10}
+                                                    minimumValue={this.props.eventsPrices.min}
+                                                    maximumValue={this.props.eventsPrices.max}
+                                                    onValueChange={(value) => this.change(value)}
+                                                    // value={this.state.value}
+                                                    thumbTintColor={COLORS.rose}
+                                                    style={styles.slider}
+                                                    maximumTrackTintColor={"#000"}
+                                                    minimumTrackTintColor={COLORS.blue}
+                                                />
+                                                <View style={styles.range}>
+                                                    <Left><Text style={[styles.headerText , {color:'#272727'}]}>{this.props.eventsPrices.min}</Text></Left>
+                                                    <Text style={[styles.headerText , {color:'#272727'}]}>{this.state.value}</Text>
+                                                    <Right><Text style={[styles.headerText , {color:'#272727'}]}>{this.props.eventsPrices.max}</Text></Right>
+                                                </View>
+                                            </View>
+                                            :
+                                            <View/>
+                                    }
 
-                                    <View style={styles.sliderParent}>
-                                        <Slider
-                                            step={10}
-                                            minimumValue={this.props.eventsPrices.min}
-                                            maximumValue={this.props.eventsPrices.max}
-                                            onValueChange={(value) => this.change(value)}
-                                            // value={this.state.value}
-                                            thumbTintColor={COLORS.rose}
-                                            style={styles.slider}
-                                            maximumTrackTintColor={"#000"}
-                                            minimumTrackTintColor={COLORS.blue}
-                                        />
-                                        <View style={styles.range}>
-                                            <Left><Text style={[styles.headerText , {color:'#272727'}]}>{this.props.eventsPrices.min}</Text></Left>
-                                            <Text style={[styles.headerText , {color:'#272727'}]}>{this.state.value}</Text>
-                                            <Right><Text style={[styles.headerText , {color:'#272727'}]}>{this.props.eventsPrices.max}</Text></Right>
-                                        </View>
-                                    </View>
+
 
 
                                     {

@@ -135,7 +135,7 @@ class Events extends Component {
                         <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={ () => this.props.navigation.navigate(this.props.user ? 'searchFilter' : 'login')} style={styles.headerBtn}>
+                        <TouchableOpacity onPress={ () => this.props.navigation.navigate(this.props.user ? 'searchFilter' : 'login' , {backRoute:'events'})} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/filter_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>
                     </Animated.View>
