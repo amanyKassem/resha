@@ -132,8 +132,8 @@ class SearchFamiliesResult extends Component {
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                         </TouchableOpacity>
                         <Text style={[styles.headerText]}>{ i18n.t('searchResult') }</Text>
-                        <TouchableOpacity onPress={ () => this.props.navigation.navigate('familyFilter' , {backRoute:'searchFamiliesResult'})} style={styles.headerBtn}>
-                            <Image source={require('../../assets/images/filter_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+                        <TouchableOpacity disabled onPress={ () => this.props.navigation.navigate('familyFilter' , {backRoute:'searchFamiliesResult'})} style={styles.headerBtn}>
+                            {/*<Image source={require('../../assets/images/filter_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
                         </TouchableOpacity>
                     </Animated.View>
                 </Header>

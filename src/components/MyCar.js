@@ -207,7 +207,7 @@ class MyCar extends Component {
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
-                        <Text style={[styles.headerText , {right:20}]}>{this.props.showProfile.name}</Text>
+                        <Text style={[styles.headerText , {right:20}]}>{this.props.showProfile ? this.props.showProfile.name :''}</Text>
                         <Left style={styles.flex0}/>
                     </Animated.View>
                 </Header>

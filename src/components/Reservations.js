@@ -47,7 +47,7 @@ class Reservations extends Component {
     componentWillMount() {
         this.setState({ loader: 1 ,submitTicket: false , activeDate:null});
         this.props.getReservations( this.props.lang , this.props.user.token)
-        // console.log('1')
+        console.log('1' , this.props.user.token)
     }
 
     renderLoader(){

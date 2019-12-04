@@ -128,7 +128,7 @@ class Register extends Component {
 
     async componentWillMount() {
 
-
+alert(this.props.lang)
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
             alert('صلاحيات تحديد موقعك الحالي ملغاه');
@@ -141,7 +141,7 @@ class Register extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
-        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
+        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=' +this.props.lang +'&sensor=true';
 
         console.log(getCity);
 
@@ -169,7 +169,7 @@ class Register extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += mapRegion.latitude + ',' + mapRegion.longitude;
-        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
+        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language= '+this.props.lang +'&sensor=true';
 
         console.log('locations data', getCity);
 

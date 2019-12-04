@@ -96,10 +96,12 @@ class AddEventImage extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log('2')
+
         if (nextProps.storeEvent) {
             this.setState({isSubmitted: false ,  modalEvent: !this.state.modalEvent});
             console.log('3')
         }
+
         console.log('nextProps.storeEvent' , nextProps.storeEvent)
     }
 
@@ -152,7 +154,6 @@ class AddEventImage extends Component {
         base64.push(result.base64)
         let localUri = result.uri;
         let filename = localUri.split('/').pop();
-        console.log(result);
 
         // check if there is image then set it and make button not disabled
         if (!result.cancelled) {

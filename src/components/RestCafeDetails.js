@@ -113,6 +113,15 @@ class RestCafeDetails extends Component {
             this.setAnimate(1)
         }
     }
+    renderNoData(){
+        if (this.props.profileDetails.products && (this.props.profileDetails.products).length <= 0){
+            return(
+                <Image source={require('../../assets/images/no_data.png')} resizeMode={'contain'} style={{ alignSelf: 'center', width: 200, height: 200 }} />
+            );
+        }
+
+        return <View />
+    }
 
     // savedEvent() {
     //     this.setState({savedEvent: !this.state.savedEvent})
@@ -136,6 +145,9 @@ class RestCafeDetails extends Component {
         if(this.state.active === 0 ){
             return(
                 <View style={styles.directionColumn}>
+                    {
+                        this.renderNoData()
+                    }
                     <View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>
                         {
                             this.props.profileDetails.products.map((product, i) =>{

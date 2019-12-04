@@ -23,9 +23,9 @@ class ProductDetails extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            starsCount:0,
-            userRate:0,
-            savedEvent: false,
+            starsCount:this.props.showProduct ? this.props.showProduct.product_rates: 0,
+            userRate:this.props.showProduct ? this.props.showProduct.user_rates: 0,
+            savedEvent: this.props.showProduct ? this.props.showProduct.is_save: false,
             loader: 1
         }
     }
@@ -55,7 +55,7 @@ class ProductDetails extends Component {
         console.log('nextProps.showProduct.is_save' , nextProps)
 
 
-        this.setState({ loader: nextProps.key , savedEvent: nextProps.showProduct.is_save  , starsCount : nextProps.showProduct.rates , userRate : nextProps.showProduct.user.rates});
+        this.setState({ loader: nextProps.key  , starsCount : nextProps.showProduct.rates , userRate : nextProps.showProduct.user.rates});
         if(nextProps.ratekey == 1)
             this.setState({userRate : nextProps.rateProduct.user_rates ,  starsCount : nextProps.rateProduct.product_rates })
     }

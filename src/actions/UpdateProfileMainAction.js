@@ -1,5 +1,7 @@
 import axios from "axios";
 import CONST from "../consts";
+import {Toast} from 'native-base'
+
 
 
 export const getUpdateProfileMain = (lang , name , details , latitude , longitude , category_id , address , avatar , token , props , backRoute ) => {
@@ -33,6 +35,11 @@ export const getUpdateProfileSocial = (lang , phone , mobile , website , faceboo
             if (response.data.key == 1){
                 props.navigation.navigate('myResturant' , {backRoute});
             }
+            Toast.show({
+                text:response.data.msg,
+                type: response.data.key ==1 ?"success" : "danger",
+                duration: 3000
+            });
         })
 
     }
@@ -69,6 +76,11 @@ export const getUpdateCarProfileSocial = (lang , phone , mobile , website , face
             if (response.data.key == 1){
                 props.navigation.navigate('myCar', {backRoute});
             }
+            Toast.show({
+                text:response.data.msg,
+                type: response.data.key ==1 ?"success" : "danger",
+                duration: 3000
+            });
         })
 
     }
@@ -105,6 +117,11 @@ export const getUpdateFamilyProfileSocial = (lang , phone , mobile , website , f
             if (response.data.key == 1){
                 props.navigation.navigate('myFamily', {backRoute});
             }
+            Toast.show({
+                text:response.data.msg,
+                type: response.data.key ==1 ?"success" : "danger",
+                duration: 3000
+            });
         })
 
     }
