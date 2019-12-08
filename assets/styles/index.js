@@ -813,7 +813,7 @@ const styles = ({
     },
     eventswiper:{
         width: '100%',
-        height: 200,
+        height: 300,
         flex:0,
         marginTop:20,
         marginBottom:15,
@@ -821,7 +821,7 @@ const styles = ({
     },
     restImg:{
         width: '90%',
-        height: 200,
+        height: 300,
         marginTop:20,
         marginBottom:15,
         overflow:'hidden',

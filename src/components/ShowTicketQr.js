@@ -8,7 +8,8 @@ import {
     Animated,
     FlatList,
     ImageBackground,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Platform, Linking
 } from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form} from 'native-base'
 import styles from '../../assets/styles'
@@ -16,10 +17,11 @@ import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
 import Modal from "react-native-modal";
-import QRCode from 'react-native-qrcode';
+import AndroidQRCode from 'react-native-qrcode';
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getDeleteTicket} from "../actions";
+import { QRCode } from 'react-native-custom-qr-codes-expo';
 
 
 const height = Dimensions.get('window').height;
@@ -39,6 +41,10 @@ class ShowTicketQr extends Component {
     static navigationOptions = () => ({
         drawerLabel: () => null
     });
+
+    _linkPressed (url){
+        Linking.openURL(url);
+    }
 
     renderSubmit(){
         if (this.state.isSubmitted) {
@@ -136,11 +142,22 @@ class ShowTicketQr extends Component {
 
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:25 , flex:0} ]}>
                             <View style={styles.QR}>
-                                <QRCode
-                                    value={'/' + this.props.navigation.state.params.ticketsInfo.ticket_id + '/'}
-                                    size={80}
-                                    bgColor='#000'
-                                    fgColor='white'/>
+                                {
+                                    Platform.OS == 'ios' ?
+                                        <QRCode
+                                            content={(this.props.navigation.state.params.ticketsInfo.ticket_id).toString()}
+                                            backgroundColor={'#fff'}
+                                            size={80}
+                                        />
+                                        :
+                                        <AndroidQRCode
+                                            value={(this.props.navigation.state.params.ticketsInfo.ticket_id).toString()}
+                                            size={80}
+                                            bgColor='#000'
+                                            fgColor='white'/>
+                                }
+
+
                             </View>
                             <View style={styles.directionRowCenter}>
 
@@ -179,10 +196,10 @@ class ShowTicketQr extends Component {
                                 <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>{ this.props.navigation.state.params.ticketsInfo.tickets_total_price} { i18n.t('RS') }</Text>
                             </View>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                            <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.navigation.state.params.ticketsInfo.latitude +','+ this.props.navigation.state.params.ticketsInfo.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>{ this.props.navigation.state.params.ticketsInfo.address}</Text>
-                            </View>
+                            </TouchableOpacity>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/receipt_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('onlineBook') }</Text>

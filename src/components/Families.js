@@ -60,9 +60,9 @@ class Families extends Component {
                         <Text style={[styles.blueText , styles.normalText , {color:COLORS.gray}]}>{item.category}</Text>
                     </View>
                     <View style={styles.directionRowAlignCenter}>
-                        <View style={[styles.eventBtn]}>
-                            <Text style={[styles.whiteText , styles.normalText]}>{item.products_count} { i18n.t('product') }</Text>
-                        </View>
+                        {/*<View style={[styles.eventBtn]}>*/}
+                            {/*<Text style={[styles.whiteText , styles.normalText]}>{item.products_count} { i18n.t('product') }</Text>*/}
+                        {/*</View>*/}
                         <View style={[styles.eventBtn , {backgroundColor:'#f0ac3f' , flexDirection:'row' , marginLeft:10}]}>
                             <Image source={require('../../assets/images/star_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                             <Text style={[styles.whiteText , styles.normalText]}>{item.rates} / 5</Text>

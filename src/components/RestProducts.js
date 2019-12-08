@@ -20,6 +20,7 @@ import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getAuthProducts , getDeleteProduct} from "../actions";
 import {NavigationEvents} from "react-navigation";
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
@@ -75,7 +76,7 @@ class RestProducts extends Component {
 
     renderItems = (item) => {
         return(
-            <View style={[styles.notiBlock , styles.directionRow]}>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={600} style={[styles.notiBlock , styles.directionRow]}>
 
                 <TouchableOpacity style={[styles.touchImg ]} onPress={ () => this.props.navigation.navigate('restProductDetails', {product_id:item.id , backRoute:'restProducts'})}>
                      <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={[styles.sideDrawerImg ]}/>
@@ -107,7 +108,7 @@ class RestProducts extends Component {
                         </View>
                     </View>
                 </View>
-            </View>
+            </Animatable.View>
         );
     }
 

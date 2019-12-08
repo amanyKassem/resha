@@ -7,6 +7,7 @@ import COLORS from '../../src/consts/colors'
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getFamiliesCategories} from "../actions";
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
@@ -48,18 +49,20 @@ class ProductiveFamilies extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('families' , { category_id: item.id, backRoute:'productiveFamilies' , catType:this.props.navigation.state.params.catType})} style={[styles.eventTouch ]}>
-                <Image source={{ uri: item.icon }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
-                <View style={[styles.familiesCont ]}>
-                   <View style={styles.directionColumn}>
-                       <Text style={[styles.whiteText , styles.BoldText , styles.asfs , styles.writing , {fontSize:16}]}>{item.name}</Text>
-                       <View style={styles.whiteLine}/>
-                   </View>
-                    <View style={styles.familiesEvent}>
-                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{ i18n.t('familiesNumber') } : {item.families_count}</Text>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('families' , { category_id: item.id, backRoute:'productiveFamilies' , catType:this.props.navigation.state.params.catType})} style={[styles.eventTouch ]}>
+                    <Image source={{ uri: item.icon }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <View style={[styles.familiesCont ]}>
+                       <View style={styles.directionColumn}>
+                           <Text style={[styles.whiteText , styles.BoldText , styles.asfs , styles.writing , {fontSize:16}]}>{item.name}</Text>
+                           <View style={styles.whiteLine}/>
+                       </View>
+                        {/*<View style={styles.familiesEvent}>*/}
+                            {/*<Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{ i18n.t('familiesNumber') } : {item.families_count}</Text>*/}
+                        {/*</View>*/}
                     </View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </Animatable.View>
         );
     }
 
@@ -133,10 +136,12 @@ class ProductiveFamilies extends Component {
                         <View style={[styles.directionRowSpace , styles.w100  , styles.mt70, {paddingHorizontal:20 , paddingVertical:15}]}>
                             <View style={[styles.directionColumn , {flex: 1}]}>
                                 <Text style={[styles.whiteText, styles.normalText , styles.asfs , styles.writing ]}>{ i18n.t('productiveFamilies') }</Text>
-                                <Text style={[styles.whiteText, styles.normalText , styles.asfs , styles.writing , {fontSize:14}]}>{ i18n.t('familiesNumber') } : {this.props.count}</Text>
+                                {/*<Text style={[styles.whiteText, styles.normalText , styles.asfs , styles.writing , {fontSize:14}]}>{ i18n.t('familiesNumber') } : {this.props.count}</Text>*/}
                                 <Text style={[styles.whiteText, styles.normalText , styles.asfs , styles.writing , {fontSize:13} ]}>{this.props.desc}</Text>
                             </View>
-                            <Image source={require('../../assets/images/undraw_department.png')} style={{ width:135, height:135}} resizeMode={'contain'} />
+                            <Animatable.View animation="fadeInLeft" easing="ease-out" delay={600}>
+                                <Image source={require('../../assets/images/undraw_department.png')} style={{ width:135, height:135}} resizeMode={'contain'} />
+                            </Animatable.View>
                         </View>
 
                         <View style={[styles.homeSection , styles.whiteHome , {padding:15 ,  marginTop:15}]}>

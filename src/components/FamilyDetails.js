@@ -196,9 +196,9 @@ class FamilyDetails extends Component {
 
                                     </View>
 
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('products', {user_id :this.props.navigation.state.params.user_id , backRoute:'familyDetails' , catType:this.props.navigation.state.params.catType })} style={styles.delAcc}>
-                                        <Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>
-                                    </TouchableOpacity>
+                                    {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('products', {user_id :this.props.navigation.state.params.user_id , backRoute:'familyDetails' , catType:this.props.navigation.state.params.catType })} style={styles.delAcc}>*/}
+                                        {/*<Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>*/}
+                                    {/*</TouchableOpacity>*/}
                                 </View>
                                 :
                                 <View/>

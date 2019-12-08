@@ -6,6 +6,7 @@ import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import { DoubleBounce } from 'react-native-loader';
 import {NavigationEvents} from "react-navigation";
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
@@ -55,25 +56,27 @@ class SearchRestResult extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={ () => this.props.navigation.navigate('restCafeDetails' , {user_id: item.user_id , backRoute:'searchRestResult'})} style={[styles.notiBlock , styles.directionRow]}>
-                <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={[styles.eventImg , {height:110}]}/>
-                <View style={[styles.directionColumn , {flex:1}]}>
-                    <Text style={[styles.headerText , styles.asfs, styles.writing  , {color:'#272727'}]}>{item.name}</Text>
-                    <View style={[styles.directionRowAlignCenter, {marginVertical:10}  ]}>
-                        <Image source={require('../../assets/images/category.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                        <Text style={[styles.blueText , styles.normalText , {color:COLORS.gray}]}>{item.category}</Text>
-                    </View>
-                    <View style={styles.directionRowAlignCenter}>
-                        <View style={[styles.eventBtn]}>
-                            <Text style={[styles.whiteText , styles.normalText]}>{item.products_count} { i18n.t('product') }</Text>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
+                <TouchableOpacity onPress={ () => this.props.navigation.navigate('restCafeDetails' , {user_id: item.user_id , backRoute:'searchRestResult'})} style={[styles.notiBlock , styles.directionRow]}>
+                    <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={[styles.eventImg , {height:110}]}/>
+                    <View style={[styles.directionColumn , {flex:1}]}>
+                        <Text style={[styles.headerText , styles.asfs, styles.writing  , {color:'#272727'}]}>{item.name}</Text>
+                        <View style={[styles.directionRowAlignCenter, {marginVertical:10}  ]}>
+                            <Image source={require('../../assets/images/category.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                            <Text style={[styles.blueText , styles.normalText , {color:COLORS.gray}]}>{item.category}</Text>
                         </View>
-                        <View style={[styles.eventBtn , {backgroundColor:'#f0ac3f' , flexDirection:'row' , marginLeft:10}]}>
-                            <Image source={require('../../assets/images/star_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                            <Text style={[styles.whiteText , styles.normalText]}>{item.rates} / 5</Text>
+                        <View style={styles.directionRowAlignCenter}>
+                            <View style={[styles.eventBtn]}>
+                                <Text style={[styles.whiteText , styles.normalText]}>{item.products_count} { i18n.t('product') }</Text>
+                            </View>
+                            <View style={[styles.eventBtn , {backgroundColor:'#f0ac3f' , flexDirection:'row' , marginLeft:10}]}>
+                                <Image source={require('../../assets/images/star_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                <Text style={[styles.whiteText , styles.normalText]}>{item.rates} / 5</Text>
+                            </View>
                         </View>
                     </View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </Animatable.View>
         );
     }
 

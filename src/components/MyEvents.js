@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import {getOwnerEvent} from "../actions";
 import {DoubleBounce} from "react-native-loader";
 import {NavigationEvents} from "react-navigation";
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
@@ -33,23 +34,25 @@ class MyEvents extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={ () => this.props.navigation.navigate('showTicket' , {eventType: this.state.activeType , event_id: item.id})} style={[styles.notiBlock , styles.directionRow]}>
-                <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={styles.eventImg}/>
-                <View style={[styles.directionColumn , {flex:1}]}>
-                    <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
-                    <View style={[styles.directionRowAlignCenter  ]}>
-                        <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                        <Text style={[styles.blueText , styles.normalText]}>{item.time}</Text>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
+                <TouchableOpacity onPress={ () => this.props.navigation.navigate('showTicket' , {eventType: this.state.activeType , event_id: item.id})} style={[styles.notiBlock , styles.directionRow]}>
+                    <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={styles.eventImg}/>
+                    <View style={[styles.directionColumn , {flex:1}]}>
+                        <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
+                        <View style={[styles.directionRowAlignCenter  ]}>
+                            <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                            <Text style={[styles.blueText , styles.normalText]}>{item.time}</Text>
+                        </View>
+                        <View style={[styles.directionRowAlignCenter ]}>
+                            <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                            <Text style={[styles.blueText , styles.normalText]}>{item.date}</Text>
+                        </View>
+                        <View style={[styles.eventBtn]}>
+                            <Text style={[styles.whiteText , styles.normalText]}>{item.price} {i18n.t('RS')}</Text>
+                        </View>
                     </View>
-                    <View style={[styles.directionRowAlignCenter ]}>
-                        <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                        <Text style={[styles.blueText , styles.normalText]}>{item.date}</Text>
-                    </View>
-                    <View style={[styles.eventBtn]}>
-                        <Text style={[styles.whiteText , styles.normalText]}>{item.price} {i18n.t('RS')}</Text>
-                    </View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </Animatable.View>
         );
     }
     renderLoader(){

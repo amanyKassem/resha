@@ -224,10 +224,10 @@ class MyResturant extends Component {
                                     <Image source={{ uri: this.props.showProfile.image }} style={styles.restImg} resizeMode={'cover'}/>
 
 
-                                    <View style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
+                                    <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
                                         <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                         <Text style={[styles.blueText , styles.normalText]}>{this.props.showProfile.address}</Text>
-                                    </View>
+                                    </TouchableOpacity>
 
 
                                     <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13, paddingHorizontal:20}]}>{this.props.showProfile.details}</Text>

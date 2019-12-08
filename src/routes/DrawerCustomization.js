@@ -48,7 +48,7 @@ class DrawerCustomization extends Component {
 
     filterItems(item){
         if (this.props.user == null)
-            return item.routeName !== 'settings' && item.routeName !== 'logout' && item.routeName !== 'myEvents' && item.routeName !== 'addEvent'
+            return item.routeName !== 'logout' && item.routeName !== 'myEvents' && item.routeName !== 'addEvent'
             && item.routeName !== 'myResturant' && item.routeName !== 'myCar' && item.routeName !== 'myFamily' && item.routeName !== 'myOrders' && item.routeName !== 'complaints';
         else if(this.props.user.type == 0 )
             return  item.routeName !== 'signIn' && item.routeName !== 'myEvents' && item.routeName !== 'addEvent' && item.routeName !== 'myResturant' && item.routeName !== 'myCar' && item.routeName !== 'myFamily' && item.routeName !== 'myOrders' ;

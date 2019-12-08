@@ -158,16 +158,16 @@ class ProductDetails extends Component {
                                                 <Image source={{ uri: this.props.showProduct.user.image }} style={[styles.footSearchImg]} resizeMode={'cover'} />
                                             </View>
                                             <View style={styles.directionColumn}>
-                                                <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.showProduct.user.user_name}</Text>
-                                                <StarRating
-                                                    disabled={true}
-                                                    maxStars={5}
-                                                    rating={this.state.userRate}
-                                                    fullStarColor={'#f0aa0b'}
-                                                    // selectedStar={(rating) => this.onStarRatingPress(rating)}
-                                                    starSize={18}
-                                                    starStyle={styles.starStyle}
-                                                />
+                                                <Text style={[styles.boldGrayText , styles.normalText , styles.mb10, styles.asfs]}>{this.props.showProduct.user.user_name}</Text>
+                                                {/*<StarRating*/}
+                                                    {/*disabled={true}*/}
+                                                    {/*maxStars={5}*/}
+                                                    {/*rating={this.state.userRate}*/}
+                                                    {/*fullStarColor={'#f0aa0b'}*/}
+                                                    {/*// selectedStar={(rating) => this.onStarRatingPress(rating)}*/}
+                                                    {/*starSize={18}*/}
+                                                    {/*starStyle={styles.starStyle}*/}
+                                                {/*/>*/}
                                             </View>
                                         </View>
 
@@ -233,12 +233,12 @@ class ProductDetails extends Component {
                                         </TouchableOpacity>
                                     </View>
 
-                                    <View style={[styles.line ]}/>
+                                    {/*<View style={[styles.line ]}/>*/}
 
-                                    <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.showProduct.user.mobile)}>
-                                        <Image  source={require('../../assets/images/whatsapp_icon.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
-                                        <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.showProduct.user.mobile}</Text>
-                                    </TouchableOpacity>
+                                    {/*<TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.showProduct.user.mobile)}>*/}
+                                        {/*<Image  source={require('../../assets/images/whatsapp_icon.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>*/}
+                                        {/*<Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.showProduct.user.mobile}</Text>*/}
+                                    {/*</TouchableOpacity>*/}
 
                                 </View>
                                 :

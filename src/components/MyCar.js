@@ -10,6 +10,7 @@ import {connect} from "react-redux";
 import {getShowProfile} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import {DoubleBounce} from "react-native-loader";
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
@@ -120,9 +121,11 @@ class MyCar extends Component {
                         {
                             this.props.showProfile.products.map((product, i) =>{
                                 return (
-                                    <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id, backRoute:'myCar'})}>
-                                        <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
-                                    </TouchableOpacity>
+                                    <Animatable.View key={i}  animation="fadeInUp" easing="ease-out" delay={600}>
+                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id, backRoute:'myCar'})}>
+                                            <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
+                                        </TouchableOpacity>
+                                    </Animatable.View>
                                 )
                             })
                         }
@@ -217,14 +220,15 @@ class MyCar extends Component {
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0 , paddingTop:20} ]}>
 
+                            <Animatable.View animation="zoomIn" easing="ease-out" delay={600}>
+                                <Image source={{ uri: this.props.showProfile.image }} style={styles.restImg} resizeMode={'cover'}/>
+                            </Animatable.View>
 
-                            <Image source={{ uri: this.props.showProfile.image }} style={styles.restImg} resizeMode={'cover'}/>
 
-
-                            <View style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
+                            <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>{this.props.showProfile.address}</Text>
-                            </View>
+                            </TouchableOpacity>
 
 
                             <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13, paddingHorizontal:20}]}>{this.props.showProfile.details}</Text>

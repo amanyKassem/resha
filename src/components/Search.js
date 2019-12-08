@@ -7,6 +7,7 @@ import COLORS from '../../src/consts/colors'
 import {getSearchResult} from "../actions";
 import {connect} from "react-redux";
 import { DoubleBounce } from 'react-native-loader';
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
@@ -82,7 +83,7 @@ class Search extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.searchResult) {
             this.setState({isSubmitted: false});
-            this.props.navigation.navigate(this.props.user ? 'searchResult' : 'login', { searchResult : nextProps.searchResult } );
+            this.props.navigation.navigate(this.props.user ? 'searchResult' : 'login', { searchResult : nextProps.searchResult , backRoute:'search' } );
         }
         console.log('nextProps.searchResult' , nextProps.searchResult)
     }
@@ -128,18 +129,26 @@ class Search extends Component {
                                 </View>
                             </View>
 
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user ? 'proposedEvents' : 'login')} style={[styles.directionRowAlignCenter, styles.mb15]}>
-                                <Image source={require('../../assets/images/image_one_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
-                                <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('proposedEvents') }</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('commonEvents')} style={[styles.directionRowAlignCenter, styles.mb15]}>
-                                <Image source={require('../../assets/images/image_two_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
-                                <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('commonEvents') }</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user ? 'saves' : 'login')} style={[styles.directionRowAlignCenter, styles.mb15]}>
-                                <Image source={require('../../assets/images/image_three_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
-                                <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('favsEvents') }</Text>
-                            </TouchableOpacity>
+                            <Animatable.View animation="fadeIn" easing="ease-out" delay={300}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user ? 'proposedEvents' : 'login')} style={[styles.directionRowAlignCenter, styles.mb15]}>
+                                    <Image source={require('../../assets/images/image_one_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
+                                    <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('proposedEvents') }</Text>
+                                </TouchableOpacity>
+                            </Animatable.View>
+
+                            <Animatable.View animation="fadeIn" easing="ease-out" delay={500}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('commonEvents')} style={[styles.directionRowAlignCenter, styles.mb15]}>
+                                    <Image source={require('../../assets/images/image_two_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
+                                    <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('commonEvents') }</Text>
+                                </TouchableOpacity>
+                            </Animatable.View>
+
+                            <Animatable.View animation="fadeIn" easing="ease-out" delay={700}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user ? 'saves' : 'login')} style={[styles.directionRowAlignCenter, styles.mb15]}>
+                                    <Image source={require('../../assets/images/image_three_search.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
+                                    <Text style={[styles.grayText , styles.normalText , {fontSize:15} ]}>{ i18n.t('favsEvents') }</Text>
+                                </TouchableOpacity>
+                            </Animatable.View>
 
 
                             {

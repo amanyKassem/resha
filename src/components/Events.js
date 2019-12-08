@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated , ScrollView, FlatList, ImageBackground} from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label, Textarea} from 'native-base'
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated , FlatList, ImageBackground} from "react-native";
+import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
@@ -8,6 +8,7 @@ import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getEvents} from "../actions";
 import {NavigationEvents} from "react-navigation";
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
@@ -51,23 +52,25 @@ class Events extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={ () => this.props.navigation.navigate( this.props.user ? 'bookTicket' : 'login', { event_id: item.id , backRoute:'events'})} style={[styles.notiBlock , styles.directionRow]}>
-                <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={styles.eventImg}/>
-                <View style={[styles.directionColumn , {flex:1}]}>
-                    <Text style={[styles.headerText, styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
-                    <View style={[styles.directionRowAlignCenter ]}>
-                        <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                        <Text style={[styles.blueText , styles.normalText]}>{item.time}</Text>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
+                <TouchableOpacity onPress={ () => this.props.navigation.navigate( this.props.user ? 'bookTicket' : 'login', { event_id: item.id , backRoute:'events'})} style={[styles.notiBlock , styles.directionRow]}>
+                    <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={styles.eventImg}/>
+                    <View style={[styles.directionColumn , {flex:1}]}>
+                        <Text style={[styles.headerText, styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
+                        <View style={[styles.directionRowAlignCenter ]}>
+                            <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                            <Text style={[styles.blueText , styles.normalText]}>{item.time}</Text>
+                        </View>
+                        <View style={[styles.directionRowAlignCenter ]}>
+                            <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                            <Text style={[styles.blueText , styles.normalText]}>{item.date}</Text>
+                        </View>
+                        <View style={[styles.eventBtn]}>
+                            <Text style={[styles.whiteText , styles.normalText]}>{item.price} { i18n.t('RS') }</Text>
+                        </View>
                     </View>
-                    <View style={[styles.directionRowAlignCenter ]}>
-                        <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                        <Text style={[styles.blueText , styles.normalText]}>{item.date}</Text>
-                    </View>
-                    <View style={[styles.eventBtn]}>
-                        <Text style={[styles.whiteText , styles.normalText]}>{item.price} { i18n.t('RS') }</Text>
-                    </View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </Animatable.View>
         );
     }
 
@@ -149,10 +152,12 @@ class Events extends Component {
                         <View style={[styles.directionRowSpace , styles.w100  , styles.mt70, {paddingHorizontal:20 , paddingVertical:15}]}>
                             <View style={[styles.directionColumn , {flex: 1}]}>
                                 <Text style={[styles.whiteText, styles.normalText, styles.asfs , styles.writing ]}>{ i18n.t('events') }</Text>
-                                <Text style={[styles.whiteText, styles.normalText, styles.asfs , styles.writing , {fontSize:14}]}>{ i18n.t('eventsNo') } : {this.props.count}</Text>
+                                {/*<Text style={[styles.whiteText, styles.normalText, styles.asfs , styles.writing , {fontSize:14}]}>{ i18n.t('eventsNo') } : {this.props.count}</Text>*/}
                                 <Text style={[styles.whiteText, styles.normalText, styles.asfs , styles.writing, {fontSize:13} ]}>{this.props.desc}</Text>
                             </View>
-                            <Image source={require('../../assets/images/events_icon.png')} style={{ width:135, height:135}} resizeMode={'contain'} />
+                            <Animatable.View animation="fadeInLeft" easing="ease-out" delay={600}>
+                                <Image source={require('../../assets/images/events_icon.png')} style={{ width:135, height:135}} resizeMode={'contain'} />
+                            </Animatable.View>
                         </View>
 
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0 ,  marginTop:15}]}>

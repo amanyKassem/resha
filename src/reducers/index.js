@@ -54,6 +54,7 @@ import productAvailability from './ProductAvailabilityReducer';
 import authProducts from './AuthProductsReducer';
 import filterRestaurants from './FilterRestaurantsReducer';
 import stopNotification from './StopNotificationReducer';
+import ticketDetails from './TicketDetailsReducer';
 
 export default combineReducers({
     lang,
@@ -111,4 +112,5 @@ export default combineReducers({
     authProducts,
     filterRestaurants,
     stopNotification,
+    ticketDetails,
 });

@@ -8,7 +8,7 @@ import {
     Animated,
     FlatList,
     ImageBackground,
-    KeyboardAvoidingView
+    KeyboardAvoidingView, Linking
 } from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form} from 'native-base'
 import styles from '../../assets/styles'
@@ -37,6 +37,10 @@ class ConfirmTicket extends Component {
     });
 
     componentWillMount() {
+    }
+
+    _linkPressed (url){
+        Linking.openURL(url);
     }
 
     setAnimate(availabel){
@@ -141,10 +145,10 @@ class ConfirmTicket extends Component {
                                 <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.price * this.props.navigation.state.params.ticketsNo} { i18n.t('RS') } ( { i18n.t('ticketsNo') } {this.props.navigation.state.params.ticketsNo} )</Text>
                             </View>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                            <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.navigation.state.params.event_info.latitude +','+ this.props.navigation.state.params.event_info.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.event_info.address}</Text>
-                            </View>
+                            </TouchableOpacity>
                             <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/receipt_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('onlineBook') }</Text>
@@ -164,7 +168,7 @@ class ConfirmTicket extends Component {
                                     <Text style={[styles.boldGrayText , styles.normalText ]}>{this.props.navigation.state.params.event_info.user.name }</Text>
                                 </View>
 
-                                <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookTicket')} >
+                                <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookTicket' , { event_id: this.props.navigation.state.params.event_id , backRoute:'confirmTicket'})} >
                                     <Text style={[styles.blueText , styles.normalText ]}>{ i18n.t('details') }</Text>
                                 </TouchableOpacity>
                             </View>

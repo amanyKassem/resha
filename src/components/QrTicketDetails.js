@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, FlatList, ImageBackground} from "react-native";
+import {
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    Dimensions,
+    Animated,
+    FlatList,
+    ImageBackground,
+    Linking
+} from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -26,7 +36,9 @@ class QrTicketDetails extends Component {
     });
 
 
-
+    _linkPressed (url){
+        Linking.openURL(url);
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -110,10 +122,10 @@ class QrTicketDetails extends Component {
                                 <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>144 ريال</Text>
                             </View>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                            <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.profileDetails.latitude +','+ this.props.profileDetails.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>الرياض . جده . السعودية</Text>
-                            </View>
+                            </TouchableOpacity>
                             <Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing, {fontSize:13}]}>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى،</Text>
 
 

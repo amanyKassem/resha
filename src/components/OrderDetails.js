@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, FlatList, ImageBackground} from "react-native";
+import {
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    Dimensions,
+    Animated,
+    FlatList,
+    ImageBackground,
+    Linking
+} from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -31,7 +41,9 @@ class OrderDetails extends Component {
         drawerLabel: () => null
     });
 
-
+    _linkPressed (url){
+        Linking.openURL(url);
+    }
 
     componentWillMount() {
         this.setState({ loader: 1});
@@ -231,10 +243,10 @@ class OrderDetails extends Component {
                                         <Text style={[styles.orangeText , styles.normalText]}>{ i18n.t('vipChairs') } {this.props.eventDet.tickets.vip_count}</Text>
                                     </View>
 
-                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                    <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.eventDet.latitude +','+ this.props.eventDet.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10]}>
                                         <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                         <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.address}</Text>
-                                    </View>
+                                    </TouchableOpacity>
                                     <Text style={[styles.grayText , styles.normalText, styles.asfs, styles.writing , {fontSize:13}]}>{this.props.eventDet.details}</Text>
 
                                     {

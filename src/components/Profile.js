@@ -6,6 +6,7 @@ import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import FooterSection from './FooterSection';
 import {connect} from "react-redux";
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
@@ -85,11 +86,11 @@ class Profile extends Component {
                         <View style={[styles.homeSection , { marginTop:70}]}>
 
                             <View style={styles.sideImgView}>
-                                <View style={styles.cutCircle}>
+                                <Animatable.View animation="fadeInDown" easing="ease-out" delay={500} style={styles.cutCircle}>
                                     <View style={styles.sideProfileImg}>
                                         <Image source={{ uri : this.props.user.avatar }} resizeMode={'cover'} style={styles.drawImg}/>
                                     </View>
-                                </View>
+                                </Animatable.View>
                                 <Text style={styles.sideName}>{ this.props.user.name }</Text>
 
 
@@ -100,7 +101,7 @@ class Profile extends Component {
                                 </View>
                             </View>
 
-                            <View style={[styles.line , {marginTop:0}]}/>
+                            <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.line , {marginTop:0}]}/>
 
                             <View style={[styles.directionColumn , {paddingHorizontal:15}]}>
                                 <View style={styles.directionRowAlignCenter}>
@@ -110,7 +111,7 @@ class Profile extends Component {
                                 <Text style={[styles.headerText , styles.asfs , {marginLeft:25 , fontSize: 14} ]}>{ this.props.user.name }</Text>
                             </View>
 
-                            <View style={[styles.line]}/>
+                            <Animatable.View animation="fadeInLeft" easing="ease-out" delay={500} style={[styles.line]}/>
 
                             <View style={[styles.directionColumn , {paddingHorizontal:15}]}>
                                 <View style={styles.directionRowAlignCenter}>
@@ -120,7 +121,7 @@ class Profile extends Component {
                                 <Text style={[styles.headerText , styles.asfs , {marginLeft:25 , fontSize: 14} ]}>a{ this.props.user.email }</Text>
                             </View>
 
-                            <View style={[styles.line]}/>
+                            <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.line]}/>
 
                             <View style={[styles.directionColumn , {paddingHorizontal:15}]}>
                                 <View style={styles.directionRowAlignCenter}>

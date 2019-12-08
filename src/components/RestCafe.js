@@ -8,6 +8,7 @@ import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getRestaurants} from "../actions";
 import {NavigationEvents} from "react-navigation";
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
@@ -50,15 +51,17 @@ class RestCafe extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user ? 'restCafeDetails' : 'login' , {user_id: item.user_id , backRoute:'restCafe' , catType:this.props.navigation.state.params.catType})} style={[styles.eventTouch ]}>
-                <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
-                <View style={[styles.eventCont , { backgroundColor: '#b1aba940'}]}>
-                    <Text style={[styles.whiteText , styles.BoldText , {top:-5}]}>{item.name}</Text>
-                    <View style={styles.familiesEvent}>
-                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{ i18n.t('prodNo') } : {item.products_count}</Text>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user ? 'restCafeDetails' : 'login' , {user_id: item.user_id , backRoute:'restCafe' , catType:this.props.navigation.state.params.catType})} style={[styles.eventTouch ]}>
+                    <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <View style={[styles.eventCont , { backgroundColor: '#b1aba940'}]}>
+                        <Text style={[styles.whiteText , styles.BoldText , {top:-5}]}>{item.name}</Text>
+                        {/*<View style={styles.familiesEvent}>*/}
+                            {/*<Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{ i18n.t('prodNo') } : {item.products_count}</Text>*/}
+                        {/*</View>*/}
                     </View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </Animatable.View>
         );
     }
 
@@ -139,10 +142,12 @@ class RestCafe extends Component {
                         <View style={[styles.directionRowSpace , styles.w100  , styles.mt70, {paddingHorizontal:20 , paddingVertical:15}]}>
                             <View style={[styles.directionColumn , {flex: 1}]}>
                                 <Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing ]}>{ i18n.t('rest&cafe') }</Text>
-                                <Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing , {fontSize:14}]}>{ i18n.t('number') } : {this.props.count}</Text>
+                                {/*<Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing , {fontSize:14}]}>{ i18n.t('number') } : {this.props.count}</Text>*/}
                                 <Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing , {fontSize:13} ]}>{this.props.desc}</Text>
                             </View>
-                            <Image source={require('../../assets/images/resturant_undraw.png')} style={{ width:135, height:135}} resizeMode={'contain'} />
+                            <Animatable.View animation="fadeInLeft" easing="ease-out" delay={600}>
+                                <Image source={require('../../assets/images/resturant_undraw.png')} style={{ width:135, height:135}} resizeMode={'contain'} />
+                            </Animatable.View>
                         </View>
 
                         <View style={[styles.homeSection , styles.whiteHome , {padding:15 ,  marginTop:15}]}>

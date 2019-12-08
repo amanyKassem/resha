@@ -172,7 +172,7 @@ class BookTicket extends Component {
                                                 <Image source={{ uri: this.props.eventDet.user.avatar }} style={[styles.footSearchImg]} resizeMode={'cover'} />
                                             </View>
                                             <View style={styles.directionColumn}>
-                                                <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.eventDet.user.user_name}</Text>
+                                                <Text style={[styles.boldGrayText , styles.normalText , styles.mb10, styles.asfs]}>{this.props.eventDet.user.user_name}</Text>
                                                 <StarRating
                                                     disabled={true}
                                                     maxStars={5}
@@ -188,6 +188,7 @@ class BookTicket extends Component {
                                         <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.eventDet.user.mobile)}>
                                             <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
                                         </TouchableOpacity>
+
                                     </View>
 
                                     <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
@@ -216,10 +217,10 @@ class BookTicket extends Component {
                                         <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                         <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.normal_price} { i18n.t('RS') }</Text>
                                     </View>
-                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                    <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.eventDet.latitude +','+ this.props.eventDet.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10]}>
                                         <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                         <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.address}</Text>
-                                    </View>
+                                    </TouchableOpacity>
                                     <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13}]}>{this.props.eventDet.details}</Text>
 
 

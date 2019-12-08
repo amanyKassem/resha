@@ -8,7 +8,7 @@ import {
     Animated,
     FlatList,
     ImageBackground,
-    KeyboardAvoidingView
+    KeyboardAvoidingView, Linking
 } from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form} from 'native-base'
 import styles from '../../assets/styles'
@@ -16,6 +16,10 @@ import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
 import Modal from "react-native-modal";
+import { DoubleBounce } from 'react-native-loader';
+import {connect} from "react-redux";
+import {getEventDetails, getTicketDetails, setSaveEvent} from "../actions";
+import {NavigationEvents} from "react-navigation";
 
 
 const height = Dimensions.get('window').height;
@@ -28,6 +32,7 @@ class QrConfirmTicket extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
+            loader: 1
         }
     }
 
@@ -35,6 +40,28 @@ class QrConfirmTicket extends Component {
         drawerLabel: () => null
     });
 
+    _linkPressed (url){
+        Linking.openURL(url);
+    }
+
+    componentWillMount() {
+        // alert(this.props.navigation.state.params.id)
+        this.setState({ loader: 1});
+        this.props.getTicketDetails( this.props.lang ,this.props.navigation.state.params.id)
+    }
+
+    renderLoader(){
+        if (this.state.loader == 1){
+            return(
+                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
+                    <DoubleBounce size={20} color={COLORS.mov} />
+                </View>
+            );
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loader: nextProps.key  });
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -69,6 +96,9 @@ class QrConfirmTicket extends Component {
         }
     }
 
+    onFocus(payload){
+        this.componentWillMount()
+    }
 
     render() {
 
@@ -79,7 +109,7 @@ class QrConfirmTicket extends Component {
 
         return (
             <Container>
-
+                { this.renderLoader() }
                 <Header style={[styles.header]} noShadow>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
@@ -93,71 +123,103 @@ class QrConfirmTicket extends Component {
                 </Header>
 
                 <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
-                        <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:25} ]}>
+                        {
+                            this.props.ticketDetails ?
+                                <View style={[styles.homeSection, styles.whiteHome, {
+                                    paddingHorizontal: 20,
+                                    paddingVertical: 25
+                                }]}>
 
-                            <View style={styles.directionRowCenter}>
+                                    <View style={styles.directionRowCenter}>
 
-                                <View style={styles.dateView}>
-                                    <Text style={[styles.boldGrayText , styles.normalText , {height:45 , lineHeight:45}]}>20 سبتمبر</Text>
-                                </View>
-                                <View style={styles.remainingView}>
-                                    <Text style={[styles.boldGrayText , styles.normalText , {height:45 , lineHeight:45}]}>{ i18n.t('remain') } ١٠ ايام</Text>
-                                </View>
+                                        <View style={styles.dateView}>
+                                            <Text style={[styles.boldGrayText, styles.normalText, {
+                                                height: 45,
+                                                lineHeight: 45
+                                            }]}>{this.props.ticketDetails.day}</Text>
+                                        </View>
+                                        <View style={styles.remainingView}>
+                                            <Text style={[styles.boldGrayText, styles.normalText, {
+                                                height: 45,
+                                                lineHeight: 45
+                                            }]}>{i18n.t('remain')} {this.props.ticketDetails.day_remaining}</Text>
+                                        </View>
 
-                            </View>
-
-                            <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                    containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
-                                <Image source={require('../../assets/images/image_eleven.jpg')} style={styles.swiperImg} resizeMode={'cover'}/>
-                                <Image source={require('../../assets/images/image_one.png')} style={styles.swiperImg} resizeMode={'cover'}/>
-                                <Image source={require('../../assets/images/events.jpg')}  style={styles.swiperImg} resizeMode={'cover'}/>
-                            </Swiper>
-
-                            <Text style={[styles.boldGrayText , styles.normalText , styles.mb10 , styles.asfs, styles.writing]}>حفلة وسط البلد</Text>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
-                                    <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>3:30 AM</Text>
-                                </View>
-                                <View style={[styles.directionRowAlignCenter ]}>
-                                    <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>9/7/2020</Text>
-                                </View>
-                            </View>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>144 ريال ( { i18n.t('ticketsNo') } 4 )</Text>
-                            </View>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>الرياض . جده . السعودية</Text>
-                            </View>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/receipt_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>حجز اونلاين</Text>
-                            </View>
-                            <View style={[styles.directionRowAlignCenter ]}>
-                                <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>القسم ترفيه</Text>
-                            </View>
-
-                            <View style={styles.line}/>
-
-                            <View style={styles.directionRowSpace}>
-                                <View style={styles.directionRowAlignCenter}>
-                                    <View style={styles.borderImg}>
-                                        <Image source={require('../../assets/images/profile_pic.png')} style={[styles.footSearchImg]} resizeMode={'cover'} />
                                     </View>
-                                    <Text style={[styles.boldGrayText , styles.normalText ]}>اسم المستخدم</Text>
-                                </View>
 
-                                <TouchableOpacity onPress={ () => this.props.navigation.navigate('qrTicketDetails')} >
-                                    <Text style={[styles.blueText , styles.normalText ]}>{ i18n.t('details') }</Text>
-                                </TouchableOpacity>
-                            </View>
+                                    <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
+                                            containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
+                                        {
+                                            this.props.ticketDetails.images.map((img, i) =>{
+                                                return (
+                                                    <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                )
+                                            })
+                                        }
 
-                        </View>
+                                    </Swiper>
+
+                                    <Text style={[styles.boldGrayText, styles.normalText, styles.mb10, styles.asfs, styles.writing]}>{this.props.ticketDetails.event_name}</Text>
+                                    <View style={[styles.directionRowAlignCenter, styles.mb10]}>
+                                        <View style={[styles.directionRowAlignCenter, {marginRight: 10}]}>
+                                            <Image source={require('../../assets/images/clock_blue.png')}
+                                                   style={[styles.notiImg]} resizeMode={'contain'}/>
+                                            <Text style={[styles.blueText, styles.normalText]}>{this.props.ticketDetails.time}</Text>
+                                        </View>
+                                        <View style={[styles.directionRowAlignCenter]}>
+                                            <Image source={require('../../assets/images/calendar_icon_small.png')}
+                                                   style={[styles.notiImg]} resizeMode={'contain'}/>
+                                            <Text style={[styles.blueText, styles.normalText]}>{this.props.ticketDetails.date}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={[styles.directionRowAlignCenter, styles.mb10]}>
+                                        <Image source={require('../../assets/images/ticket.png')}
+                                               style={[styles.notiImg]} resizeMode={'contain'}/>
+                                        <Text style={[styles.blueText, styles.normalText]}>{this.props.ticketDetails.tickets_price * this.props.ticketDetails.tickets_count} { i18n.t('RS') } ( { i18n.t('ticketsNo') }</Text>
+                                    </View>
+                                    <TouchableOpacity
+                                        onPress={() => this._linkPressed('https://google.com/maps/?q=' + this.props.ticketDetails.latitude + ',' + this.props.ticketDetails.longitude + '')}
+                                        style={[styles.directionRowAlignCenter, styles.mb10]}>
+                                        <Image source={require('../../assets/images/placeholder_blue.png')}
+                                               style={[styles.notiImg]} resizeMode={'contain'}/>
+                                        <Text style={[styles.blueText, styles.normalText]}>{this.props.ticketDetails.address}</Text>
+                                    </TouchableOpacity>
+                                    <View style={[styles.directionRowAlignCenter, styles.mb10]}>
+                                        <Image source={require('../../assets/images/receipt_blue.png')}
+                                               style={[styles.notiImg]} resizeMode={'contain'}/>
+                                        <Text style={[styles.blueText, styles.normalText]}>{ i18n.t('onlineBook') }</Text>
+                                    </View>
+                                    <View style={[styles.directionRowAlignCenter]}>
+                                        <Image source={require('../../assets/images/Feather_blue.png')}
+                                               style={[styles.notiImg]} resizeMode={'contain'}/>
+                                        <Text style={[styles.blueText, styles.normalText]}>{this.props.ticketDetails.category}</Text>
+                                    </View>
+
+                                    <View style={styles.line}/>
+
+                                    <View style={styles.directionRowSpace}>
+                                        <View style={styles.directionRowAlignCenter}>
+                                            <View style={styles.borderImg}>
+                                                <Image source={{ uri: this.props.ticketDetails.user_avatar }}
+                                                       style={[styles.footSearchImg]} resizeMode={'cover'}/>
+                                            </View>
+                                            <Text style={[styles.boldGrayText, styles.normalText]}>{this.props.ticketDetails.user}</Text>
+                                        </View>
+
+                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('bookTicket', {
+                                            event_id: this.props.ticketDetails.ticket_id,
+                                            backRoute: 'qrConfirmTicket'
+                                        })}>
+                                            <Text
+                                                style={[styles.blueText, styles.normalText]}>{i18n.t('details')}</Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                </View> :
+                                <View/>
+                        }
                     </ImageBackground>
                 </Content>
             </Container>
@@ -166,4 +228,12 @@ class QrConfirmTicket extends Component {
     }
 }
 
-export default QrConfirmTicket;
+const mapStateToProps = ({ lang , ticketDetails , profile }) => {
+    return {
+        lang: lang.lang,
+        ticketDetails: ticketDetails.ticketDetails,
+        user: profile.user,
+        key: ticketDetails.key
+    };
+};
+export default connect(mapStateToProps, {getTicketDetails})(QrConfirmTicket);

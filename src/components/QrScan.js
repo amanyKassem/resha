@@ -45,8 +45,8 @@ class QrScan extends Component {
         );
     }
 
-    handleBarCodeScanned = () => {
-        this.props.navigation.navigate('qrConfirmTicket')
+    handleBarCodeScanned = ({ type, data }) => {
+        this.props.navigation.navigate('qrConfirmTicket',{id:data})
     };
 }
 

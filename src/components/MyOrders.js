@@ -19,6 +19,7 @@ import {getOrganizerEvents, getOrganizerRejectedEvents} from "../actions";
 import { DoubleBounce } from 'react-native-loader';
 import {NavigationEvents} from "react-navigation";
 import {connect} from "react-redux";
+import * as Animatable from 'react-native-animatable';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -128,15 +129,17 @@ class MyOrders extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('orderDetails' , {orderType: this.state.tabActiveType ,event_id: item.id} )} style={[styles.eventTouch ]}>
-                <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
-                <View style={[styles.eventCont ]}>
-                    <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
-                    <View style={styles.dateEvent}>
-                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{item.date}</Text>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('orderDetails' , {orderType: this.state.tabActiveType ,event_id: item.id} )} style={[styles.eventTouch ]}>
+                    <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <View style={[styles.eventCont ]}>
+                        <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
+                        <View style={styles.dateEvent}>
+                            <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{item.date}</Text>
+                        </View>
                     </View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </Animatable.View>
         );
     }
 
@@ -204,7 +207,7 @@ class MyOrders extends Component {
                             this.props.organizerEvents?
                                 <View style={[styles.homeSection  , {paddingHorizontal:0 , marginTop:20}]}>
 
-                                    <View style={styles.reservationScroll}>
+                                    <Animatable.View animation="zoomIn" easing="ease-out" delay={600} style={styles.reservationScroll}>
                                         <ScrollView style={{}} horizontal={true} showsHorizontalScrollIndicator={false}>
                                             {
                                                 this.props.organizerEvents.dates.map((date, i) => {
@@ -218,7 +221,7 @@ class MyOrders extends Component {
                                                 )
                                             }
                                         </ScrollView>
-                                    </View>
+                                    </Animatable.View>
 
 
 

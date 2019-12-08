@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "resha",
-    "slug": "resha",
+    "name": "Reesh",
+    "slug": "Reesh",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
@@ -28,7 +28,7 @@
       "bundleIdentifier": "com.aait.resha"
     },
     "android": {
-      "package": "com.aait.resha",
+      "package": "com.aait.Reesh",
       "versionCode": 3,
       "config": {
         "googleMaps": {

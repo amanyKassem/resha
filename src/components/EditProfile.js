@@ -19,6 +19,7 @@ import * as Permissions from 'expo-permissions';
 import { updateProfile} from '../actions'
 import {connect} from "react-redux";
 import {DoubleBounce} from "react-native-loader";
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
@@ -179,23 +180,23 @@ class EditProfile extends Component {
                             {image != null?
 
                                 <View style={[styles.sideImgView , {height:160 , marginTop:15}]}>
-                                    <View style={[styles.cutCircle]}>
+                                    <Animatable.View animation="fadeInDown" easing="ease-out" delay={500} style={[styles.cutCircle]}>
                                         <View style={styles.sideProfileImg}>
                                             <View style={styles.overProfile}/>
                                             <Image source={{ uri: image }} resizeMode={'cover'} style={styles.drawImg}/>
                                         </View>
-                                    </View>
+                                    </Animatable.View>
                                 </View>
 
                                 :
                                 <View style={[styles.sideImgView , {height:160 , marginTop:15}]}>
-                                    <View style={[styles.cutCircle]}>
+                                    <Animatable.View animation="fadeInDown" easing="ease-out" delay={500} style={[styles.cutCircle]}>
                                         <View style={styles.sideProfileImg}>
                                             <View style={styles.overProfile}/>
-                                            <Image source={require('../../assets/images/profile_pic.png')} resizeMode={'cover'} style={[styles.drawImg , { width:Platform.OS === 'ios' ?146 :160,
+                                            <Image source={{ uri : image }} resizeMode={'cover'} style={[styles.drawImg , { width:Platform.OS === 'ios' ?146 :160,
                                                 height:Platform.OS === 'ios' ?146 :160  , top:Platform.OS === 'ios' ?-1 :0 ,}]}/>
                                         </View>
-                                    </View>
+                                    </Animatable.View>
                                 </View>
                             }
 

@@ -128,7 +128,7 @@ class Register extends Component {
 
     async componentWillMount() {
 
-alert(this.props.lang)
+// alert(this.props.lang)
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
             alert('صلاحيات تحديد موقعك الحالي ملغاه');

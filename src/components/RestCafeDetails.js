@@ -148,7 +148,7 @@ class RestCafeDetails extends Component {
                     {
                         this.renderNoData()
                     }
-                    <View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>
+                    <View style={[styles.directionRowSpace , {flexWrap:'wrap' , minHeight:150}]}>
                         {
                             this.props.profileDetails.products.map((product, i) =>{
                                 return (
@@ -160,9 +160,9 @@ class RestCafeDetails extends Component {
                         }
                     </View>
 
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('products', {user_id :this.props.navigation.state.params.user_id , backRoute:'restCafeDetails' , catType:this.props.navigation.state.params.catType  })} style={[styles.delAcc , {backgroundColor:COLORS.white}]}>
-                        <Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>
-                    </TouchableOpacity>
+                    {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('products', {user_id :this.props.navigation.state.params.user_id , backRoute:'restCafeDetails' , catType:this.props.navigation.state.params.catType  })} style={[styles.delAcc , {backgroundColor:COLORS.white}]}>*/}
+                        {/*<Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>*/}
+                    {/*</TouchableOpacity>*/}
                 </View>
             )
         } else {
@@ -256,10 +256,10 @@ class RestCafeDetails extends Component {
                                     <Image source={{ uri: this.props.profileDetails.image }}  style={[styles.restImg]} resizeMode={'cover'}/>
 
 
-                                    <View style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
+                                    <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.profileDetails.latitude +','+ this.props.profileDetails.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
                                         <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                         <Text style={[styles.blueText , styles.normalText]}>{this.props.profileDetails.address}</Text>
-                                    </View>
+                                    </TouchableOpacity>
 
 
                                     <Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing  , {fontSize:13, paddingHorizontal:20}]}>{this.props.profileDetails.details}</Text>

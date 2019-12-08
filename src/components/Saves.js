@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {View, Text, Image, TouchableOpacity, Dimensions, Animated , ScrollView, FlatList, ImageBackground} from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label, Textarea} from 'native-base'
+import {Container, Content, Header,  Right, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
@@ -9,6 +9,7 @@ import {DoubleBounce} from "react-native-loader";
 import {connect} from "react-redux";
 import {getFavouriteEvents , getFavouriteFamilies , getFavouriteRestaurants , getFavouriteFoodTrucks} from "../actions";
 import {NavigationEvents} from "react-navigation";
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
@@ -104,76 +105,84 @@ class Saves extends Component {
 
     renderFavsEvents = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('bookTicket', { event_id: item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
-                <View  style={styles.saveBtn}>
-                    {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
-                    <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
-                </View>
-                <Image source={{uri:item.thumbnail}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
-                <View style={[styles.eventCont]}>
-                    <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
-                    <View style={styles.dateEvent}>
-                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:11 , lineHeight:18 }]}>{item.date}</Text>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('bookTicket', { event_id: item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+                    <View  style={styles.saveBtn}>
+                        {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
+                        <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                     </View>
-                </View>
-            </TouchableOpacity>
+                    <Image source={{uri:item.thumbnail}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <View style={[styles.eventCont]}>
+                        <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
+                        <View style={styles.dateEvent}>
+                            <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:11 , lineHeight:18 }]}>{item.date}</Text>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </Animatable.View>
         );
     }
 
     renderFavsFamilies = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
-                <View  style={styles.saveBtn}>
-                    {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
-                    <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
-                </View>
-                <Image source={{uri:item.thumbnail}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
-                <View style={[styles.eventCont]}>
-                    <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+                    <View  style={styles.saveBtn}>
+                        {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
+                        <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+                    </View>
+                    <Image source={{uri:item.thumbnail}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <View style={[styles.eventCont]}>
+                        <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
 
-                    {/*<View style={styles.familiesEvent}>*/}
-                        {/*<Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:11 , lineHeight:18 }]}>{item.products_count} { i18n.t('product') }</Text>*/}
-                    {/*</View>*/}
-                </View>
-            </TouchableOpacity>
+                        {/*<View style={styles.familiesEvent}>*/}
+                            {/*<Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:11 , lineHeight:18 }]}>{item.products_count} { i18n.t('product') }</Text>*/}
+                        {/*</View>*/}
+                    </View>
+                </TouchableOpacity>
+            </Animatable.View>
         );
     }
 
     renderFavsRestaurants = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
-                <View  style={styles.saveBtn}>
-                    {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
-                    <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
-                </View>
-                <Image source={{uri:item.thumbnail}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
-                <View style={[styles.eventCont]}>
-                    <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+                    <View  style={styles.saveBtn}>
+                        {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
+                        <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+                    </View>
+                    <Image source={{uri:item.thumbnail}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <View style={[styles.eventCont]}>
+                        <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
 
-                    {/*<View style={styles.familiesEvent}>*/}
-                        {/*<Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:11 , lineHeight:18 }]}>{item.products_count} { i18n.t('product') }</Text>*/}
-                    {/*</View>*/}
-                </View>
-            </TouchableOpacity>
+                        {/*<View style={styles.familiesEvent}>*/}
+                            {/*<Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:11 , lineHeight:18 }]}>{item.products_count} { i18n.t('product') }</Text>*/}
+                        {/*</View>*/}
+                    </View>
+                </TouchableOpacity>
+            </Animatable.View>
         );
     }
 
     renderFavsFoodTrucks = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
-                <View  style={styles.saveBtn}>
-                    {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
-                    <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
-                </View>
-                <Image source={{uri:item.thumbnail}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
-                <View style={[styles.eventCont]}>
-                    <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+                    <View  style={styles.saveBtn}>
+                        {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
+                        <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+                    </View>
+                    <Image source={{uri:item.thumbnail}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <View style={[styles.eventCont]}>
+                        <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
 
-                    {/*<View style={styles.familiesEvent}>*/}
-                        {/*<Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:11 , lineHeight:18 }]}>{item.products_count} { i18n.t('product') }</Text>*/}
-                    {/*</View>*/}
-                </View>
-            </TouchableOpacity>
+                        {/*<View style={styles.familiesEvent}>*/}
+                            {/*<Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:11 , lineHeight:18 }]}>{item.products_count} { i18n.t('product') }</Text>*/}
+                        {/*</View>*/}
+                    </View>
+                </TouchableOpacity>
+            </Animatable.View>
         );
     }
 

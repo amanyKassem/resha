@@ -19,6 +19,7 @@ import {connect} from "react-redux";
 import {getReservations, getReservationsByDay , getReservationDetails} from "../actions";
 import { DoubleBounce } from 'react-native-loader';
 import {NavigationEvents} from "react-navigation";
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
@@ -122,15 +123,17 @@ class Reservations extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={() => this.goToTicket(item.ticket_id)} style={[styles.eventTouch ]}>
-                <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
-                <View style={[styles.eventCont ]}>
-                    <Text style={[styles.whiteText , styles.BoldText]}>{item.event_name}</Text>
-                    <View style={styles.dateEvent}>
-                        <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{item.day}</Text>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
+                <TouchableOpacity onPress={() => this.goToTicket(item.ticket_id)} style={[styles.eventTouch ]}>
+                    <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <View style={[styles.eventCont ]}>
+                        <Text style={[styles.whiteText , styles.BoldText]}>{item.event_name}</Text>
+                        <View style={styles.dateEvent}>
+                            <Text style={[ styles.whiteText , styles.BoldText , styles.tac ,{fontSize:12 , lineHeight:18}]}>{item.day}</Text>
+                        </View>
                     </View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </Animatable.View>
         );
     }
 
@@ -179,13 +182,8 @@ class Reservations extends Component {
                             this.props.reservations ?
                                 <View style={[styles.homeSection  , {paddingHorizontal:0}]}>
 
-                                    <View style={styles.reservationScroll}>
+                                    <Animatable.View animation="zoomIn" easing="ease-out" delay={600} style={styles.reservationScroll}>
                                         <ScrollView style={{}} horizontal={true} showsHorizontalScrollIndicator={false}>
-                                            {/*<TouchableOpacity onPress={ () => this.setState({activeType:0})} style={[styles.reservationScrollView ,  {backgroundColor:this.state.activeType === 0 ?'#6b4d6b' : 'transparent'}]}>*/}
-                                            {/*<Text style={[styles.reservationScrollText]}>15</Text>*/}
-                                            {/*<Text style={[styles.reservationScrollText]}>December</Text>*/}
-                                            {/*</TouchableOpacity>*/}
-
                                             {
                                                 this.props.reservations.dates.map((date, i) => {
                                                         return(
@@ -199,7 +197,7 @@ class Reservations extends Component {
                                             }
 
                                         </ScrollView>
-                                    </View>
+                                    </Animatable.View>
 
                                     <View style={{paddingHorizontal:10}}>
                                         {
