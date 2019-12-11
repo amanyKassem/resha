@@ -38,7 +38,9 @@ class Home extends Component {
         if (this.props.loader == 0){
             return(
                 <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
-                    <DoubleBounce size={20} color={COLORS.mov} />
+                    <Animatable.View animation="zoomIn" easing="ease-out" iterationCount="infinite">
+                        <Image source={require('../../assets/images/icon.png')} style={[styles.logoImg]} resizeMode={'contain'} />
+                    </Animatable.View>
                 </View>
             );
         }

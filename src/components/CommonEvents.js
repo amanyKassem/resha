@@ -7,6 +7,7 @@ import COLORS from '../../src/consts/colors'
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getPopularEvents} from "../actions";
+import * as Animatable from 'react-native-animatable';
 
 
 
@@ -38,7 +39,9 @@ class CommonEvents extends Component {
         if (this.state.loader == 1){
             return(
                 <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
-                    <DoubleBounce size={20} color={COLORS.mov} />
+                    <Animatable.View animation="zoomIn" easing="ease-out" iterationCount="infinite">
+                        <Image source={require('../../assets/images/icon.png')} style={[styles.logoImg]} resizeMode={'contain'} />
+                    </Animatable.View>
                 </View>
             );
         }

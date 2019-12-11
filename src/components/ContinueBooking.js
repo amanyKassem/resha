@@ -124,7 +124,7 @@ class ContinueBooking extends Component {
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
 
                             <View  style={[styles.ticketViewType , styles.mb15]}>
-                                <Image source={this.props.navigation.state.params.imgSrc} style={[styles.ticketType]} resizeMode={'contain'} />
+                                <Image source={{ uri: this.props.navigation.state.params.imgSrc }} style={[styles.ticketType]} resizeMode={'contain'} />
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>{this.props.navigation.state.params.ticketName}</Text>
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>{ i18n.t('price') } {this.props.navigation.state.params.price} { i18n.t('RS') }</Text>
                             </View>

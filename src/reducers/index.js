@@ -55,6 +55,7 @@ import authProducts from './AuthProductsReducer';
 import filterRestaurants from './FilterRestaurantsReducer';
 import stopNotification from './StopNotificationReducer';
 import ticketDetails from './TicketDetailsReducer';
+import ticketsImgs from './TicketsImgsReducer';
 
 export default combineReducers({
     lang,
@@ -113,4 +114,5 @@ export default combineReducers({
     filterRestaurants,
     stopNotification,
     ticketDetails,
+    ticketsImgs,
 });

@@ -9,8 +9,9 @@ import StarRating from 'react-native-star-rating';
 import Modal from "react-native-modal";
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
-import {getEventTickets} from "../actions";
+import {getEventTickets , getTicketsImgs} from "../actions";
 import {NavigationEvents} from "react-navigation";
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
@@ -37,7 +38,11 @@ class BookType extends Component {
             goldTicketType :'',
             normalTicketType :'',
             ticketName : i18n.t('vipTicket'),
-            imgSrc:require('../../assets/images/ticket_vip.png'),
+            // imgSrc:require('../../assets/images/ticket_vip.png'),
+            imgSrc:'',
+            vipImgSrc:'',
+            goldImgSrc:'',
+            normalImgSrc:'',
             event_info:[],
             loader: 1
         }
@@ -50,6 +55,7 @@ class BookType extends Component {
 
     componentWillMount() {
         this.setState({ loader: 1});
+        this.props.getTicketsImgs( this.props.lang )
         this.props.getEventTickets( this.props.lang , this.props.navigation.state.params.event_id )
     }
 
@@ -57,6 +63,10 @@ class BookType extends Component {
         console.log( 'nextProps...' , nextProps);
         this.setState({
             loader: nextProps.key,
+            imgSrc : nextProps.tickets[0].image,
+            vipImgSrc : nextProps.tickets[0].image,
+            goldImgSrc : nextProps.tickets[1].image,
+            normalImgSrc : nextProps.tickets[2].image,
             price : nextProps.eventTickets.tickets_info[2].ticket_price,
             vipPrice : nextProps.eventTickets.tickets_info[2].ticket_price,
             goldPrice : nextProps.eventTickets.tickets_info[1].ticket_price,
@@ -75,7 +85,9 @@ class BookType extends Component {
         if (this.state.loader == 1){
             return(
                 <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
-                    <DoubleBounce size={20} color={COLORS.mov} />
+                    <Animatable.View animation="zoomIn" easing="ease-out" iterationCount="infinite">
+                        <Image source={require('../../assets/images/icon.png')} style={[styles.logoImg]} resizeMode={'contain'} />
+                    </Animatable.View>
                 </View>
             );
         }
@@ -138,6 +150,9 @@ class BookType extends Component {
         const vipTicketType = this.state.vipTicketType ;
         const goldTicketType = this.state.goldTicketType ;
         const normalTicketType = this.state.normalTicketType ;
+        const vipImgSrc = this.state.vipImgSrc;
+        const goldImgSrc = this.state.goldImgSrc;
+        const normalImgSrc = this.state.normalImgSrc;
 
         console.log('pricees ' , vipPrice , goldPrice , normalPrice)
 
@@ -162,20 +177,20 @@ class BookType extends Component {
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
 
-                            <TouchableOpacity onPress={() => this.selectType('vip' , vipPrice , i18n.t('vipTicket') , require('../../assets/images/ticket_vip.png') , vipTicketsNum , vipTicketType)} style={[styles.ticketViewType , styles.mb15, {backgroundColor:this.state.type === 'vip' ? '#deeeee' : 'transparent'}]}>
-                                <Image source={require('../../assets/images/ticket_vip.png')} style={[styles.ticketType]} resizeMode={'contain'} />
+                            <TouchableOpacity onPress={() => this.selectType('vip' , vipPrice , i18n.t('vipTicket') , vipImgSrc , vipTicketsNum , vipTicketType)} style={[styles.ticketViewType , styles.mb15, {backgroundColor:this.state.type === 'vip' ? '#deeeee' : 'transparent'}]}>
+                                <Image source={{ uri: vipImgSrc }} style={[styles.ticketType]} resizeMode={'contain'} />
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>{ i18n.t('vipTicket') }</Text>
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>{ i18n.t('price') } {vipPrice} { i18n.t('RS') }</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => this.selectType('gold' , goldPrice , i18n.t('goldTicket') , require('../../assets/images/ticket_yellow_big.png') , goldTicketsNum , goldTicketType)} style={[styles.ticketViewType , styles.mb15, {backgroundColor:this.state.type === 'gold' ? '#deeeee' : 'transparent'}]}>
-                                <Image source={require('../../assets/images/ticket_yellow_big.png')} style={[styles.ticketType]} resizeMode={'contain'} />
+                            <TouchableOpacity onPress={() => this.selectType('gold' , goldPrice , i18n.t('goldTicket') , goldImgSrc , goldTicketsNum , goldTicketType)} style={[styles.ticketViewType , styles.mb15, {backgroundColor:this.state.type === 'gold' ? '#deeeee' : 'transparent'}]}>
+                                <Image source={{ uri: goldImgSrc }} style={[styles.ticketType]} resizeMode={'contain'} />
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>{ i18n.t('goldTicket') }</Text>
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>{ i18n.t('price') } {goldPrice} { i18n.t('RS') }</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => this.selectType('normal' , normalPrice, i18n.t('normalTicket') , require('../../assets/images/ticket_gray.png') , normalTicketsNum , normalTicketType)} style={[styles.ticketViewType , {backgroundColor:this.state.type === 'normal' ? '#deeeee' : 'transparent'}]}>
-                                <Image source={require('../../assets/images/ticket_gray.png')} style={[styles.ticketType]} resizeMode={'contain'} />
+                            <TouchableOpacity onPress={() => this.selectType('normal' , normalPrice, i18n.t('normalTicket') , normalImgSrc , normalTicketsNum , normalTicketType)} style={[styles.ticketViewType , {backgroundColor:this.state.type === 'normal' ? '#deeeee' : 'transparent'}]}>
+                                <Image source={{ uri: normalImgSrc }} style={[styles.ticketType]} resizeMode={'contain'} />
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>{ i18n.t('normalTicket') }</Text>
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>{ i18n.t('price') } {normalPrice} { i18n.t('RS') }</Text>
                             </TouchableOpacity>
@@ -197,11 +212,12 @@ class BookType extends Component {
 }
 
 
-const mapStateToProps = ({ lang , eventTickets }) => {
+const mapStateToProps = ({ lang , eventTickets , ticketsImgs }) => {
     return {
         lang: lang.lang,
         eventTickets: eventTickets.eventTickets,
+        tickets: ticketsImgs.tickets,
         key: eventTickets.key
     };
 };
-export default connect(mapStateToProps, {getEventTickets})(BookType);
+export default connect(mapStateToProps, {getEventTickets , getTicketsImgs})(BookType);

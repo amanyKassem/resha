@@ -571,8 +571,10 @@ const styles = ({
         width:30,
         height:30,
     },
-
-
+    logoImg:{
+        width: 100,
+        height: 100,
+    },
 
     // footer
     footer:{

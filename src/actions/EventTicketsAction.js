@@ -15,3 +15,16 @@ export const getEventTickets = (lang , event_id ) => {
 
     }
 };
+
+export const getTicketsImgs = (lang) => {
+    return (dispatch) => {
+        axios({
+            url: CONST.url + 'tickets',
+            method: 'POST',
+            data: {lang}
+        }).then(response => {
+            dispatch({type: 'getTicketsImgs', payload: response.data})
+        })
+
+    }
+};

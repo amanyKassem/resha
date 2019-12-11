@@ -8,6 +8,7 @@ import COLORS from "../consts/colors";
 import {connect} from "react-redux";
 import {SetFavouriteEvent, getProfileDetails} from "../actions";
 import {NavigationEvents} from "react-navigation";
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
@@ -42,7 +43,9 @@ class FamilyDetails extends Component {
         if (this.state.loader == 1){
             return(
                 <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
-                    <DoubleBounce size={20} color={COLORS.mov} />
+                    <Animatable.View animation="zoomIn" easing="ease-out" iterationCount="infinite">
+                        <Image source={require('../../assets/images/icon.png')} style={[styles.logoImg]} resizeMode={'contain'} />
+                    </Animatable.View>
                 </View>
             );
         }
