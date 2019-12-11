@@ -125,6 +125,11 @@ class TicketPayment extends Component {
                                 <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'mada' ?COLORS.blue : COLORS.gray}]}>{ i18n.t('payByMada') }</Text>
                             </TouchableOpacity>
 
+                            <TouchableOpacity onPress={() => this.selectPay('apple')} style={[styles.directionRowAlignCenter , styles.payView, {borderColor:this.state.payType === 'apple' ?COLORS.blue : COLORS.gray}]}>
+                                <Image source={ this.state.payType === 'apple' ? require('../../assets/images/apple_active.png') : require('../../assets/images/apple_non_active.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
+                                <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'apple' ?COLORS.blue : COLORS.gray}]}>{ i18n.t('payByApple') }</Text>
+                            </TouchableOpacity>
+
 
 
                             <TouchableOpacity onPress={ () => this.props.navigation.navigate('confirmPayment', {
