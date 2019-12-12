@@ -69,7 +69,7 @@ class FoodPayMethod extends Component {
 
         return (
             <Container>
-                <Content contentContainerStyle={styles.flexGrow} >
+                <Content bounces={false} contentContainerStyle={styles.flexGrow} >
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
 

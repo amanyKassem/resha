@@ -169,7 +169,7 @@ class ChangePass extends Component {
                     </Animated.View>
                 </Header>
 
-                <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                <Content bounces={false} contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <Image source={require('../../assets/images/undraw_pass.png')} style={[styles.faqImg]} resizeMode={'contain'} />
                         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'absolute' : 'padding'} style={styles.keyboardAvoid}>

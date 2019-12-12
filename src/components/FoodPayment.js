@@ -49,7 +49,7 @@ class FoodPayment extends Component {
 
         return (
             <Container>
-                <Content contentContainerStyle={styles.flexGrow} >
+                <Content bounces={false} contentContainerStyle={styles.flexGrow} >
                     { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
 

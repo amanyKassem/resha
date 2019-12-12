@@ -112,7 +112,7 @@ class Faq extends Component {
                     </Animated.View>
                 </Header>
 
-                <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                <Content bounces={false} contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <Image source={require('../../assets/images/qu_undraw.png')} style={[styles.faqImg]} resizeMode={'contain'} />
