@@ -63,7 +63,7 @@ class ConfirmPass extends Component {
 
         return (
             <Container>
-                <Content bounces={false} contentContainerStyle={styles.flexGrow} >
+                <Content   contentContainerStyle={styles.flexGrow} >
                     <TouchableOpacity style={styles.authBack} onPress={() => this.props.navigation.goBack()}>
                         <Image source={require('../../assets/images/back_white.png')} resizeMode={'contain'}  style={[styles.authImg , styles.transform]}/>
                     </TouchableOpacity>

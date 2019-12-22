@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.0.2",
+    "version": "1.0.9",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -24,12 +24,20 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.aait.resha"
+      "supportsTablet": false,
+      "bundleIdentifier": "com.aait.resha",
+      "infoPlist": {
+        "NSCameraUsageDescription": "App need this permission to update profile photo.",
+        "NSPhotoLibraryAddUsageDescription": "App need this permission to update profile photo.",
+        "NSLocationWhenInUseUsageDescription": "App need this permission to determine your location to return the closest events and products.",
+        "NSContactsUsageDescription": "App need this permission to send your case to your contacts if you in risk.",
+        "NSMicrophoneUsageDescription": "App need this permission to send voice record in your chat message.",
+        "NSPhotoLibraryUsageDescription": "App need this permission to update profile photo."
+      }
     },
     "android": {
-      "package": "com.aait.Reesh",
-      "versionCode": 4,
+      "package": "com.app.reesh",
+      "versionCode": 1,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBnEPOMwzcYu3_NpJeAhg19VceiJhfJwLY"

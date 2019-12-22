@@ -31,7 +31,7 @@ class Language extends Component {
 
         return (
             <Container>
-                <Content bounces={false} contentContainerStyle={styles.flexGrow} >
+                <Content   contentContainerStyle={styles.flexGrow} >
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
 
                         <View style={[styles.langView ]}>

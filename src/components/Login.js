@@ -70,7 +70,7 @@ class Login extends Component {
         if (!err){
             this.setState({ isSubmitted: true });
             const {phone, password, deviceId , type} = this.state;
-            setTimeout(() => this.props.userLogin({ phone, password, deviceId, type }, this.props.lang), 0);
+            setTimeout(() => this.props.userLogin({ phone, password, deviceId: 111111, type }, this.props.lang), 0);
         }
     }
 
@@ -145,7 +145,7 @@ class Login extends Component {
         return (
             <Container>
                 <NavigationEvents onWillFocus={() => this.onFocus()} />
-                <Content bounces={false} contentContainerStyle={styles.flexGrow} >
+                <Content contentContainerStyle={styles.flexGrow} >
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
 
                         <View style={[styles.langView ]}>
