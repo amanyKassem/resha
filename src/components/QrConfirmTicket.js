@@ -8,7 +8,7 @@ import {
     Animated,
     FlatList,
     ImageBackground,
-    KeyboardAvoidingView, Linking
+    KeyboardAvoidingView, Linking, Platform,
 } from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form} from 'native-base'
 import styles from '../../assets/styles'
@@ -25,6 +25,8 @@ import * as Animatable from 'react-native-animatable';
 
 const height = Dimensions.get('window').height;
 
+
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class QrConfirmTicket extends Component {
     constructor(props){
@@ -114,6 +116,12 @@ class QrConfirmTicket extends Component {
             <Container>
                 { this.renderLoader() }
                 <Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>

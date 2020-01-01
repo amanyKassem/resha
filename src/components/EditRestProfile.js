@@ -28,6 +28,8 @@ import {NavigationEvents} from "react-navigation";
 
 const height = Dimensions.get('window').height;
 
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
+
 class EditRestProfile extends Component {
     constructor(props){
         super(props);
@@ -82,7 +84,13 @@ class EditRestProfile extends Component {
 
     async componentWillMount() {
 
-        this.setState({isSubmitted: false})
+        this.setState({isSubmitted: false ,
+			restName: this.props.navigation.state.params.name,
+			location: this.props.navigation.state.params.address,
+			moreDet: this.props.navigation.state.params.details,
+			category: this.props.navigation.state.params.category,
+        })
+
         this.props.getTypeCategories(this.props.lang , this.props.user.type );
 
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -96,14 +104,14 @@ class EditRestProfile extends Component {
         }
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-        getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
+        getCity += this.props.navigation.state.params.latitude + ',' +this.props.navigation.state.params.longitude;
         getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=' +this.props.lang +'&sensor=true';
 
         console.log(getCity);
 
         try {
             const { data } = await axios.get(getCity);
-            this.setState({ location: data.results[0].formatted_address });
+			this.setState({ location: data.results[0].formatted_address });
 
         } catch (e) {
             console.log(e);
@@ -198,7 +206,7 @@ class EditRestProfile extends Component {
 
 
     renderSubmit(){
-        if (this.state.restName == '' || this.state.moreDet == '' || this.state.location == '' || this.state.category == null || this.state.base64 == null){
+        if (this.state.restName == '' || this.state.moreDet == '' || this.state.location == '' || this.state.category == null ){
             return (
                 <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , { backgroundColor: '#999' }]}>
                     <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
@@ -249,7 +257,14 @@ class EditRestProfile extends Component {
         return (
             <Container>
 
+				<NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                 <Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate('myResturant')} style={styles.headerBtn}>
@@ -262,7 +277,6 @@ class EditRestProfile extends Component {
                 </Header>
 
                 <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
-                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
                            {image != null?
@@ -273,7 +287,7 @@ class EditRestProfile extends Component {
 
                                 :
                                 <TouchableOpacity onPress={this._pickImage} style={[styles.restProfile ]}>
-                                    <Image source={require('../../assets/images/upload_button.png')} resizeMode={'contain'} style={styles.headerMenu}/>
+                                    <Image source={{ uri:this.props.navigation.state.params.image }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
                                 </TouchableOpacity>
                             }
                             <Text style={[styles.blueText, styles.normalText , styles.asc , styles.tAC ]}>{ i18n.t('uploadPhoto') }</Text>

@@ -4,7 +4,7 @@ import {
     Text,
     Image,
     TouchableOpacity,
-    Dimensions,
+    Dimensions,  Platform,
     ImageBackground,
     KeyboardAvoidingView,
     AsyncStorage
@@ -19,6 +19,8 @@ import {getSendForgetCode} from "../actions";
 
 
 const height = Dimensions.get('window').height;
+
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class ForgetPass extends Component {
     constructor(props){
@@ -70,39 +72,40 @@ class ForgetPass extends Component {
 
         return (
             <Container>
-                <Content   contentContainerStyle={styles.flexGrow} >
-                    <TouchableOpacity style={styles.authBack} onPress={() => this.props.navigation.goBack()}>
-                        <Image source={require('../../assets/images/back_white.png')} resizeMode={'contain'}  style={[styles.authImg , styles.transform]}/>
-                    </TouchableOpacity>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
 
-                        <View style={[styles.langView ]}>
+				<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+                    <Content   contentContainerStyle={styles.flexGrow} >
+                        <TouchableOpacity style={styles.authBack} onPress={() => this.props.navigation.goBack()}>
+                            <Image source={require('../../assets/images/back_white.png')} resizeMode={'contain'}  style={[styles.authImg , styles.transform]}/>
+                        </TouchableOpacity>
 
-                            <Image source={require('../../assets/images/logo.png')} resizeMode={'contain'} style={[styles.logo , styles.mb10]}/>
+                            <View style={[styles.langView ]}>
 
-                            <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
-                                <Form style={{}}>
-                                    <View style={styles.inputParent}>
-                                        <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={styles.labelItem}>
-                                                { i18n.t('phoneNumber') }
-                                            </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
-                                            <Input value={this.state.phone} onChangeText={(phone) => this.setState({phone})} keyboardType={'number-pad'} style={styles.itemInput}  />
-                                        </Item>
-                                    </View>
+                                <Image source={require('../../assets/images/logo.png')} resizeMode={'contain'} style={[styles.logo , styles.mb10]}/>
 
-                                    {
-                                        this.renderSubmit()
-                                    }
-                                </Form>
-                            </KeyboardAvoidingView>
+                                <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
+                                    <Form style={{}}>
+                                        <View style={styles.inputParent}>
+                                            <Item stackedLabel style={styles.item } bordered>
+                                                <Label style={styles.labelItem}>
+                                                    { i18n.t('phoneNumber') }
+                                                </Label>
+                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
+                                                <Input value={this.state.phone} onChangeText={(phone) => this.setState({phone})} keyboardType={'number-pad'} style={styles.itemInput}  />
+                                            </Item>
+                                        </View>
 
-                        </View>
+                                        {
+                                            this.renderSubmit()
+                                        }
+                                    </Form>
+                                </KeyboardAvoidingView>
+
+                            </View>
 
 
-                    </ImageBackground>
-                </Content>
+                    </Content>
+                </ImageBackground>
             </Container>
 
         );

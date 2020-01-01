@@ -25,6 +25,8 @@ import {NavigationEvents} from "react-navigation";
 const height = Dimensions.get('window').height;
 let base64   = [];
 
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
+
 class AddProduct extends Component {
     constructor(props){
         super(props);
@@ -192,6 +194,7 @@ class AddProduct extends Component {
 
 
     onFocus(payload){
+        base64 = [];
         this.componentWillMount()
     }
 
@@ -209,6 +212,12 @@ class AddProduct extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
@@ -287,34 +296,39 @@ class AddProduct extends Component {
                                             <Input keyboardType={'number-pad'} value={this.state.price} onChangeText={(price) => this.setState({price})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                         </Item>
                                     </View>
+                                    {
+										this.props.user.type != 5 ?
+											<View style={styles.inputParent}>
+												<Item style={styles.itemPicker} regular >
+													<Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,
+														paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,
+														paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10,
+														backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
+														borderBottomColor:'#fff'}]}>{ i18n.t('category') }</Label>
+													<Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>
+													<Picker
+														mode="dropdown"
+														style={[styles.picker , { color: COLORS.gray , backgroundColor:'#f5f5f5',}]}
+														placeholderStyle={{ color: COLORS.gray}}
+														placeholderIconColor={{color: COLORS.gray}}
+														selectedValue={this.state.category}
+														onValueChange={(value) => this.setState({ category: value })}
+													>
+														<Picker.Item label={ i18n.t('category') } value={null} />
+														{
+															this.props.typeCategories.map((cat, i) => (
+																<Picker.Item key={i} label={cat.name} value={cat.id} />
+															))
 
-                                    <View style={styles.inputParent}>
-                                        <Item style={styles.itemPicker} regular >
-                                            <Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,
-                                                paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,
-                                                paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10,
-                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
-                                                borderBottomColor:'#fff'}]}>{ i18n.t('category') }</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>
-                                            <Picker
-                                                mode="dropdown"
-                                                style={[styles.picker , { color: COLORS.gray , backgroundColor:'#f5f5f5',}]}
-                                                placeholderStyle={{ color: COLORS.gray}}
-                                                placeholderIconColor={{color: COLORS.gray}}
-                                                selectedValue={this.state.category}
-                                                onValueChange={(value) => this.setState({ category: value })}
-                                            >
-                                                <Picker.Item label={ i18n.t('category') } value={null} />
-                                                {
-                                                    this.props.typeCategories.map((cat, i) => (
-                                                        <Picker.Item key={i} label={cat.name} value={cat.id} />
-                                                    ))
+														}
+													</Picker>
+													<Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
+												</Item>
+											</View>
+                                            :
+                                            <View/>
+									}
 
-                                                }
-                                            </Picker>
-                                            <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
-                                        </Item>
-                                    </View>
 
                                     <View style={[styles.inputParent , {height:133}]}>
                                         <Item stackedLabel style={styles.item } bordered>

@@ -8,6 +8,7 @@ import {
     ImageBackground,
     KeyboardAvoidingView,
     AsyncStorage
+	, Platform
 } from "react-native";
 import {Container, Content, Form, Icon, Input, Item, Label, Toast} from 'native-base'
 import styles from '../../assets/styles'
@@ -19,6 +20,8 @@ import {getCheckForgetCode} from "../actions";
 
 
 const height = Dimensions.get('window').height;
+
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class VerifyCode extends Component {
     constructor(props){
@@ -87,39 +90,39 @@ class VerifyCode extends Component {
 
         return (
             <Container>
-                <Content   contentContainerStyle={styles.flexGrow} >
-                    <TouchableOpacity style={styles.authBack} onPress={() => this.props.navigation.goBack()}>
-                        <Image source={require('../../assets/images/back_white.png')} resizeMode={'contain'}  style={[styles.authImg , styles.transform]}/>
-                    </TouchableOpacity>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+				<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+                    <Content   contentContainerStyle={styles.flexGrow} >
+                        <TouchableOpacity style={styles.authBack} onPress={() => this.props.navigation.goBack()}>
+                            <Image source={require('../../assets/images/back_white.png')} resizeMode={'contain'}  style={[styles.authImg , styles.transform]}/>
+                        </TouchableOpacity>
 
-                        <View style={[styles.langView ]}>
+                            <View style={[styles.langView ]}>
 
-                            <Image source={require('../../assets/images/logo.png')} resizeMode={'contain'} style={[styles.logo , styles.mb10]}/>
+                                <Image source={require('../../assets/images/logo.png')} resizeMode={'contain'} style={[styles.logo , styles.mb10]}/>
 
-                            <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
-                                <Form style={{}}>
-                                    <View style={styles.inputParent}>
-                                        <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={styles.labelItem}>
-                                                { i18n.t('verifyCode') }
-                                            </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
-                                            <Input value={this.state.code} onChangeText={(code) => this.setState({code})} keyboardType={'number-pad'} style={styles.itemInput}  />
-                                        </Item>
-                                    </View>
+                                <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
+                                    <Form style={{}}>
+                                        <View style={styles.inputParent}>
+                                            <Item stackedLabel style={styles.item } bordered>
+                                                <Label style={styles.labelItem}>
+                                                    { i18n.t('verifyCode') }
+                                                </Label>
+                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
+                                                <Input value={this.state.code} onChangeText={(code) => this.setState({code})} keyboardType={'number-pad'} style={styles.itemInput}  />
+                                            </Item>
+                                        </View>
 
-                                    {
-                                        this.renderSubmit()
-                                    }
-                                </Form>
-                            </KeyboardAvoidingView>
+                                        {
+                                            this.renderSubmit()
+                                        }
+                                    </Form>
+                                </KeyboardAvoidingView>
 
-                        </View>
+                            </View>
 
 
-                    </ImageBackground>
-                </Content>
+                    </Content>
+                </ImageBackground>
             </Container>
 
         );

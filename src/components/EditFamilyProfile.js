@@ -29,6 +29,8 @@ import {NavigationEvents} from "react-navigation";
 
 const height = Dimensions.get('window').height;
 
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
+
 class EditFamilyProfile extends Component {
     constructor(props){
         super(props);
@@ -83,8 +85,13 @@ class EditFamilyProfile extends Component {
 
     async componentWillMount() {
 
-        this.setState({isSubmitted: false})
-        this.props.getTypeCategories(this.props.lang , this.props.user.type );
+		this.setState({isSubmitted: false ,
+			restName: this.props.navigation.state.params.name,
+			moreDet: this.props.navigation.state.params.details,
+			category: this.props.navigation.state.params.category,
+		})
+
+		this.props.getTypeCategories(this.props.lang , this.props.user.type );
 
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
@@ -199,7 +206,7 @@ class EditFamilyProfile extends Component {
 
 
     renderSubmit(){
-        if (this.state.restName == '' || this.state.moreDet == '' || this.state.location == '' || this.state.category == null || this.state.base64 == null){
+        if (this.state.restName == '' || this.state.moreDet == '' || this.state.category == null ){
             return (
                 <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , { backgroundColor: '#999' }]}>
                     <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
@@ -249,8 +256,15 @@ class EditFamilyProfile extends Component {
 
         return (
             <Container>
+				<NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
 
                 <Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate('myFamily')} style={styles.headerBtn}>
@@ -263,7 +277,6 @@ class EditFamilyProfile extends Component {
                 </Header>
 
                 <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
-                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
                             {image != null?
@@ -273,9 +286,9 @@ class EditFamilyProfile extends Component {
                                 </TouchableOpacity>
 
                                 :
-                                <TouchableOpacity onPress={this._pickImage} style={[styles.restProfile ]}>
-                                    <Image source={require('../../assets/images/upload_button.png')} resizeMode={'contain'} style={styles.headerMenu}/>
-                                </TouchableOpacity>
+								<TouchableOpacity onPress={this._pickImage} style={[styles.restProfile ]}>
+									<Image source={{ uri:this.props.navigation.state.params.image }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+								</TouchableOpacity>
                             }
                             <Text style={[styles.blueText, styles.normalText , styles.asc , styles.tAC ]}>{ i18n.t('uploadPhoto') }</Text>
 
@@ -319,16 +332,16 @@ class EditFamilyProfile extends Component {
                                             <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
                                         </Item>
                                     </View>
-                                    <View style={styles.inputParent}>
-                                        <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={() =>this._toggleModal()}>
-                                            <Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 ,
-                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
-                                                borderBottomColor:'#fff'}]}>{ i18n.t('location') }</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
-                                            <Text style={[styles.whiteText , styles.normalText , styles.itemText, {backgroundColor:'#f5f5f5',  color: COLORS.gray } ]}>{this.state.location}</Text>
-                                        </TouchableOpacity>
-                                        <Image source={require('../../assets/images/placeholder_blue.png')} style={styles.mapMarker} resizeMode={'contain'} />
-                                    </View>
+                                    {/*<View style={styles.inputParent}>*/}
+                                        {/*<TouchableOpacity stackedLabel style={styles.item } bordered  onPress={() =>this._toggleModal()}>*/}
+                                            {/*<Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 ,*/}
+                                                {/*backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,*/}
+                                                {/*borderBottomColor:'#fff'}]}>{ i18n.t('location') }</Label>*/}
+                                            {/*<Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>*/}
+                                            {/*<Text style={[styles.whiteText , styles.normalText , styles.itemText, {backgroundColor:'#f5f5f5',  color: COLORS.gray } ]}>{this.state.location}</Text>*/}
+                                        {/*</TouchableOpacity>*/}
+                                        {/*<Image source={require('../../assets/images/placeholder_blue.png')} style={styles.mapMarker} resizeMode={'contain'} />*/}
+                                    {/*</View>*/}
 
                                     <View style={[styles.inputParent , {height:133}]}>
                                         <Item stackedLabel style={styles.item } bordered>

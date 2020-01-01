@@ -21,6 +21,8 @@ import {chooseLang , getDeleteAccount , getStopNotification} from "../actions";
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
+
 class Settings extends Component {
     constructor(props){
         super(props);
@@ -102,6 +104,12 @@ class Settings extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>

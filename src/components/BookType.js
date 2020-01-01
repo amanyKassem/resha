@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, FlatList, ImageBackground} from "react-native";
+import {
+	View,
+	Text,
+	Image,
+	TouchableOpacity,
+	Dimensions,
+	Animated,
+	FlatList,
+	ImageBackground,
+	Platform
+} from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -15,6 +25,8 @@ import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
+
 
 
 class BookType extends Component {
@@ -61,24 +73,27 @@ class BookType extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log( 'nextProps...' , nextProps);
-        this.setState({
-            loader: nextProps.key,
-            imgSrc : nextProps.tickets[0].image,
-            vipImgSrc : nextProps.tickets[0].image,
-            goldImgSrc : nextProps.tickets[1].image,
-            normalImgSrc : nextProps.tickets[2].image,
-            price : nextProps.eventTickets.tickets_info[2].ticket_price,
-            vipPrice : nextProps.eventTickets.tickets_info[2].ticket_price,
-            goldPrice : nextProps.eventTickets.tickets_info[1].ticket_price,
-            normalPrice : nextProps.eventTickets.tickets_info[0].ticket_price,
-            vipTicketsNum : nextProps.eventTickets.tickets_info[2].available_count,
-            goldTicketsNum : nextProps.eventTickets.tickets_info[1].available_count,
-            normalTicketsNum : nextProps.eventTickets.tickets_info[0].available_count,
-            vipTicketType : nextProps.eventTickets.tickets_info[2].ticket_type,
-            goldTicketType : nextProps.eventTickets.tickets_info[1].ticket_type,
-            normalTicketType : nextProps.eventTickets.tickets_info[0].ticket_type,
-            event_info : nextProps.eventTickets.event_info,
-        })
+
+        if (nextProps.eventTickets.tickets_info){
+			this.setState({
+				loader: nextProps.key,
+				imgSrc : nextProps.tickets[0].image,
+				vipImgSrc : nextProps.tickets[0].image,
+				goldImgSrc : nextProps.tickets[1].image,
+				normalImgSrc : nextProps.tickets[2].image,
+				price : nextProps.eventTickets.tickets_info[2].ticket_price,
+				vipPrice : nextProps.eventTickets.tickets_info[2].ticket_price,
+				goldPrice : nextProps.eventTickets.tickets_info[1].ticket_price,
+				normalPrice : nextProps.eventTickets.tickets_info[0].ticket_price,
+				vipTicketsNum : nextProps.eventTickets.tickets_info[2].available_count,
+				goldTicketsNum : nextProps.eventTickets.tickets_info[1].available_count,
+				normalTicketsNum : nextProps.eventTickets.tickets_info[0].available_count,
+				vipTicketType : nextProps.eventTickets.tickets_info[2].ticket_type,
+				goldTicketType : nextProps.eventTickets.tickets_info[1].ticket_type,
+				normalTicketType : nextProps.eventTickets.tickets_info[0].ticket_type,
+				event_info : nextProps.eventTickets.event_info,
+			})
+        }
     }
 
     renderLoader(){
@@ -159,6 +174,12 @@ class BookType extends Component {
                 { this.renderLoader() }
 
                 <Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate('bookTicket')} style={styles.headerBtn}>

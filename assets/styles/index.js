@@ -3,6 +3,7 @@ import COLORS from '../../src/consts/colors'
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 const styles = ({
     transform:{
@@ -491,7 +492,7 @@ const styles = ({
 
     homecontent:{
         zIndex: -1,
-        marginTop: -100,
+		marginTop : IS_IPHONE_X ? -25 : -100
     },
     header : {
         backgroundColor:'transparent',
@@ -499,7 +500,8 @@ const styles = ({
         height: 100,
         paddingLeft:0,
         paddingRight:0,
-        borderBottomWidth:0
+        borderBottomWidth:0,
+        zIndex:10
     },
     animatedHeader:{
         width: '100%',
@@ -509,7 +511,8 @@ const styles = ({
         height: 100 ,
         marginTop:-50 ,
         alignItems:'center',
-        paddingTop: 30
+        paddingTop: 30,
+		zIndex:10
     },
     headerMenu:{
         width: 25,
@@ -535,7 +538,7 @@ const styles = ({
         width: '100%',
         paddingHorizontal:10,
         marginBottom:20,
-        marginTop:85
+        marginTop: IS_IPHONE_X ? 0 : 85
     },
     whiteHome : {
         backgroundColor:'#fff',

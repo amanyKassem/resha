@@ -6,8 +6,7 @@ import {
     TouchableOpacity,
     Dimensions,
     ImageBackground,
-    KeyboardAvoidingView,
-    Platform, I18nManager
+    KeyboardAvoidingView, Platform, I18nManager
 } from "react-native";
 import {Container, Content, Form, Picker, Input, Item, Label, Button, Toast} from 'native-base'
 import styles from '../../assets/styles'
@@ -24,6 +23,8 @@ import {connect} from "react-redux";
 
 
 const height = Dimensions.get('window').height;
+
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class Register extends Component {
     constructor(props){
@@ -211,147 +212,147 @@ class Register extends Component {
 
         return (
             <Container>
-                <Content   contentContainerStyle={styles.flexGrow} >
-                    <TouchableOpacity style={styles.authBack} onPress={() => this.props.navigation.goBack()}>
-                        <Image source={require('../../assets/images/back_white.png')} resizeMode={'contain'}  style={[styles.authImg , styles.transform]}/>
-                    </TouchableOpacity>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+				<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+                    <Content   contentContainerStyle={styles.flexGrow} >
+                        <TouchableOpacity style={styles.authBack} onPress={() => this.props.navigation.goBack()}>
+                            <Image source={require('../../assets/images/back_white.png')} resizeMode={'contain'}  style={[styles.authImg , styles.transform]}/>
+                        </TouchableOpacity>
 
-                        <View style={[styles.langView ]}>
+                            <View style={[styles.langView ]}>
 
-                            <Image source={require('../../assets/images/logo.png')} resizeMode={'contain'} style={[styles.logo , styles.mb10]}/>
+                                <Image source={require('../../assets/images/logo.png')} resizeMode={'contain'} style={[styles.logo , styles.mb10]}/>
 
-                            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'absolute' : 'padding'} style={styles.keyboardAvoid}>
-                                <Form style={{}}>
+                                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'absolute' : 'padding'} style={styles.keyboardAvoid}>
+                                    <Form style={{}}>
 
-                                    <View style={styles.inputParent}>
-                                        <Item style={styles.itemPicker} regular >
-                                            <Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,
-                                                paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,
-                                                paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10}]}>{ i18n.t('userType') }</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>
-                                            <Picker
-                                                mode="dropdown"
-                                                style={[styles.picker , {width:Platform.OS === 'ios' ? 313 : '100%'}]}
-                                                placeholderStyle={{ color: COLORS.white}}
-                                                placeholderIconColor={{color: COLORS.white}}
-                                                selectedValue={this.state.userType}
-                                                onValueChange={(value) => this.setState({ userType: value })}
-                                            >
-                                                <Picker.Item label={ i18n.t('normalUser') } value={0} />
-                                                <Picker.Item label={ i18n.t('eventOwner') }  value={1} />
-                                                <Picker.Item label={ i18n.t('organizer') }  value={2} />
-                                                <Picker.Item label={ i18n.t('cafeOwner') }  value={3} />
-                                                <Picker.Item label={ i18n.t('productiveOwner') }  value={4} />
-                                                <Picker.Item label={ i18n.t('foodTrackOwner') }  value={5} />
-                                            </Picker>
-                                            <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
-                                        </Item>
-                                    </View>
-                                    {
-                                        this.state.userType != 4 ? (
-                                            <View style={styles.inputParent}>
-                                                <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={() =>this._toggleModal()}>
-                                                    <Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 }]}>{ i18n.t('location') }</Label>
-                                                    <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform, styles.transform]}/>
-                                                    <Text style={[styles.whiteText , styles.normalText , styles.itemText ]}>{this.state.city}</Text>
-                                                </TouchableOpacity>
-                                                <Image source={require('../../assets/images/placeholder_blue.png')} style={styles.mapMarker} resizeMode={'contain'} />
-                                            </View>
-                                        ):
-                                            <View/>
+                                        <View style={styles.inputParent}>
+                                            <Item style={styles.itemPicker} regular >
+                                                <Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,
+                                                    paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,
+                                                    paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10}]}>{ i18n.t('userType') }</Label>
+                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>
+                                                <Picker
+                                                    mode="dropdown"
+                                                    style={[styles.picker , {width:Platform.OS === 'ios' ? 313 : '100%'}]}
+                                                    placeholderStyle={{ color: COLORS.white}}
+                                                    placeholderIconColor={{color: COLORS.white}}
+                                                    selectedValue={this.state.userType}
+                                                    onValueChange={(value) => this.setState({ userType: value })}
+                                                >
+                                                    <Picker.Item label={ i18n.t('normalUser') } value={0} />
+                                                    <Picker.Item label={ i18n.t('eventOwner') }  value={1} />
+                                                    <Picker.Item label={ i18n.t('organizer') }  value={2} />
+                                                    <Picker.Item label={ i18n.t('cafeOwner') }  value={3} />
+                                                    <Picker.Item label={ i18n.t('productiveOwner') }  value={4} />
+                                                    <Picker.Item label={ i18n.t('foodTrackOwner') }  value={5} />
+                                                </Picker>
+                                                <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
+                                            </Item>
+                                        </View>
+                                        {
+                                            this.state.userType != 4 ? (
+                                                <View style={styles.inputParent}>
+                                                    <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={() =>this._toggleModal()}>
+                                                        <Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 }]}>{ i18n.t('location') }</Label>
+                                                        <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform, styles.transform]}/>
+                                                        <Text style={[styles.whiteText , styles.normalText , styles.itemText ]}>{this.state.city}</Text>
+                                                    </TouchableOpacity>
+                                                    <Image source={require('../../assets/images/placeholder_blue.png')} style={styles.mapMarker} resizeMode={'contain'} />
+                                                </View>
+                                            ):
+                                                <View/>
 
-                                    }
-
-
-                                    <View style={styles.inputParent}>
-                                        <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={styles.labelItem}>
-                                                { i18n.t('username') }
-                                            </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
-                                            <Input autoCapitalize='none' value={this.state.username} onChangeText={(username) => this.setState({username})}   style={styles.itemInput}  />
-                                        </Item>
-                                    </View>
-
-                                    <View style={styles.inputParent}>
-                                        <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={styles.labelItem}>
-                                                { i18n.t('phoneNumber') }
-                                            </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
-                                            <Input value={this.state.phone} onChangeText={(phone) => this.setState({phone})} keyboardType={'number-pad'} style={styles.itemInput}  />
-                                        </Item>
-                                    </View>
-
-                                    <View style={styles.inputParent}>
-                                        <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={styles.labelItem}>
-                                                { i18n.t('email') }
-                                            </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
-                                            <Input value={this.state.mail} onChangeText={(mail) => this.setState({mail})} keyboardType={'email-address'} style={styles.itemInput}  />
-                                        </Item>
-                                    </View>
-
-                                    <View style={styles.inputParent}>
-                                        <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={styles.labelItem}>
-                                                { i18n.t('password') }
-                                            </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
-                                            <Input autoCapitalize='none' value={this.state.password} onChangeText={(password) => this.setState({password})} secureTextEntry  style={styles.itemInput}  />
-                                        </Item>
-                                    </View>
-
-                                    <View style={styles.inputParent}>
-                                        <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={styles.labelItem}>
-                                                { i18n.t('rePassword') }
-                                            </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
-                                            <Input autoCapitalize='none' value={this.state.rePassword} onChangeText={(rePassword) => this.setState({rePassword})} secureTextEntry  style={styles.itemInput}  />
-                                        </Item>
-                                    </View>
-
-                                    {
-                                        this.renderSubmit()
-                                    }
-                                </Form>
-                            </KeyboardAvoidingView>
-
-                        </View>
+                                        }
 
 
-                    </ImageBackground>
-                    <Modal onBackdropPress={()=> this.setState({ isModalVisible : false })} isVisible={this.state.isModalVisible}>
-                        <View style={[styles.modalStyle , styles.p20]}>
-                            {
-                                !this.state.initMap ? (
-                                    <MapView
-                                        style={styles.mapView}
-                                        initialRegion={{
-                                            latitude: this.state.mapRegion.latitude,
-                                            longitude: this.state.mapRegion.longitude,
-                                            latitudeDelta: 0.0922,
-                                            longitudeDelta: 0.0421,
-                                        }}
-                                    >
-                                        <MapView.Marker draggable
-                                                        coordinate={this.state.mapRegion}
-                                                        onDragEnd={(e) =>  this._handleMapRegionChange(e.nativeEvent.coordinate)}
+                                        <View style={styles.inputParent}>
+                                            <Item stackedLabel style={styles.item } bordered>
+                                                <Label style={styles.labelItem}>
+                                                    { i18n.t('username') }
+                                                </Label>
+                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
+                                                <Input autoCapitalize='none' value={this.state.username} onChangeText={(username) => this.setState({username})}   style={styles.itemInput}  />
+                                            </Item>
+                                        </View>
+
+                                        <View style={styles.inputParent}>
+                                            <Item stackedLabel style={styles.item } bordered>
+                                                <Label style={styles.labelItem}>
+                                                    { i18n.t('phoneNumber') }
+                                                </Label>
+                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
+                                                <Input value={this.state.phone} onChangeText={(phone) => this.setState({phone})} keyboardType={'number-pad'} style={styles.itemInput}  />
+                                            </Item>
+                                        </View>
+
+                                        <View style={styles.inputParent}>
+                                            <Item stackedLabel style={styles.item } bordered>
+                                                <Label style={styles.labelItem}>
+                                                    { i18n.t('email') }
+                                                </Label>
+                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
+                                                <Input value={this.state.mail} onChangeText={(mail) => this.setState({mail})} keyboardType={'email-address'} style={styles.itemInput}  />
+                                            </Item>
+                                        </View>
+
+                                        <View style={styles.inputParent}>
+                                            <Item stackedLabel style={styles.item } bordered>
+                                                <Label style={styles.labelItem}>
+                                                    { i18n.t('password') }
+                                                </Label>
+                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
+                                                <Input autoCapitalize='none' value={this.state.password} onChangeText={(password) => this.setState({password})} secureTextEntry  style={styles.itemInput}  />
+                                            </Item>
+                                        </View>
+
+                                        <View style={styles.inputParent}>
+                                            <Item stackedLabel style={styles.item } bordered>
+                                                <Label style={styles.labelItem}>
+                                                    { i18n.t('rePassword') }
+                                                </Label>
+                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
+                                                <Input autoCapitalize='none' value={this.state.rePassword} onChangeText={(rePassword) => this.setState({rePassword})} secureTextEntry  style={styles.itemInput}  />
+                                            </Item>
+                                        </View>
+
+                                        {
+                                            this.renderSubmit()
+                                        }
+                                    </Form>
+                                </KeyboardAvoidingView>
+
+                            </View>
+
+
+                        <Modal onBackdropPress={()=> this.setState({ isModalVisible : false })} isVisible={this.state.isModalVisible}>
+                            <View style={[styles.modalStyle , styles.p20]}>
+                                {
+                                    !this.state.initMap ? (
+                                        <MapView
+                                            style={styles.mapView}
+                                            initialRegion={{
+                                                latitude: this.state.mapRegion.latitude,
+                                                longitude: this.state.mapRegion.longitude,
+                                                latitudeDelta: 0.0922,
+                                                longitudeDelta: 0.0421,
+                                            }}
                                         >
-                                            <Image source={require('../../assets/images/red_marker_map.png')} resizeMode={'contain'} style={styles.regMarker}/>
-                                        </MapView.Marker>
-                                    </MapView>
-                                ) : (<View />)
-                            }
-                            <Button onPress={() => this.confirmLocation()} style={[styles.blueBtn ,styles.mt15]}>
-                                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
-                            </Button>
-                        </View>
-                    </Modal>
-                </Content>
+                                            <MapView.Marker draggable
+                                                            coordinate={this.state.mapRegion}
+                                                            onDragEnd={(e) =>  this._handleMapRegionChange(e.nativeEvent.coordinate)}
+                                            >
+                                                <Image source={require('../../assets/images/red_marker_map.png')} resizeMode={'contain'} style={styles.regMarker}/>
+                                            </MapView.Marker>
+                                        </MapView>
+                                    ) : (<View />)
+                                }
+                                <Button onPress={() => this.confirmLocation()} style={[styles.blueBtn ,styles.mt15]}>
+                                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
+                                </Button>
+                            </View>
+                        </Modal>
+                    </Content>
+				</ImageBackground>
             </Container>
 
         );

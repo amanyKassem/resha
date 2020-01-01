@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground, Linking} from "react-native";
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground, Linking, Platform,} from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -16,6 +16,8 @@ import * as Animatable from 'react-native-animatable';
 
 const height = Dimensions.get('window').height;
 
+
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class ProductDetails extends Component {
     constructor(props){
@@ -55,10 +57,9 @@ class ProductDetails extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        console.log('nextProps.showProduct.is_save' , nextProps)
+        console.log('nextProps.showProduct.is_save' , nextProps);
 
-
-        this.setState({ loader: nextProps.key  , starsCount : nextProps.showProduct.rates , userRate : nextProps.showProduct.user.rates});
+        this.setState({ starsCount : nextProps.showProduct.rates , userRate : nextProps.showProduct.user.rates});
         if(nextProps.ratekey == 1)
             this.setState({userRate : nextProps.rateProduct.user_rates ,  starsCount : nextProps.rateProduct.product_rates })
     }
@@ -130,11 +131,19 @@ class ProductDetails extends Component {
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']
         });
 
+        // alert(this.state.loader);
+
         return (
             <Container>
                 { this.renderLoader() }
 
                 <Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
@@ -184,7 +193,7 @@ class ProductDetails extends Component {
                                         {
                                             this.props.showProduct.images.map((img, i) =>{
                                                 return (
-                                                    <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                    <Image key={i} source={{ uri: img.image }} onLoad={() => this.setState({ loader: 0  })}  style={styles.swiperImg} resizeMode={'cover'}/>
                                                 )
                                             })
                                         }

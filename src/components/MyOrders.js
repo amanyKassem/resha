@@ -8,7 +8,7 @@ import {
     Animated,
     FlatList,
     ImageBackground,
-    ScrollView,
+    ScrollView,Platform,
     StyleSheet
 } from "react-native";
 import {Container, Content,  Header, Button, Item, Input} from 'native-base'
@@ -24,6 +24,8 @@ import * as Animatable from 'react-native-animatable';
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
+
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class MyOrders extends Component {
     constructor(props){
@@ -163,6 +165,12 @@ class MyOrders extends Component {
             <Container>
                 { this.renderLoader() }
                 <Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <TouchableOpacity  onPress={() => this.props.navigation.openDrawer()} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/menu.png')} style={[styles.headerMenu]} resizeMode={'contain'} />

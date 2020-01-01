@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions,  ImageBackground , KeyboardAvoidingView} from "react-native";
+import {View, Text, Image, TouchableOpacity, Dimensions,  ImageBackground , Platform, KeyboardAvoidingView} from "react-native";
 import {Container, Content, Form, Icon, Input, Item, Label, Toast} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -10,6 +10,8 @@ import {getCheckForgetCode, getResetPassword} from "../actions";
 
 
 const height = Dimensions.get('window').height;
+
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class ConfirmPass extends Component {
     constructor(props){
@@ -63,49 +65,48 @@ class ConfirmPass extends Component {
 
         return (
             <Container>
-                <Content   contentContainerStyle={styles.flexGrow} >
-                    <TouchableOpacity style={styles.authBack} onPress={() => this.props.navigation.goBack()}>
-                        <Image source={require('../../assets/images/back_white.png')} resizeMode={'contain'}  style={[styles.authImg , styles.transform]}/>
-                    </TouchableOpacity>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+				<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+                    <Content   contentContainerStyle={styles.flexGrow} >
+                        <TouchableOpacity style={styles.authBack} onPress={() => this.props.navigation.goBack()}>
+                            <Image source={require('../../assets/images/back_white.png')} resizeMode={'contain'}  style={[styles.authImg , styles.transform]}/>
+                        </TouchableOpacity>
 
-                        <View style={[styles.langView ]}>
+                            <View style={[styles.langView ]}>
 
-                            <Image source={require('../../assets/images/logo.png')} resizeMode={'contain'} style={[styles.logo , styles.mb10]}/>
+                                <Image source={require('../../assets/images/logo.png')} resizeMode={'contain'} style={[styles.logo , styles.mb10]}/>
 
-                            <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
-                                <Form style={{}}>
-                                    <View style={styles.inputParent}>
-                                        <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={styles.labelItem}>
-                                                { i18n.t('password') }
-                                            </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
-                                            <Input autoCapitalize='none' value={this.state.password} onChangeText={(password) => this.setState({password})} secureTextEntry  style={styles.itemInput}  />
-                                        </Item>
-                                    </View>
+                                <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
+                                    <Form style={{}}>
+                                        <View style={styles.inputParent}>
+                                            <Item stackedLabel style={styles.item } bordered>
+                                                <Label style={styles.labelItem}>
+                                                    { i18n.t('password') }
+                                                </Label>
+                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
+                                                <Input autoCapitalize='none' value={this.state.password} onChangeText={(password) => this.setState({password})} secureTextEntry  style={styles.itemInput}  />
+                                            </Item>
+                                        </View>
 
-                                    <View style={styles.inputParent}>
-                                        <Item stackedLabel style={styles.item } bordered>
-                                            <Label style={styles.labelItem}>
-                                                { i18n.t('rePassword') }
-                                            </Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
-                                            <Input autoCapitalize='none' value={this.state.rePassword} onChangeText={(rePassword) => this.setState({rePassword})} secureTextEntry  style={styles.itemInput}  />
-                                        </Item>
-                                    </View>
+                                        <View style={styles.inputParent}>
+                                            <Item stackedLabel style={styles.item } bordered>
+                                                <Label style={styles.labelItem}>
+                                                    { i18n.t('rePassword') }
+                                                </Label>
+                                                <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg, styles.transform]}/>
+                                                <Input autoCapitalize='none' value={this.state.rePassword} onChangeText={(rePassword) => this.setState({rePassword})} secureTextEntry  style={styles.itemInput}  />
+                                            </Item>
+                                        </View>
 
-                                    {
-                                        this.renderSubmit()
-                                    }
-                                </Form>
-                            </KeyboardAvoidingView>
+                                        {
+                                            this.renderSubmit()
+                                        }
+                                    </Form>
+                                </KeyboardAvoidingView>
 
-                        </View>
+                            </View>
 
-
-                    </ImageBackground>
-                </Content>
+                    </Content>
+                </ImageBackground>
             </Container>
 
         );

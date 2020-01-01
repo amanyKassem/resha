@@ -10,6 +10,8 @@ const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 const isIphoneX = Platform.OS === 'ios' && height == 812 || height == 896;
 
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
+
 class FooterSection extends Component {
     constructor(props){
         super(props);

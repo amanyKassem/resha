@@ -25,6 +25,8 @@ import {NavigationEvents} from "react-navigation";
 const height = Dimensions.get('window').height;
 let base64   = [];
 
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
+
 class EditProduct extends Component {
     constructor(props){
         super(props);
@@ -60,8 +62,14 @@ class EditProduct extends Component {
     componentWillMount() {
         this.props.getTypeCategories(this.props.lang , this.props.user.type );
         base64 = [];
+        const images = this.props.navigation.state.params.images;
+        console.log('imagesimages' , images)
         this.setState({prodName:this.props.navigation.state.params.prodName ,price :this.props.navigation.state.params.price ,
-            category: null, moreDet:this.props.navigation.state.params.moreDet , prodImg1: null, base64_1: null, prodImg2: null, base64_2: null, prodImg3: null, base64_3: null , isSubmitted: false})
+            category: this.props.navigation.state.params.category_id, moreDet:this.props.navigation.state.params.moreDet ,
+			prodImg1: images[0].image,
+			prodImg2: images[1] ? images[1].image : null,
+			prodImg3: images[2] ? images[2].image : null,
+			isSubmitted: false})
     }
 
 
@@ -156,7 +164,7 @@ class EditProduct extends Component {
 
 
     renderSubmit(){
-        if (this.state.prodName == '' || this.state.price == '' || this.state.category == '' || this.state.moreDet == '' || base64.length <= 0 ){
+        if (this.state.prodName == '' || this.state.price == '' || this.state.category == null || this.state.moreDet == '' ){
             return (
                 <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , { backgroundColor: '#999' }]}>
                     <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
@@ -210,6 +218,12 @@ class EditProduct extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
@@ -235,7 +249,7 @@ class EditProduct extends Component {
 
                                     :
                                     <TouchableOpacity onPress={this._pickImage} style={[styles.restProfile ]}>
-                                        <Image source={require('../../assets/images/upload_button.png')} resizeMode={'contain'} style={styles.headerMenu}/>
+                                        <Image source={{uri : this.state.prodImg1}} resizeMode={'cover'} style={styles.sideDrawerImg}/>
                                     </TouchableOpacity>
                                 }
                                 {image2 != null?
@@ -246,8 +260,8 @@ class EditProduct extends Component {
 
                                     :
                                     <TouchableOpacity onPress={this._pickImage2} style={[styles.restProfile ]}>
-                                        <Image source={require('../../assets/images/upload_button.png')} resizeMode={'contain'} style={styles.headerMenu}/>
-                                    </TouchableOpacity>
+										<Image source={{uri : this.state.prodImg2}} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+									</TouchableOpacity>
                                 }
                                 {image3 != null?
 
@@ -257,8 +271,8 @@ class EditProduct extends Component {
 
                                     :
                                     <TouchableOpacity onPress={this._pickImage3} style={[styles.restProfile ]}>
-                                        <Image source={require('../../assets/images/upload_button.png')} resizeMode={'contain'} style={styles.headerMenu}/>
-                                    </TouchableOpacity>
+										<Image source={{uri : this.state.prodImg3}} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+									</TouchableOpacity>
                                 }
                             </View>
 
@@ -289,33 +303,38 @@ class EditProduct extends Component {
                                         </Item>
                                     </View>
 
-                                    <View style={styles.inputParent}>
-                                        <Item style={styles.itemPicker} regular >
-                                            <Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,
-                                                paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,
-                                                paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10,
-                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
-                                                borderBottomColor:'#fff'}]}>{ i18n.t('category') }</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>
-                                            <Picker
-                                                mode="dropdown"
-                                                style={[styles.picker , { color: COLORS.gray , backgroundColor:'#f5f5f5',}]}
-                                                placeholderStyle={{ color: COLORS.gray}}
-                                                placeholderIconColor={{color: COLORS.gray}}
-                                                selectedValue={this.state.category}
-                                                onValueChange={(value) => this.setState({ category: value })}
-                                            >
-                                                <Picker.Item label={ i18n.t('category') } value={null} />
-                                                {
-                                                    this.props.typeCategories.map((cat, i) => (
-                                                        <Picker.Item key={i} label={cat.name} value={cat.id} />
-                                                    ))
+									{
+										this.props.user.type != 5 ?
+											<View style={styles.inputParent}>
+												<Item style={styles.itemPicker} regular >
+													<Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,
+														paddingLeft:I18nManager.isRTL ?Platform.OS === 'ios' ?20 : 10 : 20 ,
+														paddingRight:I18nManager.isRTL ?Platform.OS === 'ios' ?10:20 : 10,
+														backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
+														borderBottomColor:'#fff'}]}>{ i18n.t('category') }</Label>
+													<Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform , {top:-19}]}/>
+													<Picker
+														mode="dropdown"
+														style={[styles.picker , { color: COLORS.gray , backgroundColor:'#f5f5f5',}]}
+														placeholderStyle={{ color: COLORS.gray}}
+														placeholderIconColor={{color: COLORS.gray}}
+														selectedValue={this.state.category}
+														onValueChange={(value) => this.setState({ category: value })}
+													>
+														<Picker.Item label={ i18n.t('category') } value={null} />
+														{
+															this.props.typeCategories.map((cat, i) => (
+																<Picker.Item key={i} label={cat.name} value={cat.id} />
+															))
 
-                                                }
-                                            </Picker>
-                                            <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
-                                        </Item>
-                                    </View>
+														}
+													</Picker>
+													<Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
+												</Item>
+											</View>
+											:
+											<View/>
+									}
 
                                     <View style={[styles.inputParent , {height:133}]}>
                                         <Item stackedLabel style={styles.item } bordered>

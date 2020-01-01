@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground , Linking} from "react-native";
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground , Linking, Platform,} from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -15,6 +15,8 @@ import * as Animatable from 'react-native-animatable';
 
 const height = Dimensions.get('window').height;
 
+
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class MyCar extends Component {
     constructor(props){
@@ -114,77 +116,88 @@ class MyCar extends Component {
             return(
                 <View style={styles.directionColumn}>
 
+                    { this.renderNoData() }
+
                     {
-                        this.renderNoData()
+						this.props.showProfile ?
+							<View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>
+
+								{
+									this.props.showProfile.products.map((product, i) =>{
+										return (
+											<Animatable.View key={i}  animation="fadeInUp" easing="ease-out" delay={600}>
+												<TouchableOpacity onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id, backRoute:'myCar'})}>
+													<Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
+												</TouchableOpacity>
+											</Animatable.View>
+										)
+									})
+								}
+
+							</View> : <View />
+
                     }
 
-                    <View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>
+                    {
+						this.props.showProfile ?
+							<TouchableOpacity onPress={() => this.props.navigation.navigate('restProducts', {user_id :this.props.showProfile.user_id, backRoute:'myCar'})} style={[styles.delAcc , {backgroundColor:COLORS.white}]}>
+								<Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>
+							</TouchableOpacity> : <View />
+                    }
 
-                        {
-                            this.props.showProfile.products.map((product, i) =>{
-                                return (
-                                    <Animatable.View key={i}  animation="fadeInUp" easing="ease-out" delay={600}>
-                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id, backRoute:'myCar'})}>
-                                            <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
-                                        </TouchableOpacity>
-                                    </Animatable.View>
-                                )
-                            })
-                        }
-                    </View>
-
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('restProducts', {user_id :this.props.showProfile.user_id, backRoute:'myCar'})} style={[styles.delAcc , {backgroundColor:COLORS.white}]}>
-                        <Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.floatingEdit} onPress={() => this.props.navigation.navigate('editCarProfile')}>
-                        <Image source={require('../../assets/images/edit_floting.png')} style={styles.editImg} resizeMode={'contain'}/>
-                    </TouchableOpacity>
+                    {/*<TouchableOpacity style={styles.floatingEdit} onPress={() => this.props.navigation.navigate('editCarProfile',*/}
+						{/*{image:this.props.showProfile.image ,name:this.props.showProfile.name*/}
+							{/*,category:this.props.showProfile.category_id , address:this.props.showProfile.address ,details:this.props.showProfile.details*/}
+							{/*,latitude:this.props.showProfile.latitude,longitude:this.props.showProfile.longitude})}>*/}
+                        {/*<Image source={require('../../assets/images/edit.png')} style={styles.editImg} resizeMode={'contain'}/>*/}
+                    {/*</TouchableOpacity>*/}
 
                 </View>
             )
         } else {
             return(
-                <View style={styles.directionColumn}>
-                    <TouchableOpacity style={styles.directionColumn} onPress={() => Communications.phonecall(this.props.showProfile.mobile, true)}>
-                        <View style={styles.directionRowAlignCenter}>
-                            <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                            <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('mainNumber') }</Text>
-                        </View>
-                        <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13 , marginLeft:25}]}>{this.props.showProfile.mobile}</Text>
-                    </TouchableOpacity>
+				this.props.showProfile ?
+                    <View style={styles.directionColumn}>
+                        <TouchableOpacity style={styles.directionColumn} onPress={() => Communications.phonecall(this.props.showProfile.mobile, true)}>
+                            <View style={styles.directionRowAlignCenter}>
+                                <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('mainNumber') }</Text>
+                            </View>
+                            <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13 , marginLeft:25}]}>{this.props.showProfile.mobile}</Text>
+                        </TouchableOpacity>
 
-                    <View style={[styles.line ]}/>
+                        <View style={[styles.line ]}/>
 
-                    <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => Communications.phonecall(this.props.showProfile.phone, true)}>
-                        <Image  source={require('../../assets/images/smartphone_call_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
-                        <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.showProfile.phone}</Text>
-                    </TouchableOpacity>
-                    <View style={[styles.line ]}/>
+                        <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => Communications.phonecall(this.props.showProfile.phone, true)}>
+                            <Image  source={require('../../assets/images/smartphone_call_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
+                            <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.showProfile.phone}</Text>
+                        </TouchableOpacity>
+                        <View style={[styles.line ]}/>
 
-                    <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.showProfile.website)}>
-                        <Image  source={require('../../assets/images/internet_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
-                        <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.showProfile.website}</Text>
-                    </TouchableOpacity>
-                    <View style={[styles.line ]}/>
+                        <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.showProfile.website)}>
+                            <Image  source={require('../../assets/images/internet_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
+                            <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.showProfile.website}</Text>
+                        </TouchableOpacity>
+                        <View style={[styles.line ]}/>
 
-                    <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.showProfile.facebook)}>
-                        <Image  source={require('../../assets/images/facebook_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
-                        <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.showProfile.facebook}</Text>
-                    </TouchableOpacity>
-                    <View style={[styles.line ]}/>
+                        <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.showProfile.facebook)}>
+                            <Image  source={require('../../assets/images/facebook_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
+                            <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.showProfile.facebook}</Text>
+                        </TouchableOpacity>
+                        <View style={[styles.line ]}/>
 
-                    <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.showProfile.twitter)}>
-                        <Image  source={require('../../assets/images/tiwiter_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
-                        <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.showProfile.twitter}</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.showProfile.twitter)}>
+                            <Image  source={require('../../assets/images/tiwiter_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
+                            <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.showProfile.twitter}</Text>
+                        </TouchableOpacity>
 
 
-                    <TouchableOpacity style={styles.floatingEdit} onPress={() => this.props.navigation.navigate('editCarContact', {backRoute:'myCar'
-                        , mobile:this.props.showProfile.mobile, phone:this.props.showProfile.phone, website:this.props.showProfile.website,
-                        facebook:this.props.showProfile.facebook , twitter:this.props.showProfile.twitter})}>
-                        <Image source={require('../../assets/images/edit_floting.png')} style={styles.editImg} resizeMode={'contain'}/>
-                    </TouchableOpacity>
-                </View>
+                        <TouchableOpacity style={styles.floatingEdit} onPress={() => this.props.navigation.navigate('editCarContact', {backRoute:'myCar'
+                            , mobile:this.props.showProfile.mobile, phone:this.props.showProfile.phone, website:this.props.showProfile.website,
+                            facebook:this.props.showProfile.facebook , twitter:this.props.showProfile.twitter})}>
+                            <Image source={require('../../assets/images/edit_floting.png')} style={styles.editImg} resizeMode={'contain'}/>
+                        </TouchableOpacity>
+                    </View> : <View />
             )
         }
 
@@ -205,58 +218,73 @@ class MyCar extends Component {
             <Container>
 
                 { this.renderLoader() }
-                <Header style={[styles.header]} noShadow>
-                    <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
-                        <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
-                                <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
-                            </TouchableOpacity>
-                        </Right>
-                        <Text style={[styles.headerText , {right:20}]}>{this.props.showProfile ? this.props.showProfile.name :''}</Text>
-                        <Left style={styles.flex0}/>
-                    </Animated.View>
-                </Header>
+				<Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
+
+					{
+						this.props.showProfile ?
+							<Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
+								<TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+									<Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
+								</TouchableOpacity>
+								<Text style={[styles.headerText ]}>{this.props.showProfile ? this.props.showProfile.name :''}</Text>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate('editCarProfile',
+									{image:this.props.showProfile.image ,name:this.props.showProfile.name
+										,category:this.props.showProfile.category_id , address:this.props.showProfile.address ,details:this.props.showProfile.details
+										,latitude:this.props.showProfile.latitude,longitude:this.props.showProfile.longitude})}
+									style={styles.headerBtn}>
+									<Image source={require('../../assets/images/edit.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+								</TouchableOpacity>
+							</Animated.View> : <View />
+					}
+				</Header>
 
                 <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
-                        <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0 , paddingTop:20} ]}>
+                        {
+							this.props.showProfile ?
+								<View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0 , paddingTop:20} ]}>
 
-                            <Animatable.View animation="zoomIn" easing="ease-out" delay={600}>
-                                <Image source={{ uri: this.props.showProfile.image }} style={styles.restImg} resizeMode={'cover'}/>
-                            </Animatable.View>
-
-
-                            <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
-                                <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{this.props.showProfile.address}</Text>
-                            </TouchableOpacity>
+									<Animatable.View animation="zoomIn" easing="ease-out" delay={600}>
+										<Image source={{ uri: this.props.showProfile.image }} style={styles.restImg} resizeMode={'cover'}/>
+									</Animatable.View>
 
 
-                            <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13, paddingHorizontal:20}]}>{this.props.showProfile.details}</Text>
-
-                            <View style={[styles.directionRowAlignCenter , styles.mt30 , {backgroundColor:'#f2f2f2' , paddingTop:10} ]}>
-                                <TouchableOpacity onPress={() => this.selectAcive(0)} style={[styles.restTabs ,
-                                    {borderColor:this.state.active === 0 ?COLORS.rose : COLORS.lightGray , borderBottomWidth:this.state.active === 0 ?5: .5}
-                                ]}>
-                                    <Image source={ this.state.active === 0 ? require('../../assets/images/box_active.png') : require('../../assets/images/box_gray.png')} style={[styles.activeImg]} resizeMode={'contain'} />
-                                </TouchableOpacity>
-
-                                <TouchableOpacity onPress={() => this.selectAcive(1)} style={[styles.restTabs ,
-                                    {borderColor:this.state.active === 1 ?COLORS.rose : COLORS.lightGray  , borderBottomWidth:this.state.active === 1 ?5: .5}
-                                ]}>
-                                    <Image source={ this.state.active === 1 ? require('../../assets/images/telephone_active.png') : require('../../assets/images/telephone_gray.png')} style={[styles.activeImg ]} resizeMode={'contain'} />
-                                </TouchableOpacity>
-                            </View>
-
-                            <View style={styles.grayCont}>
-                                { this.renderCont()}
-                            </View>
+									<TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
+										<Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+										<Text style={[styles.blueText , styles.normalText , {paddingLeft:20}]}>{this.props.showProfile.address}</Text>
+									</TouchableOpacity>
 
 
+									<Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13, paddingHorizontal:20}]}>{this.props.showProfile.details}</Text>
 
+									<View style={[styles.directionRowAlignCenter , styles.mt30 , {backgroundColor:'#f2f2f2' , paddingTop:10} ]}>
+										<TouchableOpacity onPress={() => this.selectAcive(0)} style={[styles.restTabs ,
+											{borderColor:this.state.active === 0 ?COLORS.rose : COLORS.lightGray , borderBottomWidth:this.state.active === 0 ?5: .5}
+										]}>
+											<Image source={ this.state.active === 0 ? require('../../assets/images/box_active.png') : require('../../assets/images/box_gray.png')} style={[styles.activeImg]} resizeMode={'contain'} />
+										</TouchableOpacity>
 
-                        </View>
+										<TouchableOpacity onPress={() => this.selectAcive(1)} style={[styles.restTabs ,
+											{borderColor:this.state.active === 1 ?COLORS.rose : COLORS.lightGray  , borderBottomWidth:this.state.active === 1 ?5: .5}
+										]}>
+											<Image source={ this.state.active === 1 ? require('../../assets/images/telephone_active.png') : require('../../assets/images/telephone_gray.png')} style={[styles.activeImg ]} resizeMode={'contain'} />
+										</TouchableOpacity>
+									</View>
+
+									<View style={styles.grayCont}>
+										{ this.renderCont()}
+									</View>
+
+								</View> : <View />
+
+                        }
                     </ImageBackground>
 
                 </Content>

@@ -8,6 +8,7 @@ import {
     Animated,
     FlatList,
     ImageBackground,
+	Platform,
     KeyboardAvoidingView, Linking
 } from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form} from 'native-base'
@@ -21,6 +22,8 @@ import {NavigationEvents} from "react-navigation";
 
 const height = Dimensions.get('window').height;
 
+
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class ConfirmTicket extends Component {
     constructor(props){
@@ -92,6 +95,12 @@ class ConfirmTicket extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate('continueBooking')} style={styles.headerBtn}>

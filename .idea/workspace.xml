@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5040a126-0fc9-41e9-8f52-9a6e30ef63d9" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
@@ -42,58 +43,25 @@
       <change beforePath="$PROJECT_DIR$/src/components/FamilyProducts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FamilyProducts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Faq.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Faq.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/FoodPayMethod.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FoodPayMethod.js" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+>>>>>>> 62e6f783408ebda2c46fdcea7f67d76e98f0de9a
       <change beforePath="$PROJECT_DIR$/src/components/FoodPayment.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FoodPayment.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ForgetPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ForgetPass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Language.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Language.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/MyCar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MyCar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/MyEvents.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MyEvents.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/MyFamily.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MyFamily.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/MyOrders.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MyOrders.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/MyResturant.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MyResturant.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Notifications.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/OrderDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/OrderDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/PaymentDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PaymentDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ProductDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ProductDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ProductFilter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ProductFilter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ProductiveFamilies.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ProductiveFamilies.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Products.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Products.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ProposedEvents.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ProposedEvents.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/QrConfirmTicket.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/QrConfirmTicket.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/QrTicketDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/QrTicketDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Register.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Reservations.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Reservations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/RestCafe.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RestCafe.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/RestCafeDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RestCafeDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/RestFilter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RestFilter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/RestProductDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RestProductDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/RestProducts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RestProducts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Saves.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Saves.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Search.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Search.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SearchFamiliesResult.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SearchFamiliesResult.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SearchFilter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SearchFilter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SearchProductsResult.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SearchProductsResult.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SearchRestResult.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SearchRestResult.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SearchResult.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SearchResult.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Settings.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Settings.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ShowTicket.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ShowTicket.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ShowTicketQr.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ShowTicketQr.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Terms.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Terms.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TicketPayment.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TicketPayment.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/VerifyCode.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/VerifyCode.js" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/node_modules/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ComposerSettings">
+    <execution>
+      <executable />
+    </execution>
+  </component>
   <component name="FavoritesManager">
     <favorites_list name="resha" />
   </component>
+<<<<<<< HEAD
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
@@ -242,42 +210,24 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
+=======
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectFrameBounds">
+>>>>>>> 62e6f783408ebda2c46fdcea7f67d76e98f0de9a
     <option name="y" value="23" />
     <option name="width" value="1920" />
     <option name="height" value="993" />
   </component>
+  <component name="ProjectId" id="1VKe9MRMu8DeRSQD4hch8CUPU8q" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="resha" type="b2602c69:ProjectViewProjectNode" />
-              <item name="resha" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="resha" type="b2602c69:ProjectViewProjectNode" />
-              <item name="resha" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="resha" type="b2602c69:ProjectViewProjectNode" />
-              <item name="resha" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -288,15 +238,15 @@
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
+  <component name="ServiceViewManager">
+    <option name="viewStates">
       <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
       </list>
     </option>
   </component>
@@ -359,6 +309,7 @@
       <workItem from="1575878579361" duration="5192000" />
       <workItem from="1575895663262" duration="528000" />
       <workItem from="1575902640216" duration="692000" />
+<<<<<<< HEAD
       <workItem from="1576047342267" duration="13257000" />
       <workItem from="1576180308918" duration="1073000" />
       <workItem from="1576395965357" duration="1536000" />
@@ -900,4 +851,18 @@
       </provider>
     </entry>
   </component>
+=======
+      <workItem from="1576047342267" duration="14341000" />
+      <workItem from="1576152944407" duration="399000" />
+      <workItem from="1576396305319" duration="6166000" />
+      <workItem from="1576578379351" duration="24000" />
+      <workItem from="1576764705461" duration="433000" />
+      <workItem from="1577006067846" duration="186000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+>>>>>>> 62e6f783408ebda2c46fdcea7f67d76e98f0de9a
 </project>

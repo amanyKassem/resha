@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, FlatList, ImageBackground} from "react-native";
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated, FlatList, ImageBackground, Platform,} from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -12,6 +12,8 @@ import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
+
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class Notifications extends Component {
     constructor(props){
@@ -29,7 +31,7 @@ class Notifications extends Component {
     });
 
     componentWillMount() {
-        this.setState({loader:0})
+        this.setState({loader:0});
         this.props.getNotifications( this.props.lang , this.props.user.token)
     }
 
@@ -49,6 +51,7 @@ class Notifications extends Component {
             );
         }
     }
+
     renderNoData(){
         if (this.props.notifications && (this.props.notifications).length <= 0){
             return(
@@ -130,6 +133,12 @@ class Notifications extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
@@ -147,12 +156,16 @@ class Notifications extends Component {
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0}]}>
                             {this.renderNoData()}
-                            <FlatList
-                                data={this.props.notifications}
-                                renderItem={({item}) => this.renderItems(item)}
-                                numColumns={1}
-                                keyExtractor={this._keyExtractor}
-                            />
+
+                            {
+								this.props.notifications ?
+									<FlatList
+										data={this.props.notifications}
+										renderItem={({item}) => this.renderItems(item)}
+										numColumns={1}
+										keyExtractor={this._keyExtractor}
+									/> : <View />
+                            }
 
                         </View>
                     </ImageBackground>

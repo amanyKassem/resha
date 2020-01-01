@@ -41,6 +41,8 @@ import {NavigationEvents} from "react-navigation";
 
 const height = Dimensions.get('window').height;
 
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
+
 class EditRestContact extends Component {
     constructor(props){
         super(props);
@@ -117,7 +119,7 @@ class EditRestContact extends Component {
 
 
     renderSubmit(){
-        if (this.state.mainNum == '' || this.state.phone == '' || this.state.website == '' || this.state.facebook == '' || this.state.twitter == ''){
+        if (this.state.mainNum == '' ){
             return (
                 <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , { backgroundColor: '#999' }]}>
                     <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
@@ -171,8 +173,14 @@ class EditRestContact extends Component {
 
         return (
             <Container>
-
+				<NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                 <Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
@@ -185,7 +193,7 @@ class EditRestContact extends Component {
                 </Header>
 
                 <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
-                    <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome ]}>
                             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ?'height' : 'padding'} style={styles.keyboardAvoid}>
@@ -205,7 +213,7 @@ class EditRestContact extends Component {
                                     <View style={styles.inputParent}>
                                         <Item stackedLabel style={styles.item } bordered>
                                             <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
-                                                { i18n.t('mainNumber') }
+                                                { i18n.t('phoneNumber') }
                                             </Label>
                                             <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform]}/>
                                             <Input keyboardType={'number-pad'}  value={this.state.mainNum} onChangeText={(mainNum) => this.setState({mainNum})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
@@ -215,7 +223,7 @@ class EditRestContact extends Component {
                                     <View style={styles.inputParent}>
                                         <Item stackedLabel style={styles.item } bordered>
                                             <Label style={[styles.labelItem , {backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,borderBottomColor:'#fff'}]}>
-                                                { i18n.t('phoneNumber') }
+                                                { i18n.t('whatsNumber') }
                                             </Label>
                                             <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform]}/>
                                             <Input keyboardType={'number-pad'}  value={this.state.phone} onChangeText={(phone) => this.setState({phone})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />

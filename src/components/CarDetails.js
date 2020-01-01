@@ -1,5 +1,16 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground, Linking} from "react-native";
+import {
+	View,
+	Text,
+	Image,
+	TouchableOpacity,
+	Dimensions,
+	Animated,
+	Share,
+	ImageBackground,
+	Linking,
+	Platform
+} from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -13,6 +24,7 @@ import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 
 class CarDetails extends Component {
@@ -52,7 +64,7 @@ class CarDetails extends Component {
     }
     componentWillReceiveProps(nextProps) {
         console.log('nextProps.profileDetails.is_save' , nextProps.profileDetails.is_save)
-        this.setState({ loader: nextProps.key , savedEvent: nextProps.profileDetails.is_save });
+        this.setState({ savedEvent: nextProps.profileDetails.is_save });
     }
 
 
@@ -142,6 +154,12 @@ class CarDetails extends Component {
                 { this.renderLoader() }
 
                 <Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
@@ -174,7 +192,7 @@ class CarDetails extends Component {
                                         </TouchableOpacity>
                                     </View>
 
-                                    <Image source={{ uri: this.props.profileDetails.image }}  style={[styles.restImg , {width:'100%'}]} resizeMode={'cover'}/>
+                                    <Image source={{ uri: this.props.profileDetails.image }}  onLoad={() => this.setState({ loader: 0  })}  style={[styles.restImg , {width:'100%'}]} resizeMode={'cover'}/>
 
 
                                     <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.profileDetails.latitude +','+ this.props.profileDetails.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10]}>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions,  ImageBackground} from "react-native";
+import {View, Text, Image, TouchableOpacity, Dimensions, Platform,  ImageBackground} from "react-native";
 import {Container, Content} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -11,6 +11,8 @@ import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
+
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class FoodPayment extends Component {
     constructor(props){
@@ -58,27 +60,44 @@ class FoodPayment extends Component {
                             <Image source={require('../../assets/images/logo.png')} resizeMode={'contain'} style={[styles.logo , styles.mb10]}/>
 
                             <Text style={[styles.whiteText , styles.normalText , styles.tAC , styles.mb10]}>{ i18n.t('choosePackage') }</Text>
-                            <Text style={[styles.whiteText , styles.normalText , styles.tAC , {lineHeight:20}]}>{this.props.desc}</Text>
+                            {
+                                this.props.desc ?
+                                    <Text style={[styles.whiteText , styles.normalText , styles.tAC , {lineHeight:20}]}>{this.props.desc}</Text>
+                                    :
+                                    <View/>
+                            }
 
-                            <View style={[styles.directionRowSpace , styles.w100 , styles.mt50]}>
+                            {
+                                this.props.subscriptions ?
+                                    <View style={[styles.directionRowSpace , styles.w100 , styles.mt50]}>
 
-                                <TouchableOpacity onPress={() => this.selectLang('month' , this.props.subscriptions[0].id)} style={[styles.langBorder , {borderColor:this.state.baqa === 'month' ?COLORS.blue : 'transparent' , height:160}]}>
-                                    <View style={styles.lang}>
-                                        <Image source={require('../../assets/images/calender_month.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
-                                        <Text style={[styles.whiteText , styles.normalText , styles.tAC , {marginVertical:15}]}>{ this.props.subscriptions[0].name }</Text>
-                                        <Text style={[styles.whiteText , styles.normalText , styles.tAC]}>{ this.props.subscriptions[0].price } { i18n.t('RS') }</Text>
+										{/*{ console.log(this.props.subscriptions[0].name) }*/}
+                                        {
+											this.props.subscriptions[0] ?
+												<TouchableOpacity onPress={() => this.selectLang('month' , this.props.subscriptions[0].id)} style={[styles.langBorder , {borderColor:this.state.baqa === 'month' ?COLORS.blue : 'transparent' , height:160}]}>
+													<View style={styles.lang}>
+														<Image source={require('../../assets/images/calender_month.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+														<Text style={[styles.whiteText , styles.normalText , styles.tAC , {marginVertical:15}]}>{ this.props.subscriptions[0].name }</Text>
+														<Text style={[styles.whiteText , styles.normalText , styles.tAC]}>{ this.props.subscriptions[0].price } { i18n.t('RS') }</Text>
+													</View>
+												</TouchableOpacity> : <View />
+										}
+
+                                        {
+											this.props.subscriptions[1] ?
+												<TouchableOpacity onPress={() => this.selectLang('year' , this.props.subscriptions[1].id)} style={[styles.langBorder , {borderColor:this.state.baqa === 'year' ?COLORS.blue : 'transparent' , height:160}]}>
+													<View style={styles.lang}>
+														<Image source={require('../../assets/images/calender_year.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+														<Text style={[styles.whiteText , styles.normalText , styles.tAC , {marginVertical:15}]}>{ this.props.subscriptions[1].name }</Text>
+														<Text style={[styles.whiteText , styles.normalText , styles.tAC]}>{ this.props.subscriptions[1].price } { i18n.t('RS') }</Text>
+													</View>
+												</TouchableOpacity> : <View/>
+										}
+
                                     </View>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity onPress={() => this.selectLang('year' , this.props.subscriptions[1].id)} style={[styles.langBorder , {borderColor:this.state.baqa === 'year' ?COLORS.blue : 'transparent' , height:160}]}>
-                                    <View style={styles.lang}>
-                                        <Image source={require('../../assets/images/calender_year.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
-                                        <Text style={[styles.whiteText , styles.normalText , styles.tAC , {marginVertical:15}]}>{ this.props.subscriptions[1].name }</Text>
-                                        <Text style={[styles.whiteText , styles.normalText , styles.tAC]}>{ this.props.subscriptions[1].price } { i18n.t('RS') }</Text>
-                                    </View>
-                                </TouchableOpacity>
-
-                            </View>
+                                    :
+                                    <View/>
+                            }
 
                             <TouchableOpacity onPress={ () => this.props.navigation.navigate('foodPayMethod' , {subscription_id:this.state.subId , user_id:this.props.navigation.state.params.user_id}) } style={[styles.blueBtn , styles.mt70]}>
                                 <Text style={[styles.whiteText , styles.normalText , styles.tAC]}>{ i18n.t('next') }</Text>

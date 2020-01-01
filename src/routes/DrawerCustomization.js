@@ -79,41 +79,41 @@ class DrawerCustomization extends Component {
 
         return (
             <Container>
-                <Content  >
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={[styles.imageBackground , {minHeight:height}]}>
-                        <TouchableOpacity style={styles.authBack} onPress={() => this.props.navigation.closeDrawer()}>
-                            <Image source={require('../../assets/images/cancel_white.png')} resizeMode={'contain'}  style={[styles.authImg]}/>
-                        </TouchableOpacity>
-                         <View style={styles.sideImgView}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('profile')} style={styles.cutCircle}>
-                                <View style={styles.sideProfileImg}>
-                                    <Image  source={{ uri: user.avatar }} resizeMode={'cover'} style={styles.drawImg}/>
-                                </View>
+				<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={[styles.imageBackground , {minHeight:height}]}>
+                    <Content  >
+                            <TouchableOpacity style={styles.authBack} onPress={() => this.props.navigation.closeDrawer()}>
+                                <Image source={require('../../assets/images/cancel_white.png')} resizeMode={'contain'}  style={[styles.authImg]}/>
                             </TouchableOpacity>
-                            <Text style={styles.sideName}>{ user.name }</Text>
-                         </View>
+                             <View style={styles.sideImgView}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('profile')} style={styles.cutCircle}>
+                                    <View style={styles.sideProfileImg}>
+                                        <Image  source={{ uri: user.avatar }} resizeMode={'cover'} style={styles.drawImg}/>
+                                    </View>
+                                </TouchableOpacity>
+                                <Text style={styles.sideName}>{ user.name }</Text>
+                             </View>
 
 
-                        <DrawerItems {...this.props}
-                                     onItemPress={
-                                         (route, focused) => {
-                                             if (route.route.key === 'logout') {
-                                                 this.logout()
-                                             } else if (route.route.key === 'signIn') {
-                                                 this.props.navigation.navigate('login');
-                                             }else {
-                                                 route.route.key === 'shareApp' ? this.onShare(): this.props.navigation.navigate(route.route.key)
+                            <DrawerItems {...this.props}
+                                         onItemPress={
+                                             (route, focused) => {
+                                                 if (route.route.key === 'logout') {
+                                                     this.logout()
+                                                 } else if (route.route.key === 'signIn') {
+                                                     this.props.navigation.navigate('login');
+                                                 }else {
+                                                     route.route.key === 'shareApp' ? this.onShare(): this.props.navigation.navigate(route.route.key)
+                                                 }
                                              }
                                          }
-                                     }
 
-                                     items={this.returnItems()}
-                                     activeBackgroundColor='transparent' inactiveBackgroundColor='transparent' activeLabelStyle={{color:'#5d5d5d'}}
-                                     labelStyle={styles.drawerLabel} iconContainerStyle ={styles.drawerIcon}
-                                     itemStyle  = {styles.drawerItemStyle} itemsContainerStyle ={styles.drawerContainer}
-                        />
-                    </ImageBackground>
-                </Content>
+                                         items={this.returnItems()}
+                                         activeBackgroundColor='transparent' inactiveBackgroundColor='transparent' activeLabelStyle={{color:'#5d5d5d'}}
+                                         labelStyle={styles.drawerLabel} iconContainerStyle ={styles.drawerIcon}
+                                         itemStyle  = {styles.drawerItemStyle} itemsContainerStyle ={styles.drawerContainer}
+                            />
+                    </Content>
+				</ImageBackground>
 
             </Container>
         );

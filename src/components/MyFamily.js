@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground , Linking} from "react-native";
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground , Linking, Platform,} from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -15,6 +15,8 @@ import * as Animatable from 'react-native-animatable';
 
 const height = Dimensions.get('window').height;
 
+
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class MyFamily extends Component {
     constructor(props){
@@ -109,7 +111,6 @@ class MyFamily extends Component {
 
     renderCont() {
 
-
         if(this.state.active === 0 ){
             return(
                 <View style={styles.directionColumn}>
@@ -136,9 +137,12 @@ class MyFamily extends Component {
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('restProducts', {user_id :this.props.showProfile.user_id, backRoute:'myFamily'})} style={[styles.delAcc , {backgroundColor:COLORS.white}]}>
                         <Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.floatingEdit} onPress={() => this.props.navigation.navigate('editFamilyProfile')}>
-                        <Image source={require('../../assets/images/edit_floting.png')} style={styles.editImg} resizeMode={'contain'}/>
-                    </TouchableOpacity>
+                    {/*<TouchableOpacity style={styles.floatingEdit} onPress={() => this.props.navigation.navigate('editFamilyProfile',*/}
+						{/*{image:this.props.showProfile.image ,name:this.props.showProfile.name*/}
+							{/*,category:this.props.showProfile.category_id , details:this.props.showProfile.details*/}
+							{/*,latitude:this.props.showProfile.latitude,longitude:this.props.showProfile.longitude})}>*/}
+                        {/*<Image source={require('../../assets/images/edit.png')} style={styles.editImg} resizeMode={'contain'}/>*/}
+                    {/*</TouchableOpacity>*/}
 
                 </View>
             )
@@ -205,17 +209,31 @@ class MyFamily extends Component {
             <Container>
 
                 { this.renderLoader() }
-                <Header style={[styles.header]} noShadow>
-                    <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
-                        <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
-                                <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
-                            </TouchableOpacity>
-                        </Right>
-                        <Text style={[styles.headerText , {right:20}]}>{this.props.showProfile ? this.props.showProfile.name :''}</Text>
-                        <Left style={styles.flex0}/>
-                    </Animated.View>
-                </Header>
+				<Header style={[styles.header]} noShadow>
+					{
+						IS_IPHONE_X ?
+							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+							:
+							<View/>
+					}
+                    {
+						this.props.showProfile ?
+							<Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
+								<TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
+									<Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
+								</TouchableOpacity>
+								<Text style={[styles.headerText]}>{this.props.showProfile ? this.props.showProfile.name :''}</Text>
+								<TouchableOpacity onPress={() => this.props.navigation.navigate('editFamilyProfile',
+									{image:this.props.showProfile.image ,name:this.props.showProfile.name
+										,category:this.props.showProfile.category_id , details:this.props.showProfile.details
+										,latitude:this.props.showProfile.latitude,longitude:this.props.showProfile.longitude})}
+									style={styles.headerBtn}>
+									<Image source={require('../../assets/images/edit.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+								</TouchableOpacity>
+							</Animated.View> : <View />
+
+					}
+				</Header>
 
                 <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
@@ -229,10 +247,10 @@ class MyFamily extends Component {
                                     </Animatable.View>
 
 
-                                    <TouchableOpacity  onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
-                                        <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.showProfile.address}</Text>
-                                    </TouchableOpacity>
+                                    {/*<TouchableOpacity  onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>*/}
+                                        {/*<Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />*/}
+                                        {/*<Text style={[styles.blueText , styles.normalText , {paddingLeft:20}]}>{this.props.showProfile.address}</Text>*/}
+                                    {/*</TouchableOpacity>*/}
 
 
                                     <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13, paddingHorizontal:20}]}>{this.props.showProfile.details}</Text>

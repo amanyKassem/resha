@@ -1,8 +1,11 @@
 import React, { Component } from "react";
-import { AsyncStorage } from 'react-native';
+import {AsyncStorage, Dimensions, Platform,} from 'react-native';
 import {connect} from "react-redux";
 import {chooseLang} from "../actions";
 
+const height = Dimensions.get('window').height;
+
+const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class InitScreen extends Component {
     constructor(props) {
