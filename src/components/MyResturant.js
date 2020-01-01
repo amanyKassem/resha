@@ -193,7 +193,7 @@ class MyResturant extends Component {
     }
 
     render() {
-        console.log('https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')
+        // console.log('https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')
 
         const backgroundColor = this.state.backgroundColor.interpolate({
             inputRange: [0, 1],
@@ -242,10 +242,13 @@ class MyResturant extends Component {
                                     <Image source={{ uri: this.props.showProfile.image }} style={styles.restImg} resizeMode={'cover'}/>
 
 
-                                    <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
-                                        <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                        <Text style={[styles.blueText , styles.normalText , {paddingLeft:20}]}>{this.props.showProfile.address}</Text>
-                                    </TouchableOpacity>
+                                    {
+                                        this.props.showProfile.latitude ?
+                                            <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
+                                                <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                                <Text style={[styles.blueText , styles.normalText , {paddingLeft:20}]}>{this.props.showProfile.address}</Text>
+                                            </TouchableOpacity> : <View />
+                                    }
 
 
                                     <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13, paddingHorizontal:20}]}>{this.props.showProfile.details}</Text>
