@@ -198,7 +198,7 @@ class EditCarContact extends Component {
                                                 { i18n.t('phoneNumber') }
                                             </Label>
                                             <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform]}/>
-                                            <Input keyboardType={'number-pad'}  value={this.state.mainNum} onChangeText={(mainNum) => this.setState({mainNum})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
+                                            <Input editable={false} keyboardType={'number-pad'}  value={this.state.mainNum} onChangeText={(mainNum) => this.setState({mainNum})} style={[styles.itemInput , {backgroundColor:'#f5f5f5',  color: COLORS.gray }]}  />
                                         </Item>
                                     </View>
 
