@@ -274,8 +274,6 @@ class MyFamily extends Component {
                                     </View>
 
 
-
-
                                 </View>
                                 :
                                 <View/>
