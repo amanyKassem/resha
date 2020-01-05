@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground , Linking, Platform } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
+import {Container, Content, Header,} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
-import Swiper from 'react-native-swiper';
 import Communications from 'react-native-communications';
 import {connect} from "react-redux";
 import {SetFavouriteEvent, getProfileDetails} from "../actions";
@@ -43,6 +42,19 @@ class RestCafeDetails extends Component {
         Linking.openURL(url);
     }
 
+    _linkGoogleMap(lat, lng){
+        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+        const latLng = `${lat},${lng}`;
+        const label = 'Custom Label';
+
+        let url = Platform.select({
+            ios : `${scheme}${label}@${latLng}`,
+            android: `${scheme}${latLng}(${label}`
+        });
+
+        Linking.openURL(url);
+    }
+
     componentWillMount() {
         this.setState({ loader: 1});
         this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id , this.props.user.token)
@@ -68,7 +80,7 @@ class RestCafeDetails extends Component {
         try {
             const result = await Share.share({
                 message:
-                    'React Native | A framework for building native apps using React',
+                    Platform.OS === 'ios'? 'https://apps.apple.com/us/app/reesh-ريش/id1490248883?ls=1' : 'https://play.google.com/store/apps/details?id=com.app.reesh',
             })
 
             if (result.action === Share.sharedAction) {
@@ -216,6 +228,8 @@ class RestCafeDetails extends Component {
     }
     render() {
 
+        // console.log('oooooo' , 'https://google.com/maps/?q=' + this.props.profileDetails.latitude +','+ this.props.profileDetails.longitude +'')
+
         const backgroundColor = this.state.backgroundColor.interpolate({
             inputRange: [0, 1],
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']
@@ -267,7 +281,7 @@ class RestCafeDetails extends Component {
                                     <Image source={{ uri: this.props.profileDetails.image }} onLoad={() => this.setState({ loader: 0  })}  style={[styles.restImg]} resizeMode={'cover'}/>
 
 
-                                    <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.profileDetails.latitude +','+ this.props.profileDetails.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
+                                    <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude)} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
                                         <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                         <Text style={[styles.blueText , styles.normalText]}>{this.props.profileDetails.address}</Text>
                                     </TouchableOpacity>

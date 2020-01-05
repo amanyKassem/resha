@@ -46,7 +46,18 @@ class QrConfirmTicket extends Component {
     _linkPressed (url){
         Linking.openURL(url);
     }
+    _linkGoogleMap(lat, lng){
+        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+        const latLng = `${lat},${lng}`;
+        const label = 'Custom Label';
 
+        let url = Platform.select({
+            ios : `${scheme}${label}@${latLng}`,
+            android: `${scheme}${latLng}(${label}`
+        });
+
+        Linking.openURL(url);
+    }
     componentWillMount() {
         // alert(this.props.navigation.state.params.id)
         this.setState({ loader: 1});
@@ -190,8 +201,7 @@ class QrConfirmTicket extends Component {
                                                style={[styles.notiImg]} resizeMode={'contain'}/>
                                         <Text style={[styles.blueText, styles.normalText]}>{this.props.ticketDetails.tickets_price * this.props.ticketDetails.tickets_count} { i18n.t('RS') } ( { i18n.t('ticketsNo') }</Text>
                                     </View>
-                                    <TouchableOpacity
-                                        onPress={() => this._linkPressed('https://google.com/maps/?q=' + this.props.ticketDetails.latitude + ',' + this.props.ticketDetails.longitude + '')}
+                                    <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.ticketDetails.latitude , this.props.ticketDetails.longitude)}
                                         style={[styles.directionRowAlignCenter, styles.mb10]}>
                                         <Image source={require('../../assets/images/placeholder_blue.png')}
                                                style={[styles.notiImg]} resizeMode={'contain'}/>

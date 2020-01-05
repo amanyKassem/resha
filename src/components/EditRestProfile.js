@@ -248,6 +248,9 @@ class EditRestProfile extends Component {
     }
 
     render() {
+
+        // alert(this.state.category)
+
         let image = this.state.restImage;
         const backgroundColor = this.state.backgroundColor.interpolate({
             inputRange: [0, 1],

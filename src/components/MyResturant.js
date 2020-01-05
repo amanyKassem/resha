@@ -44,7 +44,18 @@ class MyResturant extends Component {
     _linkPressed (url){
         Linking.openURL(url);
     }
+    _linkGoogleMap(lat, lng){
+        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+        const latLng = `${lat},${lng}`;
+        const label = 'Custom Label';
 
+        let url = Platform.select({
+            ios : `${scheme}${label}@${latLng}`,
+            android: `${scheme}${latLng}(${label}`
+        });
+
+        Linking.openURL(url);
+    }
     componentWillMount() {
         this.setState({ loader: 1});
         this.props.getShowProfile( this.props.lang , this.props.user.token)
@@ -193,7 +204,8 @@ class MyResturant extends Component {
     }
 
     render() {
-        // console.log('https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')
+        // console.log('oooo' , 'https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')
+        // console.log('ffffffffffffff' ,  this.props.showProfile.latitude)
 
         const backgroundColor = this.state.backgroundColor.interpolate({
             inputRange: [0, 1],
@@ -244,7 +256,7 @@ class MyResturant extends Component {
 
                                     {
                                         this.props.showProfile.latitude ?
-                                            <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
+                                            <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.showProfile.latitude , this.props.showProfile.longitude)} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
                                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                                 <Text style={[styles.blueText , styles.normalText , {paddingLeft:20}]}>{this.props.showProfile.address}</Text>
                                             </TouchableOpacity> : <View />

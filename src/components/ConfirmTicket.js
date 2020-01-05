@@ -45,6 +45,18 @@ class ConfirmTicket extends Component {
     _linkPressed (url){
         Linking.openURL(url);
     }
+    _linkGoogleMap(lat, lng){
+        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+        const latLng = `${lat},${lng}`;
+        const label = 'Custom Label';
+
+        let url = Platform.select({
+            ios : `${scheme}${label}@${latLng}`,
+            android: `${scheme}${latLng}(${label}`
+        });
+
+        Linking.openURL(url);
+    }
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -154,7 +166,8 @@ class ConfirmTicket extends Component {
                                 <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.price * this.props.navigation.state.params.ticketsNo} { i18n.t('RS') } ( { i18n.t('ticketsNo') } {this.props.navigation.state.params.ticketsNo} )</Text>
                             </View>
-                            <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.navigation.state.params.event_info.latitude +','+ this.props.navigation.state.params.event_info.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10]}>
+                            <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.navigation.state.params.event_info.latitude , this.props.navigation.state.params.event_info.longitude )}
+                                style={[styles.directionRowAlignCenter , styles.mb10]}>
                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.event_info.address}</Text>
                             </TouchableOpacity>

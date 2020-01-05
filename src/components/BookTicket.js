@@ -76,7 +76,7 @@ class BookTicket extends Component {
         try {
             const result = await Share.share({
                 message:
-                    'React Native | A framework for building native apps using React',
+                    Platform.OS === 'ios'? 'https://apps.apple.com/us/app/reesh-ريش/id1490248883?ls=1' : 'https://play.google.com/store/apps/details?id=com.app.reesh',
             })
 
             if (result.action === Share.sharedAction) {
@@ -241,7 +241,7 @@ class BookTicket extends Component {
                                     </View>
                                     <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.eventDet.latitude +','+ this.props.eventDet.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10]}>
                                         <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.address}</Text>
+                                        <Text style={[styles.blueText , styles.normalText, {paddingLeft:20}]}>{this.props.eventDet.address}</Text>
                                     </TouchableOpacity>
                                     <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13}]}>{this.props.eventDet.details}</Text>
 

@@ -48,6 +48,19 @@ class OrderDetails extends Component {
         Linking.openURL(url);
     }
 
+    _linkGoogleMap(lat, lng){
+        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+        const latLng = `${lat},${lng}`;
+        const label = 'Custom Label';
+
+        let url = Platform.select({
+            ios : `${scheme}${label}@${latLng}`,
+            android: `${scheme}${latLng}(${label}`
+        });
+
+        Linking.openURL(url);
+    }
+
     componentWillMount() {
         this.setState({ loader: 1});
         this.props.getEventDetails( this.props.lang , this.props.navigation.state.params.event_id , this.props.user.token)
@@ -254,7 +267,7 @@ class OrderDetails extends Component {
                                         <Text style={[styles.orangeText , styles.normalText]}>{ i18n.t('vipChairs') } {this.props.eventDet.tickets.vip_count}</Text>
                                     </View>
 
-                                    <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.eventDet.latitude +','+ this.props.eventDet.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                    <TouchableOpacity onPress={()=> this._linkGoogleMap(  this.props.eventDet.latitude , this.props.eventDet.longitude)} style={[styles.directionRowAlignCenter , styles.mb10]}>
                                         <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                         <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.address}</Text>
                                     </TouchableOpacity>
