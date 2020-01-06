@@ -193,7 +193,6 @@ class MyResturant extends Component {
     }
 
     render() {
-
         const backgroundColor = this.state.backgroundColor.interpolate({
             inputRange: [0, 1],
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']

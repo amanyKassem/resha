@@ -85,6 +85,7 @@ class EditCarProfile extends Component {
 
     async componentWillMount() {
 
+        // alert(this.props.navigation.state.params.category)
 		this.setState({isSubmitted: false ,
 			restName: this.props.navigation.state.params.name,
 			location: this.props.navigation.state.params.address,
