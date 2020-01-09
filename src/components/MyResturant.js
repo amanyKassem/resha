@@ -204,8 +204,6 @@ class MyResturant extends Component {
     }
 
     render() {
-        // console.log('oooo' , 'https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')
-        // console.log('ffffffffffffff' ,  this.props.showProfile.latitude)
 
         const backgroundColor = this.state.backgroundColor.interpolate({
             inputRange: [0, 1],
@@ -253,13 +251,12 @@ class MyResturant extends Component {
 
                                     <Image source={{ uri: this.props.showProfile.image }} style={styles.restImg} resizeMode={'cover'}/>
 
-
                                     {
-                                        this.props.showProfile.latitude ?
-                                            <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.showProfile.latitude , this.props.showProfile.longitude)} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
-                                                <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                                <Text style={[styles.blueText , styles.normalText , {paddingLeft:20}]}>{this.props.showProfile.address}</Text>
-                                            </TouchableOpacity> : <View />
+										this.props.showProfile.latitude ?
+											<TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.showProfile.latitude +','+ this.props.showProfile.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
+												<Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+												<Text style={[styles.blueText , styles.normalText , {paddingLeft:20}]}>{this.props.showProfile.address}</Text>
+											</TouchableOpacity> : <View />
                                     }
 
 
