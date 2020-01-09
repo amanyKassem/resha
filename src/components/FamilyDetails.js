@@ -61,7 +61,7 @@ class FamilyDetails extends Component {
         try {
             const result = await Share.share({
                 message:
-                    'React Native | A framework for building native apps using React',
+                    Platform.OS === 'ios'? 'https://apps.apple.com/us/app/reesh-ريش/id1490248883?ls=1' : 'https://play.google.com/store/apps/details?id=com.app.reesh',
             })
 
             if (result.action === Share.sharedAction) {

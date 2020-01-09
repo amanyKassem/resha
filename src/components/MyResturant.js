@@ -44,7 +44,18 @@ class MyResturant extends Component {
     _linkPressed (url){
         Linking.openURL(url);
     }
+    _linkGoogleMap(lat, lng){
+        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+        const latLng = `${lat},${lng}`;
+        const label = 'Custom Label';
 
+        let url = Platform.select({
+            ios : `${scheme}${label}@${latLng}`,
+            android: `${scheme}${latLng}(${label}`
+        });
+
+        Linking.openURL(url);
+    }
     componentWillMount() {
         this.setState({ loader: 1});
         this.props.getShowProfile( this.props.lang , this.props.user.token)
@@ -193,6 +204,7 @@ class MyResturant extends Component {
     }
 
     render() {
+
         const backgroundColor = this.state.backgroundColor.interpolate({
             inputRange: [0, 1],
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']

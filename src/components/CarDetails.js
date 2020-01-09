@@ -51,6 +51,19 @@ class CarDetails extends Component {
         Linking.openURL(url);
     }
 
+    _linkGoogleMap(lat, lng){
+        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+        const latLng = `${lat},${lng}`;
+        const label = 'Custom Label';
+
+        let url = Platform.select({
+            ios : `${scheme}${label}@${latLng}`,
+            android: `${scheme}${latLng}(${label}`
+        });
+
+        Linking.openURL(url);
+    }
+
     renderLoader(){
         if (this.state.loader == 1){
             return(
@@ -72,7 +85,7 @@ class CarDetails extends Component {
         try {
             const result = await Share.share({
                 message:
-                    'React Native | A framework for building native apps using React',
+                    Platform.OS === 'ios'? 'https://apps.apple.com/us/app/reesh-ريش/id1490248883?ls=1' : 'https://play.google.com/store/apps/details?id=com.app.reesh',
             })
 
             if (result.action === Share.sharedAction) {
@@ -195,7 +208,7 @@ class CarDetails extends Component {
                                     <Image source={{ uri: this.props.profileDetails.image }}  onLoad={() => this.setState({ loader: 0  })}  style={[styles.restImg , {width:'100%'}]} resizeMode={'cover'}/>
 
 
-                                    <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.profileDetails.latitude +','+ this.props.profileDetails.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                    <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude)} style={[styles.directionRowAlignCenter , styles.mb10]}>
                                         <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                         <Text style={[styles.blueText , styles.normalText]}>{this.props.profileDetails.address}</Text>
                                     </TouchableOpacity>
