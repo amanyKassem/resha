@@ -135,7 +135,7 @@ class MyResturant extends Component {
 								{
 									this.props.showProfile.products.map((product, i) =>{
 										return (
-											<TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id , backRoute:'myResturant'})}>
+											<TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id , backRoute:'myResturant' , isLoader:false})}>
 												<Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
 											</TouchableOpacity>
 										)

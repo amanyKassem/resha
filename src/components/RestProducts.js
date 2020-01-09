@@ -11,7 +11,21 @@ import {
     ImageBackground,
     StyleSheet, Platform
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label, Textarea} from 'native-base'
+import {
+    Container,
+    Content,
+    Header,
+    Button,
+    Item,
+    Input,
+    Right,
+    Icon,
+    Left,
+    Form,
+    Label,
+    Textarea,
+    Toast
+} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
@@ -61,7 +75,18 @@ class RestProducts extends Component {
             );
         }
     }
-
+    addProductNavigation(){
+        if(this.props.navigation.state.params.backRoute == 'myCar' && this.props.navigation.state.params.category_id == null){
+            Toast.show({
+                text:  i18n.t('chooseCategoryName') ,
+                type: "danger",
+                duration: 3000
+            });
+        }
+        else{
+            this.props.navigation.navigate('addProduct', {backRoute:'restProducts'})
+        }
+    }
 
     componentWillReceiveProps(nextProps) {
         this.setState({ loader: nextProps.key });
@@ -208,7 +233,9 @@ class RestProducts extends Component {
                                 keyExtractor={this._keyExtractor}
                             />
 
-                            <TouchableOpacity style={[styles.floatingEdit, { bottom:60}]} onPress={() => this.props.navigation.navigate('addProduct', {backRoute:'restProducts'})}>
+                            <TouchableOpacity style={[styles.floatingEdit, { bottom:60}]}
+                                              onPress={() => this.addProductNavigation()}>
+                                              {/*onPress={() => {this.props.navigation.navigate('addProduct', {backRoute:'restProducts'})}}>*/}
                                 <Image source={require('../../assets/images/add_floting.png')} style={styles.editImg} resizeMode={'contain'}/>
                             </TouchableOpacity>
 

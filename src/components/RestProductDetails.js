@@ -53,14 +53,15 @@ class RestProductDetails extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        this.setState({ loader: nextProps.key , SwitchOnValueHolder: nextProps.showProduct.available });
+        if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
+            this.setState({loader:0})
+        this.setState({ SwitchOnValueHolder: nextProps.showProduct.available });
     }
 
     stopProduct = (value) =>{
         this.props.getProductAvailability( this.props.lang , this.props.navigation.state.params.product_id , this.props.user.token)
         this.setState({SwitchOnValueHolder:value})
     }
-
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -139,7 +140,7 @@ class RestProductDetails extends Component {
                                         {
                                             this.props.showProduct.images.map((img, i) =>{
                                                 return (
-                                                    <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                    <Image key={i} source={{ uri: img.image }} onLoad={() => this.setState({ loader: 0  })} style={styles.swiperImg} resizeMode={'cover'}/>
                                                 )
                                             })
                                         }

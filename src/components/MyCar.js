@@ -139,7 +139,7 @@ class MyCar extends Component {
 									this.props.showProfile.products.map((product, i) =>{
 										return (
 											<Animatable.View key={i}  animation="fadeInUp" easing="ease-out" delay={600}>
-												<TouchableOpacity onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id, backRoute:'myCar'})}>
+												<TouchableOpacity onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id, backRoute:'myCar' , isLoader:false})}>
 													<Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
 												</TouchableOpacity>
 											</Animatable.View>
@@ -153,7 +153,7 @@ class MyCar extends Component {
 
                     {
 						this.props.showProfile ?
-							<TouchableOpacity onPress={() => this.props.navigation.navigate('restProducts', {user_id :this.props.showProfile.user_id, backRoute:'myCar'})} style={[styles.delAcc , {backgroundColor:COLORS.white}]}>
+							<TouchableOpacity onPress={() => this.props.navigation.navigate('restProducts', {user_id :this.props.showProfile.user_id, backRoute:'myCar' , category_id : this.props.showProfile.category_id})} style={[styles.delAcc , {backgroundColor:COLORS.white}]}>
 								<Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>
 							</TouchableOpacity> : <View />
                     }

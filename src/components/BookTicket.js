@@ -67,7 +67,10 @@ class BookTicket extends Component {
             );
         }
     }
+
     componentWillReceiveProps(nextProps) {
+        if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
+            this.setState({loader:0})
         console.log('nextProps.eventDet.is_save' , nextProps.eventDet.is_save)
         this.setState({ loader: nextProps.key , savedEvent: nextProps.eventDet.is_save });
     }
@@ -218,7 +221,7 @@ class BookTicket extends Component {
                                         {
                                             this.props.eventDet.images.map((img, i) =>{
                                                 return (
-                                                    <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                    <Image key={i} source={{ uri: img.image }}  onLoad={() => this.setState({ loader: 0  })} style={styles.swiperImg} resizeMode={'cover'}/>
                                                 )
                                             })
                                         }

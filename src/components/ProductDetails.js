@@ -145,7 +145,7 @@ class ProductDetails extends Component {
 							<View/>
 					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
-                        <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
+                        <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute , {isLoader:true})} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                         </TouchableOpacity>
 

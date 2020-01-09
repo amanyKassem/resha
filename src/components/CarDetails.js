@@ -76,6 +76,8 @@ class CarDetails extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
+        if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
+            this.setState({loader:0})
         console.log('nextProps.profileDetails.is_save' , nextProps.profileDetails.is_save)
         this.setState({ savedEvent: nextProps.profileDetails.is_save });
     }
