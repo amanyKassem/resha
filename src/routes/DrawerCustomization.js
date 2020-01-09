@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Share, ImageBackground, Dimensions} from "react-native";
+import {View, Text, Image, TouchableOpacity, Share, ImageBackground, Dimensions, Platform} from "react-native";
 import {Container, Content, Icon} from 'native-base';
 import {DrawerItems} from 'react-navigation';
 import styles from "../../assets/styles";
@@ -22,7 +22,7 @@ class DrawerCustomization extends Component {
         try {
             const result = await Share.share({
                 message:
-                    'Resha App',
+                    Platform.OS === 'ios'? 'https://apps.apple.com/us/app/reesh-ريش/id1490248883?ls=1' : 'https://play.google.com/store/apps/details?id=com.app.reesh',
             })
 
             if (result.action === Share.sharedAction) {
