@@ -127,7 +127,7 @@ class Reservations extends Component {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
                 <TouchableOpacity onPress={() => this.goToTicket(item.ticket_id)} style={[styles.eventTouch ]}>
-                    <Image source={{ uri: item.thumbnail , cache:'force-cache'}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <Image source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                     <View style={[styles.eventCont ]}>
                         <Text style={[styles.whiteText , styles.BoldText]}>{item.event_name}</Text>
                         <View style={styles.dateEvent}>

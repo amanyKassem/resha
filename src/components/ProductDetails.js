@@ -169,7 +169,7 @@ class ProductDetails extends Component {
                                     <View style={styles.directionRowSpace}>
                                         <View style={styles.directionRowAlignCenter}>
                                             <View style={styles.borderImg}>
-                                                <Image source={{ uri: this.props.showProduct.user.image , cache:'force-cache'}} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                                                <Image source={{ uri: this.props.showProduct.user.image  }} style={[styles.footSearchImg]} resizeMode={'cover'} />
                                             </View>
                                             <View style={styles.directionColumn}>
                                                 <Text style={[styles.boldGrayText , styles.normalText , styles.mb10, styles.asfs]}>{this.props.showProduct.user.user_name}</Text>
@@ -191,11 +191,12 @@ class ProductDetails extends Component {
                                     </View>
 
                                     <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                            containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
+                                            containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}
+                                            removeClippedSubviews={false}>
                                         {
                                             this.props.showProduct.images.map((img, i) =>{
                                                 return (
-                                                    <Image key={i} source={{ uri: img.image, cache:'force-cache' }} onLoad={() => this.setState({ loader: 0  })}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                    <Image key={i} source={{ uri: img.image  }} onLoad={() => this.setState({ loader: 0  })}  style={styles.swiperImg} resizeMode={'cover'}/>
                                                 )
                                             })
                                         }

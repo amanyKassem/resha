@@ -203,11 +203,12 @@ class OrderDetails extends Component {
                                     <Text style={[styles.boldGrayText , styles.normalText , styles.mb10, styles.asfs, styles.writing]}>{this.props.eventDet.name}</Text>
 
                                     <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                            containerStyle={[styles.eventswiper , styles.mb15]} showsButtons={false} autoplay={true}>
+                                            containerStyle={[styles.eventswiper , styles.mb15]} showsButtons={false} autoplay={true}
+                                            removeClippedSubviews={false}>
                                         {
                                             this.props.eventDet.images.map((img, i) =>{
                                                 return (
-                                                    <Image key={i} source={{ uri: img.image , cache:'force-cache'}}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                    <Image key={i} source={{ uri: img.image  }}  style={styles.swiperImg} resizeMode={'cover'}/>
                                                 )
                                             })
                                         }

@@ -241,7 +241,7 @@ class AddProduct extends Component {
                                 {image1 != null?
 
                                     <TouchableOpacity onPress={this._pickImage} style={[styles.restProfile ]}>
-                                        <Image source={{ uri: image1 , cache:'force-cache'}} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                        <Image source={{ uri: image1  }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
                                     </TouchableOpacity>
 
                                     :
@@ -252,7 +252,7 @@ class AddProduct extends Component {
                                 {image2 != null?
 
                                     <TouchableOpacity onPress={this._pickImage2} style={[styles.restProfile ]}>
-                                        <Image source={{ uri: image2 , cache:'force-cache'}} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                        <Image source={{ uri: image2  }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
                                     </TouchableOpacity>
 
                                     :
@@ -263,7 +263,7 @@ class AddProduct extends Component {
                                 {image3 != null?
 
                                     <TouchableOpacity onPress={this._pickImage3} style={[styles.restProfile ]}>
-                                        <Image source={{ uri: image3 , cache:'force-cache'}} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                        <Image source={{ uri: image3  }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
                                     </TouchableOpacity>
 
                                     :

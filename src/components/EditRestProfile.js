@@ -286,12 +286,12 @@ class EditRestProfile extends Component {
                            {image != null?
 
                                 <TouchableOpacity onPress={this._pickImage} style={[styles.restProfile ]}>
-                                    <Image source={{ uri: image }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                    <Image source={{ uri: image  }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
                                 </TouchableOpacity>
 
                                 :
                                 <TouchableOpacity onPress={this._pickImage} style={[styles.restProfile ]}>
-                                    <Image source={{ uri:this.props.navigation.state.params.image }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                    <Image source={{ uri:this.props.navigation.state.params.image  }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
                                 </TouchableOpacity>
                             }
                             <Text style={[styles.blueText, styles.normalText , styles.asc , styles.tAC ]}>{ i18n.t('uploadPhoto') }</Text>

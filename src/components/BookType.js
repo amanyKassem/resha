@@ -197,19 +197,19 @@ class BookType extends Component {
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
 
                             <TouchableOpacity onPress={() => this.selectType('vip' , vipPrice , i18n.t('vipTicket') , vipImgSrc , vipTicketsNum , vipTicketType)} style={[styles.ticketViewType , styles.mb15, {backgroundColor:this.state.type === 'vip' ? '#deeeee' : 'transparent'}]}>
-                                <Image source={{ uri: vipImgSrc , cache:'force-cache' }} style={[styles.ticketType]} resizeMode={'contain'} />
+                                <Image source={{ uri: vipImgSrc }} style={[styles.ticketType]} resizeMode={'contain'} />
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>{ i18n.t('vipTicket') }</Text>
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>{ i18n.t('price') } {vipPrice} { i18n.t('RS') }</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => this.selectType('gold' , goldPrice , i18n.t('goldTicket') , goldImgSrc , goldTicketsNum , goldTicketType)} style={[styles.ticketViewType , styles.mb15, {backgroundColor:this.state.type === 'gold' ? '#deeeee' : 'transparent'}]}>
-                                <Image source={{ uri: goldImgSrc , cache:'force-cache'}} style={[styles.ticketType]} resizeMode={'contain'} />
+                                <Image source={{ uri: goldImgSrc  }} style={[styles.ticketType]} resizeMode={'contain'} />
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>{ i18n.t('goldTicket') }</Text>
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>{ i18n.t('price') } {goldPrice} { i18n.t('RS') }</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => this.selectType('normal' , normalPrice, i18n.t('normalTicket') , normalImgSrc , normalTicketsNum , normalTicketType)} style={[styles.ticketViewType , {backgroundColor:this.state.type === 'normal' ? '#deeeee' : 'transparent'}]}>
-                                <Image source={{ uri: normalImgSrc , cache:'force-cache'}} style={[styles.ticketType]} resizeMode={'contain'} />
+                                <Image source={{ uri: normalImgSrc }} style={[styles.ticketType]} resizeMode={'contain'} />
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'30%'} ]}>{ i18n.t('normalTicket') }</Text>
                                 <Text style={[styles.whiteText , styles.normalText , styles.ticketText, { top:'50%'} ]}>{ i18n.t('price') } {normalPrice} { i18n.t('RS') }</Text>
                             </TouchableOpacity>

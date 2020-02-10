@@ -112,7 +112,7 @@ class Saves extends Component {
                         {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
                         <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                     </View>
-                    <Image source={{uri:item.thumbnail, cache:'force-cache'}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <Image source={{uri:item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                     <View style={[styles.eventCont]}>
                         <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
                         <View style={styles.dateEvent}>
@@ -132,7 +132,7 @@ class Saves extends Component {
                         {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
                         <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                     </View>
-                    <Image source={{uri:item.thumbnail, cache:'force-cache'}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <Image source={{uri:item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                     <View style={[styles.eventCont]}>
                         <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
 
@@ -153,7 +153,7 @@ class Saves extends Component {
                         {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
                         <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                     </View>
-                    <Image source={{uri:item.thumbnail, cache:'force-cache'}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <Image source={{uri:item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                     <View style={[styles.eventCont]}>
                         <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
 
@@ -174,7 +174,7 @@ class Saves extends Component {
                         {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
                         <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                     </View>
-                    <Image source={{uri:item.thumbnail, cache:'force-cache'}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <Image source={{uri:item.thumbnail }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                     <View style={[styles.eventCont]}>
                         <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
 

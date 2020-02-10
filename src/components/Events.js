@@ -58,7 +58,7 @@ class Events extends Component {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
                 <TouchableOpacity onPress={ () => this.props.navigation.navigate( 'bookTicket', { event_id: item.id , backRoute:'events', isLoader:false})} style={[styles.notiBlock , styles.directionRow]}>
-                    <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={styles.eventImg}/>
+                    <Image source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={styles.eventImg}/>
                     <View style={[styles.directionColumn , {flex:1}]}>
                         <Text style={[styles.headerText, styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
                         <View style={[styles.directionRowAlignCenter ]}>

@@ -193,7 +193,8 @@ class ShowTicket extends Component {
                                     </View>
 
                                     <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                            containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
+                                            containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}
+                                            removeClippedSubviews={false}>
                                         {
                                             this.props.ownerEventsDetails.images.map((img, i) =>{
                                                 return (

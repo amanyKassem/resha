@@ -195,7 +195,7 @@ class BookTicket extends Component {
                                     <View style={styles.directionRowSpace}>
                                         <View style={styles.directionRowAlignCenter}>
                                             <View style={styles.borderImg}>
-                                                <Image source={{ uri: this.props.eventDet.user.avatar, cache:'force-cache' }} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                                                <Image source={{ uri: this.props.eventDet.user.avatar }} style={[styles.footSearchImg]} resizeMode={'cover'} />
                                             </View>
                                             <View style={styles.directionColumn}>
                                                 <Text style={[styles.boldGrayText , styles.normalText , styles.mb10, styles.asfs]}>{this.props.eventDet.user.user_name}</Text>
@@ -218,11 +218,12 @@ class BookTicket extends Component {
                                     </View>
 
                                     <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                            containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
+                                            containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}
+                                            removeClippedSubviews={false}>
                                         {
                                             this.props.eventDet.images.map((img, i) =>{
                                                 return (
-                                                    <Image key={i} source={{ uri: img.image , cache:'force-cache'}}  onLoad={() => this.setState({ loader: 0  })} style={styles.swiperImg} resizeMode={'cover'}/>
+                                                    <Image key={i} source={{ uri: img.image  }}  onLoad={() => this.setState({ loader: 0  })} style={styles.swiperImg} resizeMode={'cover'}/>
                                                 )
                                             })
                                         }

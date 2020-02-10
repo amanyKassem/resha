@@ -126,7 +126,7 @@ class MyFamily extends Component {
                                 return (
                                     <Animatable.View key={i}  animation="fadeInUp" easing="ease-out" delay={600}>
                                         <TouchableOpacity onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id, backRoute:'myFamily' , isLoader:false})}>
-                                            <Image source={{ uri: product.image , cache:'force-cache'}} style={styles.productImg} resizeMode={'cover'}/>
+                                            <Image source={{ uri: product.image  }} style={styles.productImg} resizeMode={'cover'}/>
                                         </TouchableOpacity>
                                     </Animatable.View>
                                 )
@@ -243,7 +243,7 @@ class MyFamily extends Component {
                                 <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0 , paddingTop:20} ]}>
 
                                     <Animatable.View animation="zoomIn" easing="ease-out" delay={600}>
-                                        <Image source={{ uri: this.props.showProfile.image , cache:'force-cache'}} style={styles.restImg} resizeMode={'cover'}/>
+                                        <Image source={{ uri: this.props.showProfile.image  }} style={styles.restImg} resizeMode={'cover'}/>
                                     </Animatable.View>
 
 

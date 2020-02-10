@@ -205,7 +205,7 @@ class AddEventImage extends Component {
                 <TouchableOpacity style={{ height: 100 }} onPress={() => this.selectImage(item.md5)}>
                     <Image
                         style={{ height: 100, width: '100%', borderRadius: 3 }}
-                        source={{uri: item.file , cache:'force-cache'}}
+                        source={{uri: item.file }}
                     />
                 </TouchableOpacity>
             </View>

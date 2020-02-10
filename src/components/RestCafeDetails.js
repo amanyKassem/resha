@@ -164,7 +164,7 @@ class RestCafeDetails extends Component {
                 product_id: item.product_id,
                 backRoute: 'restCafeDetails'
             })}>
-                <Image source={{uri: item.image, cache:'force-cache'}} style={styles.productImg} resizeMode={'cover'}/>
+                <Image source={{uri: item.image }} style={styles.productImg} resizeMode={'cover'}/>
             </TouchableOpacity>
         );
     };
@@ -306,7 +306,7 @@ class RestCafeDetails extends Component {
                                         </TouchableOpacity>
                                     </View>
 
-                                    <Image source={{ uri: this.props.profileDetails.image , cache:'force-cache'}} onLoad={() => this.setState({ loader: 0  })}  style={[styles.restImg]} resizeMode={'cover'}/>
+                                    <Image source={{ uri: this.props.profileDetails.image  }} onLoad={() => this.setState({ loader: 0  })}  style={[styles.restImg]} resizeMode={'cover'}/>
 
 
                                     <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude)} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
