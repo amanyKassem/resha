@@ -53,7 +53,8 @@ class BookTicket extends Component {
 
     componentWillMount() {
         this.setState({ loader: 1});
-        this.props.getEventDetails( this.props.lang , this.props.navigation.state.params.event_id , this.props.user.token)
+        const token = this.props.user ? this.props.user.token : null;
+        this.props.getEventDetails( this.props.lang , this.props.navigation.state.params.event_id , token)
     }
 
     renderLoader(){
@@ -174,7 +175,7 @@ class BookTicket extends Component {
 
 
                         <View style={styles.directionRowAlignCenter}>
-                            <TouchableOpacity onPress={() => this.savedEvent()} style={styles.headerBtn}>
+                            <TouchableOpacity onPress={() => this.props.user ? this.savedEvent() : this.props.navigation.navigate('login')} style={styles.headerBtn}>
                                 <Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={this.onShare} style={styles.headerBtn}>

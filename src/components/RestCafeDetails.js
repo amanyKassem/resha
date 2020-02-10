@@ -69,7 +69,8 @@ class RestCafeDetails extends Component {
 
     componentWillMount() {
         this.setState({ loader: 1});
-        this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id , this.props.user.token)
+        const token = this.props.user ? this.props.user.token : null;
+        this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id , token)
     }
 
     renderLoader(){

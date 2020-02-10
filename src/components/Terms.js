@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, FlatList, ImageBackground, Platform } from "react-native";
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated, ScrollView, ImageBackground, Platform } from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, CheckBox, Form} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -123,21 +123,15 @@ class Terms extends Component {
 
                 <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     { this.renderLoader() }
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
                         <Image source={require('../../assets/images/rules_undraw.png')} style={[styles.faqImg]} resizeMode={'contain'} />
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20 , marginTop:15}]}>
                             <ImageBackground source={require('../../assets/images/bg_feather.png')} resizeMode={'cover'} style={styles.imageBackground}>
-                                {/*<FlatList*/}
-                                    {/*data={this.props.rules}*/}
-                                    {/*renderItem={({item}) => this.renderItems(item)}*/}
-                                    {/*numColumns={1}*/}
-                                    {/*keyExtractor={this._keyExtractor}*/}
-                                {/*/>*/}
 
-                                <View style={styles.faqBlock}>
+                                <ScrollView style={styles.faqBlock}>
                                     <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727'}]}>{this.props.rules}</Text>
                                     {/*<Text style={[styles.grayText , styles.asfs , styles.writing , styles.normalText]}>{item.answer}</Text>*/}
-                                </View>
+                                </ScrollView>
 
                                 <View style={[styles.directionRowAlignCenter , styles.mb15 ]}>
                                     <CheckBox onPress={() => this.setState({checkTerms: !this.state.checkTerms})} checked={this.state.checkTerms} color={'#2f9694'} style={styles.checkBox} />

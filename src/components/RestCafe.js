@@ -56,7 +56,7 @@ class RestCafe extends Component {
     renderItems = (item) => {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user ? 'restCafeDetails' : 'login' , {user_id: item.user_id , backRoute:'restCafe' , catType:this.props.navigation.state.params.catType, isLoader:false})} style={[styles.eventTouch ]}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('restCafeDetails' , {user_id: item.user_id , backRoute:'restCafe' , catType:this.props.navigation.state.params.catType, isLoader:false})} style={[styles.eventTouch ]}>
                     <Image source={{ uri: item.thumbnail , cache:'force-cache'}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                     <View style={[styles.eventCont , { backgroundColor: '#b1aba940'}]}>
                         <Text style={[styles.whiteText , styles.BoldText , {top:-5}]}>{item.name}</Text>

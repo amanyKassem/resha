@@ -153,7 +153,7 @@ class Login extends Component {
                                 <Image source={require('../../assets/images/logo.png')} resizeMode={'contain'} style={[styles.logo , styles.mb10]}/>
 
                                 <TouchableOpacity  onPress={() => this.props.navigation.navigate('drawerNavigator')} style={[styles.blueBtn, styles.mt30 , styles.mb15 , styles.w100]}>
-                                    <Text style={[styles.whiteText, styles.normalText , {fontSize:20}]}>{ i18n.t('visitor') }</Text>
+                                    <Text style={[styles.whiteText, styles.normalText , {fontSize:18}]}>{ i18n.t('visitor') }</Text>
                                 </TouchableOpacity>
 
                                 <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
