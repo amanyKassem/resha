@@ -59,7 +59,7 @@ class Products extends Component {
     renderItems = (item) => {
         return(
             <TouchableOpacity onPress={ () => this.props.navigation.navigate('productDetails' , {product_id:item.id, backRoute:'products'})} style={[styles.notiBlock , styles.directionRow]}>
-                <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={[styles.eventImg ]}/>
+                <Image source={{ uri: item.thumbnail , cache:'force-cache'}} resizeMode={'cover'} style={[styles.eventImg ]}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
                     <Text style={[styles.headerText , styles.asfs, styles.writing  , {color:'#272727'}]}>{item.name}</Text>
                     <View style={[styles.directionRowAlignCenter]}>

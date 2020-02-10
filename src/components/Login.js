@@ -130,7 +130,7 @@ class Login extends Component {
         if (newProps.auth !== null) {
             Toast.show({
                 text: newProps.auth.msg,
-                type: newProps.auth.key == 1 ? "success" : "danger",
+                type: newProps.auth.key == 1 || newProps.auth.key == 3? "success" : "danger",
                 duration: 3000
             });
         }
@@ -151,6 +151,10 @@ class Login extends Component {
                             <View style={[styles.langView ]}>
 
                                 <Image source={require('../../assets/images/logo.png')} resizeMode={'contain'} style={[styles.logo , styles.mb10]}/>
+
+                                <TouchableOpacity  onPress={() => this.props.navigation.navigate('drawerNavigator')} style={[styles.blueBtn, styles.mt30 , styles.mb15 , styles.w100]}>
+                                    <Text style={[styles.whiteText, styles.normalText , {fontSize:20}]}>{ i18n.t('visitor') }</Text>
+                                </TouchableOpacity>
 
                                 <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
                                     <Form style={{}}>
@@ -178,11 +182,6 @@ class Login extends Component {
 
 
                                         { this.renderSubmit() }
-
-
-                                        <TouchableOpacity  onPress={() => this.props.navigation.navigate('drawerNavigator')} style={[styles.asc, styles.mt25]}>
-                                            <Text style={[styles.blueText, styles.normalText ]}>{ i18n.t('visitor') }</Text>
-                                        </TouchableOpacity>
                                     </Form>
                                 </KeyboardAvoidingView>
 

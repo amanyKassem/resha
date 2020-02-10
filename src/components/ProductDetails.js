@@ -40,7 +40,8 @@ class ProductDetails extends Component {
 
     componentWillMount() {
         this.setState({ loader: 1});
-        this.props.getShowProduct( this.props.lang , this.props.navigation.state.params.product_id , this.props.user.token)
+        const token = this.props.user ? this.props.user.token : null
+        this.props.getShowProduct( this.props.lang , this.props.navigation.state.params.product_id , token)
     }
     _linkPressed (url){
         Linking.openURL(url);
@@ -151,9 +152,10 @@ class ProductDetails extends Component {
 
                         <Text style={[styles.headerText]}>{ i18n.t('productInfo') }</Text>
 
-                        <TouchableOpacity onPress={() => this.savedEvent()} style={styles.headerBtn}>
+                        <TouchableOpacity onPress={() =>  this.props.user ? this.savedEvent() : this.props.navigation.navigate('login')} style={styles.headerBtn}>
                             <Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>
+
 
                     </Animated.View>
                 </Header>
@@ -167,7 +169,7 @@ class ProductDetails extends Component {
                                     <View style={styles.directionRowSpace}>
                                         <View style={styles.directionRowAlignCenter}>
                                             <View style={styles.borderImg}>
-                                                <Image source={{ uri: this.props.showProduct.user.image }} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                                                <Image source={{ uri: this.props.showProduct.user.image , cache:'force-cache'}} style={[styles.footSearchImg]} resizeMode={'cover'} />
                                             </View>
                                             <View style={styles.directionColumn}>
                                                 <Text style={[styles.boldGrayText , styles.normalText , styles.mb10, styles.asfs]}>{this.props.showProduct.user.user_name}</Text>
@@ -193,7 +195,7 @@ class ProductDetails extends Component {
                                         {
                                             this.props.showProduct.images.map((img, i) =>{
                                                 return (
-                                                    <Image key={i} source={{ uri: img.image }} onLoad={() => this.setState({ loader: 0  })}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                    <Image key={i} source={{ uri: img.image, cache:'force-cache' }} onLoad={() => this.setState({ loader: 0  })}  style={styles.swiperImg} resizeMode={'cover'}/>
                                                 )
                                             })
                                         }
@@ -205,15 +207,21 @@ class ProductDetails extends Component {
                                             <Image source={require('../../assets/images/star_border_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                             <Text style={[styles.blueText , styles.normalText]}>{this.state.starsCount}/5</Text>
                                         </View>
-                                        <StarRating
-                                            disabled={false}
-                                            maxStars={5}
-                                            rating={this.state.starsCount}
-                                            fullStarColor={'#f0aa0b'}
-                                            selectedStar={(rating) => this.onStarRatingPress(rating)}
-                                            starSize={18}
-                                            starStyle={styles.starStyle}
-                                        />
+                                        {
+                                            this.props.user ?
+                                                <StarRating
+                                                    disabled={false}
+                                                    maxStars={5}
+                                                    rating={this.state.starsCount}
+                                                    fullStarColor={'#f0aa0b'}
+                                                    selectedStar={(rating) => this.onStarRatingPress(rating)}
+                                                    starSize={18}
+                                                    starStyle={styles.starStyle}
+                                                />
+                                                :
+                                                null
+                                        }
+
                                     </View>
                                     <View style={[styles.directionRowAlignCenter , styles.mb10]}>
                                         <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />

@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import {
-	View,
-	Text,
-	Image,
-	TouchableOpacity,
-	Dimensions,
-	Animated,
-	Share,
-	ImageBackground,
-	Linking,
-	Platform
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    Dimensions,
+    Animated,
+    Share,
+    ImageBackground,
+    Linking,
+    Platform, FlatList
 } from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
 import styles from '../../assets/styles'
@@ -104,6 +104,15 @@ class CarDetails extends Component {
         }
     };
 
+    _keyExtractor = (item, index) => item.id;
+
+    renderItems = (item) => {
+        return (
+            <TouchableOpacity style={{marginBottom:7}} onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.product_id, backRoute:'carDetails'})}>
+                <Image source={{ uri: item.image, cache:'force-cache' }} style={styles.productImg} resizeMode={'cover'}/>
+            </TouchableOpacity>
+        );
+    };
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -200,17 +209,17 @@ class CarDetails extends Component {
                             this.props.profileDetails?
                                 <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
                                     <View style={styles.directionRowSpace}>
-                                        <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.profileDetails.details}</Text>
+                                        <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.profileDetails.name}</Text>
 
                                         <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.profileDetails.mobile)}>
                                             <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
                                         </TouchableOpacity>
                                     </View>
 
-                                    <Image source={{ uri: this.props.profileDetails.image }}  onLoad={() => this.setState({ loader: 0  })}  style={[styles.restImg , {width:'100%'}]} resizeMode={'cover'}/>
+                                    <Image source={{ uri: this.props.profileDetails.image , cache:'force-cache'}}  onLoad={() => this.setState({ loader: 0  })}  style={[styles.restImg , {width:'100%'}]} resizeMode={'cover'}/>
 
 
-                                    <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude)} style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                    <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude)}  style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
                                         <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                         <Text style={[styles.blueText , styles.normalText]}>{this.props.profileDetails.address}</Text>
                                     </TouchableOpacity>
@@ -223,17 +232,25 @@ class CarDetails extends Component {
                                         <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('products') }</Text>
                                     </View>
 
-                                    <View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>
-                                        {
-                                            this.props.profileDetails.products.map((product, i) =>{
-                                                return (
-                                                    <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('productDetails', {product_id:product.product_id, backRoute:'carDetails'})}>
-                                                        <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
-                                                    </TouchableOpacity>
-                                                )
-                                            })
-                                        }
-                                    </View>
+                                    {/*<View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>*/}
+                                    {/*    {*/}
+                                    {/*        this.props.profileDetails.products.map((product, i) =>{*/}
+                                    {/*            return (*/}
+                                    {/*                <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('productDetails', {product_id:product.product_id, backRoute:'carDetails'})}>*/}
+                                    {/*                    <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>*/}
+                                    {/*                </TouchableOpacity>*/}
+                                    {/*            )*/}
+                                    {/*        })*/}
+                                    {/*    }*/}
+                                    {/*</View>*/}
+
+                                    <FlatList
+                                        data={this.props.profileDetails.products}
+                                        renderItem={({item}) => this.renderItems(item)}
+                                        numColumns={3}
+                                        keyExtractor={this._keyExtractor}
+                                        columnWrapperStyle={{ justifyContent:'space-between'}}
+                                    />
 
                                     {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('products' , {user_id :this.props.navigation.state.params.user_id , backRoute:'carDetails', catType:this.props.navigation.state.params.catType})} style={styles.delAcc}>*/}
                                         {/*<Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>*/}

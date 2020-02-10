@@ -9,7 +9,7 @@ export const getShowProduct = (lang , product_id , token) => {
             url: CONST.url + 'show-product',
             method: 'POST',
             data: {lang , product_id},
-            headers: {Authorization: token}
+            headers: token ? {Authorization: token} : null
         }).then(response => {
             dispatch({type: 'getShowProduct', payload: response.data})
         })

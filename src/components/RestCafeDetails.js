@@ -1,5 +1,17 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground , Linking, Platform } from "react-native";
+import {
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    Dimensions,
+    Animated,
+    Share,
+    ImageBackground,
+    Linking,
+    Platform,
+    FlatList
+} from "react-native";
 import {Container, Content, Header,} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -142,6 +154,20 @@ class RestCafeDetails extends Component {
         return <View />
     }
 
+
+    _keyExtractor = (item, index) => item.id;
+
+    renderItems = (item) => {
+        return (
+            <TouchableOpacity style={{marginBottom:7}} onPress={() => this.props.navigation.navigate('productDetails', {
+                product_id: item.product_id,
+                backRoute: 'restCafeDetails'
+            })}>
+                <Image source={{uri: item.image, cache:'force-cache'}} style={styles.productImg} resizeMode={'cover'}/>
+            </TouchableOpacity>
+        );
+    };
+
     // savedEvent() {
     //     this.setState({savedEvent: !this.state.savedEvent})
     //     this.props.SetFavouriteEvent( this.props.lang , this.props.navigation.state.params.user_id , this.props.user.token)
@@ -163,21 +189,20 @@ class RestCafeDetails extends Component {
 
         if(this.state.active === 0 ){
             return(
-                <View style={styles.directionColumn}>
+                <View>
                     {
                         this.renderNoData()
                     }
-                    <View style={[styles.directionRowSpace , {flexWrap:'wrap' , minHeight:150}]}>
-                        {
-                            this.props.profileDetails.products.map((product, i) =>{
-                                return (
-                                    <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('productDetails', {product_id:product.product_id , backRoute:'restCafeDetails'})}>
-                                        <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
-                                    </TouchableOpacity>
-                                )
-                            })
-                        }
-                    </View>
+
+
+                    <FlatList
+                        data={this.props.profileDetails.products}
+                        renderItem={({item}) => this.renderItems(item)}
+                        numColumns={3}
+                        keyExtractor={this._keyExtractor}
+                        columnWrapperStyle={{ justifyContent:'space-between'}}
+                    />
+
 
                     {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('products', {user_id :this.props.navigation.state.params.user_id , backRoute:'restCafeDetails' , catType:this.props.navigation.state.params.catType  })} style={[styles.delAcc , {backgroundColor:COLORS.white}]}>*/}
                         {/*<Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>*/}
@@ -268,7 +293,7 @@ class RestCafeDetails extends Component {
 
                 <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{height:'100%'}}>
                         {
                             this.props.profileDetails ?
                                 <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0 , paddingTop:20} ]}>
@@ -280,7 +305,7 @@ class RestCafeDetails extends Component {
                                         </TouchableOpacity>
                                     </View>
 
-                                    <Image source={{ uri: this.props.profileDetails.image }} onLoad={() => this.setState({ loader: 0  })}  style={[styles.restImg]} resizeMode={'cover'}/>
+                                    <Image source={{ uri: this.props.profileDetails.image , cache:'force-cache'}} onLoad={() => this.setState({ loader: 0  })}  style={[styles.restImg]} resizeMode={'cover'}/>
 
 
                                     <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude)} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>

@@ -176,7 +176,7 @@ class QrConfirmTicket extends Component {
                                         {
                                             this.props.ticketDetails.images.map((img, i) =>{
                                                 return (
-                                                    <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                    <Image key={i} source={{ uri: img.image , cache:'force-cache'}}  style={styles.swiperImg} resizeMode={'cover'}/>
                                                 )
                                             })
                                         }
@@ -223,7 +223,7 @@ class QrConfirmTicket extends Component {
                                     <View style={styles.directionRowSpace}>
                                         <View style={styles.directionRowAlignCenter}>
                                             <View style={styles.borderImg}>
-                                                <Image source={{ uri: this.props.ticketDetails.user_avatar }}
+                                                <Image source={{ uri: this.props.ticketDetails.user_avatar , cache:'force-cache'}}
                                                        style={[styles.footSearchImg]} resizeMode={'cover'}/>
                                             </View>
                                             <Text style={[styles.boldGrayText, styles.normalText]}>{this.props.ticketDetails.user}</Text>

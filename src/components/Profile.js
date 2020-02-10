@@ -96,7 +96,7 @@ class Profile extends Component {
                             <View style={styles.sideImgView}>
                                 <Animatable.View animation="fadeInDown" easing="ease-out" delay={500} style={styles.cutCircle}>
                                     <View style={styles.sideProfileImg}>
-                                        <Image source={{ uri : this.props.user.avatar }} resizeMode={'cover'} style={styles.drawImg}/>
+                                        <Image source={{ uri : this.props.user.avatar , cache:'force-cache'}} resizeMode={'cover'} style={styles.drawImg}/>
                                     </View>
                                 </Animatable.View>
                                 <Text style={styles.sideName}>{ this.props.user.name }</Text>

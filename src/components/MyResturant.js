@@ -136,7 +136,7 @@ class MyResturant extends Component {
 									this.props.showProfile.products.map((product, i) =>{
 										return (
 											<TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id , backRoute:'myResturant' , isLoader:false})}>
-												<Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
+												<Image source={{ uri: product.image, cache:'force-cache' }} style={styles.productImg} resizeMode={'cover'}/>
 											</TouchableOpacity>
 										)
 									})
@@ -249,7 +249,7 @@ class MyResturant extends Component {
                                 <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0 , paddingTop:20} ]}>
 
 
-                                    <Image source={{ uri: this.props.showProfile.image }} style={styles.restImg} resizeMode={'cover'}/>
+                                    <Image source={{ uri: this.props.showProfile.image, cache:'force-cache' }} style={styles.restImg} resizeMode={'cover'}/>
 
                                     {
 										this.props.showProfile.latitude ?

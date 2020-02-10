@@ -69,7 +69,8 @@ class EditCarProfile extends Component {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
             aspect: [4, 3],
-            base64:true
+            base64:true,
+            quality:.1
         });
 
         console.log(result);
@@ -94,29 +95,29 @@ class EditCarProfile extends Component {
 		})
         this.props.getTypeCategories(this.props.lang , this.props.user.type );
 
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-            alert('صلاحيات تحديد موقعك الحالي ملغاه');
-        }else {
-            const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
-            const userLocation = { latitude, longitude };
-            this.setState({  initMap: false, mapRegion: userLocation });
-
-        }
-
-        let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-		getCity += this.props.navigation.state.params.latitude + ',' + this.props.navigation.state.params.longitude;
-        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=' +this.props.lang +'&sensor=true';
-
-        console.log(getCity);
-
-        try {
-            const { data } = await axios.get(getCity);
-			this.setState({ location: data.results[0].formatted_address });
-
-        } catch (e) {
-            console.log(e);
-        }
+        // let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        // if (status !== 'granted') {
+        //     alert('صلاحيات تحديد موقعك الحالي ملغاه');
+        // }else {
+        //     const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
+        //     const userLocation = { latitude, longitude };
+        //     this.setState({  initMap: false, mapRegion: userLocation });
+        //
+        // }
+        //
+        // let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+		// getCity += this.props.navigation.state.params.latitude + ',' + this.props.navigation.state.params.longitude;
+        // getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=' +this.props.lang +'&sensor=true';
+        //
+        // console.log(getCity);
+        //
+        // try {
+        //     const { data } = await axios.get(getCity);
+		// 	this.setState({ location: data.results[0].formatted_address });
+        //
+        // } catch (e) {
+        //     console.log(e);
+        // }
     }
 
 
@@ -167,8 +168,31 @@ class EditCarProfile extends Component {
 
 
 
-    confirmLocation(){
-        this.setState({ isModalVisible: !this.state.isModalVisible })
+    async confirmLocation(){
+        this.setState({ isModalVisible: !this.state.isModalVisible });
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+            alert('صلاحيات تحديد موقعك الحالي ملغاه');
+        }else {
+            const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
+            const userLocation = { latitude, longitude };
+            this.setState({  initMap: false, mapRegion: userLocation });
+
+        }
+
+        let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+        getCity += this.props.navigation.state.params.latitude + ',' + this.props.navigation.state.params.longitude;
+        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=' +this.props.lang +'&sensor=true';
+
+        console.log(getCity);
+
+        try {
+            const { data } = await axios.get(getCity);
+            this.setState({ location: data.results[0].formatted_address });
+
+        } catch (e) {
+            console.log(e);
+        }
     }
 
 

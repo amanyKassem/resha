@@ -68,7 +68,8 @@ class EditRestProfile extends Component {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
             aspect: [4, 3],
-            base64:true
+            base64:true,
+            quality:.1
         });
 
         console.log(result);

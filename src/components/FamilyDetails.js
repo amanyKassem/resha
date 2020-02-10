@@ -1,5 +1,17 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground, Platform, Linking} from "react-native";
+import {
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    Dimensions,
+    Animated,
+    Share,
+    ImageBackground,
+    Platform,
+    Linking,
+    FlatList
+} from "react-native";
 import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -35,7 +47,8 @@ class FamilyDetails extends Component {
 
     componentWillMount() {
         this.setState({ loader: 1});
-        this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id , this.props.user.token)
+        const token = this.props.user ? this.props.user.token : null
+        this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id ,token)
     }
     _linkPressed (url){
         Linking.openURL(url);
@@ -55,8 +68,8 @@ class FamilyDetails extends Component {
     componentWillReceiveProps(nextProps) {
         if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
             this.setState({loader:0})
-        console.log('nextProps.profileDetails.is_save' , nextProps.profileDetails.is_save)
-        this.setState({ savedEvent: nextProps.profileDetails.is_save });
+        // console.log('nextProps.profileDetails.is_save' , nextProps.profileDetails.is_save)
+        // this.setState({ savedEvent: nextProps.profileDetails.is_save });
     }
 
     onShare = async () => {
@@ -80,6 +93,15 @@ class FamilyDetails extends Component {
         }
     };
 
+    _keyExtractor = (item, index) => item.id;
+
+    renderItems = (item) => {
+        return (
+            <TouchableOpacity style={{marginBottom:7}} onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.product_id , backRoute:'familyDetails'})}>
+                <Image source={{ uri: item.image }} style={styles.productImg} resizeMode={'cover'}/>
+            </TouchableOpacity>
+        );
+    };
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -195,19 +217,27 @@ class FamilyDetails extends Component {
                                         <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('products') }</Text>
                                     </View>
 
-                                    <View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>
+                                    {/*<View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>*/}
 
-                                        {
-                                            this.props.profileDetails.products.map((product, i) =>{
-                                                return (
-                                                    <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('productDetails', {product_id:product.product_id , backRoute:'familyDetails'})}>
-                                                        <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>
-                                                    </TouchableOpacity>
-                                                )
-                                            })
-                                        }
+                                    {/*    {*/}
+                                    {/*        this.props.profileDetails.products.map((product, i) =>{*/}
+                                    {/*            return (*/}
+                                    {/*                <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('productDetails', {product_id:product.product_id , backRoute:'familyDetails'})}>*/}
+                                    {/*                    <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>*/}
+                                    {/*                </TouchableOpacity>*/}
+                                    {/*            )*/}
+                                    {/*        })*/}
+                                    {/*    }*/}
 
-                                    </View>
+                                    {/*</View>*/}
+                                    <FlatList
+                                        data={this.props.profileDetails.products}
+                                        renderItem={({item}) => this.renderItems(item)}
+                                        numColumns={3}
+                                        keyExtractor={this._keyExtractor}
+                                        columnWrapperStyle={{ justifyContent:'space-between'}}
+                                    />
+
 
                                     {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('products', {user_id :this.props.navigation.state.params.user_id , backRoute:'familyDetails' , catType:this.props.navigation.state.params.catType })} style={styles.delAcc}>*/}
                                         {/*<Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>*/}

@@ -207,7 +207,7 @@ class OrderDetails extends Component {
                                         {
                                             this.props.eventDet.images.map((img, i) =>{
                                                 return (
-                                                    <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                    <Image key={i} source={{ uri: img.image , cache:'force-cache'}}  style={styles.swiperImg} resizeMode={'cover'}/>
                                                 )
                                             })
                                         }

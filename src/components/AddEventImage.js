@@ -151,6 +151,7 @@ class AddEventImage extends Component {
             allowsEditing: true,
             aspect: [4, 3],
             base64:true,
+            quality:.1
 
         });
         base64.push(result.base64)
@@ -204,7 +205,7 @@ class AddEventImage extends Component {
                 <TouchableOpacity style={{ height: 100 }} onPress={() => this.selectImage(item.md5)}>
                     <Image
                         style={{ height: 100, width: '100%', borderRadius: 3 }}
-                        source={{uri: item.file}}
+                        source={{uri: item.file , cache:'force-cache'}}
                     />
                 </TouchableOpacity>
             </View>

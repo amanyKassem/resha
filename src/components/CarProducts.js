@@ -83,7 +83,7 @@ class CarProducts extends Component {
             <View style={[styles.notiBlock , styles.directionRow]}>
 
                 <TouchableOpacity style={[styles.touchImg ]} onPress={ () => this.props.navigation.navigate('restProductDetails', {product_id:item.id})}>
-                    <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={[styles.sideDrawerImg ]}/>
+                    <Image source={{ uri: item.thumbnail, cache:'force-cache' }} resizeMode={'cover'} style={[styles.sideDrawerImg ]}/>
                 </TouchableOpacity>
 
                 <View style={[styles.directionColumn , {flex:1}]}>

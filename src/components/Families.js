@@ -56,8 +56,8 @@ class Families extends Component {
 
     renderItems = (item) => {
         return(
-            <TouchableOpacity onPress={ () => this.props.navigation.navigate(this.props.user ? 'familyDetails' : 'login' , {user_id: item.user_id, backRoute:'families' , catType:this.props.navigation.state.params.catType , isLoader:false})} style={[styles.notiBlock , styles.directionRow]}>
-                <Image source={{ uri: item.thumbanil }} resizeMode={'cover'} style={[styles.eventImg , {height:110}]}/>
+            <TouchableOpacity onPress={ () => this.props.navigation.navigate('familyDetails', {user_id: item.user_id, backRoute:'families' , catType:this.props.navigation.state.params.catType , isLoader:false})} style={[styles.notiBlock , styles.directionRow]}>
+                <Image source={{ uri: item.thumbanil , cache:'force-cache'}} resizeMode={'cover'} style={[styles.eventImg , {height:110}]}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
                     <Text style={[styles.headerText , styles.asfs, styles.writing  , {color:'#272727'}]}>{item.name}</Text>
                     <View style={[styles.directionRowAlignCenter, {marginVertical:10}  ]}>
