@@ -1,14 +1,9 @@
 import React, { Component } from "react";
-import {Text, View, StyleSheet, Button, Dimensions, Platform,} from 'react-native';
-import Constants from 'expo-constants';
+import {Text, View, StyleSheet} from 'react-native';
 import * as Permissions from 'expo-permissions';
 
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-const height = Dimensions.get('window').height;
-
-
-const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class QrScan extends Component {
     state = {

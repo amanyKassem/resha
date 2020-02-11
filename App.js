@@ -2,14 +2,14 @@ import React from 'react';
 import * as Font from 'expo-font';
 import {Ionicons} from '@expo/vector-icons';
 import {AppLoading} from 'expo';
+import { Asset } from 'expo-asset';
 import AppNavigator from './src/routes';
 import {Root} from "native-base";
-import {Platform , AsyncStorage} from "react-native";
+import {Platform} from "react-native";
 import './ReactotronConfig';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {store, persistedStore} from './src/store';
-import * as Permissions from 'expo-permissions';
 import { Notifications } from 'expo';
 
 
@@ -59,6 +59,25 @@ export default class App extends React.Component {
             Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
             ...Ionicons.font,
         });
+
+        await Asset.loadAsync([
+            require('./assets/images/bg_app.png'),
+            require('./assets/images/icon.png'),
+            require('./assets/images/home_active_home.png'),
+            require('./assets/images/ticket_active.png'),
+            require('./assets/images/notebook_active.png'),
+            require('./assets/images/user_active.png'),
+            require('./assets/images/home_icon_white.png'),
+            require('./assets/images/ticket_white.png'),
+            require('./assets/images/notebook_wite.png'),
+            require('./assets/images/user_non_active.png'),
+            require('./assets/images/fireworks_wite_descrpion.png'),
+            require('./assets/images/shop_white.png'),
+            require('./assets/images/delivery_truck_icon.png'),
+            require('./assets/images/family_icon.png'),
+            require('./assets/images/search_floting.png'),
+            require('./assets/images/back_white.png'),
+        ]);
         this.setState({isReady: true});
     }
 

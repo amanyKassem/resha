@@ -6,17 +6,12 @@ import {
     TouchableOpacity,
     Dimensions,
     Animated,
-    FlatList,
-    ImageBackground,
-    KeyboardAvoidingView, Platform
+    ImageBackground, Platform
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form} from 'native-base'
+import {Container, Content, Header, Right, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
-import Swiper from 'react-native-swiper';
-import StarRating from 'react-native-star-rating';
-import Modal from "react-native-modal";
 
 
 const height = Dimensions.get('window').height;

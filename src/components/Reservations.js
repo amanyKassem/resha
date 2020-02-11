@@ -10,14 +10,12 @@ import {
     ImageBackground,
     ScrollView, Platform
 } from "react-native";
-import {Container, Content,  Header, Button, Item, Input} from 'native-base'
+import {Container, Content,  Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
 import FooterSection from './FooterSection';
 import {connect} from "react-redux";
 import {getReservations, getReservationsByDay , getReservationDetails} from "../actions";
-import { DoubleBounce } from 'react-native-loader';
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 

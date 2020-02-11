@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated , ScrollView, FlatList, Platform, ImageBackground} from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label, Textarea} from 'native-base'
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated , FlatList, Platform, ImageBackground} from "react-native";
+import {Container, Content, Header, Item, Input} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
-import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getFamilies , getFilterFamilies} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -57,7 +57,7 @@ class Families extends Component {
     renderItems = (item) => {
         return(
             <TouchableOpacity onPress={ () => this.props.navigation.navigate('familyDetails', {user_id: item.user_id, backRoute:'families' , catType:this.props.navigation.state.params.catType , isLoader:false})} style={[styles.notiBlock , styles.directionRow]}>
-                <Image source={{ uri: item.thumbanil  }} resizeMode={'cover'} style={[styles.eventImg , {height:110}]}/>
+                <ProgressImg source={{ uri: item.thumbanil  }} resizeMode={'cover'} style={[styles.eventImg , {height:110}]}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
                     <Text style={[styles.headerText , styles.asfs, styles.writing  , {color:'#272727'}]}>{item.name}</Text>
                     <View style={[styles.directionRowAlignCenter, {marginVertical:10}  ]}>

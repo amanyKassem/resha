@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated , ScrollView, FlatList, ImageBackground, Platform } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label, Textarea} from 'native-base'
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated , FlatList, ImageBackground, Platform } from "react-native";
+import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
-import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getRestaurants} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -57,7 +56,7 @@ class RestCafe extends Component {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('restCafeDetails' , {user_id: item.user_id , backRoute:'restCafe' , catType:this.props.navigation.state.params.catType, isLoader:false})} style={[styles.eventTouch ]}>
-                    <Image source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <ProgressImg source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                     <View style={[styles.eventCont , { backgroundColor: '#b1aba940'}]}>
                         <Text style={[styles.whiteText , styles.BoldText , {top:-5}]}>{item.name}</Text>
                         {/*<View style={styles.familiesEvent}>*/}

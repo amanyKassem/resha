@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, I18nManager, ImageBackground, Platform,} from "react-native";
-import {Container, Content,  Header, Button, Item, Input} from 'native-base'
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated, ImageBackground, Platform,} from "react-native";
+import {Container, Content,  Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
 import FooterSection from './FooterSection';
 import {connect} from "react-redux";
 import * as Animatable from 'react-native-animatable';

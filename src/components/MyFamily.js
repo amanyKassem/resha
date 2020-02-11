@@ -1,16 +1,15 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground , Linking, Platform,} from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated, ImageBackground , Linking, Platform,} from "react-native";
+import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
-import Swiper from 'react-native-swiper';
 import Communications from 'react-native-communications';
 import {connect} from "react-redux";
 import {getShowProfile} from "../actions";
 import {NavigationEvents} from "react-navigation";
-import {DoubleBounce} from "react-native-loader";
 import * as Animatable from 'react-native-animatable';
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -126,7 +125,7 @@ class MyFamily extends Component {
                                 return (
                                     <Animatable.View key={i}  animation="fadeInUp" easing="ease-out" delay={600}>
                                         <TouchableOpacity onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id, backRoute:'myFamily' , isLoader:false})}>
-                                            <Image source={{ uri: product.image  }} style={styles.productImg} resizeMode={'cover'}/>
+                                            <ProgressImg source={{ uri: product.image  }} style={styles.productImg} resizeMode={'cover'}/>
                                         </TouchableOpacity>
                                     </Animatable.View>
                                 )
@@ -243,7 +242,7 @@ class MyFamily extends Component {
                                 <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0 , paddingTop:20} ]}>
 
                                     <Animatable.View animation="zoomIn" easing="ease-out" delay={600}>
-                                        <Image source={{ uri: this.props.showProfile.image  }} style={styles.restImg} resizeMode={'cover'}/>
+                                        <ProgressImg source={{ uri: this.props.showProfile.image  }} style={styles.restImg} resizeMode={'cover'}/>
                                     </Animatable.View>
 
 

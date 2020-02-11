@@ -1,16 +1,8 @@
 import React, { Component } from "react";
-import {Image, View, Dimensions, Platform, Text} from "react-native";
-import {  Button, Footer, Icon, FooterTab } from 'native-base'
+import {Image, View} from "react-native";
+import {  Button, Footer, FooterTab } from 'native-base'
 import styles from '../../assets/styles'
-import COLORS from "../consts/colors";
-import i18n from '../../locale/i18n'
 import {connect} from "react-redux";
-
-const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
-const isIphoneX = Platform.OS === 'ios' && height == 812 || height == 896;
-
-const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class FooterSection extends Component {
     constructor(props){

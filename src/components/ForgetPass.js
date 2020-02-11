@@ -4,23 +4,16 @@ import {
     Text,
     Image,
     TouchableOpacity,
-    Dimensions,  Platform,
     ImageBackground,
     KeyboardAvoidingView,
-    AsyncStorage
 } from "react-native";
-import {Container, Content, Form, Icon, Input, Item, Label, Toast} from 'native-base'
+import {Container, Content, Form, Input, Item, Label} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getSendForgetCode} from "../actions";
-
-
-const height = Dimensions.get('window').height;
-
-const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class ForgetPass extends Component {
     constructor(props){

@@ -1,18 +1,15 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Platform,  ImageBackground} from "react-native";
+import {View, Text, Image, TouchableOpacity, Dimensions,ImageBackground} from "react-native";
 import {Container, Content} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
-import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getSubscriptions} from "../actions";
 import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
-
-const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class FoodPayment extends Component {
     constructor(props){

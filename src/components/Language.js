@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Platform,  ImageBackground} from "react-native";
+import {View, Text, Image, TouchableOpacity, ImageBackground} from "react-native";
 import {Container, Content} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -8,9 +8,6 @@ import {connect} from "react-redux";
 import {chooseLang} from "../actions";
 
 
-const height = Dimensions.get('window').height;
-
-const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class Language extends Component {
     constructor(props){

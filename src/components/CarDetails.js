@@ -11,16 +11,14 @@ import {
     Linking,
     Platform, FlatList
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
+import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
-import Swiper from 'react-native-swiper';
 import {connect} from "react-redux";
 import {SetFavouriteEvent, getProfileDetails} from "../actions";
 import {NavigationEvents} from "react-navigation";
-import {DoubleBounce} from "react-native-loader";
 import * as Animatable from 'react-native-animatable';
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -77,7 +75,7 @@ class CarDetails extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
+        // if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
             this.setState({loader:0})
         console.log('nextProps.profileDetails.is_save' , nextProps.profileDetails.is_save)
         this.setState({ savedEvent: nextProps.profileDetails.is_save });
@@ -110,7 +108,7 @@ class CarDetails extends Component {
     renderItems = (item) => {
         return (
             <TouchableOpacity style={{marginBottom:7}} onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.product_id, backRoute:'carDetails'})}>
-                <Image source={{ uri: item.image  }} style={styles.productImg} resizeMode={'cover'}/>
+                <ProgressImg source={{ uri: item.image  }} style={styles.productImg} resizeMode={'cover'}/>
             </TouchableOpacity>
         );
     };
@@ -217,7 +215,7 @@ class CarDetails extends Component {
                                         </TouchableOpacity>
                                     </View>
 
-                                    <Image source={{ uri: this.props.profileDetails.image  }}  onLoad={() => this.setState({ loader: 0  })}  style={[styles.restImg , {width:'100%'}]} resizeMode={'cover'}/>
+                                    <ProgressImg source={{ uri: this.props.profileDetails.image  }}  style={[styles.restImg , {width:'100%'}]} resizeMode={'cover'}/>
 
 
                                     <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude)}  style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>

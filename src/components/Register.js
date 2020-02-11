@@ -4,7 +4,6 @@ import {
     Text,
     Image,
     TouchableOpacity,
-    Dimensions,
     ImageBackground,
     KeyboardAvoidingView, Platform, I18nManager
 } from "react-native";
@@ -22,9 +21,6 @@ import {register} from "../actions";
 import {connect} from "react-redux";
 
 
-const height = Dimensions.get('window').height;
-
-const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class Register extends Component {
     constructor(props){

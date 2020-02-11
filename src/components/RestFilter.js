@@ -10,7 +10,7 @@ import {
     ImageBackground,
     KeyboardAvoidingView, Platform, I18nManager
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form, Picker} from 'native-base'
+import {Container, Content, Header, Button,Right, Left, Label, Form} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'

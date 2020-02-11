@@ -6,20 +6,18 @@ import {
 	TouchableOpacity,
 	Dimensions,
 	Animated,
-	ScrollView,
 	FlatList,
 	ImageBackground,
 	Platform
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label, Textarea} from 'native-base'
+import {Container, Content, Header,Right, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
-import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getFoodTrucks} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -66,7 +64,7 @@ class Cars extends Component {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('carDetails' , { user_id: item.user_id, backRoute:'cars' ,catType:this.props.navigation.state.params.catType , isLoader:false})} style={[styles.eventTouch ]}>
-                    <Image source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <ProgressImg source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                     <View style={[styles.eventCont , { backgroundColor: '#b1aba940'}]}>
                         <Text style={[styles.whiteText , styles.BoldText , {top:-5}]}>{item.name}</Text>
                         {/*<View style={styles.familiesEvent}>*/}

@@ -11,7 +11,7 @@ import {
     KeyboardAvoidingView,
     I18nManager
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Textarea, Left, Form, Label, Picker} from 'native-base'
+import {Container, Content, Header, Item, Right, Textarea, Left, Form, Label, Picker} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'

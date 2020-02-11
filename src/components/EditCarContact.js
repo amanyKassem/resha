@@ -8,17 +8,14 @@ import {
     Animated,
     KeyboardAvoidingView,
     ImageBackground,
-    Platform, I18nManager
+    Platform
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Textarea, Left , Label, Form, Picker} from 'native-base'
+import {Container, Content, Header, Button, Item, Input, Right, Left , Label, Form} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
-import * as Permissions from 'expo-permissions';
 import Modal from "react-native-modal";
 import MapView from 'react-native-maps';
-import * as Location from 'expo-location';
-import axios from 'axios';
 import { getUpdateCarProfileSocial} from "../actions";
 import {connect} from "react-redux";
 import { DoubleBounce } from 'react-native-loader';

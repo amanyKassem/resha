@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated , ScrollView, FlatList, ImageBackground, Platform } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label, Textarea} from 'native-base'
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated , FlatList, ImageBackground, Platform } from "react-native";
+import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
-import { DoubleBounce } from 'react-native-loader';
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 

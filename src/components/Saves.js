@@ -5,7 +5,6 @@ import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import FooterSection from './FooterSection';
-import {DoubleBounce} from "react-native-loader";
 import {connect} from "react-redux";
 import {getFavouriteEvents , getFavouriteFamilies , getFavouriteRestaurants , getFavouriteFoodTrucks} from "../actions";
 import {NavigationEvents} from "react-navigation";

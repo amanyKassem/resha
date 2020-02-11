@@ -25,8 +25,6 @@ import {connect} from "react-redux";
 import { DoubleBounce } from 'react-native-loader';
 import {NavigationEvents} from "react-navigation";
 
-
-
 const height = Dimensions.get('window').height;
 
 const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';

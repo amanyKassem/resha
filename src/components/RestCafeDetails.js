@@ -20,8 +20,8 @@ import Communications from 'react-native-communications';
 import {connect} from "react-redux";
 import {SetFavouriteEvent, getProfileDetails} from "../actions";
 import {NavigationEvents} from "react-navigation";
-import {DoubleBounce} from "react-native-loader";
 import * as Animatable from 'react-native-animatable';
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -85,7 +85,7 @@ class RestCafeDetails extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
+        // if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
             this.setState({loader:0})
         console.log('nextProps.profileDetails.is_save' , nextProps.profileDetails.is_save)
         this.setState({ savedEvent: nextProps.profileDetails.is_save });
@@ -164,7 +164,7 @@ class RestCafeDetails extends Component {
                 product_id: item.product_id,
                 backRoute: 'restCafeDetails'
             })}>
-                <Image source={{uri: item.image }} style={styles.productImg} resizeMode={'cover'}/>
+                <ProgressImg source={{uri: item.image }} style={styles.productImg} resizeMode={'cover'}/>
             </TouchableOpacity>
         );
     };
@@ -306,7 +306,7 @@ class RestCafeDetails extends Component {
                                         </TouchableOpacity>
                                     </View>
 
-                                    <Image source={{ uri: this.props.profileDetails.image  }} onLoad={() => this.setState({ loader: 0  })}  style={[styles.restImg]} resizeMode={'cover'}/>
+                                    <ProgressImg source={{ uri: this.props.profileDetails.image  }}  style={[styles.restImg]} resizeMode={'cover'}/>
 
 
                                     <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude)} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>

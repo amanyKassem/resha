@@ -6,22 +6,20 @@ import {
     TouchableOpacity,
     Dimensions,
     Animated,
-    FlatList,
     ImageBackground,
-    KeyboardAvoidingView,
     Platform, Linking
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form} from 'native-base'
+import {Container, Content, Header,Right, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
-import Modal from "react-native-modal";
 import AndroidQRCode from 'react-native-qrcode';
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getDeleteTicket} from "../actions";
 import { QRCode } from 'react-native-custom-qr-codes-expo';
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -189,13 +187,12 @@ class ShowTicketQr extends Component {
 
                             </View>
 
-                            <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                    containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}
-                                    removeClippedSubviews={false}>
+                            <Swiper key={this.props.navigation.state.params.ticketsInfo.images} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
+                                    containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
                                 {
                                     this.props.navigation.state.params.ticketsInfo.images.map((img, i) =>{
                                         return (
-                                            <Image key={i} source={{ uri: img.image  }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                            <ProgressImg key={i} source={{ uri: img.image  }}  style={styles.swiperImg} resizeMode={'cover'}/>
                                         )
                                     })
                                 }
