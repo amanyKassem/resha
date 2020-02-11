@@ -11,6 +11,7 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {store, persistedStore} from './src/store';
 import { Notifications } from 'expo';
+import imagesArr from './src/consts/images'
 
 
   // Keystore password: a8a03061b1604aa281cd86143371afb1
@@ -60,26 +61,9 @@ export default class App extends React.Component {
             ...Ionicons.font,
         });
 
-        await Asset.loadAsync([
-            require('./assets/images/bg_app.png'),
-            require('./assets/images/icon.png'),
-            require('./assets/images/home_active_home.png'),
-            require('./assets/images/ticket_active.png'),
-            require('./assets/images/notebook_active.png'),
-            require('./assets/images/user_active.png'),
-            require('./assets/images/home_icon_white.png'),
-            require('./assets/images/ticket_white.png'),
-            require('./assets/images/notebook_wite.png'),
-            require('./assets/images/user_non_active.png'),
-            require('./assets/images/fireworks_wite_descrpion.png'),
-            require('./assets/images/shop_white.png'),
-            require('./assets/images/delivery_truck_icon.png'),
-            require('./assets/images/family_icon.png'),
-            require('./assets/images/search_floting.png'),
-            require('./assets/images/back_white.png'),
-        ]);
+        await Asset.loadAsync(imagesArr);
         this.setState({isReady: true});
-    }
+    };
 
     render() {
         if (!this.state.isReady) {

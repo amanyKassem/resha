@@ -137,7 +137,7 @@ class MyCar extends Component {
 									this.props.showProfile.products.map((product, i) =>{
 										return (
 											<Animatable.View key={i}  animation="fadeInUp" easing="ease-out" delay={600}>
-												<TouchableOpacity onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id, backRoute:'myCar' , isLoader:false})}>
+												<TouchableOpacity onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id, backRoute:'myCar' })}>
 													<Image source={{ uri: product.image  }} style={styles.productImg} resizeMode={'cover'}/>
 												</TouchableOpacity>
 											</Animatable.View>

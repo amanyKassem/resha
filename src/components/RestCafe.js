@@ -55,7 +55,7 @@ class RestCafe extends Component {
     renderItems = (item) => {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('restCafeDetails' , {user_id: item.user_id , backRoute:'restCafe' , catType:this.props.navigation.state.params.catType, isLoader:false})} style={[styles.eventTouch ]}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('restCafeDetails' , {user_id: item.user_id , backRoute:'restCafe' , catType:this.props.navigation.state.params.catType})} style={[styles.eventTouch ]}>
                     <ProgressImg source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                     <View style={[styles.eventCont , { backgroundColor: '#b1aba940'}]}>
                         <Text style={[styles.whiteText , styles.BoldText , {top:-5}]}>{item.name}</Text>
@@ -144,7 +144,7 @@ class RestCafe extends Component {
                     </Animated.View>
                 </Header>
 
-                <Content bounces={false} contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                <Content bounces={false} scrollEnabled={false} contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
 
