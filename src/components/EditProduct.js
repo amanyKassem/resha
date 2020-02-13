@@ -10,7 +10,7 @@ import {
     ImageBackground,
     Platform, I18nManager
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Textarea, Left , Label, Form, Picker} from 'native-base'
+import {Container, Content, Header, Item, Input, Right, Textarea, Left , Label, Form, Picker} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
@@ -248,34 +248,34 @@ class EditProduct extends Component {
                                 {image1 != null?
 
                                     <TouchableOpacity onPress={this._pickImage} style={[styles.restProfile ]}>
-                                        <Image source={{ uri: image1 , cache:'force-cache'}} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                        <Image source={{ uri: image1  }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
                                     </TouchableOpacity>
 
                                     :
                                     <TouchableOpacity onPress={this._pickImage} style={[styles.restProfile ]}>
-                                        <Image source={{uri : this.state.prodImg1, cache:'force-cache'}} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                        <Image source={{uri : this.state.prodImg1 }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
                                     </TouchableOpacity>
                                 }
                                 {image2 != null?
 
                                     <TouchableOpacity onPress={this._pickImage2} style={[styles.restProfile ]}>
-                                        <Image source={{ uri: image2 , cache:'force-cache'}} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                        <Image source={{ uri: image2  }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
                                     </TouchableOpacity>
 
                                     :
                                     <TouchableOpacity onPress={this._pickImage2} style={[styles.restProfile ]}>
-										<Image source={{uri : this.state.prodImg2, cache:'force-cache'}} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+										<Image source={{uri : this.state.prodImg2 }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
 									</TouchableOpacity>
                                 }
                                 {image3 != null?
 
                                     <TouchableOpacity onPress={this._pickImage3} style={[styles.restProfile ]}>
-                                        <Image source={{ uri: image3, cache:'force-cache' }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                        <Image source={{ uri: image3  }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
                                     </TouchableOpacity>
 
                                     :
                                     <TouchableOpacity onPress={this._pickImage3} style={[styles.restProfile ]}>
-										<Image source={{uri : this.state.prodImg3, cache:'force-cache'}} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+										<Image source={{uri : this.state.prodImg3 }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
 									</TouchableOpacity>
                                 }
                             </View>

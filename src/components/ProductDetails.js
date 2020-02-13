@@ -1,17 +1,16 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground, Linking, Platform,} from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form} from 'native-base'
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated, ImageBackground, Linking, Platform,} from "react-native";
+import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
 import StarRating from 'react-native-star-rating';
 import Communications from 'react-native-communications';
 import {connect} from "react-redux";
 import {SetFavouriteEvent, getShowProduct , getRateProduct} from "../actions";
 import {NavigationEvents} from "react-navigation";
-import {DoubleBounce} from "react-native-loader";
 import * as Animatable from 'react-native-animatable';
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -58,6 +57,7 @@ class ProductDetails extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
+        this.setState({ loader: 0});
         console.log('nextProps.showProduct.is_save' , nextProps);
 
         this.setState({ starsCount : nextProps.showProduct.rates , userRate : nextProps.showProduct.user.rates});
@@ -169,7 +169,7 @@ class ProductDetails extends Component {
                                     <View style={styles.directionRowSpace}>
                                         <View style={styles.directionRowAlignCenter}>
                                             <View style={styles.borderImg}>
-                                                <Image source={{ uri: this.props.showProduct.user.image , cache:'force-cache'}} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                                                <ProgressImg source={{ uri: this.props.showProduct.user.image  }} style={[styles.footSearchImg]} resizeMode={'cover'} />
                                             </View>
                                             <View style={styles.directionColumn}>
                                                 <Text style={[styles.boldGrayText , styles.normalText , styles.mb10, styles.asfs]}>{this.props.showProduct.user.user_name}</Text>
@@ -190,12 +190,12 @@ class ProductDetails extends Component {
                                         </TouchableOpacity>
                                     </View>
 
-                                    <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
+                                    <Swiper key={this.props.showProduct.images.length} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
                                             containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
                                         {
                                             this.props.showProduct.images.map((img, i) =>{
                                                 return (
-                                                    <Image key={i} source={{ uri: img.image, cache:'force-cache' }} onLoad={() => this.setState({ loader: 0  })}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                    <ProgressImg key={i} source={{ uri: img.image  }}   style={styles.swiperImg} resizeMode={'cover'}/>
                                                 )
                                             })
                                         }

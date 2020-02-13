@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import {View, Text, Image, TouchableOpacity, Dimensions, Animated , ScrollView, FlatList, ImageBackground, Platform,} from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label, Textarea} from 'native-base'
+import {Container, Content, Header, Right, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import {connect} from "react-redux";
 import {getOwnerEvent} from "../actions";
-import {DoubleBounce} from "react-native-loader";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 
@@ -38,7 +37,7 @@ class MyEvents extends Component {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
                 <TouchableOpacity onPress={ () => this.props.navigation.navigate('showTicket' , {eventType: this.state.activeType , event_id: item.id})} style={[styles.notiBlock , styles.directionRow]}>
-                    <Image source={{ uri: item.thumbnail , cache:'force-cache'}} resizeMode={'cover'} style={styles.eventImg}/>
+                    <Image source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={styles.eventImg}/>
                     <View style={[styles.directionColumn , {flex:1}]}>
                         <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
                         <View style={[styles.directionRowAlignCenter  ]}>

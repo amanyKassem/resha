@@ -2,15 +2,16 @@ import React from 'react';
 import * as Font from 'expo-font';
 import {Ionicons} from '@expo/vector-icons';
 import {AppLoading} from 'expo';
+import { Asset } from 'expo-asset';
 import AppNavigator from './src/routes';
 import {Root} from "native-base";
-import {Platform , AsyncStorage} from "react-native";
+import {Platform} from "react-native";
 import './ReactotronConfig';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {store, persistedStore} from './src/store';
-import * as Permissions from 'expo-permissions';
 import { Notifications } from 'expo';
+import imagesArr from './src/consts/images'
 
 
   // Keystore password: a8a03061b1604aa281cd86143371afb1
@@ -59,8 +60,10 @@ export default class App extends React.Component {
             Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
             ...Ionicons.font,
         });
+
+        await Asset.loadAsync(imagesArr);
         this.setState({isReady: true});
-    }
+    };
 
     render() {
         if (!this.state.isReady) {

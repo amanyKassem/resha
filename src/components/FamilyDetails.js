@@ -12,16 +12,14 @@ import {
     Linking,
     FlatList
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
+import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import { DoubleBounce } from 'react-native-loader';
-import COLORS from "../consts/colors";
 import {connect} from "react-redux";
 import {SetFavouriteEvent, getProfileDetails} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
-
+import ProgressImg from 'react-native-image-progress';
 
 const height = Dimensions.get('window').height;
 
@@ -66,7 +64,7 @@ class FamilyDetails extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
+        // if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
             this.setState({loader:0})
         // console.log('nextProps.profileDetails.is_save' , nextProps.profileDetails.is_save)
         // this.setState({ savedEvent: nextProps.profileDetails.is_save });
@@ -98,7 +96,7 @@ class FamilyDetails extends Component {
     renderItems = (item) => {
         return (
             <TouchableOpacity style={{marginBottom:7}} onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.product_id , backRoute:'familyDetails'})}>
-                <Image source={{ uri: item.image }} style={styles.productImg} resizeMode={'cover'}/>
+                <ProgressImg source={{ uri: item.image }} style={styles.productImg} resizeMode={'cover'}/>
             </TouchableOpacity>
         );
     };
@@ -206,7 +204,15 @@ class FamilyDetails extends Component {
                                         </TouchableOpacity>
                                     </View>
 
-                                    <Image source={{ uri: this.props.profileDetails.image }} onLoad={() => this.setState({ loader: 0  })} style={[styles.restImg , {width:'100%'}]} resizeMode={'cover'}/>
+                                    <ProgressImg source={{ uri: this.props.profileDetails.image }}
+                                           //  indicator={ProgressBar}
+                                           // indicatorProps={{
+                                           //     size: 80,
+                                           //     borderWidth: 0,
+                                           //     color: 'rgba(150, 150, 150, 1)',
+                                           //     unfilledColor: 'rgba(200, 200, 200, 0.2)'
+                                           // }}
+                                           style={[styles.restImg , {width:'100%'}]} resizeMode={'cover'}/>
 
 
 

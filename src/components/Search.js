@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, FlatList, ImageBackground, Platform } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form} from 'native-base'
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated, ImageBackground, Platform } from "react-native";
+import {Container, Content, Header, Item, Input, Right, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'

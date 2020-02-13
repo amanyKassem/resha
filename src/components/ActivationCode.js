@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions,  ImageBackground , KeyboardAvoidingView, AsyncStorage , Platform} from "react-native";
-import {Container, Content, Form, Icon, Input, Item, Label, Toast} from 'native-base'
+import {View, Text, Image, TouchableOpacity, ImageBackground , KeyboardAvoidingView, AsyncStorage } from "react-native";
+import {Container, Content, Form,Input, Item, Label, Toast} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
@@ -11,9 +11,6 @@ import axios from "axios";
 import CONST from "../consts";
 
 
-const height = Dimensions.get('window').height;
-
-const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class ActivationCode extends Component {
     constructor(props){

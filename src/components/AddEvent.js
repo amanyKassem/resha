@@ -10,7 +10,7 @@ import {
     ImageBackground,
     KeyboardAvoidingView, Platform
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label} from 'native-base'
+import {Container, Content, Header, Button, Item, Input, Right,  Left, Form, Label} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
@@ -20,7 +20,6 @@ import * as Permissions from 'expo-permissions';
 import MapView from 'react-native-maps';
 import * as Location from 'expo-location';
 import axios from 'axios';
-import {DoubleBounce} from "react-native-loader";
 import {NavigationEvents} from "react-navigation";
 
 

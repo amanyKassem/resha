@@ -11,17 +11,16 @@ import {
 	Linking,
 	Platform
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
+import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
 import StarRating from 'react-native-star-rating';
-import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getEventDetails , setSaveEvent} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -70,7 +69,7 @@ class BookTicket extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
+        // if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
             this.setState({loader:0})
         console.log('nextProps.eventDet.is_save' , nextProps.eventDet.is_save)
         this.setState({ loader: nextProps.key , savedEvent: nextProps.eventDet.is_save });
@@ -195,7 +194,7 @@ class BookTicket extends Component {
                                     <View style={styles.directionRowSpace}>
                                         <View style={styles.directionRowAlignCenter}>
                                             <View style={styles.borderImg}>
-                                                <Image source={{ uri: this.props.eventDet.user.avatar, cache:'force-cache' }} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                                                <Image source={{ uri: this.props.eventDet.user.avatar }} style={[styles.footSearchImg]} resizeMode={'cover'} />
                                             </View>
                                             <View style={styles.directionColumn}>
                                                 <Text style={[styles.boldGrayText , styles.normalText , styles.mb10, styles.asfs]}>{this.props.eventDet.user.user_name}</Text>
@@ -217,12 +216,12 @@ class BookTicket extends Component {
 
                                     </View>
 
-                                    <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
+                                    <Swiper key={this.props.eventDet.images.length} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
                                             containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
                                         {
                                             this.props.eventDet.images.map((img, i) =>{
                                                 return (
-                                                    <Image key={i} source={{ uri: img.image , cache:'force-cache'}}  onLoad={() => this.setState({ loader: 0  })} style={styles.swiperImg} resizeMode={'cover'}/>
+                                                    <ProgressImg key={i} source={{ uri: img.image  }}  style={styles.swiperImg} resizeMode={'cover'}/>
                                                 )
                                             })
                                         }

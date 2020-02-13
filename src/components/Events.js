@@ -3,12 +3,11 @@ import {View, Text, Image, TouchableOpacity, Dimensions, Animated , FlatList,Pla
 import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
-import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getEvents} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -57,8 +56,8 @@ class Events extends Component {
     renderItems = (item) => {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
-                <TouchableOpacity onPress={ () => this.props.navigation.navigate( 'bookTicket', { event_id: item.id , backRoute:'events', isLoader:false})} style={[styles.notiBlock , styles.directionRow]}>
-                    <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={styles.eventImg}/>
+                <TouchableOpacity onPress={ () => this.props.navigation.navigate( 'bookTicket', { event_id: item.id , backRoute:'events'})} style={[styles.notiBlock , styles.directionRow]}>
+                    <ProgressImg source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={styles.eventImg}/>
                     <View style={[styles.directionColumn , {flex:1}]}>
                         <Text style={[styles.headerText, styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
                         <View style={[styles.directionRowAlignCenter ]}>
@@ -155,7 +154,7 @@ class Events extends Component {
                 </Header>
 
 
-                <Content bounces={false} contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                <Content bounces={false} scrollEnabled={false} contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
 

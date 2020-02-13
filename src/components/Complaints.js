@@ -6,7 +6,6 @@ import {
     TouchableOpacity,
     Dimensions,
     Animated,
-    FlatList,
     ImageBackground,
     KeyboardAvoidingView, Platform, I18nManager
 } from "react-native";
@@ -14,16 +13,13 @@ import {
     Container,
     Content,
     Header,
-    Button,
     Item,
     Input,
     Right,
-    Icon,
     Left,
     Form,
     Label,
     Textarea,
-    Toast
 } from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'

@@ -6,15 +6,12 @@ import {
 	TouchableOpacity,
 	Dimensions,
 	Animated,
-	FlatList,
 	ImageBackground,
 	Platform,
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left} from 'native-base'
+import {Container, Content, Header, Right, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
-import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getAboutApp} from "../actions";
 import * as Animatable from "./Events";

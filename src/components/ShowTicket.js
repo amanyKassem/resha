@@ -6,11 +6,10 @@ import {
     TouchableOpacity,
     Dimensions,
     Animated,
-    FlatList,
     ImageBackground,
     Linking, Platform
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label} from 'native-base'
+import {Container, Content, Header, Right, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
@@ -20,8 +19,8 @@ import Modal from "react-native-modal";
 import {NavigationEvents} from "react-navigation";
 import {connect} from "react-redux";
 import {getOwnerEventsDetails , getCancelEvent} from "../actions";
-import {DoubleBounce} from "react-native-loader";
 import * as Animatable from 'react-native-animatable';
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -192,12 +191,12 @@ class ShowTicket extends Component {
                                         </TouchableOpacity>
                                     </View>
 
-                                    <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
+                                    <Swiper key={this.props.ownerEventsDetails.images.length} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
                                             containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
                                         {
                                             this.props.ownerEventsDetails.images.map((img, i) =>{
                                                 return (
-                                                    <Image key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                    <ProgressImg key={i} source={{ uri: img.image }}  style={styles.swiperImg} resizeMode={'cover'}/>
                                                 )
                                             })
                                         }

@@ -25,9 +25,7 @@ import {connect} from "react-redux";
 import { DoubleBounce } from 'react-native-loader';
 import {NavigationEvents} from "react-navigation";
 
-
 const height = Dimensions.get('window').height;
-
 const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class EditRestProfile extends Component {
@@ -286,12 +284,12 @@ class EditRestProfile extends Component {
                            {image != null?
 
                                 <TouchableOpacity onPress={this._pickImage} style={[styles.restProfile ]}>
-                                    <Image source={{ uri: image }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                    <Image source={{ uri: image  }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
                                 </TouchableOpacity>
 
                                 :
                                 <TouchableOpacity onPress={this._pickImage} style={[styles.restProfile ]}>
-                                    <Image source={{ uri:this.props.navigation.state.params.image }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
+                                    <Image source={{ uri:this.props.navigation.state.params.image  }} resizeMode={'cover'} style={styles.sideDrawerImg}/>
                                 </TouchableOpacity>
                             }
                             <Text style={[styles.blueText, styles.normalText , styles.asc , styles.tAC ]}>{ i18n.t('uploadPhoto') }</Text>

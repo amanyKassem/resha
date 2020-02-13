@@ -9,20 +9,17 @@ import {
     FlatList,
     ImageBackground,
     ScrollView,Platform,
-    StyleSheet
 } from "react-native";
-import {Container, Content,  Header, Button, Item, Input} from 'native-base'
+import {Container, Content,  Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import {getOrganizerEvents, getOrganizerRejectedEvents} from "../actions";
-import { DoubleBounce } from 'react-native-loader';
 import {NavigationEvents} from "react-navigation";
 import {connect} from "react-redux";
 import * as Animatable from 'react-native-animatable';
 
 const height = Dimensions.get('window').height;
-const width = Dimensions.get('window').width;
 
 
 const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
@@ -135,7 +132,7 @@ class MyOrders extends Component {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('orderDetails' , {orderType: this.state.tabActiveType ,event_id: item.id} )} style={[styles.eventTouch ]}>
-                    <Image source={{ uri: item.thumbnail , cache:'force-cache'}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <Image source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                     <View style={[styles.eventCont ]}>
                         <Text style={[styles.whiteText , styles.BoldText]}>{item.name}</Text>
                         <View style={styles.dateEvent}>

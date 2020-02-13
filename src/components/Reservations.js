@@ -10,14 +10,12 @@ import {
     ImageBackground,
     ScrollView, Platform
 } from "react-native";
-import {Container, Content,  Header, Button, Item, Input} from 'native-base'
+import {Container, Content,  Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
 import FooterSection from './FooterSection';
 import {connect} from "react-redux";
 import {getReservations, getReservationsByDay , getReservationDetails} from "../actions";
-import { DoubleBounce } from 'react-native-loader';
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 
@@ -127,7 +125,7 @@ class Reservations extends Component {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
                 <TouchableOpacity onPress={() => this.goToTicket(item.ticket_id)} style={[styles.eventTouch ]}>
-                    <Image source={{ uri: item.thumbnail , cache:'force-cache'}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <Image source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                     <View style={[styles.eventCont ]}>
                         <Text style={[styles.whiteText , styles.BoldText]}>{item.event_name}</Text>
                         <View style={styles.dateEvent}>

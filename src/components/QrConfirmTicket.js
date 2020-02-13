@@ -6,21 +6,17 @@ import {
     TouchableOpacity,
     Dimensions,
     Animated,
-    FlatList,
-    ImageBackground,
-    KeyboardAvoidingView, Linking, Platform,
+    ImageBackground, Linking, Platform,
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form} from 'native-base'
+import {Container, Content, Header, Right, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
-import Modal from "react-native-modal";
-import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
-import {getEventDetails, getTicketDetails, setSaveEvent} from "../actions";
+import { getTicketDetails} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -171,12 +167,12 @@ class QrConfirmTicket extends Component {
 
                                     </View>
 
-                                    <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
+                                    <Swiper key={this.props.ticketDetails.images} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
                                             containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
                                         {
                                             this.props.ticketDetails.images.map((img, i) =>{
                                                 return (
-                                                    <Image key={i} source={{ uri: img.image , cache:'force-cache'}}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                    <ProgressImg key={i} source={{ uri: img.image  }}  style={styles.swiperImg} resizeMode={'cover'}/>
                                                 )
                                             })
                                         }
@@ -223,7 +219,7 @@ class QrConfirmTicket extends Component {
                                     <View style={styles.directionRowSpace}>
                                         <View style={styles.directionRowAlignCenter}>
                                             <View style={styles.borderImg}>
-                                                <Image source={{ uri: this.props.ticketDetails.user_avatar , cache:'force-cache'}}
+                                                <Image source={{ uri: this.props.ticketDetails.user_avatar  }}
                                                        style={[styles.footSearchImg]} resizeMode={'cover'}/>
                                             </View>
                                             <Text style={[styles.boldGrayText, styles.normalText]}>{this.props.ticketDetails.user}</Text>

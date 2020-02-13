@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions,  ImageBackground , AsyncStorage , KeyboardAvoidingView, Platform} from "react-native";
-import {Button, Container, Content, Form, Input, Item, Label, Toast} from 'native-base'
+import {View, Text, Image, TouchableOpacity, ImageBackground , AsyncStorage , KeyboardAvoidingView} from "react-native";
+import {Container, Content, Form, Input, Item, Label, Toast} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
@@ -11,9 +11,7 @@ import { userLogin, profile } from '../actions'
 import * as Permissions from 'expo-permissions';
 import { Notifications } from 'expo';
 
-const height = Dimensions.get('window').height;
 
-const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class Login extends Component {
     constructor(props){

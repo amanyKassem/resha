@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, I18nManager, ImageBackground, Platform,} from "react-native";
-import {Container, Content,  Header, Button, Item, Input} from 'native-base'
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated, ImageBackground, Platform,} from "react-native";
+import {Container, Content,  Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
 import FooterSection from './FooterSection';
 import {connect} from "react-redux";
 import * as Animatable from 'react-native-animatable';
@@ -96,7 +95,7 @@ class Profile extends Component {
                             <View style={styles.sideImgView}>
                                 <Animatable.View animation="fadeInDown" easing="ease-out" delay={500} style={styles.cutCircle}>
                                     <View style={styles.sideProfileImg}>
-                                        <Image source={{ uri : this.props.user.avatar , cache:'force-cache'}} resizeMode={'cover'} style={styles.drawImg}/>
+                                        <Image source={{ uri : this.props.user.avatar  }} resizeMode={'cover'} style={styles.drawImg}/>
                                     </View>
                                 </Animatable.View>
                                 <Text style={styles.sideName}>{ this.props.user.name }</Text>

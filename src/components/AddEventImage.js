@@ -7,23 +7,15 @@ import {
     Dimensions,
     Animated,
     FlatList,
-    ImageBackground,
-    KeyboardAvoidingView, ImageEditor, ImageStore, Platform, I18nManager
+    ImageBackground, ImageEditor, ImageStore, Platform, I18nManager
 } from "react-native";
 import {
     Container,
     Content,
     Header,
-    Button,
-    Item,
-    Input,
     Right,
-    Textarea,
     Left,
-    Form,
     Label,
-    Picker,
-    Icon
 } from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -205,7 +197,7 @@ class AddEventImage extends Component {
                 <TouchableOpacity style={{ height: 100 }} onPress={() => this.selectImage(item.md5)}>
                     <Image
                         style={{ height: 100, width: '100%', borderRadius: 3 }}
-                        source={{uri: item.file , cache:'force-cache'}}
+                        source={{uri: item.file }}
                     />
                 </TouchableOpacity>
             </View>

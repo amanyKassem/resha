@@ -6,18 +6,15 @@ import {
     TouchableOpacity,
     Dimensions,
     Animated,
-    FlatList,
     ImageBackground,
-	Platform,
-    KeyboardAvoidingView, Linking
+	Platform, Linking
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Label, Form} from 'native-base'
+import {Container, Content, Header,  Right, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
-import Modal from "react-native-modal";
 import {NavigationEvents} from "react-navigation";
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -140,12 +137,12 @@ class ConfirmTicket extends Component {
 
                             </View>
 
-                            <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
+                            <Swiper key={this.props.navigation.state.params.event_info.images} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
                                     containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
                                 {
                                     this.props.navigation.state.params.event_info.images.map((img, i) =>{
                                         return (
-                                            <Image key={i} source={{ uri: img.image , cache:'force-cache'}}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                            <ProgressImg key={i} source={{ uri: img.image  }}  style={styles.swiperImg} resizeMode={'cover'}/>
                                         )
                                     })
                                 }

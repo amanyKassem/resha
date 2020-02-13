@@ -6,17 +6,14 @@ import {
 	TouchableOpacity,
 	Dimensions,
 	Animated,
-	TouchableHighlight,
 	FlatList,
-	ImageBackground,
-	StyleSheet, Platform
+	ImageBackground, Platform
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label, Textarea} from 'native-base'
+import {Container, Content, Header, Right, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import Modal from "react-native-modal";
-import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getAuthProducts , getDeleteProduct} from "../actions";
 import {NavigationEvents} from "react-navigation";
@@ -83,7 +80,7 @@ class CarProducts extends Component {
             <View style={[styles.notiBlock , styles.directionRow]}>
 
                 <TouchableOpacity style={[styles.touchImg ]} onPress={ () => this.props.navigation.navigate('restProductDetails', {product_id:item.id})}>
-                    <Image source={{ uri: item.thumbnail, cache:'force-cache' }} resizeMode={'cover'} style={[styles.sideDrawerImg ]}/>
+                    <Image source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={[styles.sideDrawerImg ]}/>
                 </TouchableOpacity>
 
                 <View style={[styles.directionColumn , {flex:1}]}>

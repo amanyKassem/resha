@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated , ScrollView, FlatList, ImageBackground, Platform,} from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label, Textarea} from 'native-base'
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated , FlatList, ImageBackground, Platform,} from "react-native";
+import {Container, Content, Header,Item, Input} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
-import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getProfileProducts , getFilterProducts} from "../actions";
 import {NavigationEvents} from "react-navigation";
@@ -59,7 +58,7 @@ class Products extends Component {
     renderItems = (item) => {
         return(
             <TouchableOpacity onPress={ () => this.props.navigation.navigate('productDetails' , {product_id:item.id, backRoute:'products'})} style={[styles.notiBlock , styles.directionRow]}>
-                <Image source={{ uri: item.thumbnail , cache:'force-cache'}} resizeMode={'cover'} style={[styles.eventImg ]}/>
+                <Image source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={[styles.eventImg ]}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
                     <Text style={[styles.headerText , styles.asfs, styles.writing  , {color:'#272727'}]}>{item.name}</Text>
                     <View style={[styles.directionRowAlignCenter]}>

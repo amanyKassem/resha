@@ -1,17 +1,15 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, Share, ImageBackground, Platform } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Switch, Left, Label, Form} from 'native-base'
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated,  ImageBackground, Platform } from "react-native";
+import {Container, Content, Header,Right, Switch, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
-import StarRating from 'react-native-star-rating';
-import Communications from 'react-native-communications';
 import {connect} from "react-redux";
 import {getShowProduct , getProductAvailability} from "../actions";
 import {NavigationEvents} from "react-navigation";
-import {DoubleBounce} from "react-native-loader";
 import * as Animatable from 'react-native-animatable';
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -53,7 +51,7 @@ class RestProductDetails extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
+        // if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
             this.setState({loader:0})
         this.setState({ SwitchOnValueHolder: nextProps.showProduct.available });
     }
@@ -135,12 +133,12 @@ class RestProductDetails extends Component {
                             this.props.showProduct?
                                 <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
 
-                                    <Swiper dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
+                                    <Swiper key={this.props.showProduct.images} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
                                             containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
                                         {
                                             this.props.showProduct.images.map((img, i) =>{
                                                 return (
-                                                    <Image key={i} source={{ uri: img.image , cache:'force-cache'}} onLoad={() => this.setState({ loader: 0  })} style={styles.swiperImg} resizeMode={'cover'}/>
+                                                    <ProgressImg key={i} source={{ uri: img.image  }} style={styles.swiperImg} resizeMode={'cover'}/>
                                                 )
                                             })
                                         }

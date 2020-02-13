@@ -7,21 +7,17 @@ import {
     Dimensions,
     Animated,
     Platform,
-    ImageBackground,
-    I18nManager, KeyboardAvoidingView
+    ImageBackground, KeyboardAvoidingView
 } from "react-native";
 import {
     Container,
     Content,
     Header,
-    Button,
     Item,
     Input,
     Right,
-    Switch,
     Left,
     Form,
-    Picker,
     Label,
     Toast
 } from 'native-base'
@@ -34,7 +30,6 @@ import {getChangePassword} from "../actions";
 
 
 const height = Dimensions.get('window').height;
-const width = Dimensions.get('window').width;
 const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 

@@ -3,12 +3,11 @@ import {View, Text, Image, TouchableOpacity, Dimensions, Animated, ImageBackgrou
 import {Container, Content,  Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
 import FooterSection from './FooterSection';
-import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getHomeCounts} from "../actions";
 import * as Animatable from 'react-native-animatable';
+import ProgressImg from 'react-native-image-progress';
 
 
 
@@ -123,7 +122,7 @@ class Home extends Component {
 
 										<Animatable.View animation="zoomIn" easing="ease-out" delay={300}>
 											<TouchableOpacity onPress={() => this.props.navigation.navigate('events')} style={[styles.imgParent , styles.w100]}>
-												<Image source={{ uri: this.props.homeData.events_image , cache:'force-cache'}} style={[styles.w100 , {height:180}]} resizeMode={'cover'} />
+												<ProgressImg source={{ uri: this.props.homeData.events_image  }} style={[styles.w100 , {height:180}]} resizeMode={'cover'} />
 												<View style={styles.overlay}>
 													<Image source={require('../../assets/images/fireworks_wite_descrpion.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
 													<Text style={[styles.whiteText, styles.normalText , {fontSize:24}]}>{this.props.homeData.events_name}</Text>
@@ -136,7 +135,7 @@ class Home extends Component {
 											<View style={[styles.directionColumn , {width: '47%'}] }>
 												<Animatable.View animation="fadeInRight" easing="ease-out" delay={500}>
 													<TouchableOpacity onPress={() => this.props.navigation.navigate('restCafe' ,{catType : 6})} style={[styles.imgParent , {width: '100%'}]}>
-														<Image source={{ uri: this.props.homeData.resturants_image, cache:'force-cache' }} style={[styles.w100 , {height:180}]} resizeMode={'cover'} />
+														<ProgressImg source={{ uri: this.props.homeData.resturants_image  }} style={[styles.w100 , {height:180}]} resizeMode={'cover'} />
 														<View style={[styles.overlay , {justifyContent:'flex-end' , paddingBottom:30}]}>
 															<Image source={require('../../assets/images/shop_white.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
 															<Text style={[styles.whiteText, styles.normalText , {fontSize:16}]}>{this.props.homeData.resturants_name}</Text>
@@ -146,7 +145,7 @@ class Home extends Component {
 												</Animatable.View>
 												<Animatable.View animation="fadeInRight" easing="ease-out" delay={500}>
 													<TouchableOpacity onPress={() => this.props.navigation.navigate('cars',{catType : 7})} style={[styles.imgParent , {width: '100%'}]}>
-														<Image source={{ uri: this.props.homeData.trucks_image , cache:'force-cache'}} style={[styles.w100 , {height:180}]} resizeMode={'cover'} />
+														<ProgressImg source={{ uri: this.props.homeData.trucks_image  }} style={[styles.w100 , {height:180}]} resizeMode={'cover'} />
 														<View style={[styles.overlay , {justifyContent:'flex-end' , paddingBottom:30}]}>
 															<Image source={require('../../assets/images/delivery_truck_icon.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
 															<Text style={[styles.whiteText, styles.normalText , {fontSize:20}]}>{this.props.homeData.trucks_name}</Text>
@@ -159,7 +158,7 @@ class Home extends Component {
 
 											<Animatable.View animation="fadeInLeft" easing="ease-out" delay={500} style={{width: '47%'}}>
 												<TouchableOpacity onPress={() => this.props.navigation.navigate('productiveFamilies',{catType : 8})} style={[styles.imgParent , {width: '100%'}]}>
-													<Image source={{ uri: this.props.homeData.families_image, cache:'force-cache' }} style={[styles.w100 , {height:382}]} resizeMode={'cover'} />
+													<ProgressImg source={{ uri: this.props.homeData.families_image  }} style={[styles.w100 , {height:382}]} resizeMode={'cover'} />
 													<View style={[styles.overlay , {justifyContent:'flex-end' , paddingBottom:30}]}>
 														<Image source={require('../../assets/images/family_icon.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
 														<Text style={[styles.whiteText, styles.normalText , {fontSize:19}]}>{this.props.homeData.families_name}</Text>

@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import {View, Text, Image, TouchableOpacity, Dimensions, Animated, FlatList, ImageBackground, Platform,} from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left} from 'native-base'
+import {Container, Content, Header, Right, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
-import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getSearchSuggestedEvents} from "../actions";
 import * as Animatable from 'react-native-animatable';
@@ -54,7 +52,7 @@ class ProposedEvents extends Component {
     renderItems = (item) => {
         return(
             <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookTicket', { event_id: item.id })} style={[styles.notiBlock , styles.directionRow]}>
-                <Image source={{ uri: item.thumbnail , cache:'force-cache'}} resizeMode={'cover'} style={styles.eventImg}/>
+                <Image source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={styles.eventImg}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
                     <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727' , lineHeight:23}]}>{item.name}</Text>
                     <View style={[styles.directionRowAlignCenter  ]}>

@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated , ScrollView, FlatList, ImageBackground, Platform,} from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Icon, Left, Form, Label, Textarea} from 'native-base'
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated , FlatList, ImageBackground, Platform,} from "react-native";
+import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
-import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {getFamiliesCategories} from "../actions";
 import * as Animatable from 'react-native-animatable';
+import ProgressImg from 'react-native-image-progress';
 
 
 const height = Dimensions.get('window').height;
@@ -55,7 +54,7 @@ class ProductiveFamilies extends Component {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('families' , { category_id: item.id, backRoute:'productiveFamilies' , catType:this.props.navigation.state.params.catType})} style={[styles.eventTouch ]}>
-                    <Image source={{ uri: item.icon , cache:'force-cache'}} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
+                    <ProgressImg source={{ uri: item.icon  }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                     <View style={[styles.familiesCont ]}>
                        <View style={styles.directionColumn}>
                            <Text style={[styles.whiteText , styles.BoldText , styles.asfs , styles.writing , {fontSize:16}]}>{item.name}</Text>
@@ -140,7 +139,7 @@ class ProductiveFamilies extends Component {
                 </Header>
 
 
-                <Content bounces={false}  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                <Content bounces={false} scrollEnabled={false} contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
 
                         <View style={[styles.directionRowSpace , styles.w100  , styles.mt70, {paddingHorizontal:20 , paddingVertical:15}]}>
