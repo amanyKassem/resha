@@ -71,7 +71,8 @@ class DrawerCustomization extends Component {
     render() {
 
         let { user } = this.props;
-        if (user === null)
+        console.log('ban user', user);
+        if (user === null || user === undefined)
             user = {
                 avatar:  'https://www.timeshighereducation.com/sites/default/files/default_images/default-avatar_1.png',
                 name: i18n.t('guest')

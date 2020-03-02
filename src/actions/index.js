@@ -62,3 +62,4 @@ export * from './FilterRestaurantsAction';
 export * from './ConfirmSubscriptionAction';
 export * from './StopNotificationAction';
 export * from './TicketDetailsAction';
+export * from './NotificationCountAction';

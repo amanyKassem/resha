@@ -6,6 +6,7 @@ import i18n from '../../locale/i18n'
 import FooterSection from './FooterSection';
 import {connect} from "react-redux";
 import * as Animatable from 'react-native-animatable';
+import {getNotificationCount} from "../actions";
 
 
 const height = Dimensions.get('window').height;
@@ -20,6 +21,16 @@ class Profile extends Component {
             backgroundColor: new Animated.Value(0),
             availabel: 0,
         }
+    }
+    componentWillMount() {
+        const token = this.props.auth ? this.props.auth.data.token : null;
+        this.props.getNotificationCount( this.props.lang , token , this.props);
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+
+        if(nextProps.notificationCount)
+            this.setState({notify:nextProps.notificationCount.notify})
     }
 
     static navigationOptions = () => ({
@@ -82,7 +93,7 @@ class Profile extends Component {
                         </TouchableOpacity>
                         <Text style={[styles.headerText]}>{ i18n.t('profile') }</Text>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('notifications')}   style={styles.headerBtn}>
-                            <Image source={require('../../assets/images/bell_active.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+                            <Image source={this.state.notify ? require('../../assets/images/bell_active.png') :  require('../../assets/images/bell_non_active.png') } style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>
                     </Animated.View>
                 </Header>
@@ -152,10 +163,12 @@ class Profile extends Component {
 
 
 
-const mapStateToProps = ({ profile, lang }) => {
+const mapStateToProps = ({ profile, lang , auth , notificationCount}) => {
     return {
         user: profile.user,
         lang: lang.lang,
+        auth: auth.user,
+        notificationCount: notificationCount.notificationCount,
     };
 };
-export default connect(mapStateToProps, {})(Profile);
+export default connect(mapStateToProps, {getNotificationCount})(Profile);
