@@ -10,7 +10,21 @@ import {
     ImageBackground,
     Platform, I18nManager
 } from "react-native";
-import {Container, Content, Header, Button, Item, Input, Right, Textarea, Left , Label, Form, Picker} from 'native-base'
+import {
+    Container,
+    Content,
+    Header,
+    Button,
+    Item,
+    Input,
+    Right,
+    Textarea,
+    Left,
+    Label,
+    Form,
+    Picker,
+    Switch
+} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
@@ -46,7 +60,8 @@ class EditCarProfile extends Component {
             hasLocationPermissions: false,
             initMap: true,
             moreDet: '',
-            isSubmitted: false
+            isSubmitted: false,
+            SwitchOnValueHolder:false,
         }
     }
 
@@ -59,7 +74,9 @@ class EditCarProfile extends Component {
         await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
     };
-
+    cancelLocation = () => {
+        this.setState({SwitchOnValueHolder:!this.state.SwitchOnValueHolder})
+    };
     _pickImage = async () => {
 
         this.askPermissionsAsync();
@@ -85,12 +102,14 @@ class EditCarProfile extends Component {
     async componentWillMount() {
 
         // alert(this.props.navigation.state.params.category)
-		this.setState({isSubmitted: false ,
-			restName: this.props.navigation.state.params.name,
-			location: this.props.navigation.state.params.address,
-			moreDet: this.props.navigation.state.params.details,
-			category: this.props.navigation.state.params.category,
-		})
+
+        this.setState({isSubmitted: false ,
+            restName: this.props.navigation.state.params.name,
+            location: this.props.navigation.state.params.address,
+            moreDet: this.props.navigation.state.params.details,
+            category: this.props.navigation.state.params.category,
+        })
+
         this.props.getTypeCategories(this.props.lang , this.props.user.type );
 
         // let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -141,7 +160,7 @@ class EditCarProfile extends Component {
         try {
             const { data } = await axios.get(getCity);
             console.log(data);
-            this.setState({ location: data.results[0].formatted_address });
+            this.setState({ location: this.state.SwitchOnValueHolder ? '' : data.results[0].formatted_address });
 
         } catch (e) {
             console.log(e);
@@ -169,24 +188,17 @@ class EditCarProfile extends Component {
     async confirmLocation(){
         this.setState({ isModalVisible: !this.state.isModalVisible });
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-            alert('صلاحيات تحديد موقعك الحالي ملغاه');
-        }else {
-            const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
-            const userLocation = { latitude, longitude };
-            this.setState({  initMap: false, mapRegion: userLocation });
 
-        }
+        const { latitude, longitude } = this.state.mapRegion;
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-        getCity += this.props.navigation.state.params.latitude + ',' + this.props.navigation.state.params.longitude;
+        getCity += latitude + ',' + longitude;
         getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=' +this.props.lang +'&sensor=true';
 
-        console.log(getCity);
 
         try {
             const { data } = await axios.get(getCity);
-            this.setState({ location: data.results[0].formatted_address });
+            this.setState({ location: this.state.SwitchOnValueHolder ? '' : data.results[0].formatted_address });
 
         } catch (e) {
             console.log(e);
@@ -228,7 +240,7 @@ class EditCarProfile extends Component {
     }
 
     renderSubmit(){
-        if (this.state.restName == '' || this.state.moreDet == '' || this.state.location == '' || this.state.category == null){
+        if (this.state.restName == '' || this.state.moreDet == '' || this.state.category == null){
             return (
                 <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , { backgroundColor: '#999' }]}>
                     <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('next') }</Text>
@@ -276,6 +288,8 @@ class EditCarProfile extends Component {
             inputRange: [0, 1],
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']
         });
+
+        console.log('mmammam', this.state.mapRegion);
 
         return (
             <Container>
@@ -407,6 +421,16 @@ class EditCarProfile extends Component {
                                     </MapView>
                                 ) : (<View />)
                             }
+                            <View style={[styles.directionRowSpace , styles.w100 , styles.mt15 , styles.mb15]}>
+                                <Text style={[styles.boldGrayText , styles.normalText  ]}>{ i18n.t('cancelLocation') }</Text>
+                                <Switch
+                                    onValueChange={() => this.cancelLocation()}
+                                    value={!this.state.SwitchOnValueHolder}
+                                    onTintColor={COLORS.gray}
+                                    thumbTintColor={COLORS.blue}
+                                    tintColor={COLORS.rose}
+                                />
+                            </View>
                             <Button onPress={() => this.confirmLocation()} style={[styles.blueBtn ,styles.mt15]}>
                                 <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
                             </Button>

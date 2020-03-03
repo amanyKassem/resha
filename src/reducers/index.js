@@ -56,6 +56,7 @@ import filterRestaurants from './FilterRestaurantsReducer';
 import stopNotification from './StopNotificationReducer';
 import ticketDetails from './TicketDetailsReducer';
 import ticketsImgs from './TicketsImgsReducer';
+import notificationCount from './NotificationCountReducer';
 
 export default combineReducers({
     lang,
@@ -115,4 +116,5 @@ export default combineReducers({
     stopNotification,
     ticketDetails,
     ticketsImgs,
+    notificationCount,
 });

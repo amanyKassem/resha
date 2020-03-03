@@ -7,7 +7,7 @@ import {
     ImageBackground,
     KeyboardAvoidingView, Platform, I18nManager
 } from "react-native";
-import {Container, Content, Form, Picker, Input, Item, Label, Button, Toast} from 'native-base'
+import {Container, Content, Form, Picker, Input, Item, Label, Button, Toast, Switch} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
@@ -40,9 +40,14 @@ class Register extends Component {
             hasLocationPermissions: false,
             initMap: true,
             isLoaded: false,
+            SwitchOnValueHolder:false,
         }
     }
     _toggleModal = () => this.setState({ isModalVisible: !this.state.isModalVisible });
+
+    cancelLocation = () => {
+        this.setState({SwitchOnValueHolder:!this.state.SwitchOnValueHolder})
+    };
 
     renderSubmit(){
         if (this.state.username == '' || this.state.mail == '' || this.state.phone == '' || this.state.password == '' || this.state.rePassword == ''){
@@ -174,7 +179,7 @@ class Register extends Component {
         try {
             const { data } = await axios.get(getCity);
             console.log(data);
-            this.setState({ city: data.results[0].formatted_address });
+            this.setState({ city: this.state.SwitchOnValueHolder ? '' : data.results[0].formatted_address });
 
         } catch (e) {
             console.log(e);
@@ -202,14 +207,14 @@ class Register extends Component {
     async confirmLocation(){
         this.setState({ isModalVisible: !this.state.isModalVisible })
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-            alert('صلاحيات تحديد موقعك الحالي ملغاه');
-        }else {
-            const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
-            const userLocation = { latitude, longitude };
-            this.setState({  initMap: false, mapRegion: userLocation });
-
-        }
+        // if (status !== 'granted') {
+        //     alert('صلاحيات تحديد موقعك الحالي ملغاه');
+        // }else {
+        //     const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
+        //     const userLocation = { latitude, longitude };
+        //     this.setState({  initMap: false, mapRegion: userLocation });
+        //
+        // }
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
@@ -219,7 +224,7 @@ class Register extends Component {
 
         try {
             const { data } = await axios.get(getCity);
-            this.setState({ city: data.results[0].formatted_address });
+            this.setState({ city: this.state.SwitchOnValueHolder ? '' : data.results[0].formatted_address });
 
         } catch (e) {
             console.log(e);
@@ -259,11 +264,11 @@ class Register extends Component {
                                                     onValueChange={(value) => this.setState({ userType: value })}
                                                 >
                                                     <Picker.Item label={ i18n.t('normalUser') } value={0} />
+                                                    <Picker.Item label={ i18n.t('productiveOwner') + ' - ' + i18n.t('fashion') }  value={4} />
+                                                    <Picker.Item label={ i18n.t('foodTrackOwner') + ' - ' + i18n.t('station') + ' - ' + i18n.t('booth') }  value={5} />
+                                                    <Picker.Item label={ i18n.t('cafeOwner') + ' - ' + i18n.t('restaurant') + ' - ' + i18n.t('cafe') }  value={3} />
                                                     <Picker.Item label={ i18n.t('eventOwner') }  value={1} />
                                                     <Picker.Item label={ i18n.t('organizer') }  value={2} />
-                                                    <Picker.Item label={ i18n.t('cafeOwner') }  value={3} />
-                                                    <Picker.Item label={ i18n.t('productiveOwner') }  value={4} />
-                                                    <Picker.Item label={ i18n.t('foodTrackOwner') }  value={5} />
                                                 </Picker>
                                                 <Image source={require('../../assets/images/down_arrow.png')} style={styles.pickerImg} resizeMode={'contain'} />
                                             </Item>
@@ -365,6 +370,16 @@ class Register extends Component {
                                         </MapView>
                                     ) : (<View />)
                                 }
+                                <View style={[styles.directionRowSpace , styles.w100 , styles.mt15 , styles.mb15]}>
+                                    <Text style={[styles.boldGrayText , styles.normalText  ]}>{ i18n.t('cancelLocation') }</Text>
+                                    <Switch
+                                        onValueChange={() => this.cancelLocation()}
+                                        value={!this.state.SwitchOnValueHolder}
+                                        onTintColor={COLORS.gray}
+                                        thumbTintColor={COLORS.blue}
+                                        tintColor={COLORS.rose}
+                                    />
+                                </View>
                                 <Button onPress={() => this.confirmLocation()} style={[styles.blueBtn ,styles.mt15]}>
                                     <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('confirm') }</Text>
                                 </Button>

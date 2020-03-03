@@ -15,9 +15,9 @@ import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import FooterSection from './FooterSection';
 import {connect} from "react-redux";
-import {getReservations, getReservationsByDay , getReservationDetails} from "../actions";
+import {getReservations, getReservationsByDay , getReservationDetails , getNotificationCount} from "../actions";
 import {NavigationEvents} from "react-navigation";
-import * as Animatable from 'react-native-animatable';
+import * as Animatable from 'react-native-animatable';     
 
 
 const height = Dimensions.get('window').height;
@@ -34,7 +34,8 @@ class Reservations extends Component {
             availabel: 0,
             activeDate:null,
             loader: 1,
-            submitTicket: false
+            submitTicket: false,
+            notify:false
         }
     }
 
@@ -44,8 +45,10 @@ class Reservations extends Component {
 
 
     componentWillMount() {
+        const token = this.props.auth ? this.props.auth.data.token : null;
         this.setState({ loader: 1 ,submitTicket: false , activeDate:null});
         this.props.getReservations( this.props.lang , this.props.user.token)
+        this.props.getNotificationCount( this.props.lang , token , this.props);
         console.log('1' , this.props.user.token)
     }
 
@@ -68,6 +71,9 @@ class Reservations extends Component {
             // console.log('3')
             this.setState({ submitTicket: false});
         }
+
+        if(nextProps.notificationCount)
+            this.setState({notify:nextProps.notificationCount.notify})
 
     }
     pressedDate(date){
@@ -176,7 +182,7 @@ class Reservations extends Component {
                         </TouchableOpacity>
                         <Text style={[styles.headerText]}>{ i18n.t('reservations') }</Text>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('notifications')}   style={styles.headerBtn}>
-                            <Image source={require('../../assets/images/bell_active.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+                            <Image source={this.state.notify ? require('../../assets/images/bell_active.png') :  require('../../assets/images/bell_non_active.png') } style={[styles.headerMenu]} resizeMode={'contain'} />
                         </TouchableOpacity>
                     </Animated.View>
                 </Header>
@@ -231,14 +237,16 @@ class Reservations extends Component {
         );
     }
 }
-const mapStateToProps = ({ lang , profile , reservations , reservationDetails }) => {
+const mapStateToProps = ({ lang , profile , reservations , reservationDetails , notificationCount, auth}) => {
     return {
         lang: lang.lang,
         user: profile.user,
         reservations: reservations.reservations,
         reservationDetails: reservationDetails.reservationDetails,
+        notificationCount: notificationCount.notificationCount,
         key: reservations.key,
-        detKey: reservationDetails.key
+        detKey: reservationDetails.key,
+        auth: auth.user
     };
 };
-export default connect(mapStateToProps, {getReservations , getReservationsByDay , getReservationDetails})(Reservations);
+export default connect(mapStateToProps, {getReservations , getReservationsByDay , getReservationDetails , getNotificationCount})(Reservations);

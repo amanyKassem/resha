@@ -1,15 +1,17 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, ImageBackground , Platform} from "react-native";
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated, ImageBackground , Platform, AsyncStorage} from "react-native";
 import {Container, Content,  Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import FooterSection from './FooterSection';
 import {connect} from "react-redux";
-import {getHomeCounts} from "../actions";
+import {getHomeCounts , getNotificationCount} from "../actions";
 import * as Animatable from 'react-native-animatable';
 import ProgressImg from 'react-native-image-progress';
+import {NavigationEvents} from "react-navigation";
 
 
+{/*NotificationCount notify ban */}
 
 const height = Dimensions.get('window').height;
 
@@ -24,6 +26,7 @@ class Home extends Component {
 		this.state={
 			backgroundColor: new Animated.Value(0),
 			availabel: 0,
+			notify:false
 		}
 	}
 
@@ -34,7 +37,17 @@ class Home extends Component {
 
 
 	componentWillMount() {
-		this.props.getHomeCounts( this.props.lang )
+		const token = this.props.auth ? this.props.auth.data.token : null;
+		this.props.getHomeCounts( this.props.lang );
+		this.props.getNotificationCount( this.props.lang , token , this.props);
+
+		AsyncStorage.getItem('deviceID').then( token => console.log('deviceID', token))
+
+	}
+
+	componentWillReceiveProps(nextProps, nextContext) {
+		if(nextProps.notificationCount)
+			this.setState({notify:nextProps.notificationCount.notify})
 	}
 
 	renderLoader(){
@@ -82,7 +95,9 @@ class Home extends Component {
 			this.setAnimate(1)
 		}
 	}
-
+	onFocus(payload){
+		this.componentWillMount()
+	}
 
 	render() {
 
@@ -93,6 +108,7 @@ class Home extends Component {
 
 		return (
 			<Container>
+				<NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
 				<ImageBackground source={require('../../assets/splash.png')} resizeMode={'cover'} style={[styles.imageBackground, { zIndex: -1, position: 'absolute', width: '100%', height }]} />
 				<Header style={[styles.header]} noShadow>
 					{
@@ -106,9 +122,11 @@ class Home extends Component {
 							<Image source={require('../../assets/images/menu.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
 						</TouchableOpacity>
 						<Text style={[styles.headerText]}>{ i18n.t('home') }</Text>
+
 						<TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user ? 'notifications' : 'login')}   style={styles.headerBtn}>
-							<Image source={require('../../assets/images/bell_active.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
+							<Image source={this.state.notify ? require('../../assets/images/bell_active.png') :  require('../../assets/images/bell_non_active.png') } style={[styles.headerMenu]} resizeMode={'contain'} />
 						</TouchableOpacity>
+
 					</Animated.View>
 				</Header>
 
@@ -182,7 +200,7 @@ class Home extends Component {
 }
 
 
-const mapStateToProps = ({ lang , profile , homeCounts }) => {
+const mapStateToProps = ({ lang , profile , homeCounts , notificationCount, auth }) => {
 	return {
 		lang: lang.lang,
 		user: profile.user,
@@ -191,7 +209,9 @@ const mapStateToProps = ({ lang , profile , homeCounts }) => {
 		food_trucks: homeCounts.food_trucks,
 		events: homeCounts.events,
 		homeData: homeCounts.homeData,
+		auth: auth.user,
+		notificationCount: notificationCount.notificationCount,
 		loader: homeCounts.key
 	};
 };
-export default connect(mapStateToProps, {getHomeCounts})(Home);
+export default connect(mapStateToProps, {getHomeCounts , getNotificationCount})(Home);

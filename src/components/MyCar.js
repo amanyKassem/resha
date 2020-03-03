@@ -266,12 +266,15 @@ class MyCar extends Component {
 										<Image source={{ uri: this.props.showProfile.image  }} style={styles.restImg} resizeMode={'cover'}/>
 									</Animatable.View>
 
-
-									<TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.showProfile.latitude , this.props.showProfile.longitude)} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
-										<Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-										<Text style={[styles.blueText , styles.normalText , {paddingLeft:20}]}>{this.props.showProfile.address}</Text>
-									</TouchableOpacity>
-
+                                    {
+                                        this.props.showProfile.address !== '' ?
+                                            <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.showProfile.latitude , this.props.showProfile.longitude)} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
+                                                <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                                <Text style={[styles.blueText , styles.normalText , {paddingLeft:20 }]}>{this.props.showProfile.address}</Text>
+                                            </TouchableOpacity>
+                                            :
+                                            null
+                                    }
 
 									<Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13, paddingHorizontal:20}]}>{this.props.showProfile.details}</Text>
 

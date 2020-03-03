@@ -37,7 +37,7 @@
     },
     "android": {
       "package": "com.app.reesh",
-      "versionCode": 10,
+      "versionCode": 11,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBnEPOMwzcYu3_NpJeAhg19VceiJhfJwLY"

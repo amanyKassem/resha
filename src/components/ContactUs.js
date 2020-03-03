@@ -126,7 +126,6 @@ class ContactUs extends Component {
                         <Image source={require('../../assets/images/undraw_contact_us.png')} style={[styles.faqImg]} resizeMode={'contain'} />
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20 , marginTop:15}]}>
                             <ImageBackground source={require('../../assets/images/bg_feather.png')} resizeMode={'cover'} style={styles.imageBackground}>
-
                                 <View style={styles.directionRowSpace}>
                                    <View style={styles.directionColumn}>
                                        <View style={styles.directionRowAlignCenter}>
@@ -142,10 +141,16 @@ class ContactUs extends Component {
 
                                 <View style={[styles.line ]}/>
 
-                                <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => Communications.phonecall(this.props.mobile, true)}>
-                                    <Image  source={require('../../assets/images/smartphone_call_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
-                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.mobile}</Text>
-                                </TouchableOpacity>
+                                <View style={styles.directionRowSpace}>
+                                    <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => Communications.phonecall(this.props.mobile, true)}>
+                                        <Image  source={require('../../assets/images/smartphone_call_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
+                                        <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.mobile}</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.mobile)}>
+                                        <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.headerMenu]} resizeMode={'cover'} />
+                                    </TouchableOpacity>
+                                </View>
+
                                 <View style={[styles.line ]}/>
 
                                 <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.website)}>

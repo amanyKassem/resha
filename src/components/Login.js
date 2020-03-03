@@ -11,8 +11,6 @@ import { userLogin, profile } from '../actions'
 import * as Permissions from 'expo-permissions';
 import { Notifications } from 'expo';
 
-
-
 class Login extends Component {
     constructor(props){
         super(props);
@@ -67,9 +65,9 @@ class Login extends Component {
     onLoginPressed() {
         const err = this.validate();
         if (!err){
-            this.setState({ isSubmitted: true });
+            // this.setState({ isSubmitted: true });
             const {phone, password, deviceId , type} = this.state;
-            setTimeout(() => this.props.userLogin({ phone, password, deviceId: 111111, type }, this.props.lang), 0);
+            setTimeout(() => this.props.userLogin({ phone, password, deviceId, type }, this.props.lang, this.props), 0);
         }
     }
 
@@ -91,7 +89,8 @@ class Login extends Component {
         }
 
         const deviceId = await Notifications.getExpoPushTokenAsync();
-        this.setState({ deviceId, userId: null })
+        console.log('deviceId', deviceId);
+        this.setState({ deviceId, userId: null });
         AsyncStorage.setItem('deviceID', deviceId);
 
     }
@@ -136,6 +135,7 @@ class Login extends Component {
     }
 
     onFocus(){
+        this.setState({ userId: null });
         this.componentWillMount()
     }
 

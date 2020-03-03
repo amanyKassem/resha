@@ -25,9 +25,9 @@ class ProductDetails extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            starsCount:this.props.showProduct ? this.props.showProduct.product_rates: 0,
+            starsCount:this.props.showProduct ? this.props.showProduct.rates: 0,
             userRate:this.props.showProduct ? this.props.showProduct.user_rates: 0,
-            savedEvent: this.props.showProduct ? this.props.showProduct.is_save: false,
+            savedEvent: false,
             loader: 1
         }
     }
@@ -38,9 +38,9 @@ class ProductDetails extends Component {
 
 
     componentWillMount() {
-        this.setState({ loader: 1});
-        const token = this.props.user ? this.props.user.token : null
+        const token = this.props.user ? this.props.user.token : null;
         this.props.getShowProduct( this.props.lang , this.props.navigation.state.params.product_id , token)
+        this.setState({ loader: 1, savedEvent: false ,  starsCount:this.props.showProduct && (this.props.showProduct.id === this.props.navigation.state.params.product_id)? this.props.showProduct.rates: 0});
     }
     _linkPressed (url){
         Linking.openURL(url);
@@ -57,12 +57,14 @@ class ProductDetails extends Component {
         }
     }
     componentWillReceiveProps(nextProps) {
-        this.setState({ loader: 0});
-        console.log('nextProps.showProduct.is_save' , nextProps);
+        // alert(nextProps.showProduct.rates  + "bbb " + nextProps.showProduct.id )
+        this.setState({ loader: 0 , savedEvent: nextProps.showProduct.is_save ,
+            starsCount:nextProps.showProduct && (nextProps.showProduct.id === this.props.navigation.state.params.product_id)? nextProps.showProduct.rates: 0});
 
-        this.setState({ starsCount : nextProps.showProduct.rates , userRate : nextProps.showProduct.user.rates});
-        if(nextProps.ratekey == 1)
+        if (nextProps.ratekey == 1  && (nextProps.rateProduct.product_id === this.props.navigation.state.params.product_id)){
+            // alert('hehe'  + nextProps.rateProduct.product_rates)
             this.setState({userRate : nextProps.rateProduct.user_rates ,  starsCount : nextProps.rateProduct.product_rates })
+        }
     }
 
     onStarRatingPress(rating) {
@@ -132,7 +134,6 @@ class ProductDetails extends Component {
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']
         });
 
-        // alert(this.state.loader);
 
         return (
             <Container>
