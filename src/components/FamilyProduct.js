@@ -76,14 +76,14 @@ class FamilyProduct extends Component{
                 <View style={[styles.directionRowSpace , styles.mb10]}>
                     <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
                         <Image source={require('../../assets/images/star_border_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                        <Text style={[styles.blueText , styles.normalText]}>{this.props.data.rates}/5</Text>
+                        <Text style={[styles.blueText , styles.normalText]}>{this.state.starsCount}/5</Text>
                     </View>
                     {
                         this.props.user ?
                             <StarRating
                                 disabled={false}
                                 maxStars={5}
-                                rating={this.props.data.rates}
+                                rating={this.state.starsCount}
                                 fullStarColor={'#f0aa0b'}
                                 selectedStar={(rating) => this.onStarRatingPress(rating)}
                                 starSize={18}
