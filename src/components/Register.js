@@ -130,30 +130,29 @@ class Register extends Component {
 
     async componentWillMount() {
 
-// alert(this.props.lang)
-//         let { status } = await Permissions.askAsync(Permissions.LOCATION);
-//         if (status !== 'granted') {
-//             alert('صلاحيات تحديد موقعك الحالي ملغاه');
-//         }else {
-//             const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
-//             const userLocation = { latitude, longitude };
-//             this.setState({  initMap: false, mapRegion: userLocation });
-//
-//         }
-//
-//         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-//         getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
-//         getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=' +this.props.lang +'&sensor=true';
-//
-//         console.log(getCity);
-//
-//         try {
-//             const { data } = await axios.get(getCity);
-//             this.setState({ city: data.results[0].formatted_address });
-//
-//         } catch (e) {
-//             console.log(e);
-//         }
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+            alert('صلاحيات تحديد موقعك الحالي ملغاه');
+        }else {
+            const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
+            const userLocation = { latitude, longitude };
+            this.setState({  initMap: false, mapRegion: userLocation });
+        }
+
+        //
+        // let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+        // getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
+        // getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=' +this.props.lang +'&sensor=true';
+        //
+        // console.log(getCity);
+        //
+        // try {
+        //     const { data } = await axios.get(getCity);
+        //     this.setState({ city: data.results[0].formatted_address });
+        //
+        // } catch (e) {
+        //     console.log(e);
+        // }
     }
 
 
