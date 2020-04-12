@@ -93,6 +93,7 @@ class ContactUs extends Component {
     }
 
     render() {
+            console.log('contactUs' , this.props.contactUs)
 
         const backgroundColor = this.state.backgroundColor.interpolate({
             inputRange: [0, 1],
@@ -126,18 +127,11 @@ class ContactUs extends Component {
                         <Image source={require('../../assets/images/undraw_contact_us.png')} style={[styles.faqImg]} resizeMode={'contain'} />
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20 , marginTop:15}]}>
                             <ImageBackground source={require('../../assets/images/bg_feather.png')} resizeMode={'cover'} style={styles.imageBackground}>
-                                <View style={styles.directionRowSpace}>
-                                   <View style={styles.directionColumn}>
-                                       <View style={styles.directionRowAlignCenter}>
-                                           <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                           <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('mainNumber') }</Text>
-                                       </View>
-                                       <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13 , marginLeft:25}]}>{this.props.phone}</Text>
-                                   </View>
-                                    <TouchableOpacity onPress={() => Communications.phonecall(this.props.phone, true)}>
-                                        <Image source={require('../../assets/images/phone_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
-                                    </TouchableOpacity>
-                                </View>
+
+                                <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.instgram)}>
+                                    <Image  source={require('../../assets/images/instagram.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
+                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.instgram}</Text>
+                                </TouchableOpacity>
 
                                 <View style={[styles.line ]}/>
 
@@ -159,10 +153,10 @@ class ContactUs extends Component {
                                 </TouchableOpacity>
                                 <View style={[styles.line ]}/>
 
-                                <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.facebook)}>
-                                    <Image  source={require('../../assets/images/facebook_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
-                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.facebook}</Text>
-                                </TouchableOpacity>
+                                <View style={styles.directionRowAlignCenter} >
+                                    <Image  source={require('../../assets/images/mail.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
+                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.email}</Text>
+                                </View>
                                 <View style={[styles.line ]}/>
 
                                 <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.twitter)}>
@@ -189,6 +183,9 @@ const mapStateToProps = ({ lang , contactUs }) => {
         website: contactUs.website,
         phone: contactUs.phone,
         mobile: contactUs.mobile,
+        email: contactUs.email,
+        instgram: contactUs.instgram,
+        contactUs: contactUs,
         loader: contactUs.key
     };
 };

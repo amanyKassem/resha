@@ -300,7 +300,7 @@ class AddProduct extends Component {
                                         </Item>
                                     </View>
                                     {
-										this.props.user.type != 5 ?
+										this.props.user.type != 5 && this.props.user.type != 4 ?
 											<View style={styles.inputParent}>
 												<Item style={styles.itemPicker} regular >
 													<Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,

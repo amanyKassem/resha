@@ -129,4 +129,7 @@ export default [
     require('../../assets/images/star_border_blue.png'),
     require('../../assets/images/star_gray.png'),
     require('../../assets/images/star_small.png'),
+    require('../../assets/images/instagram.png'),
+    require('../../assets/images/mail.png'),
+    require('../../assets/images/heart_gray.png'),
 ]

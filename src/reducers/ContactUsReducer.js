@@ -9,6 +9,8 @@ export default (state = INITIAL_STATE, action) => {
                 website: action.payload.data.website,
                 phone: action.payload.data.phone,
                 mobile: action.payload.data.mobile,
+                instgram: action.payload.data.instgram,
+                email: action.payload.data.email,
                 key: action.payload.key,
             };
         }
