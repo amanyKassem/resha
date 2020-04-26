@@ -28,7 +28,8 @@ class ProductDetails extends Component {
             starsCount:this.props.showProduct ? this.props.showProduct.rates: 0,
             userRate:this.props.showProduct ? this.props.showProduct.user_rates: 0,
             savedEvent: false,
-            loader: 1
+            loader: 1,
+            rate: 0,
         }
     }
 
@@ -71,7 +72,7 @@ class ProductDetails extends Component {
 
         this.props.getRateProduct( this.props.lang , this.props.navigation.state.params.product_id , rating , this.props.user.token)
         this.setState({
-            starsCount: rating
+            rate: rating
         });
     }
 
@@ -125,7 +126,8 @@ class ProductDetails extends Component {
     }
 
     onFocus(payload){
-        this.componentWillMount()
+        this.setState({rate:0})
+        this.componentWillMount();
     }
     render() {
 
@@ -213,7 +215,7 @@ class ProductDetails extends Component {
                                                 <StarRating
                                                     disabled={false}
                                                     maxStars={5}
-                                                    rating={this.state.starsCount}
+                                                    rating={this.state.rate}
                                                     fullStarColor={'#f0aa0b'}
                                                     selectedStar={(rating) => this.onStarRatingPress(rating)}
                                                     starSize={18}

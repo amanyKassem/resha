@@ -17,14 +17,14 @@ class FamilyProduct extends Component{
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            starsCount:this.props.data.rates,
+            rate: 0,
+            starsCount: this.props.data.rates,
             savedEvent: this.props.data.is_save ,
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ loader: 0 , savedEvent: this.props.data.is_save ,
-            starsCount:this.props.data.rates});
+        this.setState({ loader: 0 , savedEvent: this.props.data.is_save , starsCount:this.props.data.rates});
 
         if (nextProps.ratekey == 1  && (nextProps.rateProduct.product_id === this.props.data.product_id)){
             this.setState({starsCount : nextProps.rateProduct.product_rates })
@@ -33,18 +33,18 @@ class FamilyProduct extends Component{
 
     onStarRatingPress(rating) {
 
-        this.props.getRateProduct( this.props.lang , this.props.data.product_id , rating , this.props.user.token)
-        this.setState({
-            starsCount: rating
-        });
+        this.props.getRateProduct( this.props.lang , this.props.data.product_id , rating , this.props.user.token);
+        this.setState({ rate: rating });
     }
+
     savedEvent() {
-        this.setState({savedEvent: !this.state.savedEvent})
+        this.setState({savedEvent: !this.state.savedEvent});
         this.props.SetFavouriteEvent( this.props.lang , this.props.data.product_id , this.props.user.token)
     }
 
     renderImage() {
         let source = '';
+
         if (this.state.savedEvent) {
             source = require('../../assets/images/bookmark_bink.png')
         } else {
@@ -78,12 +78,13 @@ class FamilyProduct extends Component{
                         <Image source={require('../../assets/images/star_border_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                         <Text style={[styles.blueText , styles.normalText]}>{this.state.starsCount}/5</Text>
                     </View>
+
                     {
                         this.props.user ?
                             <StarRating
                                 disabled={false}
                                 maxStars={5}
-                                rating={this.state.starsCount}
+                                rating={this.state.rate}
                                 fullStarColor={'#f0aa0b'}
                                 selectedStar={(rating) => this.onStarRatingPress(rating)}
                                 starSize={18}
