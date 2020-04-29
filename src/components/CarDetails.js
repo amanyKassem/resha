@@ -107,8 +107,8 @@ class CarDetails extends Component {
 
     renderItems = (item) => {
         return (
-            <TouchableOpacity style={{marginBottom:7}} onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.product_id, backRoute:'carDetails'})}>
-                <ProgressImg source={{ uri: item.image  }} style={styles.productImg} resizeMode={'cover'}/>
+            <TouchableOpacity style={{margin:3, flex: 1}} onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.item.product_id, backRoute:'carDetails', item, products: this.props.profileDetails.products})}>
+                <ProgressImg source={{ uri: item.item.images[0].image  }} style={styles.productImg} resizeMode={'cover'}/>
             </TouchableOpacity>
         );
     };
@@ -215,7 +215,7 @@ class CarDetails extends Component {
                                         </TouchableOpacity>
                                     </View>
 
-                                    <ProgressImg source={{ uri: this.props.profileDetails.image  }}  style={[styles.restImg , {width:'100%'}]} resizeMode={'cover'}/>
+                                    <ProgressImg source={{ uri: this.props.profileDetails.image  }}  style={[styles.restImg , {width:'100%', height: (height*60)/100}]} resizeMode={'cover'}/>
 
 
                                     <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude)}  style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
@@ -245,7 +245,7 @@ class CarDetails extends Component {
 
                                     <FlatList
                                         data={this.props.profileDetails.products}
-                                        renderItem={({item}) => this.renderItems(item)}
+                                        renderItem={(item) => this.renderItems(item)}
                                         numColumns={3}
                                         keyExtractor={this._keyExtractor}
                                         columnWrapperStyle={{ justifyContent:'space-between'}}

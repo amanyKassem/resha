@@ -844,9 +844,9 @@ const styles = ({
         height: '100%',
     },
     productImg:{
-        width: 100,
-        height: 90,
-        marginTop:10
+        width: '100%',
+        height: 100,
+        // marginTop:10
     },
     dateView:{
         height: 45,

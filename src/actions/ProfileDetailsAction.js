@@ -9,7 +9,7 @@ export const getProfileDetails = (lang , user_id , token) => {
             url: CONST.url + 'profile-details',
             method: 'POST',
             data: {lang , user_id},
-            headers: {Authorization: token}
+            headers: token ? {Authorization: token} : null,
         }).then(response => {
             dispatch({type: 'getProfileDetails', payload: response.data})
         })

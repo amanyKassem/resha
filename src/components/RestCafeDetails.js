@@ -160,11 +160,13 @@ class RestCafeDetails extends Component {
 
     renderItems = (item) => {
         return (
-            <TouchableOpacity style={{marginBottom:7}} onPress={() => this.props.navigation.navigate('productDetails', {
-                product_id: item.product_id,
-                backRoute: 'restCafeDetails'
+            <TouchableOpacity style={{margin:3, flex: 1}} onPress={() => this.props.navigation.navigate('productDetails', {
+                product_id: item.item.product_id,
+                backRoute: 'restCafeDetails',
+                item,
+				products: this.props.profileDetails.products
             })}>
-                <ProgressImg source={{uri: item.image }} style={styles.productImg} resizeMode={'cover'}/>
+                <ProgressImg source={{uri: item.item.images[0].image }} style={styles.productImg} resizeMode={'cover'}/>
             </TouchableOpacity>
         );
     };
@@ -198,7 +200,7 @@ class RestCafeDetails extends Component {
 
                     <FlatList
                         data={this.props.profileDetails.products}
-                        renderItem={({item}) => this.renderItems(item)}
+                        renderItem={(item) => this.renderItems(item)}
                         numColumns={3}
                         keyExtractor={this._keyExtractor}
                         columnWrapperStyle={{ justifyContent:'space-between'}}
@@ -297,7 +299,7 @@ class RestCafeDetails extends Component {
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{height:'100%'}}>
                         {
                             this.props.profileDetails ?
-                                <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0 , paddingTop:20} ]}>
+                                <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal: 0 , paddingTop:20} ]}>
                                     <View style={[styles.directionRowSpace , {paddingHorizontal:20}]}>
                                         <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.profileDetails.name}</Text>
 
@@ -306,7 +308,9 @@ class RestCafeDetails extends Component {
                                         </TouchableOpacity>
                                     </View>
 
-                                    <ProgressImg source={{ uri: this.props.profileDetails.image  }}  style={[styles.restImg]} resizeMode={'cover'}/>
+                                    <View style={{ paddingHorizontal: 20 }}>
+                                        <ProgressImg source={{ uri: this.props.profileDetails.image  }}  style={[styles.restImg, {width:'100%', height: (height*60)/100}]} resizeMode={'cover'}/>
+                                    </View>
 
 
                                     <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude)} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
