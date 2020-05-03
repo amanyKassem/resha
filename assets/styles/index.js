@@ -167,7 +167,7 @@ const styles = ({
 
     // language
     langView:{
-         width:'100%',
+        width:'100%',
         paddingHorizontal:25,
         justifyContent:'center',
         alignItems:'center',
@@ -492,7 +492,7 @@ const styles = ({
 
     homecontent:{
         zIndex: -1,
-		marginTop : IS_IPHONE_X ? -25 : -100
+        marginTop : IS_IPHONE_X ? -25 : -100
     },
     header : {
         backgroundColor:'transparent',
@@ -512,7 +512,7 @@ const styles = ({
         marginTop:-50 ,
         alignItems:'center',
         paddingTop: 30,
-		zIndex:10
+        zIndex:10
     },
     headerMenu:{
         width: 25,
@@ -844,9 +844,9 @@ const styles = ({
         height: '100%',
     },
     productImg:{
-        width: 100,
-        height: 90,
-        marginTop:10
+        width: '100%',
+        height: 100,
+        // marginTop:10
     },
     dateView:{
         height: 45,

@@ -1,5 +1,17 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, ImageBackground, Linking, Platform,} from "react-native";
+import {
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    Dimensions,
+    Animated,
+    ImageBackground,
+    Linking,
+    Platform,
+    I18nManager,
+    FlatList
+} from "react-native";
 import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -11,11 +23,9 @@ import {SetFavouriteEvent, getShowProduct , getRateProduct} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 import ProgressImg from 'react-native-image-progress';
+import FamilyProduct from './FamilyProduct'
 
-
-const height = Dimensions.get('window').height;
-
-
+const height        = Dimensions.get('window').height;
 const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class ProductDetails extends Component {
@@ -29,7 +39,7 @@ class ProductDetails extends Component {
             userRate:this.props.showProduct ? this.props.showProduct.user_rates: 0,
             savedEvent: false,
             loader: 1,
-            rate: 0,
+            rate: 0
         }
     }
 
@@ -43,9 +53,11 @@ class ProductDetails extends Component {
         this.props.getShowProduct( this.props.lang , this.props.navigation.state.params.product_id , token)
         this.setState({ loader: 1, savedEvent: false ,  starsCount:this.props.showProduct && (this.props.showProduct.id === this.props.navigation.state.params.product_id)? this.props.showProduct.rates: 0});
     }
+
     _linkPressed (url){
         Linking.openURL(url);
     }
+
     renderLoader(){
         if (this.state.loader == 1){
             return(
@@ -57,23 +69,25 @@ class ProductDetails extends Component {
             );
         }
     }
+
     componentWillReceiveProps(nextProps) {
-        // alert(nextProps.showProduct.rates  + "bbb " + nextProps.showProduct.id )
         this.setState({ loader: 0 , savedEvent: nextProps.showProduct.is_save ,
             starsCount:nextProps.showProduct && (nextProps.showProduct.id === this.props.navigation.state.params.product_id)? nextProps.showProduct.rates: 0});
 
         if (nextProps.ratekey == 1  && (nextProps.rateProduct.product_id === this.props.navigation.state.params.product_id)){
-            // alert('hehe'  + nextProps.rateProduct.product_rates)
             this.setState({userRate : nextProps.rateProduct.user_rates ,  starsCount : nextProps.rateProduct.product_rates })
         }
+
+    }
+
+    componentDidMount() {
+        const { item } = this.props.navigation.state.params;
+        setTimeout(() => this.flatListRef.scrollToIndex({ index: item.index, animated: true }), 1000);
     }
 
     onStarRatingPress(rating) {
-
         this.props.getRateProduct( this.props.lang , this.props.navigation.state.params.product_id , rating , this.props.user.token)
-        this.setState({
-            rate: rating
-        });
+        this.setState({ rate: rating });
     }
 
 
@@ -125,10 +139,19 @@ class ProductDetails extends Component {
         return source;
     }
 
+    renderItems = (item) => {
+        return (
+            <FamilyProduct key={item.id} data={item} navigation={this.props.navigation}/>
+        );
+    };
+
+
     onFocus(payload){
-        this.setState({rate:0})
+        this.setState({ rate: 0 });
         this.componentWillMount();
+        this.componentDidMount()
     }
+
     render() {
 
         const backgroundColor = this.state.backgroundColor.interpolate({
@@ -136,137 +159,149 @@ class ProductDetails extends Component {
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']
         });
 
+        const products = this.props.navigation.state.params.products;
 
         return (
             <Container>
-                { this.renderLoader() }
+                {/*{ this.renderLoader() }*/}
 
                 <Header style={[styles.header]} noShadow>
-					{
-						IS_IPHONE_X ?
-							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
-							:
-							<View/>
-					}
+                    {
+                        IS_IPHONE_X ?
+                            <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+                            :
+                            <View/>
+                    }
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute , {isLoader:true})} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                         </TouchableOpacity>
 
-                        <Text style={[styles.headerText]}>{ i18n.t('productInfo') }</Text>
+                        {
+                            this.props.showProduct ?
+                                <View style={[styles.directionRowSpace, { width: '86%' }]}>
+                                    <View style={styles.directionRowAlignCenter}>
+                                        <View style={styles.borderImg}>
+                                            <ProgressImg source={{ uri: this.props.showProduct.user.image  }} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                                        </View>
+                                        <View style={styles.directionColumn}>
+                                            <Text style={[styles.headerText]}>{this.props.showProduct.user.user_name}</Text>
+                                        </View>
+                                    </View>
 
-                        <TouchableOpacity onPress={() =>  this.props.user ? this.savedEvent() : this.props.navigation.navigate('login')} style={styles.headerBtn}>
-                            <Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />
-                        </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.showProduct.user.mobile)}>
+                                        <Image source={require('../../assets/images/whatsapp_icon.png')} style={{ width: 30, height: 30, alignSelf: 'center' }} resizeMode={'cover'} />
+                                        <Text style={{ color: '#fff', textAlign: 'center', marginTop: 3, fontFamily: I18nManager.isRTL ? 'cairo' : 'openSans' }}>{ i18n.t('contact') }</Text>
+                                    </TouchableOpacity>
+                                </View> : null
+                        }
+
+                        {/*<TouchableOpacity onPress={() =>  this.props.user ? this.savedEvent() : this.props.navigation.navigate('login')} style={styles.headerBtn}>*/}
+                        {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
+                        {/*</TouchableOpacity>*/}
 
 
                     </Animated.View>
                 </Header>
 
-                <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                <Content  scrollEnabled={false} contentContainerStyle={styles.flexGrow} style={[styles.homecontent, {padding: 0}]}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
-                        {
-                            this.props.showProduct ?
-                                <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
-                                    <View style={styles.directionRowSpace}>
-                                        <View style={styles.directionRowAlignCenter}>
-                                            <View style={styles.borderImg}>
-                                                <ProgressImg source={{ uri: this.props.showProduct.user.image  }} style={[styles.footSearchImg]} resizeMode={'cover'} />
-                                            </View>
-                                            <View style={styles.directionColumn}>
-                                                <Text style={[styles.boldGrayText , styles.normalText , styles.mb10, styles.asfs]}>{this.props.showProduct.user.user_name}</Text>
-                                                {/*<StarRating*/}
-                                                    {/*disabled={true}*/}
-                                                    {/*maxStars={5}*/}
-                                                    {/*rating={this.state.userRate}*/}
-                                                    {/*fullStarColor={'#f0aa0b'}*/}
-                                                    {/*// selectedStar={(rating) => this.onStarRatingPress(rating)}*/}
-                                                    {/*starSize={18}*/}
-                                                    {/*starStyle={styles.starStyle}*/}
-                                                {/*/>*/}
-                                            </View>
-                                        </View>
-
-                                        <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.showProduct.user.mobile)}>
-                                            <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
-                                        </TouchableOpacity>
-                                    </View>
-
-                                    <Swiper key={this.props.showProduct.images.length} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                            containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
-                                        {
-                                            this.props.showProduct.images.map((img, i) =>{
-                                                return (
-                                                    <ProgressImg key={i} source={{ uri: img.image  }}   style={styles.swiperImg} resizeMode={'cover'}/>
-                                                )
-                                            })
-                                        }
-                                    </Swiper>
-
-                                    <Text style={[styles.boldGrayText , styles.normalText , styles.mb10 , styles.asfs, styles.writing ]}>{this.props.showProduct.name}</Text>
-                                    <View style={[styles.directionRowSpace , styles.mb10]}>
-                                        <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
-                                            <Image source={require('../../assets/images/star_border_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                            <Text style={[styles.blueText , styles.normalText]}>{this.state.starsCount}/5</Text>
-                                        </View>
-                                        {
-                                            this.props.user ?
-                                                <StarRating
-                                                    disabled={false}
-                                                    maxStars={5}
-                                                    rating={this.state.rate}
-                                                    fullStarColor={'#f0aa0b'}
-                                                    selectedStar={(rating) => this.onStarRatingPress(rating)}
-                                                    starSize={18}
-                                                    starStyle={styles.starStyle}
-                                                />
-                                                :
-                                                null
-                                        }
-
-                                    </View>
-                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                        <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.showProduct.price} { i18n.t('RS') }</Text>
-                                    </View>
-                                    <View style={[styles.directionRowAlignCenter ]}>
-                                        <Image source={require('../../assets/images/category.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.showProduct.category}</Text>
-                                    </View>
-
-                                    <View style={[styles.directionRowAlignCenter , styles.mt15, styles.mb10]}>
-                                        <Image source={require('../../assets/images/feather_color.png')} style={[styles.resha]} resizeMode={'contain'} />
-                                        <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('productInfo') }</Text>
-                                    </View>
-
-                                    <Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing  , {fontSize:13}]}>{this.props.showProduct.details}</Text>
+                        <View style={[styles.homeSection , styles.whiteHome , { paddingHorizontal: 0, paddingVertical:20, height: height-100} ]}>
+                            {/*{*/}
+                            {/*this.props.showProduct ?*/}
+                            {/*<View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>*/}
 
 
-                                    <View style={[styles.directionRowSpace , styles.mt15]}>
-                                        <View style={styles.directionColumn}>
-                                            <View style={styles.directionRowAlignCenter}>
-                                                <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                                <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('mainNumber') }</Text>
-                                            </View>
-                                            <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13 , marginLeft:25}]}>{this.props.showProduct.user.phone}</Text>
-                                        </View>
-                                        <TouchableOpacity onPress={() => Communications.phonecall(this.props.showProduct.user.phone, true)}>
-                                            <Image source={require('../../assets/images/phone_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
-                                        </TouchableOpacity>
-                                    </View>
+                            {/*<Swiper key={this.props.showProduct.images.length} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}*/}
+                            {/*containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>*/}
+                            {/*{*/}
+                            {/*this.props.showProduct.images.map((img, i) =>{*/}
+                            {/*return (*/}
+                            {/*<ProgressImg key={i} source={{ uri: img.image  }}   style={styles.swiperImg} resizeMode={'cover'}/>*/}
+                            {/*)*/}
+                            {/*})*/}
+                            {/*}*/}
+                            {/*</Swiper>*/}
 
-                                    {/*<View style={[styles.line ]}/>*/}
+                            {/*<Text style={[styles.boldGrayText , styles.normalText , styles.mb10 , styles.asfs, styles.writing ]}>{this.props.showProduct.name}</Text>*/}
+                            {/*<View style={[styles.directionRowSpace , styles.mb10]}>*/}
+                            {/*<View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>*/}
+                            {/*<Image source={require('../../assets/images/star_border_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />*/}
+                            {/*<Text style={[styles.blueText , styles.normalText]}>{this.state.starsCount}/5</Text>*/}
+                            {/*</View>*/}
+                            {/*{*/}
+                            {/*this.props.user ?*/}
+                            {/*<StarRating*/}
+                            {/*disabled={false}*/}
+                            {/*maxStars={5}*/}
+                            {/*rating={this.state.rate}*/}
+                            {/*fullStarColor={'#f0aa0b'}*/}
+                            {/*selectedStar={(rating) => this.onStarRatingPress(rating)}*/}
+                            {/*starSize={18}*/}
+                            {/*starStyle={styles.starStyle}*/}
+                            {/*/>*/}
+                            {/*:*/}
+                            {/*null*/}
+                            {/*}*/}
 
-                                    {/*<TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.showProduct.user.mobile)}>*/}
-                                        {/*<Image  source={require('../../assets/images/whatsapp_icon.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>*/}
-                                        {/*<Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.showProduct.user.mobile}</Text>*/}
-                                    {/*</TouchableOpacity>*/}
+                            {/*</View>*/}
+                            {/*<View style={[styles.directionRowAlignCenter , styles.mb10]}>*/}
+                            {/*<Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />*/}
+                            {/*<Text style={[styles.blueText , styles.normalText]}>{this.props.showProduct.price} { i18n.t('RS') }</Text>*/}
+                            {/*</View>*/}
+                            {/*<View style={[styles.directionRowAlignCenter ]}>*/}
+                            {/*<Image source={require('../../assets/images/category.png')} style={[styles.notiImg]} resizeMode={'contain'} />*/}
+                            {/*<Text style={[styles.blueText , styles.normalText]}>{this.props.showProduct.category}</Text>*/}
+                            {/*</View>*/}
 
-                                </View>
-                                :
-                                <View/>
-                        }
+                            {/*<View style={[styles.directionRowAlignCenter , styles.mt15, styles.mb10]}>*/}
+                            {/*<Image source={require('../../assets/images/feather_color.png')} style={[styles.resha]} resizeMode={'contain'} />*/}
+                            {/*<Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('productInfo') }</Text>*/}
+                            {/*</View>*/}
+
+                            {/*<Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing  , {fontSize:13}]}>{this.props.showProduct.details}</Text>*/}
+
+
+                            {/*<View style={[styles.directionRowSpace , styles.mt15]}>*/}
+                            {/*<View style={styles.directionColumn}>*/}
+                            {/*<View style={styles.directionRowAlignCenter}>*/}
+                            {/*<Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />*/}
+                            {/*<Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('mainNumber') }</Text>*/}
+                            {/*</View>*/}
+                            {/*<Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13 , marginLeft:25}]}>{this.props.showProduct.user.phone}</Text>*/}
+                            {/*</View>*/}
+                            {/*<TouchableOpacity onPress={() => Communications.phonecall(this.props.showProduct.user.phone, true)}>*/}
+                            {/*<Image source={require('../../assets/images/phone_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
+                            {/*</TouchableOpacity>*/}
+                            {/*</View>*/}
+
+                            {/*/!*<View style={[styles.line ]}/>*!/*/}
+
+                            {/*/!*<TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.showProduct.user.mobile)}>*!/*/}
+                            {/*/!*<Image  source={require('../../assets/images/whatsapp_icon.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>*!/*/}
+                            {/*/!*<Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.showProduct.user.mobile}</Text>*!/*/}
+                            {/*/!*</TouchableOpacity>*!/*/}
+
+                            {/*</View>*/}
+                            {/*:*/}
+                            {/*<View/>*/}
+                            {/*}*/}
+
+                            <FlatList
+                                showsVerticalScrollIndicator={false}
+                                ref={(ref) => { this.flatListRef = ref; }}
+                                data={products}
+                                renderItem={({item}) => this.renderItems(item)}
+                                onScrollToIndexFailed={()=>{}}
+                                numColumns={1}
+                                scrollEnabled={true}
+                                keyExtractor={this._keyExtractor}
+                                // style={{ backgroundColor:'#000'}}
+                                // columnWrapperStyle={{ backgroundColor:'#000'}}
+                            />
+                        </View>
+
 
                     </ImageBackground>
 

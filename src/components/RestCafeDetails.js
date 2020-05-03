@@ -86,7 +86,7 @@ class RestCafeDetails extends Component {
     }
     componentWillReceiveProps(nextProps) {
         // if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
-            this.setState({loader:0})
+        this.setState({loader:0})
         console.log('nextProps.profileDetails.is_save' , nextProps.profileDetails.is_save)
         this.setState({ savedEvent: nextProps.profileDetails.is_save });
     }
@@ -160,11 +160,13 @@ class RestCafeDetails extends Component {
 
     renderItems = (item) => {
         return (
-            <TouchableOpacity style={{marginBottom:7}} onPress={() => this.props.navigation.navigate('productDetails', {
-                product_id: item.product_id,
-                backRoute: 'restCafeDetails'
+            <TouchableOpacity style={{margin:3, flex: 1}} onPress={() => this.props.navigation.navigate('productDetails', {
+                product_id: item.item.product_id,
+                backRoute: 'restCafeDetails',
+                item,
+                products: this.props.profileDetails.products
             })}>
-                <ProgressImg source={{uri: item.image }} style={styles.productImg} resizeMode={'cover'}/>
+                <ProgressImg source={{uri: item.item.images[0].image }} style={styles.productImg} resizeMode={'cover'}/>
             </TouchableOpacity>
         );
     };
@@ -198,7 +200,7 @@ class RestCafeDetails extends Component {
 
                     <FlatList
                         data={this.props.profileDetails.products}
-                        renderItem={({item}) => this.renderItems(item)}
+                        renderItem={(item) => this.renderItems(item)}
                         numColumns={3}
                         keyExtractor={this._keyExtractor}
                         columnWrapperStyle={{ justifyContent:'space-between'}}
@@ -206,7 +208,7 @@ class RestCafeDetails extends Component {
 
 
                     {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('products', {user_id :this.props.navigation.state.params.user_id , backRoute:'restCafeDetails' , catType:this.props.navigation.state.params.catType  })} style={[styles.delAcc , {backgroundColor:COLORS.white}]}>*/}
-                        {/*<Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>*/}
+                    {/*<Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>*/}
                     {/*</TouchableOpacity>*/}
                 </View>
             )
@@ -268,12 +270,12 @@ class RestCafeDetails extends Component {
 
                 { this.renderLoader() }
                 <Header style={[styles.header]} noShadow>
-					{
-						IS_IPHONE_X ?
-							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
-							:
-							<View/>
-					}
+                    {
+                        IS_IPHONE_X ?
+                            <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+                            :
+                            <View/>
+                    }
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
@@ -282,7 +284,7 @@ class RestCafeDetails extends Component {
 
                         <View style={styles.directionRowAlignCenter}>
                             {/*<TouchableOpacity onPress={() => this.savedEvent()} style={styles.headerBtn}>*/}
-                                {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
+                            {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
                             {/*</TouchableOpacity>*/}
                             <TouchableOpacity onPress={this.onShare} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/share_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
@@ -297,7 +299,7 @@ class RestCafeDetails extends Component {
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{height:'100%'}}>
                         {
                             this.props.profileDetails ?
-                                <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0 , paddingTop:20} ]}>
+                                <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal: 0 , paddingTop:20} ]}>
                                     <View style={[styles.directionRowSpace , {paddingHorizontal:20}]}>
                                         <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.profileDetails.name}</Text>
 
@@ -306,7 +308,9 @@ class RestCafeDetails extends Component {
                                         </TouchableOpacity>
                                     </View>
 
-                                    <ProgressImg source={{ uri: this.props.profileDetails.image  }}  style={[styles.restImg]} resizeMode={'cover'}/>
+                                    <View style={{ paddingHorizontal: 20 }}>
+                                        <ProgressImg source={{ uri: this.props.profileDetails.image  }}  style={[styles.restImg, {width:'100%', height: (height*60)/100}]} resizeMode={'cover'}/>
+                                    </View>
 
 
                                     <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude)} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>

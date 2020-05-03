@@ -20,7 +20,6 @@ import {SetFavouriteEvent, getProfileDetails} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 import ProgressImg from 'react-native-image-progress';
-import FamilyProduct from './FamilyProduct'
 
 const height = Dimensions.get('window').height;
 
@@ -34,7 +33,8 @@ class FamilyDetails extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            loader: 1,
+            savedEvent: false,
+            loader: 1
         }
     }
 
@@ -48,7 +48,6 @@ class FamilyDetails extends Component {
         const token = this.props.user ? this.props.user.token : null;
         this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id ,token)
     }
-    
     _linkPressed (url){
         Linking.openURL(url);
     }
@@ -66,7 +65,7 @@ class FamilyDetails extends Component {
     }
     componentWillReceiveProps(nextProps) {
         // if(nextProps.navigation.state.params && nextProps.navigation.state.params.isLoader)
-            this.setState({loader:0})
+        this.setState({loader:0})
         // console.log('nextProps.profileDetails.is_save' , nextProps.profileDetails.is_save)
         // this.setState({ savedEvent: nextProps.profileDetails.is_save });
     }
@@ -96,19 +95,11 @@ class FamilyDetails extends Component {
 
     renderItems = (item) => {
         return (
-
-          <FamilyProduct key={item.id} data={item} navigation={this.props.navigation}/>
-
+            <TouchableOpacity style={{margin:3, flex: 1}} onPress={() => this.props.navigation.navigate('productDetails', {products: this.props.profileDetails.products, product_id: item.item.product_id , backRoute:'familyDetails', item})}>
+                <ProgressImg source={{ uri: item.item.images[0].image }} style={styles.productImg} resizeMode={'cover'}/>
+            </TouchableOpacity>
         );
     };
-
-    // renderItems = (item) => {
-    //     return (
-    //         <TouchableOpacity style={{marginBottom:7}} onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.product_id , backRoute:'familyDetails'})}>
-    //             <ProgressImg source={{ uri: item.image }} style={styles.productImg} resizeMode={'cover'}/>
-    //         </TouchableOpacity>
-    //     );
-    // };
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -143,6 +134,20 @@ class FamilyDetails extends Component {
         }
     }
 
+    // savedEvent() {
+    //     this.setState({savedEvent: !this.state.savedEvent})
+    //     this.props.SetFavouriteEvent( this.props.lang , this.props.navigation.state.params.user_id , this.props.user.token)
+    // }
+
+    renderImage() {
+        let source = '';
+        if (this.state.savedEvent) {
+            source = require('../../assets/images/bookmark_bink.png')
+        } else {
+            source = require('../../assets/images/bookmark_white.png')
+        }
+        return source;
+    }
 
     onFocus(payload){
         this.componentWillMount()
@@ -161,41 +166,22 @@ class FamilyDetails extends Component {
 
                 { this.renderLoader() }
                 <Header style={[styles.header]} noShadow>
-					{
-						IS_IPHONE_X ?
-							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
-							:
-							<View/>
-					}
+                    {
+                        IS_IPHONE_X ?
+                            <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
+                            :
+                            <View/>
+                    }
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
-                        <View style={[styles.directionRowAlignCenter]}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
-                                <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
-                            </TouchableOpacity>
-                            {
-                                this.props.profileDetails ?
-                                    <View style={[styles.directionRowAlignCenter]}>
-                                        <View style={styles.borderImg}>
-                                            <ProgressImg source={{ uri: this.props.profileDetails.image }} style={[styles.footSearchImg]} resizeMode={'cover'} />
-                                        </View>
-                                        <Text style={[styles.whiteText , styles.normalText , styles.mb10]}>{this.props.profileDetails.name}</Text>
-                                    </View>
-                                    :
-                                    null
-                            }
-
-                        </View>
+                        <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
+                            <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
+                        </TouchableOpacity>
 
 
                         <View style={styles.directionRowAlignCenter}>
-                            {
-                                this.props.profileDetails ?
-                                    <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.profileDetails.mobile)}>
-                                        <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.headerMenu]} resizeMode={'cover'} />
-                                    </TouchableOpacity>
-                                            :
-                                            null
-                            }
+                            {/*<TouchableOpacity onPress={() => this.savedEvent()} style={styles.headerBtn}>*/}
+                            {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
+                            {/*</TouchableOpacity>*/}
                             <TouchableOpacity onPress={this.onShare} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/share_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                             </TouchableOpacity>
@@ -204,38 +190,29 @@ class FamilyDetails extends Component {
                     </Animated.View>
                 </Header>
 
-                <Content  bounces={false} scrollEnabled={false} contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         {
                             this.props.profileDetails ?
-                                <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingTop:20 , paddingBottom:30} ]}>
-                                    {/*<View style={styles.directionRowSpace}>*/}
-                                        {/*<Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.profileDetails.name}</Text>*/}
+                                <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
+                                    <View style={styles.directionRowSpace}>
+                                        <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.profileDetails.name}</Text>
 
-                                        {/*<TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.profileDetails.mobile)}>*/}
-                                            {/*<Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />*/}
-                                        {/*</TouchableOpacity>*/}
-                                    {/*</View>*/}
+                                        <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.profileDetails.mobile)}>
+                                            <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
+                                        </TouchableOpacity>
+                                    </View>
 
-                                    {/*<ProgressImg source={{ uri: this.props.profileDetails.image }}*/}
-                                           {/*//  indicator={ProgressBar}*/}
-                                           {/*// indicatorProps={{*/}
-                                           {/*//     size: 80,*/}
-                                           {/*//     borderWidth: 0,*/}
-                                           {/*//     color: 'rgba(150, 150, 150, 1)',*/}
-                                           {/*//     unfilledColor: 'rgba(200, 200, 200, 0.2)'*/}
-                                           {/*// }}*/}
-                                           {/*style={[styles.restImg , {width:'100%'}]} resizeMode={'cover'}/>*/}
+                                    <ProgressImg source={{ uri: this.props.profileDetails.image }} style={[styles.restImg , {width:'100%', height: (height*60)/100}]} resizeMode={'cover'}/>
 
 
+                                    <Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing  , {fontSize:13}]}>{this.props.profileDetails.details}</Text>
 
-                                    {/*<Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing  , {fontSize:13}]}>{this.props.profileDetails.details}</Text>*/}
-
-                                    {/*<View style={[styles.directionRowAlignCenter , styles.mt15 , styles.mb15]}>*/}
-                                        {/*<Image source={require('../../assets/images/feather_color.png')} style={[styles.resha]} resizeMode={'contain'} />*/}
-                                        {/*<Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('products') }</Text>*/}
-                                    {/*</View>*/}
+                                    <View style={[styles.directionRowAlignCenter , styles.mt15 , styles.mb15]}>
+                                        <Image source={require('../../assets/images/feather_color.png')} style={[styles.resha]} resizeMode={'contain'} />
+                                        <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('products') }</Text>
+                                    </View>
 
                                     {/*<View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>*/}
 
@@ -252,16 +229,15 @@ class FamilyDetails extends Component {
                                     {/*</View>*/}
                                     <FlatList
                                         data={this.props.profileDetails.products}
-                                        renderItem={({item}) => this.renderItems(item)}
-                                        numColumns={1}
-                                        keyExtractor={this._keyExtractor}
-                                        // style={{ backgroundColor:'#000'}}
-                                        // columnWrapperStyle={{ backgroundColor:'#000'}}
+                                        renderItem={(item) => this.renderItems(item)}
+                                        numColumns={3}
+                                        keyExtractor={item => item.id}
+                                        columnWrapperStyle={{ justifyContent:'space-between'}}
                                     />
 
 
                                     {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('products', {user_id :this.props.navigation.state.params.user_id , backRoute:'familyDetails' , catType:this.props.navigation.state.params.catType })} style={styles.delAcc}>*/}
-                                        {/*<Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>*/}
+                                    {/*<Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>*/}
                                     {/*</TouchableOpacity>*/}
                                 </View>
                                 :
