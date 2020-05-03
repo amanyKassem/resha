@@ -204,10 +204,10 @@ class ProductDetails extends Component {
                     </Animated.View>
                 </Header>
 
-                <Content  scrollEnabled={false} contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                <Content  scrollEnabled={false} contentContainerStyle={styles.flexGrow} style={[styles.homecontent, {padding: 0}]}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
-						<View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20, height: height-100} ]}>
+						<View style={[styles.homeSection , styles.whiteHome , { paddingHorizontal: 0, paddingVertical:20, height: height-100} ]}>
                         {/*{*/}
                             {/*this.props.showProduct ?*/}
                                 {/*<View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>*/}
@@ -289,6 +289,7 @@ class ProductDetails extends Component {
                         {/*}*/}
 
                             <FlatList
+								showsVerticalScrollIndicator={false}
 								ref={(ref) => { this.flatListRef = ref; }}
 								data={products}
                                 renderItem={({item}) => this.renderItems(item)}

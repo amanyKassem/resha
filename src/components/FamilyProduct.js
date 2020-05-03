@@ -9,7 +9,7 @@ import {SetFavouriteEvent, getRateProduct} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import ProgressImg from 'react-native-image-progress';
 
-const height        = Dimensions.get('window').height;
+const width        = Dimensions.get('window').width;
 
 class FamilyProduct extends Component{
     constructor(props){
@@ -70,47 +70,49 @@ class FamilyProduct extends Component{
 				<NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                 <Swiper key={this.props.data.images.length} dotStyle={[styles.eventdoteStyle , {backgroundColor:'#ccc' , bottom:-50}]}
                         activeDotStyle={[styles.eventactiveDot,{bottom:-50}]}
-                        containerStyle={[styles.eventswiper2]} showsButtons={false} autoplay={true}>
+                        containerStyle={[{height: 400, marginTop:20, marginBottom:15 }]} showsButtons={false} autoplay={true}>
                     {
                         this.props.data.images.map((img, i) =>{
                             return (
-                                <ProgressImg key={i} source={{ uri: img.image  }} style={[styles.swiperImg, { height: (height*80)/100 }]} resizeMode={'cover'}/>
+                                <ProgressImg key={i} source={{ uri: img.image  }} style={[styles.swiperImg, { height: '100%', width: width+50, alignSelf: 'center' }]} resizeMode={'contain'}/>
                             )
                         })
                     }
                 </Swiper>
 
-                <View style={[styles.directionRowSpace, styles.mb10]}>
-                    <Text style={[styles.boldGrayText , styles.normalText]}>{this.props.data.name}</Text>
-                    <TouchableOpacity onPress={() =>  this.props.user ? this.savedEvent() : this.props.navigation.navigate('login')} style={styles.headerBtn}>
-                        <Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />
-                    </TouchableOpacity>
-                </View>
-                <View style={[styles.directionRowSpace , styles.mb10]}>
-                    <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
-                        <Image source={require('../../assets/images/star_border_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                        <Text style={[styles.blueText , styles.normalText]}>{this.state.starsCount}/5</Text>
-                    </View>
+                <View style={{ marginHorizontal: 20 }}>
+					<View style={[styles.directionRowSpace, styles.mb10]}>
+						<Text style={[styles.boldGrayText , styles.normalText]}>{this.props.data.name}</Text>
+						<TouchableOpacity onPress={() =>  this.props.user ? this.savedEvent() : this.props.navigation.navigate('login')} style={styles.headerBtn}>
+							<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />
+						</TouchableOpacity>
+					</View>
+					<View style={[styles.directionRowSpace , styles.mb10]}>
+						<View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
+							<Image source={require('../../assets/images/star_border_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+							<Text style={[styles.blueText , styles.normalText]}>{this.state.starsCount}/5</Text>
+						</View>
 
-                    {
-                        this.props.user ?
-                            <StarRating
-                                disabled={false}
-                                maxStars={5}
-                                rating={this.state.rate}
-                                fullStarColor={'#f0aa0b'}
-                                selectedStar={(rating) => this.onStarRatingPress(rating)}
-                                starSize={18}
-                                starStyle={styles.starStyle}
-                            />
-                            :
-                            null
-                    }
+						{
+							this.props.user ?
+								<StarRating
+									disabled={false}
+									maxStars={5}
+									rating={this.state.rate}
+									fullStarColor={'#f0aa0b'}
+									selectedStar={(rating) => this.onStarRatingPress(rating)}
+									starSize={18}
+									starStyle={styles.starStyle}
+								/>
+								:
+								null
+						}
 
-                </View>
-                <View style={[styles.directionRowAlignCenter]}>
-                    <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                    <Text style={[styles.blueText , styles.normalText]}>{this.props.data.price} { i18n.t('RS') }</Text>
+					</View>
+					<View style={[styles.directionRowAlignCenter]}>
+						<Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+						<Text style={[styles.blueText , styles.normalText]}>{this.props.data.price} { i18n.t('RS') }</Text>
+					</View>
                 </View>
             </View>
         )
