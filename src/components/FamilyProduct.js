@@ -74,7 +74,7 @@ class FamilyProduct extends Component{
                     {
                         this.props.data.images.map((img, i) =>{
                             return (
-                                <ProgressImg key={i} source={{ uri: img.image  }} style={[styles.swiperImg, { height: '100%', width: width+50, alignSelf: 'center' }]} resizeMode={'contain'}/>
+                                <ProgressImg key={i} source={{ uri: img.image  }} style={[styles.swiperImg, { height: '100%', width: width, alignSelf: 'center' }]} resizeMode={'contain'}/>
                             )
                         })
                     }
