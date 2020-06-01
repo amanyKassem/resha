@@ -161,6 +161,13 @@ class ProductDetails extends Component {
 
 		const products = this.props.navigation.state.params.products;
 
+		let whatsNum = '';
+
+		if(this.props.showProduct && Platform.OS == 'ios')
+			whatsNum = (this.props.showProduct.user.mobile).substr(1);
+		else if(this.props.showProduct)
+			whatsNum = this.props.showProduct.user.mobile;
+
         return (
             <Container>
                 {/*{ this.renderLoader() }*/}
@@ -189,7 +196,7 @@ class ProductDetails extends Component {
 										</View>
 									</View>
 
-									<TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.showProduct.user.mobile)}>
+									<TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone=' + whatsNum)}>
 										<Image source={require('../../assets/images/whatsapp_icon.png')} style={{ width: 30, height: 30, alignSelf: 'center' }} resizeMode={'cover'} />
                                         <Text style={{ color: '#fff', textAlign: 'center', marginTop: 3, fontFamily: I18nManager.isRTL ? 'cairo' : 'openSans' }}>{ i18n.t('contact') }</Text>
 									</TouchableOpacity>

@@ -199,7 +199,7 @@ class RestProducts extends Component {
 					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.navigate('myResturant')} style={styles.headerBtn}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
@@ -223,12 +223,6 @@ class RestProducts extends Component {
                                 keyExtractor={this._keyExtractor}
                             />
 
-                            <TouchableOpacity style={[styles.floatingEdit, { bottom:60}]}
-                                              onPress={() => this.addProductNavigation()}>
-                                              {/*onPress={() => {this.props.navigation.navigate('addProduct', {backRoute:'restProducts'})}}>*/}
-                                <Image source={require('../../assets/images/add_floting.png')} style={styles.editImg} resizeMode={'contain'}/>
-                            </TouchableOpacity>
-
                         </View>
                     </ImageBackground>
                     <Modal onBackdropPress={()=> this.setState({ deleteProduct : false })} isVisible={this.state.deleteProduct}>
@@ -250,6 +244,11 @@ class RestProducts extends Component {
                         </View>
                     </Modal>
                 </Content>
+				<TouchableOpacity style={[styles.floatingEdit, { bottom:60}]}
+					onPress={() => this.addProductNavigation()}>
+					{/*onPress={() => {this.props.navigation.navigate('addProduct', {backRoute:'restProducts'})}}>*/}
+					<Image source={require('../../assets/images/add_floting.png')} style={styles.editImg} resizeMode={'contain'}/>
+				</TouchableOpacity>
             </Container>
 
         );

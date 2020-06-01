@@ -1,5 +1,16 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, ImageBackground , Linking, Platform,} from "react-native";
+import {
+	View,
+	Text,
+	Image,
+	TouchableOpacity,
+	Dimensions,
+	Animated,
+	ImageBackground,
+	Linking,
+	Platform,
+	FlatList,
+} from "react-native";
 import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -108,30 +119,33 @@ class MyFamily extends Component {
     }
 
 
+	_keyExtractor = (item, index) => item.id;
+
+	renderItems = (item) => {
+		return (
+			<TouchableOpacity style={{margin:3, flex: 1}} onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:item.product_id, backRoute:'myFamily'})}>
+				<ProgressImg source={{ uri: item.image  }} style={[styles.productImg]} resizeMode={'cover'}/>
+			</TouchableOpacity>
+		);
+	};
+
     renderCont() {
 
         if(this.state.active === 0 ){
             return(
-                <View style={styles.directionColumn}>
+                <View>
 
                     {
                         this.renderNoData()
                     }
 
-                    <View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>
-
-                        {
-                            this.props.showProfile.products.map((product, i) =>{
-                                return (
-                                    <Animatable.View key={i}  animation="fadeInUp" easing="ease-out" delay={600}>
-                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('restProductDetails', {product_id:product.product_id, backRoute:'myFamily'})}>
-                                            <ProgressImg source={{ uri: product.image  }} style={styles.productImg} resizeMode={'cover'}/>
-                                        </TouchableOpacity>
-                                    </Animatable.View>
-                                )
-                            })
-                        }
-                    </View>
+					<FlatList
+						data={this.props.showProfile.products}
+						renderItem={({item}) => this.renderItems(item)}
+						numColumns={3}
+						keyExtractor={item => item.id}
+						columnWrapperStyle={{ justifyContent:'space-between'}}
+					/>
 
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('restProducts', {user_id :this.props.showProfile.user_id, backRoute:'myFamily'})} style={[styles.delAcc , {backgroundColor:COLORS.white}]}>
                         <Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>
@@ -142,7 +156,6 @@ class MyFamily extends Component {
 							{/*,latitude:this.props.showProfile.latitude,longitude:this.props.showProfile.longitude})}>*/}
                         {/*<Image source={require('../../assets/images/edit.png')} style={styles.editImg} resizeMode={'contain'}/>*/}
                     {/*</TouchableOpacity>*/}
-
                 </View>
             )
         } else {
@@ -242,7 +255,7 @@ class MyFamily extends Component {
                                 <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:0 , paddingTop:20} ]}>
 
                                     <Animatable.View animation="zoomIn" easing="ease-out" delay={600}>
-                                        <ProgressImg source={{ uri: this.props.showProfile.image  }} style={styles.restImg} resizeMode={'cover'}/>
+                                        <ProgressImg source={{ uri: this.props.showProfile.image  }} style={styles.restImg} resizeMode={'contain'}/>
                                     </Animatable.View>
 
 

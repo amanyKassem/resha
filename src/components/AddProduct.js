@@ -160,7 +160,7 @@ class AddProduct extends Component {
 
 
     renderSubmit(){
-        if (this.state.prodName == '' || this.state.price == '' || this.state.category == '' || this.state.moreDet == '' || base64.length <= 0 ){
+        if (this.state.prodName == '' || this.state.price == '' || this.state.category == '' || base64.length <= 0 ){
             return (
                 <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , { backgroundColor: '#999' }]}>
                     <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
