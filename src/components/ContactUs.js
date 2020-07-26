@@ -153,10 +153,10 @@ class ContactUs extends Component {
                                 </TouchableOpacity>
                                 <View style={[styles.line ]}/>
 
-                                <View style={styles.directionRowAlignCenter} >
+                                <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed('mailto:'+ this.props.email)}>
                                     <Image  source={require('../../assets/images/mail.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
                                     <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.email}</Text>
-                                </View>
+                                </TouchableOpacity>
                                 <View style={[styles.line ]}/>
 
                                 <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.twitter)}>

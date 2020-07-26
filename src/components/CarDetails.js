@@ -19,6 +19,9 @@ import {SetFavouriteEvent, getProfileDetails} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 import ProgressImg from 'react-native-image-progress';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
+import axios from "axios";
 
 
 const height = Dimensions.get('window').height;
@@ -33,7 +36,8 @@ class CarDetails extends Component {
             backgroundColor: new Animated.Value(0),
             availabel: 0,
             savedEvent: false,
-            loader: 1
+            loader: 1,
+			userAddress: ''
         }
     }
 
@@ -41,24 +45,51 @@ class CarDetails extends Component {
         drawerLabel: () => null
     });
 
-    componentWillMount() {
+    async componentWillMount() {
         this.setState({ loader: 1});
         const token = this.props.user ? this.props.user.token : null;
         this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id , token)
+
+		let { status } = await Permissions.askAsync(Permissions.LOCATION);
+		if (status !== 'granted') {
+			alert('صلاحيات تحديد موقعك الحالي ملغاه');
+		}else {
+			const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
+			const userLocation = { latitude, longitude };
+
+			let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+			getCity += userLocation.latitude + ',' + userLocation.longitude;
+			getCity += '&key=AIzaSyCiptKZt0io7ZOgjNPQ0yvjST9AQrUCW5Y&language= '+this.props.lang +'&sensor=true';
+
+			console.log('locations data', getCity);
+
+
+			try {
+				const { data } = await axios.get(getCity);
+				console.log(data);
+				this.setState({ userAddress: data.results[0].formatted_address });
+
+			} catch (e) {
+				console.log(e);
+			}
+		}
     }
+
     _linkPressed (url){
         Linking.openURL(url);
     }
 
-    _linkGoogleMap(lat, lng){
+    _linkGoogleMap(lat, lng, address){
         const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
         const latLng = `${lat},${lng}`;
-        const label = 'Custom Label';
+        const label  = 'Custom Label';
 
-        let url = Platform.select({
-            ios : `${scheme}${label}@${latLng}`,
-            android: `${scheme}${latLng}(${label}`
-        });
+        // let url = Platform.select({
+        //     ios : `${scheme}${label}@${latLng}`,
+        //     android: `${scheme}${latLng}(${label}`
+        // });
+
+        let url = 'https://www.google.com/maps/dir/?api=1&origin=' + this.state.userAddress + '&destination=' + address;
 
         Linking.openURL(url);
     }
@@ -226,7 +257,7 @@ class CarDetails extends Component {
                                     <ProgressImg source={{ uri: this.props.profileDetails.image  }}  style={[styles.restImg , {width:'100%', height: (height*60)/100}]} resizeMode={'contain'}/>
 
 
-                                    <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude)}  style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
+                                    <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude, this.props.profileDetails.address)}  style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
                                         <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                         <Text style={[styles.blueText , styles.normalText]}>{this.props.profileDetails.address}</Text>
                                     </TouchableOpacity>
@@ -239,25 +270,28 @@ class CarDetails extends Component {
                                         <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('products') }</Text>
                                     </View>
 
-                                    {/*<View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>*/}
-                                    {/*    {*/}
-                                    {/*        this.props.profileDetails.products.map((product, i) =>{*/}
-                                    {/*            return (*/}
-                                    {/*                <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('productDetails', {product_id:product.product_id, backRoute:'carDetails'})}>*/}
-                                    {/*                    <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>*/}
-                                    {/*                </TouchableOpacity>*/}
-                                    {/*            )*/}
-                                    {/*        })*/}
-                                    {/*    }*/}
-                                    {/*</View>*/}
+									<View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>
 
-                                    <FlatList
-                                        data={this.props.profileDetails.products}
-                                        renderItem={(item) => this.renderItems(item)}
-                                        numColumns={3}
-                                        keyExtractor={this._keyExtractor}
-                                        columnWrapperStyle={{ justifyContent:'space-between'}}
-                                    />
+										{
+											this.props.profileDetails.products.map((product, i) =>{
+
+												return (
+													<TouchableOpacity style={{ marginBottom:3, width: '33%' }} key={i} onPress={() => this.props.navigation.navigate('productDetails', {products: this.props.profileDetails.products, product_id: product.product_id , backRoute:'carDetails', index: i})}>
+														<ProgressImg source={{ uri: product.images[0].image }} style={[styles.productImg, { alignSelf: 'center' }]} resizeMode={'cover'}/>
+													</TouchableOpacity>
+												)
+											})
+										}
+
+									</View>
+
+                                    {/*<FlatList*/}
+                                        {/*data={this.props.profileDetails.products}*/}
+                                        {/*renderItem={(item) => this.renderItems(item)}*/}
+                                        {/*numColumns={3}*/}
+                                        {/*keyExtractor={this._keyExtractor}*/}
+                                        {/*columnWrapperStyle={{ justifyContent:'space-between'}}*/}
+                                    {/*/>*/}
 
                                     {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('products' , {user_id :this.props.navigation.state.params.user_id , backRoute:'carDetails', catType:this.props.navigation.state.params.catType})} style={styles.delAcc}>*/}
                                         {/*<Text style={[styles.blueText , styles.normalText ,{fontSize:15}]}>{ i18n.t('moreProducts') }</Text>*/}

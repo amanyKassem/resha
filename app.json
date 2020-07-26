@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.2.5",
+    "version": "1.2.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -37,7 +37,7 @@
     },
     "android": {
       "package": "com.app.reesh",
-      "versionCode": 14,
+      "versionCode": 16,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBnEPOMwzcYu3_NpJeAhg19VceiJhfJwLY"

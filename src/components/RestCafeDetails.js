@@ -22,6 +22,9 @@ import {SetFavouriteEvent, getProfileDetails} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 import ProgressImg from 'react-native-image-progress';
+import * as Permissions from "expo-permissions";
+import * as Location from "expo-location";
+import axios from "axios";
 
 
 const height = Dimensions.get('window').height;
@@ -37,6 +40,7 @@ class RestCafeDetails extends Component {
             backgroundColor: new Animated.Value(0),
             availabel: 0,
             savedEvent: false,
+			userAddress: '',
             active:0,
             loader: 1
         }
@@ -54,23 +58,53 @@ class RestCafeDetails extends Component {
         Linking.openURL(url);
     }
 
-    _linkGoogleMap(lat, lng){
+    _linkGoogleMap(lat, lng, address){
         const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
         const latLng = `${lat},${lng}`;
         const label = 'Custom Label';
 
-        let url = Platform.select({
-            ios : `${scheme}${label}@${latLng}`,
-            android: `${scheme}${latLng}(${label}`
-        });
+        // let url = Platform.select({
+        //     ios : `${scheme}${label}@${latLng}`,
+        //     android: `${scheme}${latLng}(${label}`
+        // });
+
+		let url = 'https://www.google.com/maps/dir/?api=1&origin=' + this.state.userAddress + '&destination=' + address;
 
         Linking.openURL(url);
     }
 
-    componentWillMount() {
+    async componentWillMount() {
+
+        console.log('user location', this.props.user.address);
+
+
         this.setState({ loader: 1});
         const token = this.props.user ? this.props.user.token : null;
         this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id , token)
+
+		let { status } = await Permissions.askAsync(Permissions.LOCATION);
+		if (status !== 'granted') {
+			alert('صلاحيات تحديد موقعك الحالي ملغاه');
+		}else {
+			const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
+			const userLocation = { latitude, longitude };
+
+			let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+			getCity += userLocation.latitude + ',' + userLocation.longitude;
+			getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language= '+this.props.lang +'&sensor=true';
+
+			console.log('locations data', getCity);
+
+
+			try {
+				const { data } = await axios.get(getCity);
+				console.log(data);
+				this.setState({ userAddress: data.results[0].formatted_address });
+
+			} catch (e) {
+				console.log(e);
+			}
+		}
     }
 
     renderLoader(){
@@ -320,7 +354,7 @@ class RestCafeDetails extends Component {
                                     </View>
 
 
-                                    <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude)} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
+                                    <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude, this.props.profileDetails.address)} style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
                                         <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                         <Text style={[styles.blueText , styles.normalText]}>{this.props.profileDetails.address}</Text>
                                     </TouchableOpacity>
