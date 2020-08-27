@@ -66,11 +66,11 @@ class FamilyProduct extends Component{
 
     render(){
         return(
-            <View style={{marginBottom:7 , width:'100%'}} >
+            <View style={{marginBottom:7 , width:'100%', marginTop: -35}} >
                 <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                 <Swiper key={this.props.data.images.length} dotStyle={[styles.eventdoteStyle , {backgroundColor:'#ccc' , bottom:-50}]}
                         activeDotStyle={[styles.eventactiveDot,{bottom:-50}]}
-                        containerStyle={[{height: 400, marginTop:20, marginBottom:15 }]} showsButtons={false} autoplay={true}>
+                        containerStyle={[{height: 450, marginTop:20, marginBottom:15 }]} showsButtons={false} autoplay={true}>
                     {
                         this.props.data.images.map((img, i) =>{
                             return (
@@ -80,7 +80,7 @@ class FamilyProduct extends Component{
                     }
                 </Swiper>
 
-                <View style={{ marginHorizontal: 20 }}>
+                <View style={{ marginHorizontal: 20, marginTop: -35 }}>
                     <View style={[styles.directionRowSpace, styles.mb10]}>
                         <Text style={[styles.boldGrayText , styles.normalText]}>{this.props.data.name}</Text>
                         <TouchableOpacity onPress={() =>  this.props.user ? this.savedEvent() : this.props.navigation.navigate('login')} style={styles.headerBtn}>

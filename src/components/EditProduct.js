@@ -167,7 +167,7 @@ class EditProduct extends Component {
 
 
     renderSubmit(){
-        if (this.state.prodName == '' || this.state.price == '' || this.state.category == null || this.state.moreDet == '' ){
+        if (this.state.prodName == '' || this.state.price == '' ){
             return (
                 <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , { backgroundColor: '#999' }]}>
                     <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('save') }</Text>
@@ -308,7 +308,7 @@ class EditProduct extends Component {
                                     </View>
 
 									{
-										this.props.user.type != 5 ?
+										this.props.user.type != 5 && this.props.user.type != 4 ?
 											<View style={styles.inputParent}>
 												<Item style={styles.itemPicker} regular >
 													<Label style={[styles.labelItem , {top:I18nManager.isRTL ? -18.5 : -16.5 ,

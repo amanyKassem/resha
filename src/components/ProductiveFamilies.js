@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated , FlatList, ImageBackground, Platform,} from "react-native";
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated , FlatList, ImageBackground, Platform, SafeAreaView} from "react-native";
 import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -52,7 +52,7 @@ class ProductiveFamilies extends Component {
 
     renderItems = (item) => {
         return(
-            <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={600} >
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('families' , { category_id: item.id, backRoute:'productiveFamilies' , catType:this.props.navigation.state.params.catType})} style={[styles.eventTouch ]}>
                     <ProgressImg source={{ uri: item.icon  }} resizeMode={'cover'} style={{width:'100%' , height:'100%' , borderRadius:15}}/>
                     <View style={[styles.familiesCont ]}>
@@ -140,7 +140,7 @@ class ProductiveFamilies extends Component {
 
 
                 <Content bounces={false} scrollEnabled={false} contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={[styles.imageBackground2, { height: IS_IPHONE_X ? height-110 : height }]}>
 
                         <View style={[styles.directionRowSpace , styles.w100  , styles.mt70, {paddingHorizontal:20 , paddingVertical:15}]}>
                             <View style={[styles.directionColumn , {flex: 1}]}>
@@ -153,17 +153,15 @@ class ProductiveFamilies extends Component {
                             </Animatable.View>
                         </View>
 
-                        <View style={[styles.homeSection , styles.whiteHome , {padding:15 ,  marginTop:15}]}>
-                            {
-                                this.renderNoData()
-                            }
+                        <View style={[styles.homeSection , styles.whiteHome , {padding:15 ,  marginTop:15, }]}>
+                            { this.renderNoData() }
                             <FlatList
                                 data={this.props.categories}
                                 renderItem={({item}) => this.renderItems(item)}
                                 numColumns={1}
                                 keyExtractor={this._keyExtractor}
+                                style={{ height: 200 }}
                             />
-
                         </View>
                     </ImageBackground>
                 </Content>

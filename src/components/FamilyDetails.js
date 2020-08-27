@@ -94,6 +94,8 @@ class FamilyDetails extends Component {
     _keyExtractor = (item, index) => item.id;
 
     renderItems = (item) => {
+
+        console.log('hahaha' , item)
         return (
             <TouchableOpacity style={{margin:3, flex: 1}} onPress={() => this.props.navigation.navigate('productDetails', {products: this.props.profileDetails.products, product_id: item.item.product_id , backRoute:'familyDetails', item})}>
                 <ProgressImg source={{ uri: item.item.images[0].image }} style={styles.productImg} resizeMode={'cover'}/>
@@ -161,6 +163,13 @@ class FamilyDetails extends Component {
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']
         });
 
+        let whatsNum = '';
+
+        if(this.props.profileDetails && Platform.OS == 'ios')
+            whatsNum = (this.props.profileDetails.mobile).substr(1);
+        else if(this.props.profileDetails)
+            whatsNum = this.props.profileDetails.mobile;
+
         return (
             <Container>
 
@@ -192,19 +201,19 @@ class FamilyDetails extends Component {
 
                 <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={[styles.imageBackground,{height:100, width:'100%' ,position:'absolute', top:0, zIndex:-1}]}/>
                         {
                             this.props.profileDetails ?
                                 <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
                                     <View style={styles.directionRowSpace}>
                                         <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.profileDetails.name}</Text>
 
-                                        <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.profileDetails.mobile)}>
+                                        <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone=' + whatsNum)}>
                                             <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
                                         </TouchableOpacity>
                                     </View>
 
-                                    <ProgressImg source={{ uri: this.props.profileDetails.image }} style={[styles.restImg , {width:'100%', height: (height*60)/100}]} resizeMode={'cover'}/>
+                                    <ProgressImg source={{ uri: this.props.profileDetails.image }} style={[styles.restImg , {width:'100%', height: (height*60)/100}]} resizeMode={'contain'}/>
 
 
                                     <Text style={[styles.grayText , styles.normalText , styles.asfs, styles.writing  , {fontSize:13}]}>{this.props.profileDetails.details}</Text>
@@ -244,7 +253,7 @@ class FamilyDetails extends Component {
                                 <View/>
                         }
 
-                    </ImageBackground>
+                    {/*</ImageBackground>*/}
 
                 </Content>
             </Container>

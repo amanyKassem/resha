@@ -172,6 +172,14 @@ class CarDetails extends Component {
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']
         });
 
+
+		let whatsNum = '';
+
+		if(this.props.profileDetails && Platform.OS == 'ios')
+			whatsNum = (this.props.profileDetails.mobile).substr(1);
+		else if(this.props.profileDetails)
+			whatsNum = this.props.profileDetails.mobile;
+
         return (
             <Container>
                 { this.renderLoader() }
@@ -210,12 +218,12 @@ class CarDetails extends Component {
                                     <View style={styles.directionRowSpace}>
                                         <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.profileDetails.name}</Text>
 
-                                        <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.profileDetails.mobile)}>
+                                        <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+ whatsNum)}>
                                             <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
                                         </TouchableOpacity>
                                     </View>
 
-                                    <ProgressImg source={{ uri: this.props.profileDetails.image  }}  style={[styles.restImg , {width:'100%', height: (height*60)/100}]} resizeMode={'cover'}/>
+                                    <ProgressImg source={{ uri: this.props.profileDetails.image  }}  style={[styles.restImg , {width:'100%', height: (height*60)/100}]} resizeMode={'contain'}/>
 
 
                                     <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.profileDetails.latitude , this.props.profileDetails.longitude)}  style={[styles.directionRowAlignCenter , styles.mb10, {paddingHorizontal:20}]}>
