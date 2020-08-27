@@ -170,16 +170,16 @@ class Families extends Component {
                                 </TouchableOpacity>
                             </View>
 
-                            {
-                                this.renderNoData()
-                            }
+							<View style={{ height: height-210 }}>
+								{ this.renderNoData() }
 
-                            <FlatList
-                                data={this.props.families}
-                                renderItem={({item}) => this.renderItems(item)}
-                                numColumns={1}
-                                keyExtractor={this._keyExtractor}
-                            />
+                                <FlatList
+                                    data={this.props.families}
+                                    renderItem={({item}) => this.renderItems(item)}
+                                    numColumns={1}
+                                    keyExtractor={this._keyExtractor}
+                                />
+                            </View>
 
                         </View>
                     </ImageBackground>

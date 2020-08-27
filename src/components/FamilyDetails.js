@@ -34,7 +34,8 @@ class FamilyDetails extends Component {
             backgroundColor: new Animated.Value(0),
             availabel: 0,
             savedEvent: false,
-            loader: 1
+            loader: 1,
+            refreshed: false
         }
     }
 
@@ -95,10 +96,9 @@ class FamilyDetails extends Component {
 
     renderItems = (item) => {
 
-        console.log('hahaha' , item)
         return (
             <TouchableOpacity style={{margin:3, flex: 1}} onPress={() => this.props.navigation.navigate('productDetails', {products: this.props.profileDetails.products, product_id: item.item.product_id , backRoute:'familyDetails', item})}>
-                <ProgressImg source={{ uri: item.item.images[0].image }} style={styles.productImg} resizeMode={'cover'}/>
+                <ProgressImg  source={{ uri: item.item.images[0].image }} style={styles.productImg} resizeMode={'cover'}/>
             </TouchableOpacity>
         );
     };
@@ -152,7 +152,9 @@ class FamilyDetails extends Component {
     }
 
     onFocus(payload){
-        this.componentWillMount()
+        this.componentWillMount();
+
+        this.setState({ refreshed: !this.state.refreshed })
     }
 
 
@@ -169,6 +171,9 @@ class FamilyDetails extends Component {
             whatsNum = (this.props.profileDetails.mobile).substr(1);
         else if(this.props.profileDetails)
             whatsNum = this.props.profileDetails.mobile;
+
+        console.log('fuck lenght...  ', this.props.profileDetails.products.length);
+
 
         return (
             <Container>
@@ -199,9 +204,9 @@ class FamilyDetails extends Component {
                     </Animated.View>
                 </Header>
 
-                <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent} onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={[styles.imageBackground,{height:100, width:'100%' ,position:'absolute', top:0, zIndex:-1}]}/>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         {
                             this.props.profileDetails ?
                                 <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
@@ -223,26 +228,29 @@ class FamilyDetails extends Component {
                                         <Text style={[styles.headerText , {color:'#272727'}]}>{ i18n.t('products') }</Text>
                                     </View>
 
-                                    {/*<View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>*/}
+                                    <View style={[styles.directionRowSpace , {flexWrap:'wrap'}]}>
 
-                                    {/*    {*/}
-                                    {/*        this.props.profileDetails.products.map((product, i) =>{*/}
-                                    {/*            return (*/}
-                                    {/*                <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('productDetails', {product_id:product.product_id , backRoute:'familyDetails'})}>*/}
-                                    {/*                    <Image source={{ uri: product.image }} style={styles.productImg} resizeMode={'cover'}/>*/}
-                                    {/*                </TouchableOpacity>*/}
-                                    {/*            )*/}
-                                    {/*        })*/}
-                                    {/*    }*/}
+                                        {
+                                            this.props.profileDetails.products.map((product, i) =>{
 
-                                    {/*</View>*/}
-                                    <FlatList
-                                        data={this.props.profileDetails.products}
-                                        renderItem={(item) => this.renderItems(item)}
-                                        numColumns={3}
-                                        keyExtractor={item => item.id}
-                                        columnWrapperStyle={{ justifyContent:'space-between'}}
-                                    />
+                                                return (
+                                                    <TouchableOpacity style={{ marginBottom:3, width: '33%' }} key={i} onPress={() => this.props.navigation.navigate('productDetails', {products: this.props.profileDetails.products, product_id: product.product_id , backRoute:'familyDetails', index: i})}>
+                                                        <ProgressImg source={{ uri: product.images[0].image }} style={[styles.productImg, { alignSelf: 'center' }]} resizeMode={'cover'}/>
+                                                    </TouchableOpacity>
+                                                )
+                                            })
+                                        }
+
+                                    </View>
+
+                                    {/*<FlatList*/}
+                                    {/*extraData={this.state.refreshed}*/}
+                                    {/*data={this.props.profileDetails.products}*/}
+                                    {/*renderItem={(item) => this.renderItems(item)}*/}
+                                    {/*numColumns={3}*/}
+                                    {/*keyExtractor={item => item.id}*/}
+                                    {/*columnWrapperStyle={{ justifyContent:'space-between'}}*/}
+                                    {/*/>*/}
 
 
                                     {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('products', {user_id :this.props.navigation.state.params.user_id , backRoute:'familyDetails' , catType:this.props.navigation.state.params.catType })} style={styles.delAcc}>*/}
@@ -253,7 +261,7 @@ class FamilyDetails extends Component {
                                 <View/>
                         }
 
-                    {/*</ImageBackground>*/}
+                    </ImageBackground>
 
                 </Content>
             </Container>

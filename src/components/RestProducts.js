@@ -74,7 +74,7 @@ class RestProducts extends Component {
             });
         }
         else{
-            this.props.navigation.navigate('addProduct', {backRoute:'restProducts'})
+            this.props.navigation.navigate('addProduct', {backRoute:'restProducts', afterAdd: this.props.navigation.state.params.backRoute})
         }
     }
 

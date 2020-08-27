@@ -100,6 +100,13 @@ class ContactUs extends Component {
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']
         });
 
+        let whatsNum = '';
+
+        if(this.props.showProduct && Platform.OS == 'ios')
+            whatsNum = (this.props.mobile).substr(1);
+        else if(this.props.showProduct)
+            whatsNum = this.props.mobile;
+
         return (
             <Container>
 
@@ -140,7 +147,7 @@ class ContactUs extends Component {
                                         <Image  source={require('../../assets/images/smartphone_call_blue.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
                                         <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.mobile}</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.mobile)}>
+                                    <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone=' + whatsNum)}>
                                         <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.headerMenu]} resizeMode={'cover'} />
                                     </TouchableOpacity>
                                 </View>
@@ -153,10 +160,10 @@ class ContactUs extends Component {
                                 </TouchableOpacity>
                                 <View style={[styles.line ]}/>
 
-                                <View style={styles.directionRowAlignCenter} >
+                                <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed('mailto:'+ this.props.email)}>
                                     <Image  source={require('../../assets/images/mail.png')} style={[styles.headerMenu,{marginRight:10}]} resizeMode={'contain'}/>
                                     <Text style={[styles.grayText , styles.normalText , styles.asfs , {fontSize:13}]}>{this.props.email}</Text>
-                                </View>
+                                </TouchableOpacity>
                                 <View style={[styles.line ]}/>
 
                                 <TouchableOpacity style={styles.directionRowAlignCenter} onPress={() => this._linkPressed(this.props.twitter)}>

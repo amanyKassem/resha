@@ -123,7 +123,13 @@ class AboutApp extends Component {
                             <ImageBackground source={require('../../assets/images/bg_feather.png')} resizeMode={'cover'} style={styles.imageBackground}>
 
                                 <Image source={require('../../assets/images/black_white_logo.png')} style={[styles.blackLogo , styles.mb10]} resizeMode={'contain'} />
-                                <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13}]}>{this.props.about}</Text>
+                                {
+                                    this.props.about ?
+                                        <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13}]}>{this.props.about}</Text>
+                                        :
+                                        null
+                                }
+
 
                             </ImageBackground>
                         </View>

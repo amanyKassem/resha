@@ -192,7 +192,7 @@ class AddProduct extends Component {
 
     submitData(){
         this.setState({ isSubmitted: true });
-        this.props.getStoreProduct( this.props.lang , this.state.prodName , this.state.price , this.state.category , this.state.moreDet , base64 , this.props.user.token , this.props , 'addProduct')
+        this.props.getStoreProduct( this.props.lang , this.state.prodName , this.state.price , this.state.category , this.state.moreDet , base64 , this.props.user.token , this.props , this.props.navigation.state.params.afterAdd)
     }
 
 
