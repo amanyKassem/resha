@@ -45,17 +45,6 @@ class Terms extends Component {
         }
     }
 
-    // _keyExtractor = (item, index) => item.id;
-    //
-    // renderItems = (item) => {
-    //     return(
-    //         <View style={styles.faqBlock}>
-    //             <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727'}]}>{item.rules}</Text>
-    //             {/*<Text style={[styles.grayText , styles.asfs , styles.writing , styles.normalText]}>{item.answer}</Text>*/}
-    //         </View>
-    //     );
-    // }
-
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -119,7 +108,7 @@ class Terms extends Component {
                     </Animated.View>
                 </Header>
 
-                <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                <Content scrollEnabled={false} contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground2}>
                         <Image source={require('../../assets/images/rules_undraw.png')} style={[styles.faqImg]} resizeMode={'contain'} />
@@ -128,7 +117,6 @@ class Terms extends Component {
 
                                 <ScrollView style={styles.faqBlock}>
                                     <Text style={[styles.headerText , styles.asfs , styles.writing , {color:'#272727'}]}>{this.props.rules}</Text>
-                                    {/*<Text style={[styles.grayText , styles.asfs , styles.writing , styles.normalText]}>{item.answer}</Text>*/}
                                 </ScrollView>
 
                                 <View style={[styles.directionRowAlignCenter , styles.mb15 ]}>

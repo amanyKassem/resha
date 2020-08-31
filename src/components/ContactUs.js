@@ -102,9 +102,9 @@ class ContactUs extends Component {
 
         let whatsNum = '';
 
-        if(this.props.showProduct && Platform.OS == 'ios')
+        if(this.props.mobile && Platform.OS == 'ios')
             whatsNum = (this.props.mobile).substr(1);
-        else if(this.props.showProduct)
+        else if(this.props.mobile)
             whatsNum = this.props.mobile;
 
         return (

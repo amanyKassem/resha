@@ -55,9 +55,9 @@ class Products extends Component {
 
     _keyExtractor = (item, index) => item.id;
 
-    renderItems = (item) => {
+    renderItems = (item , i) => {
         return(
-            <TouchableOpacity onPress={ () => this.props.navigation.navigate('productDetails' , {product_id:item.id, backRoute:'products'})} style={[styles.notiBlock , styles.directionRow]}>
+            <TouchableOpacity onPress={ () => this.props.navigation.navigate('productDetails' , {product_id:item.id, backRoute:'products', index: i})} style={[styles.notiBlock , styles.directionRow]}>
                 <Image source={{ uri: item.thumbnail  }} resizeMode={'cover'} style={[styles.eventImg ]}/>
                 <View style={[styles.directionColumn , {flex:1}]}>
                     <Text style={[styles.headerText , styles.asfs, styles.writing  , {color:'#272727'}]}>{item.name}</Text>
@@ -180,7 +180,7 @@ class Products extends Component {
                             }
                             <FlatList
                                 data={this.props.profileProducts}
-                                renderItem={({item}) => this.renderItems(item)}
+                                renderItem={({item , index}) => this.renderItems(item , index)}
                                 numColumns={1}
                                 keyExtractor={this._keyExtractor}
                             />

@@ -123,10 +123,10 @@ class Saves extends Component {
         );
     }
 
-    renderFavsFamilies = (item) => {
+    renderFavsFamilies = (item ,i) => {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves', index: i})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
                     <View  style={styles.saveBtn}>
                         {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
                         <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
@@ -144,10 +144,10 @@ class Saves extends Component {
         );
     }
 
-    renderFavsRestaurants = (item) => {
+    renderFavsRestaurants = (item , i) => {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves', index: i})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
                     <View  style={styles.saveBtn}>
                         {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
                         <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
@@ -165,10 +165,10 @@ class Saves extends Component {
         );
     }
 
-    renderFavsFoodTrucks = (item) => {
+    renderFavsFoodTrucks = (item , i) => {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves'})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('productDetails', {product_id:item.id , backRoute:'saves', index: i})} style={[styles.eventTouch , {marginTop :20 , marginBottom:0}]}>
                     <View  style={styles.saveBtn}>
                         {/*<Image source={this.renderImage()} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
                         <Image source={require('../../assets/images/bookmark_bink.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
@@ -254,7 +254,7 @@ class Saves extends Component {
                     { this.renderFamiliesNoData() }
                     <FlatList
                         data={this.props.favouriteFamilies}
-                        renderItem={({item}) => this.renderFavsFamilies(item)}
+                        renderItem={({item , index}) => this.renderFavsFamilies(item, index)}
                         numColumns={1}
                         keyExtractor={this._keyExtractor2}
                         extraData={this.state.refreshed}
@@ -267,7 +267,7 @@ class Saves extends Component {
                     { this.renderRestaurantsNoData() }
                     <FlatList
                         data={this.props.favouriteRestaurants}
-                        renderItem={({item}) => this.renderFavsRestaurants(item)}
+                        renderItem={({item, index}) => this.renderFavsRestaurants(item, index)}
                         numColumns={1}
                         keyExtractor={this._keyExtractor3}
                         extraData={this.state.refreshed}
@@ -280,7 +280,7 @@ class Saves extends Component {
                     { this.renderFoodTrucksNoData() }
                     <FlatList
                         data={this.props.favouriteFoodTrucks}
-                        renderItem={({item}) => this.renderFavsFoodTrucks(item)}
+                        renderItem={({item, index}) => this.renderFavsFoodTrucks(item, index)}
                         numColumns={1}
                         keyExtractor={this._keyExtractor4}
                         extraData={this.state.refreshed}

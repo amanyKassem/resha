@@ -50,6 +50,37 @@ class RestCafeDetails extends Component {
         drawerLabel: () => null
     });
 
+
+    async componentWillMount() {
+        this.setState({ loader: 1});
+        const token = this.props.user ? this.props.user.token : null;
+        this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id , token)
+
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+            alert('صلاحيات تحديد موقعك الحالي ملغاه');
+        }else {
+            const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
+            const userLocation = { latitude, longitude };
+
+            let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+            getCity += userLocation.latitude + ',' + userLocation.longitude;
+            getCity += '&key=AIzaSyCiptKZt0io7ZOgjNPQ0yvjST9AQrUCW5Y&language= '+this.props.lang +'&sensor=true';
+
+            console.log('locations data', getCity);
+
+
+            try {
+                const { data } = await axios.get(getCity);
+                console.log(data);
+                this.setState({ userAddress: data.results[0].formatted_address });
+
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    }
+
     selectAcive(type){
         this.setState({active:type})
     }
@@ -73,39 +104,6 @@ class RestCafeDetails extends Component {
         Linking.openURL(url);
     }
 
-    async componentWillMount() {
-
-        console.log('user location', this.props.user.address);
-
-
-        this.setState({ loader: 1});
-        const token = this.props.user ? this.props.user.token : null;
-        this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id , token)
-
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-            alert('صلاحيات تحديد موقعك الحالي ملغاه');
-        }else {
-            const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
-            const userLocation = { latitude, longitude };
-
-            let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-            getCity += userLocation.latitude + ',' + userLocation.longitude;
-            getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language= '+this.props.lang +'&sensor=true';
-
-            console.log('locations data', getCity);
-
-
-            try {
-                const { data } = await axios.get(getCity);
-                console.log(data);
-                this.setState({ userAddress: data.results[0].formatted_address });
-
-            } catch (e) {
-                console.log(e);
-            }
-        }
-    }
 
     renderLoader(){
         if (this.state.loader == 1){
@@ -192,15 +190,16 @@ class RestCafeDetails extends Component {
 
     _keyExtractor = (item, index) => item.id;
 
-    renderItems = (item) => {
+    renderItems = (item , i) => {
         return (
             <TouchableOpacity style={{margin:3, flex: 1}} onPress={() => this.props.navigation.navigate('productDetails', {
-                product_id: item.item.product_id,
+                product_id: item.product_id,
                 backRoute: 'restCafeDetails',
                 item,
-                products: this.props.profileDetails.products
+                products: this.props.profileDetails.products,
+                index: i
             })}>
-                <ProgressImg source={{uri: item.item.images[0].image }} style={styles.productImg} resizeMode={'cover'}/>
+                <ProgressImg source={{uri: item.images[0].image }} style={styles.productImg} resizeMode={'cover'}/>
             </TouchableOpacity>
         );
     };
@@ -234,7 +233,7 @@ class RestCafeDetails extends Component {
 
                     <FlatList
                         data={this.props.profileDetails.products}
-                        renderItem={(item) => this.renderItems(item)}
+                        renderItem={({item , index}) => this.renderItems(item , index)}
                         numColumns={3}
                         keyExtractor={this._keyExtractor}
                         columnWrapperStyle={{ justifyContent:'space-between'}}

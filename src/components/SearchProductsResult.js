@@ -57,10 +57,10 @@ class SearchProductsResult extends Component {
 
     _keyExtractor = (item, index) => item.id;
 
-    renderItems = (item) => {
+    renderItems = (item , i) => {
         return(
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={600}>
-                <TouchableOpacity onPress={ () => this.props.navigation.navigate('productDetails' , {product_id:item.id , backRoute:'searchProductsResult'})} style={[styles.notiBlock , styles.directionRow]}>
+                <TouchableOpacity onPress={ () => this.props.navigation.navigate('productDetails' , {product_id:item.id , backRoute:'searchProductsResult', index: i})} style={[styles.notiBlock , styles.directionRow]}>
                     <Image source={{ uri: item.thumbnail }} resizeMode={'cover'} style={[styles.eventImg ]}/>
                     <View style={[styles.directionColumn , {flex:1}]}>
                         <Text style={[styles.headerText , styles.asfs, styles.writing  , {color:'#272727'}]}>{item.name}</Text>
@@ -163,7 +163,7 @@ class SearchProductsResult extends Component {
                             }
                             <FlatList
                                 data={this.state.searchResult}
-                                renderItem={({item}) => this.renderItems(item)}
+                                renderItem={({item , index}) => this.renderItems(item , index)}
                                 numColumns={1}
                                 keyExtractor={this._keyExtractor}
                             />

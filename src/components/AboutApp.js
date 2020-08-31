@@ -14,7 +14,7 @@ import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import {connect} from "react-redux";
 import {getAboutApp} from "../actions";
-import * as Animatable from "./Events";
+import * as Animatable from 'react-native-animatable';
 
 
 const height = Dimensions.get('window').height;
