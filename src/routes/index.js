@@ -85,6 +85,7 @@ import SearchProductsResult from "../components/SearchProductsResult";
 import EditProduct from "../components/EditProduct";
 import RestFilter from "../components/RestFilter";
 import SearchRestResult from "../components/SearchRestResult";
+import VisaPay from "../components/VisaPay";
 
 
 const width = Dimensions.get('window').width;
@@ -161,6 +162,7 @@ const drawerNavigator = createDrawerNavigator({
     editProduct:EditProduct,
     restFilter:RestFilter,
     searchRestResult:SearchRestResult,
+    visaPay:VisaPay,
 
 },{
     initialRouteName:'home',
@@ -681,6 +683,12 @@ const authStack = createStackNavigator({
     },
     confirmPass: {
         screen: ConfirmPass,
+        navigationOptions: {
+            header: null
+        }
+    },
+    visaPay: {
+        screen: VisaPay,
         navigationOptions: {
             header: null
         }

@@ -12,6 +12,7 @@ import {Container, Content, Header, Right, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
+import {connect} from "react-redux";
 
 
 const height = Dimensions.get('window').height;
@@ -26,7 +27,7 @@ class TicketPayment extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            payType:'visa'
+            payType:''
         }
     }
 
@@ -113,7 +114,13 @@ class TicketPayment extends Component {
                             </View>
 
 
-                            <TouchableOpacity onPress={() => this.selectPay('visa')} style={[styles.directionRowAlignCenter , styles.payView , styles.mt15 , {borderColor:this.state.payType === 'visa' ?COLORS.blue : COLORS.gray}]}>
+                            {/*<TouchableOpacity onPress={() => this.selectPay('visa')} style={[styles.directionRowAlignCenter , styles.payView , styles.mt15 , {borderColor:this.state.payType === 'visa' ?COLORS.blue : COLORS.gray}]}>*/}
+                            <TouchableOpacity  onPress={ () => this.props.navigation.navigate('visaPay', {
+                                user_id : this.props.user.id ,
+                                event_id : this.props.navigation.state.params.event_id ,
+                                tickets_type : this.props.navigation.state.params.ticket_type,
+                                tickets_count : this.props.navigation.state.params.ticketsNo,
+                            })} style={[styles.directionRowAlignCenter , styles.payView , styles.mt15 , {borderColor:this.state.payType === 'visa' ?COLORS.blue : COLORS.gray}]}>
                                 <Image source={ this.state.payType === 'visa' ? require('../../assets/images/credit_card.png') : require('../../assets/images/credit_card_gray.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
                                 <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'visa' ?COLORS.blue : COLORS.gray}]}>{ i18n.t('payByVisa') }</Text>
                             </TouchableOpacity>
@@ -168,4 +175,10 @@ class TicketPayment extends Component {
     }
 }
 
-export default TicketPayment;
+const mapStateToProps = ({ lang  , profile }) => {
+    return {
+        lang: lang.lang,
+        user: profile.user,
+    };
+};
+export default connect(mapStateToProps, {})(TicketPayment);
