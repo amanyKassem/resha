@@ -1,5 +1,7 @@
 import React from "react";
-import {createStackNavigator, createAppContainer, createDrawerNavigator, createSwitchNavigator} from "react-navigation";
+import { createAppContainer, createSwitchNavigator} from "react-navigation";
+import { createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
 import {Dimensions, I18nManager} from "react-native";
 
 import Home from "../components/Home";

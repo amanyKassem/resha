@@ -27,7 +27,7 @@ class VerifyCode extends Component {
     }
 
     componentWillMount() {
-        alert(this.props.navigation.state.params.code)
+        // alert(this.props.navigation.state.params.code)
         console.log(this.props.navigation.state.params.user_id , this.props.navigation.state.params.code)
     }
 

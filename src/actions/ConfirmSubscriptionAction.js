@@ -13,7 +13,7 @@ export const getConfirmSub = (lang , user_id , subscription_id , props) => {
         }).then(response => {
             dispatch({type: 'getConfirmSub', payload: response.data})
             if (response.data.key == 1){
-                props.navigation.navigate('drawerNavigator');
+                props.navigation.navigate('home');
             }
         })
 

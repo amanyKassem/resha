@@ -172,8 +172,6 @@ class FamilyDetails extends Component {
         else if(this.props.profileDetails)
             whatsNum = this.props.profileDetails.mobile;
 
-        console.log('fuck lenght...  ', this.props.profileDetails.products.length);
-
 
         return (
             <Container>

@@ -458,6 +458,8 @@ const styles = ({
     },
     drawerContainer:{
         backgroundColor:'#fff' ,
+        bottom: 0,
+        minHeight: height*70/100,
         flex:1,
         borderTopLeftRadius:25,
         borderTopRightRadius:25,

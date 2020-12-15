@@ -56,10 +56,10 @@ class ActivationCode extends Component {
     componentWillReceiveProps(nextProps) {
         this.setState({isSubmitted: false});
 
-
-        if (nextProps.sendActivationCode) {
-            alert(nextProps.sendActivationCode.code)
-        }
+        //
+        // if (nextProps.sendActivationCode) {
+        //     alert(nextProps.sendActivationCode.code)
+        // }
 
         if (nextProps.auth !== null && nextProps.auth.key == 1){
 

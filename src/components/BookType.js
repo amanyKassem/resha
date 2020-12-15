@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import {
-	View,
-	Text,
-	Image,
-	TouchableOpacity,
-	Dimensions,
-	Animated,
-	ImageBackground,
-	Platform
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, Dimensions, Animated, ImageBackground, Platform } from "react-native";
 import {Container, Content, Header, Right, Left} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -17,11 +8,8 @@ import {getEventTickets , getTicketsImgs} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 
-
 const height = Dimensions.get('window').height;
 const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
-
-
 
 class BookType extends Component {
     constructor(props){
@@ -68,24 +56,24 @@ class BookType extends Component {
     componentWillReceiveProps(nextProps) {
         console.log( 'nextProps...' , nextProps);
 
-        if (nextProps.eventTickets.tickets_info){
+        if (nextProps.eventTickets && nextProps.eventTickets.tickets_info){
 			this.setState({
-				loader: nextProps.key,
-				imgSrc : nextProps.tickets[0].image,
-				vipImgSrc : nextProps.tickets[0].image,
-				goldImgSrc : nextProps.tickets[1].image,
-				normalImgSrc : nextProps.tickets[2].image,
-				price : nextProps.eventTickets.tickets_info[2].ticket_price,
-				vipPrice : nextProps.eventTickets.tickets_info[2].ticket_price,
-				goldPrice : nextProps.eventTickets.tickets_info[1].ticket_price,
-				normalPrice : nextProps.eventTickets.tickets_info[0].ticket_price,
-				vipTicketsNum : nextProps.eventTickets.tickets_info[2].available_count,
-				goldTicketsNum : nextProps.eventTickets.tickets_info[1].available_count,
-				normalTicketsNum : nextProps.eventTickets.tickets_info[0].available_count,
-				vipTicketType : nextProps.eventTickets.tickets_info[2].ticket_type,
-				goldTicketType : nextProps.eventTickets.tickets_info[1].ticket_type,
-				normalTicketType : nextProps.eventTickets.tickets_info[0].ticket_type,
-				event_info : nextProps.eventTickets.event_info,
+				loader              : nextProps.key,
+				imgSrc              : nextProps.tickets[0].image,
+				vipImgSrc           : nextProps.tickets[0].image,
+				goldImgSrc          : nextProps.tickets[1].image,
+				normalImgSrc        : nextProps.tickets[2].image,
+				price               : nextProps.eventTickets.tickets_info[2].ticket_price,
+				vipPrice            : nextProps.eventTickets.tickets_info[2].ticket_price,
+				goldPrice           : nextProps.eventTickets.tickets_info[1].ticket_price,
+				normalPrice         : nextProps.eventTickets.tickets_info[0].ticket_price,
+				vipTicketsNum       : nextProps.eventTickets.tickets_info[2].available_count,
+				goldTicketsNum      : nextProps.eventTickets.tickets_info[1].available_count,
+				normalTicketsNum    : nextProps.eventTickets.tickets_info[0].available_count,
+				vipTicketType       : nextProps.eventTickets.tickets_info[2].ticket_type,
+				goldTicketType      : nextProps.eventTickets.tickets_info[1].ticket_type,
+				normalTicketType    : nextProps.eventTickets.tickets_info[0].ticket_type,
+				event_info          : nextProps.eventTickets.event_info,
 			})
         }
     }
@@ -150,18 +138,18 @@ class BookType extends Component {
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']
         });
 
-        const vipPrice = this.state.vipPrice ;
-        const goldPrice = this.state.goldPrice ;
-        const normalPrice = this.state.normalPrice ;
-        const vipTicketsNum = this.state.vipTicketsNum ;
-        const goldTicketsNum = this.state.goldTicketsNum ;
-        const normalTicketsNum = this.state.normalTicketsNum ;
-        const vipTicketType = this.state.vipTicketType ;
-        const goldTicketType = this.state.goldTicketType ;
-        const normalTicketType = this.state.normalTicketType ;
-        const vipImgSrc = this.state.vipImgSrc;
-        const goldImgSrc = this.state.goldImgSrc;
-        const normalImgSrc = this.state.normalImgSrc;
+        const vipPrice          = this.state.vipPrice ;
+        const goldPrice         = this.state.goldPrice ;
+        const normalPrice       = this.state.normalPrice ;
+        const vipTicketsNum     = this.state.vipTicketsNum ;
+        const goldTicketsNum    = this.state.goldTicketsNum ;
+        const normalTicketsNum  = this.state.normalTicketsNum ;
+        const vipTicketType     = this.state.vipTicketType ;
+        const goldTicketType    = this.state.goldTicketType ;
+        const normalTicketType  = this.state.normalTicketType ;
+        const vipImgSrc         = this.state.vipImgSrc;
+        const goldImgSrc        = this.state.goldImgSrc;
+        const normalImgSrc      = this.state.normalImgSrc;
 
         return (
             <Container>

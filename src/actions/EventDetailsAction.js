@@ -9,7 +9,7 @@ export const getEventDetails = (lang , event_id , token) => {
             url: CONST.url + 'event-details',
             method: 'POST',
             data: {lang , event_id},
-            headers: {Authorization: token}
+            headers: token ? {Authorization: token} : null
         }).then(response => {
             dispatch({type: 'getEventDetails', payload: response.data})
         })

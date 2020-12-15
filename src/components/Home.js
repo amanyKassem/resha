@@ -14,10 +14,7 @@ import {NavigationEvents} from "react-navigation";
 {/*NotificationCount notify ban */}
 
 const height = Dimensions.get('window').height;
-
-const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
-
-
+const IS_IPHONE_X = (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class Home extends Component {
 	constructor(props){
@@ -42,7 +39,6 @@ class Home extends Component {
 		this.props.getNotificationCount( this.props.lang , token , this.props);
 
 		AsyncStorage.getItem('deviceID').then( token => console.log('deviceID', token))
-
 	}
 
 	componentWillReceiveProps(nextProps, nextContext) {
@@ -121,6 +117,7 @@ class Home extends Component {
 						<TouchableOpacity  onPress={() => this.props.navigation.openDrawer()} style={styles.headerBtn}>
 							<Image source={require('../../assets/images/menu.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
 						</TouchableOpacity>
+
 						<Text style={[styles.headerText]}>{ i18n.t('home') }</Text>
 
 						<TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user ? 'notifications' : 'login')}   style={styles.headerBtn}>

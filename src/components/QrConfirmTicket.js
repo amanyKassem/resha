@@ -167,17 +167,20 @@ class QrConfirmTicket extends Component {
 
                                     </View>
 
-                                    <Swiper key={this.props.ticketDetails.images} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                            containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
-                                        {
-                                            this.props.ticketDetails.images.map((img, i) =>{
-                                                return (
-                                                    <ProgressImg key={i} source={{ uri: img.image  }}  style={styles.swiperImg} resizeMode={'cover'}/>
-                                                )
-                                            })
-                                        }
+                                    {
+                                        this.props.ticketDetails ?
+                                            <Swiper key={this.props.ticketDetails.images} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
+                                                    containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
+                                                {
+                                                    this.props.ticketDetails.images.map((img, i) =>{
+                                                        return (
+                                                            <ProgressImg key={i} source={{ uri: img.image  }}  style={styles.swiperImg} resizeMode={'cover'}/>
+                                                        )
+                                                    })
+                                                }
 
-                                    </Swiper>
+                                            </Swiper> : null
+                                    }
 
                                     <Text style={[styles.boldGrayText, styles.normalText, styles.mb10, styles.asfs, styles.writing]}>{this.props.ticketDetails.event_name}</Text>
                                     <View style={[styles.directionRowAlignCenter, styles.mb10]}>
@@ -226,7 +229,7 @@ class QrConfirmTicket extends Component {
                                         </View>
 
                                         <TouchableOpacity onPress={() => this.props.navigation.navigate('bookTicket', {
-                                            event_id: this.props.ticketDetails.ticket_id,
+                                            event_id: this.props.ticketDetails.event_id,
                                             backRoute: 'qrConfirmTicket'
                                         })}>
                                             <Text

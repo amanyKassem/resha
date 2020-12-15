@@ -15,7 +15,7 @@ class FoodPayMethod extends Component {
         super(props);
 
         this.state={
-            payType:'visa',
+            payType: 'master',
             isSubmitted: false
         }
     }
@@ -53,17 +53,23 @@ class FoodPayMethod extends Component {
     }
 
     submitData(){
-        this.setState({ isSubmitted: true });
-        this.props.getConfirmSub( this.props.lang , this.props.navigation.state.params.user_id , this.props.navigation.state.params.subscription_id , this.props)
-    }
 
+        this.props.navigation.navigate('visaPay', {
+            user_id             : this.props.user.id ,
+            subscription_id     : this.props.navigation.state.params.subscription_id ,
+            total               : this.props.navigation.state.params.price ,
+            payType             : this.state.payType,
+            pathName            : 'FoodPayMethod'
+        })
+
+        // this.props.getConfirmSub( this.props.lang , this.props.navigation.state.params.user_id , this.props.navigation.state.params.subscription_id , this.props)
+    }
 
     onFocus(payload){
         this.componentWillMount()
     }
 
     render() {
-
 
         return (
             <Container>
@@ -77,19 +83,17 @@ class FoodPayMethod extends Component {
 
                             <Text style={[styles.whiteText , styles.normalText , styles.tAC , styles.mb10]}>{ i18n.t('choosePayMethod') }</Text>
 
-
-
-                                <TouchableOpacity onPress={() => this.selectPay('visa')} style={[styles.w100 , styles.directionRowAlignCenter , styles.payView , styles.mt15
-                                    , {backgroundColor: '#ffffff20',borderColor:this.state.payType === 'visa' ?COLORS.blue : COLORS.gray}]}>
-                                    <Image source={ this.state.payType === 'visa' ? require('../../assets/images/credit_card.png') : require('../../assets/images/credit_card_gray.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
-                                    <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'visa' ?COLORS.blue : COLORS.gray}]}>{ i18n.t('payByVisa') }</Text>
+                                <TouchableOpacity onPress={() => this.selectPay('master')} style={[styles.w100 , styles.directionRowAlignCenter , styles.payView , styles.mt15
+                                    , {backgroundColor: '#ffffff20',borderColor:this.state.payType === 'master' ?COLORS.blue : COLORS.gray}]}>
+                                    <Image source={ this.state.payType === 'master' ? require('../../assets/images/credit_card.png') : require('../../assets/images/credit_card_gray.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
+                                    <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'master' ?COLORS.blue : COLORS.gray}]}>{ i18n.t('payByVisa') }</Text>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity onPress={() => this.selectPay('sdad')} style={[styles.w100 , styles.directionRowAlignCenter , styles.payView
-                                    , {backgroundColor: '#ffffff20',borderColor:this.state.payType === 'sdad' ?COLORS.blue : COLORS.gray}]}>
-                                    <Image source={ this.state.payType === 'sdad' ? require('../../assets/images/sadad_logo_blue.png') : require('../../assets/images/sadad_logo.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
-                                    <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'sdad' ?COLORS.blue : COLORS.gray}]}>{ i18n.t('payBySadad') }</Text>
-                                </TouchableOpacity>
+                                {/*<TouchableOpacity onPress={() => this.selectPay('sdad')} style={[styles.w100 , styles.directionRowAlignCenter , styles.payView*/}
+                                {/*    , {backgroundColor: '#ffffff20',borderColor:this.state.payType === 'sdad' ?COLORS.blue : COLORS.gray}]}>*/}
+                                {/*    <Image source={ this.state.payType === 'sdad' ? require('../../assets/images/sadad_logo_blue.png') : require('../../assets/images/sadad_logo.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />*/}
+                                {/*    <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'sdad' ?COLORS.blue : COLORS.gray}]}>{ i18n.t('payBySadad') }</Text>*/}
+                                {/*</TouchableOpacity>*/}
 
                                 <TouchableOpacity onPress={() => this.selectPay('mada')} style={[styles.w100 , styles.directionRowAlignCenter , styles.payView
                                     , {backgroundColor: '#ffffff20',borderColor:this.state.payType === 'mada' ?COLORS.blue : COLORS.gray}]}>
@@ -97,11 +101,11 @@ class FoodPayMethod extends Component {
                                     <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'mada' ?COLORS.blue : COLORS.gray}]}>{ i18n.t('payByMada') }</Text>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity onPress={() => this.selectPay('apple')} style={[styles.w100 , styles.directionRowAlignCenter , styles.payView
-                                    , {backgroundColor: '#ffffff20',borderColor:this.state.payType === 'apple' ?COLORS.blue : COLORS.gray}]}>
-                                    <Image source={ this.state.payType === 'apple' ? require('../../assets/images/apple_active.png') : require('../../assets/images/apple_non_active.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />
-                                    <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'apple' ?COLORS.blue : COLORS.gray}]}>{ i18n.t('payByApple') }</Text>
-                                </TouchableOpacity>
+                                {/*<TouchableOpacity onPress={() => this.selectPay('apple')} style={[styles.w100 , styles.directionRowAlignCenter , styles.payView*/}
+                                {/*    , {backgroundColor: '#ffffff20',borderColor:this.state.payType === 'apple' ?COLORS.blue : COLORS.gray}]}>*/}
+                                {/*    <Image source={ this.state.payType === 'apple' ? require('../../assets/images/apple_active.png') : require('../../assets/images/apple_non_active.png')} style={[styles.overImg , {marginRight:10}]} resizeMode={'contain'} />*/}
+                                {/*    <Text style={[styles.grayText , styles.normalText , {fontSize:15 , color:this.state.payType === 'apple' ?COLORS.blue : COLORS.gray}]}>{ i18n.t('payByApple') }</Text>*/}
+                                {/*</TouchableOpacity>*/}
 
 
 

@@ -17,12 +17,13 @@ class FoodPayment extends Component {
 
         this.state={
             baqa:'month',
-            subId:1
+            subId:1,
+            price: 0
         }
     }
 
-    selectLang(type , id){
-        this.setState({baqa:type , subId: id})
+    selectLang(type , id, price){
+        this.setState({baqa:type , subId: id, price})
         // alert(id)
     }
 
@@ -71,7 +72,7 @@ class FoodPayment extends Component {
 										{/*{ console.log(this.props.subscriptions[0].name) }*/}
                                         {
 											this.props.subscriptions[0] ?
-												<TouchableOpacity onPress={() => this.selectLang('month' , this.props.subscriptions[0].id)} style={[styles.langBorder , {borderColor:this.state.baqa === 'month' ?COLORS.blue : 'transparent' , height:160}]}>
+												<TouchableOpacity onPress={() => this.selectLang('month' , this.props.subscriptions[0].id, this.props.subscriptions[0].price)} style={[styles.langBorder , {borderColor:this.state.baqa === 'month' ?COLORS.blue : 'transparent' , height:160}]}>
 													<View style={styles.lang}>
 														<Image source={require('../../assets/images/calender_month.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
 														<Text style={[styles.whiteText , styles.normalText , styles.tAC , {marginVertical:15}]}>{ this.props.subscriptions[0].name }</Text>
@@ -82,7 +83,7 @@ class FoodPayment extends Component {
 
                                         {
 											this.props.subscriptions[1] ?
-												<TouchableOpacity onPress={() => this.selectLang('year' , this.props.subscriptions[1].id)} style={[styles.langBorder , {borderColor:this.state.baqa === 'year' ?COLORS.blue : 'transparent' , height:160}]}>
+												<TouchableOpacity onPress={() => this.selectLang('year' , this.props.subscriptions[1].id, this.props.subscriptions[1].price)} style={[styles.langBorder , {borderColor:this.state.baqa === 'year' ?COLORS.blue : 'transparent' , height:160}]}>
 													<View style={styles.lang}>
 														<Image source={require('../../assets/images/calender_year.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
 														<Text style={[styles.whiteText , styles.normalText , styles.tAC , {marginVertical:15}]}>{ this.props.subscriptions[1].name }</Text>
@@ -96,7 +97,7 @@ class FoodPayment extends Component {
                                     <View/>
                             }
 
-                            <TouchableOpacity onPress={ () => this.props.navigation.navigate('foodPayMethod' , {subscription_id:this.state.subId , user_id:this.props.navigation.state.params.user_id}) } style={[styles.blueBtn , styles.mt70]}>
+                            <TouchableOpacity onPress={ () => this.props.navigation.navigate('foodPayMethod' , {subscription_id:this.state.subId , price:this.state.price , user_id:this.props.navigation.state.params.user_id}) } style={[styles.blueBtn , styles.mt70]}>
                                 <Text style={[styles.whiteText , styles.normalText , styles.tAC]}>{ i18n.t('next') }</Text>
                             </TouchableOpacity>
 

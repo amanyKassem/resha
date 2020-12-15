@@ -16,7 +16,7 @@ class QrScan extends Component {
     }
 
     getPermissionsAsync = async () => {
-        const { status } = await Permissions.askAsync(Permissions.CAMERA);
+        const { status } = await BarCodeScanner.requestPermissionsAsync();
         this.setState({ hasCameraPermission: status === 'granted' });
     };
 

@@ -13,7 +13,6 @@ import {store, persistedStore} from './src/store';
 import { Notifications } from 'expo';
 import imagesArr from './src/consts/images'
 
-
   // Keystore password: a8a03061b1604aa281cd86143371afb1
   // Key alias:         QG1fc2hhbXMvUmVlc2g=
   // Key password:      890d090cbbba4bdab88d00ce353e6f04

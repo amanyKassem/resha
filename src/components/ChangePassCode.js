@@ -48,10 +48,10 @@ class ChangePassCode extends Component {
     static navigationOptions = () => ({
         drawerLabel: () => null
     });
-
-    componentWillMount() {
-        alert(this.props.navigation.state.params.code)
-    }
+    //
+    // componentWillMount() {
+    //     alert(this.props.navigation.state.params.code)
+    // }
 
     renderSubmit(){
         if (this.state.verifyCode == '') {

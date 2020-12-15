@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {View, Text, Image, TouchableOpacity, Share, ImageBackground, Dimensions, Platform} from "react-native";
 import {Container, Content, Icon} from 'native-base';
-import {DrawerItems} from 'react-navigation';
+import {DrawerItems} from 'react-navigation-drawer';
 import styles from "../../assets/styles";
 import {connect} from "react-redux";
 import { logout, tempAuth } from '../actions'
@@ -95,6 +95,7 @@ class DrawerCustomization extends Component {
                              </View>
 
 
+                        <View>
                             <DrawerItems {...this.props}
                                          onItemPress={
                                              (route, focused) => {
@@ -113,6 +114,7 @@ class DrawerCustomization extends Component {
                                          labelStyle={styles.drawerLabel} iconContainerStyle ={styles.drawerIcon}
                                          itemStyle  = {styles.drawerItemStyle} itemsContainerStyle ={styles.drawerContainer}
                             />
+                        </View>
                     </Content>
 				</ImageBackground>
 

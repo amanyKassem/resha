@@ -216,8 +216,7 @@ class BookTicket extends Component {
 
                                     </View>
 
-                                    <Swiper key={this.props.eventDet.images.length} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                            containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
+                                    <Swiper key={this.props.eventDet.images.length} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot} containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
                                         {
                                             this.props.eventDet.images.map((img, i) =>{
                                                 return (

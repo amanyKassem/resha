@@ -19,7 +19,7 @@ import axios from 'axios';
 import {DoubleBounce} from "react-native-loader";
 import {register} from "../actions";
 import {connect} from "react-redux";
-
+import {NavigationEvents} from "react-navigation";
 
 
 class Register extends Component {
@@ -129,8 +129,7 @@ class Register extends Component {
     }
 
     async componentWillMount() {
-
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        let { status } = await Location.requestPermissionsAsync();
         if (status !== 'granted') {
             alert('صلاحيات تحديد موقعك الحالي ملغاه');
         }else {
@@ -201,8 +200,6 @@ class Register extends Component {
         this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
     };
 
-
-
     async confirmLocation(){
         this.setState({ isModalVisible: !this.state.isModalVisible })
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -230,11 +227,17 @@ class Register extends Component {
         }
     }
 
+    onFocus(payload){
+        this.componentWillMount()
+    }
+
     render() {
 
+        console.log('damn map', this.state.initMap);
 
         return (
             <Container>
+                {/*<NavigationEvents onWillFocus={payload => this.onFocus(payload)} />*/}
 				<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                     <Content   contentContainerStyle={styles.flexGrow} >
                         <TouchableOpacity style={styles.authBack} onPress={() => this.props.navigation.goBack()}>
@@ -286,7 +289,6 @@ class Register extends Component {
                                                 <View/>
 
                                         }
-
 
                                         <View style={styles.inputParent}>
                                             <Item stackedLabel style={styles.item } bordered>
@@ -387,7 +389,6 @@ class Register extends Component {
                     </Content>
 				</ImageBackground>
             </Container>
-
         );
     }
 }
