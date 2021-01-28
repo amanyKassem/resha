@@ -188,7 +188,7 @@ class ShowTicketQr extends Component {
                             </View>
 
                             <Swiper key={this.props.navigation.state.params.ticketsInfo.images} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                    containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
+                                    containerStyle={styles.eventswiper} showsButtons={false}>
                                 {
                                     this.props.navigation.state.params.ticketsInfo.images.map((img, i) =>{
                                         return (

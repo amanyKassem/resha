@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground , AsyncStorage , KeyboardAvoidingView} from "react-native";
+import {View, Text, Image, TouchableOpacity, ImageBackground , AsyncStorage , KeyboardAvoidingView, Platform} from "react-native";
 import {Container, Content, Form, Input, Item, Label, Toast} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -9,7 +9,16 @@ import {NavigationEvents} from "react-navigation";
 import { connect } from 'react-redux';
 import { userLogin, profile } from '../actions'
 import * as Permissions from 'expo-permissions';
-import { Notifications } from 'expo';
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
 
 class Login extends Component {
     constructor(props){
@@ -21,9 +30,12 @@ class Login extends Component {
             deviceId: '',
             userId: null,
             type:0,
-            isSubmitted: false
+            isSubmitted: false,
+            notification: false,
+            expoPushToken: ''
         }
     }
+
     validate = () => {
         let isError = false;
         let msg = '';
@@ -66,32 +78,65 @@ class Login extends Component {
         const err = this.validate();
         if (!err){
             // this.setState({ isSubmitted: true });
-            const {phone, password, deviceId , type} = this.state;
-            setTimeout(() => this.props.userLogin({ phone, password, deviceId, type }, this.props.lang, this.props), 0);
+            const {phone, password, expoPushToken , type} = this.state;
+            setTimeout(() => this.props.userLogin({ phone, password, expoPushToken, type }, this.props.lang, this.props), 0);
         }
+    }
+
+    async registerForPushNotificationsAsync() {
+        let token;
+        if (Constants.isDevice) {
+            const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+            let finalStatus = existingStatus;
+            if (existingStatus !== 'granted') {
+                const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+                finalStatus = status;
+            }
+
+            if (finalStatus !== 'granted') {
+                alert('Failed to get push token for push notification!');
+                return null;
+            }
+
+            token = (await Notifications.getExpoPushTokenAsync()).data;
+            console.log(token);
+        } else {
+            alert('Must use physical device for Push Notifications');
+        }
+
+        if (Platform.OS === 'android') {
+            Notifications.setNotificationChannelAsync('default', {
+                name: 'default',
+                importance: Notifications.AndroidImportance.MAX,
+                vibrationPattern: [0, 250, 250, 250],
+                lightColor: '#FF231F7C',
+            });
+        }
+
+        return token;
     }
 
 
     async componentWillMount() {
-        const { status: existingStatus } = await Permissions.getAsync(
-            Permissions.NOTIFICATIONS
-        );
 
-        let finalStatus = existingStatus;
+        if (Constants.isDevice) {
+            this.registerForPushNotificationsAsync().then(token => {
+                if (token){
+                    this.setState({ expoPushToken: token, userId: null })
+                    console.log('deviceId__', token);
+                    AsyncStorage.setItem('deviceID', token);
+                }
+            });
 
-        if (existingStatus !== 'granted') {
-            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-            finalStatus = status;
+            Notifications.addNotificationReceivedListener(notification => {
+                this.setState({ notification })
+            });
+
+            Notifications.addNotificationResponseReceivedListener(response => {
+                console.log(response);
+            });
         }
 
-        if (finalStatus !== 'granted') {
-            return;
-        }
-
-        const deviceId = await Notifications.getExpoPushTokenAsync();
-        console.log('deviceId', deviceId);
-        this.setState({ deviceId, userId: null });
-        AsyncStorage.setItem('deviceID', deviceId);
 
     }
 

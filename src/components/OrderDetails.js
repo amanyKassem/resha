@@ -202,7 +202,7 @@ class OrderDetails extends Component {
                                     <Text style={[styles.boldGrayText , styles.normalText , styles.mb10, styles.asfs, styles.writing]}>{this.props.eventDet.name}</Text>
 
                                     <Swiper key={this.props.eventDet.images} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                            containerStyle={[styles.eventswiper , styles.mb15]} showsButtons={false} autoplay={true}>
+                                            containerStyle={[styles.eventswiper , styles.mb15]} showsButtons={false} >
                                         {
                                             this.props.eventDet.images.map((img, i) =>{
                                                 return (

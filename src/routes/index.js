@@ -88,6 +88,7 @@ import EditProduct from "../components/EditProduct";
 import RestFilter from "../components/RestFilter";
 import SearchRestResult from "../components/SearchRestResult";
 import VisaPay from "../components/VisaPay";
+import ImageBrowserScreen from "../components/ImageBrowserScreen";
 
 
 const width = Dimensions.get('window').width;
@@ -546,9 +547,6 @@ const appStack = createStackNavigator({
             header: null
         }
     },
-
-
-
     addEventPrice: {
         screen: AddEventPrice,
         navigationOptions: {
@@ -691,6 +689,12 @@ const authStack = createStackNavigator({
     },
     visaPay: {
         screen: VisaPay,
+        navigationOptions: {
+            header: null
+        }
+    },
+    imageBrowser: {
+        screen: ImageBrowserScreen,
         navigationOptions: {
             header: null
         }

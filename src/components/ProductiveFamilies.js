@@ -44,7 +44,9 @@ class ProductiveFamilies extends Component {
             );
         }
     }
+
     componentWillReceiveProps(nextProps) {
+        console.log('damn loader', nextProps.key)
         this.setState({ loader: nextProps.key });
     }
 

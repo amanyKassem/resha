@@ -78,9 +78,6 @@ class AddEventPrice extends Component {
     }
 
 
-
-
-
     renderNextBtn(){
         if (this.state.vipPrice == '' || this.state.vipQuantity == '' || this.state.goldPrice == '' || this.state.goldQuantity == '' || this.state.normalPrice == '' || this.state.normalQuantity == '' ){
             return (
@@ -136,20 +133,8 @@ class AddEventPrice extends Component {
 
 
     render() {
-
-
-        // console.log( this.props.navigation.state.params.ar_name ,
-        //     this.props.navigation.state.params.en_name ,
-        //     this.props.navigation.state.params.date ,
-        //    this.props.navigation.state.params.time ,
-        //      this.props.navigation.state.params.event_hours ,
-        //      this.props.navigation.state.params.address ,
-        //     this.props.navigation.state.params.latitude ,
-        //      this.props.navigation.state.params.longitude ,
-        //     this.props.navigation.state.params.ar_description,
-        //     this.props.navigation.state.params.en_description,
-        //     this.props.navigation.state.params.organization_id,
-        //     this.props.navigation.state.params.category_id)
+        const {ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description,  en_description, organization_id, category_id } = this.props.navigation.state.params;
+        console.log( ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description,  en_description, organization_id, category_id)
 
         const backgroundColor = this.state.backgroundColor.interpolate({
             inputRange: [0, 1],
@@ -168,7 +153,7 @@ class AddEventPrice extends Component {
 					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.navigate('addEventDesc')} style={styles.headerBtn}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate('addEventDesc', { ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description,  en_description, organization_id, category_id })} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>

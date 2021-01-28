@@ -117,6 +117,15 @@ class AddEventDesc extends Component {
 
     render() {
 
+        console.log(this.props.navigation.state.params.ar_name ,
+            this.props.navigation.state.params.en_name ,
+            this.props.navigation.state.params.date ,
+            this.props.navigation.state.params.time ,
+            this.props.navigation.state.params.event_hours ,
+            this.props.navigation.state.params.address ,
+            this.props.navigation.state.params.latitude ,
+            this.props.navigation.state.params.longitude ,)
+
         const backgroundColor = this.state.backgroundColor.interpolate({
             inputRange: [0, 1],
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']

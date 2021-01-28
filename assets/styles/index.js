@@ -72,7 +72,7 @@ const styles = ({
     directionRowSpace:{
         flexDirection:'row',
         justifyContent:'space-between',
-        alignItems:'center'
+       // alignItems:'center'
     },
     mb15:{
         marginBottom:15

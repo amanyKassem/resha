@@ -32,7 +32,6 @@ class Home extends Component {
 		drawerIcon: (<Image source={require('../../assets/images/home_menu.png')} style={styles.drawerImg} resizeMode={'contain'} /> )
 	})
 
-
 	componentWillMount() {
 		const token = this.props.auth ? this.props.auth.data.token : null;
 		this.props.getHomeCounts( this.props.lang );
@@ -57,7 +56,6 @@ class Home extends Component {
 			);
 		}
 	}
-
 
 	setAnimate(availabel){
 		if (availabel === 0){
@@ -91,6 +89,7 @@ class Home extends Component {
 			this.setAnimate(1)
 		}
 	}
+
 	onFocus(payload){
 		this.componentWillMount()
 	}
@@ -136,8 +135,8 @@ class Home extends Component {
 									<View style={styles.homeSection}>
 
 										<Animatable.View animation="zoomIn" easing="ease-out" delay={300}>
-											<TouchableOpacity onPress={() => this.props.navigation.navigate('events')} style={[styles.imgParent , styles.w100]}>
-												<ProgressImg source={{ uri: this.props.homeData.events_image  }} style={[styles.w100 , {height:180}]} resizeMode={'cover'} />
+											<TouchableOpacity onPress={() => this.props.navigation.navigate('events')} style={[styles.imgParent , styles.w100, { height: height*25/100 }]}>
+												<ProgressImg source={{ uri: this.props.homeData.events_image  }} style={[styles.w100 , {height:'100%'}]} resizeMode={'cover'} />
 												<View style={styles.overlay}>
 													<Image source={require('../../assets/images/fireworks_wite_descrpion.png')} style={[styles.overImg, styles.transform]} resizeMode={'contain'} />
 													<Text style={[styles.whiteText, styles.normalText , {fontSize:24}]}>{this.props.homeData.events_name}</Text>
@@ -146,8 +145,8 @@ class Home extends Component {
 											</TouchableOpacity>
 										</Animatable.View>
 
-										<View style={[styles.directionRowSpace, styles.w100]}>
-											<View style={[styles.directionColumn , {width: '47%'}] }>
+										<View style={[styles.directionRowSpace, styles.w100, { height: height*50/100 }]}>
+											<View style={[styles.directionColumn , {width: '48%', height: '100%'}] }>
 												<Animatable.View animation="fadeInRight" easing="ease-out" delay={500}>
 													<TouchableOpacity onPress={() => this.props.navigation.navigate('restCafe' ,{catType : 6})} style={[styles.imgParent , {width: '100%'}]}>
 														<ProgressImg source={{ uri: this.props.homeData.resturants_image  }} style={[styles.w100 , {height:180}]} resizeMode={'cover'} />
@@ -158,6 +157,7 @@ class Home extends Component {
 														</View>
 													</TouchableOpacity>
 												</Animatable.View>
+
 												<Animatable.View animation="fadeInRight" easing="ease-out" delay={500}>
 													<TouchableOpacity onPress={() => this.props.navigation.navigate('cars',{catType : 7})} style={[styles.imgParent , {width: '100%'}]}>
 														<ProgressImg source={{ uri: this.props.homeData.trucks_image  }} style={[styles.w100 , {height:180}]} resizeMode={'cover'} />
@@ -170,8 +170,7 @@ class Home extends Component {
 												</Animatable.View>
 											</View>
 
-
-											<Animatable.View animation="fadeInLeft" easing="ease-out" delay={500} style={{width: '47%'}}>
+											<Animatable.View animation="fadeInLeft" easing="ease-out" delay={500} style={{width: '48%', height: '100%'}}>
 												<TouchableOpacity onPress={() => this.props.navigation.navigate('productiveFamilies',{catType : 8})} style={[styles.imgParent , {width: '100%'}]}>
 													<ProgressImg source={{ uri: this.props.homeData.families_image  }} style={[styles.w100 , {height:382}]} resizeMode={'cover'} />
 													<View style={[styles.overlay , {justifyContent:'flex-end' , paddingBottom:30}]}>

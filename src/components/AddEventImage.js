@@ -1,28 +1,13 @@
 import React, { Component } from "react";
-import {
-    View,
-    Text,
-    Image,
-    TouchableOpacity,
-    Dimensions,
-    Animated,
-    FlatList,
-    ImageBackground, ImageEditor, ImageStore, Platform, I18nManager
-} from "react-native";
-import {
-    Container,
-    Content,
-    Header,
-    Right,
-    Left,
-    Label,
-} from 'native-base'
+import { View, Text, Image, TouchableOpacity, Dimensions, Animated, FlatList, ImageBackground, ImageEditor, ImageStore, Platform, I18nManager } from "react-native";
+import { Container, Content, Header, Right, Left, Label, } from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
-import {ImageBrowser, CameraBrowser} from 'expo-multiple-imagepicker';
+import * as FileSystem from 'expo-file-system';
+import { ImageBrowser } from 'expo-image-picker-multiple';
 import Modal from "react-native-modal";
 import {connect} from "react-redux";
 import {getStoreEvent} from "../actions";
@@ -30,9 +15,9 @@ import {NavigationEvents} from "react-navigation";
 import {DoubleBounce} from "react-native-loader";
 
 
-const height = Dimensions.get('window').height;
+const height        = Dimensions.get('window').height;
 const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
-let base64   = [];
+let base64          = [];
 
 class AddEventImage extends Component {
     constructor(props){
@@ -46,7 +31,7 @@ class AddEventImage extends Component {
             eventImg: '',
             imageBrowserOpen: false,
             cameraBrowserOpen: false,
-            photos: [{ file: null }],
+            photos: [{ uri: null }],
             imageId: null,
             refreshed: false,
             modalEvent: false,
@@ -60,8 +45,7 @@ class AddEventImage extends Component {
 
     componentWillMount() {
         base64   = [];
-        this.setState({eventImg:'', isSubmitted: false , modalEvent: false});
-        console.log('1')
+        this.setState({ isSubmitted: false , modalEvent: false});
     }
 
     renderSubmit(){
@@ -89,11 +73,9 @@ class AddEventImage extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('2')
 
         if (nextProps.storeEvent) {
             this.setState({isSubmitted: false ,  modalEvent: !this.state.modalEvent});
-            console.log('3')
         }
 
         console.log('nextProps.storeEvent' , nextProps.storeEvent)
@@ -101,6 +83,22 @@ class AddEventImage extends Component {
 
     _modalEvent = () =>{
         this.setState({ isSubmitted: true });
+
+
+        console.log(this.props.navigation.state.params.ar_name ,
+            this.props.navigation.state.params.en_name ,
+            this.props.navigation.state.params.date ,
+            this.props.navigation.state.params.time ,
+            this.props.navigation.state.params.event_hours ,
+            this.props.navigation.state.params.address ,
+            this.props.navigation.state.params.latitude ,
+            this.props.navigation.state.params.longitude ,
+            this.props.navigation.state.params.ar_description,
+            this.props.navigation.state.params.en_description,
+            this.props.navigation.state.params.organization_id,
+            this.props.navigation.state.params.category_id,
+            this.props.navigation.state.params.tickets);
+
         this.props.getStoreEvent( this.props.lang ,
             this.props.navigation.state.params.ar_name ,
             this.props.navigation.state.params.en_name ,
@@ -116,7 +114,8 @@ class AddEventImage extends Component {
             this.props.navigation.state.params.category_id,
             this.props.navigation.state.params.tickets,
             base64,
-            this.props.user.token
+            this.props.user.token,
+            this.props
         )
     }
 
@@ -124,6 +123,7 @@ class AddEventImage extends Component {
         this.setState({ modalEvent: !this.state.modalEvent });
         this.props.navigation.navigate('home')
     };
+
     showTicket() {
         this.setState({ modalEvent: !this.state.modalEvent });
         this.props.navigation.navigate('showTicket', {eventType: this.props.storeEvent.eventType , event_id : this.props.storeEvent.event_id})
@@ -132,7 +132,6 @@ class AddEventImage extends Component {
     askPermissionsAsync = async () => {
         await Permissions.askAsync(Permissions.CAMERA);
         await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
     };
 
     _eventImg = async () => {
@@ -180,9 +179,11 @@ class AddEventImage extends Component {
 
     renderItems = (item, imageId) => {
 
-        if (item.file === null){
+        const {ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description,  en_description, organization_id, category_id, tickets } = this.props.navigation.state.params;
+
+        if (item.uri === null){
             return(
-                <TouchableOpacity onPress={() => this.setState({imageBrowserOpen: true})} style={[styles.directionRowAlignCenter]}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('imageBrowser', { routeName: 'addEventImage', ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description, en_description, organization_id, category_id, tickets })} style={[styles.directionRowAlignCenter]}>
                     <Image source={require('../../assets/images/add_more.png')} style={[styles.addMore]} resizeMode={'contain'} />
                     <Text style={[styles.blueText , styles.normalText , {marginLeft:10}  ]}>{ i18n.t('addManyPhotos') }</Text>
                 </TouchableOpacity>
@@ -197,7 +198,7 @@ class AddEventImage extends Component {
                 <TouchableOpacity style={{ height: 100 }} onPress={() => this.selectImage(item.md5)}>
                     <Image
                         style={{ height: 100, width: '100%', borderRadius: 3 }}
-                        source={{uri: item.file }}
+                        source={{uri: item.uri }}
                     />
                 </TouchableOpacity>
             </View>
@@ -214,8 +215,8 @@ class AddEventImage extends Component {
 
             const imgs = this.state.photos;
             for (var i =0; i < imgs.length; i++){
-                if (imgs[i].file != null) {
-                    const imageURL = imgs[i].file;
+                if (imgs[i].uri != null) {
+                    const imageURL = imgs[i].uri;
                     Image.getSize(imageURL, (width, height) => {
                         var imageSize = {
                             size: {
@@ -244,8 +245,6 @@ class AddEventImage extends Component {
         arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
         return arr;
     };
-
-
 
     setAnimate(availabel){
         if (availabel === 0){
@@ -282,41 +281,37 @@ class AddEventImage extends Component {
 
     onFocus(payload){
         this.componentWillMount()
+
+        if (this.props.navigation.state.params && this.props.navigation.state.params.photos){
+            this.setState({ photos: this.props.navigation.state.params.photos })
+            let images =  this.state.photos;
+
+            this.setState({ photos: images.concat(this.props.navigation.state.params.photos) });
+            const imgs = images.concat(this.props.navigation.state.params.photos);
+            for (var i =0; i < imgs.length; i++){
+                if (imgs[i].uri != null) {
+                    const imageURL = imgs[i].uri;
+                    FileSystem.readAsStringAsync(imageURL, { encoding: 'base64' }).then((base) => {
+                        base64.push(base);
+                    })
+                }
+            }
+        }
     }
 
     render() {
 
-
-
-        // console.log( this.props.navigation.state.params.ar_name ,
-        //     this.props.navigation.state.params.en_name ,
-        //     this.props.navigation.state.params.date ,
-        //     this.props.navigation.state.params.time ,
-        //     this.props.navigation.state.params.event_hours ,
-        //     this.props.navigation.state.params.address ,
-        //     this.props.navigation.state.params.latitude ,
-        //     this.props.navigation.state.params.longitude ,
-        //     this.props.navigation.state.params.ar_description,
-        //     this.props.navigation.state.params.en_description,
-        //     this.props.navigation.state.params.organization_id,
-        //     this.props.navigation.state.params.category_id,
-        //     this.props.navigation.state.params.tickets,
-        //     )
+        const {ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description,  en_description, organization_id, category_id, tickets } = this.props.navigation.state.params;
+        console.log( 'ar_name :', ar_name, 'en_name :',en_name, 'date :' ,date, 'time :', time, 'event_hours :', event_hours, 'address :', address, 'latitude :' , latitude, 'longitude :' , 'longitude :', longitude, 'ar_description :', ar_description, 'en_description :', en_description, 'organization_id :', organization_id, 'category_id :', category_id, 'tickets :', tickets )
 
         const backgroundColor = this.state.backgroundColor.interpolate({
             inputRange: [0, 1],
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']
         });
 
-        if (this.state.imageBrowserOpen) {
-            return(<ImageBrowser base64={true} max={10} callback={this.imageBrowserCallback}/>);
-        }else if (this.state.cameraBrowserOpen) {
-            return(<CameraBrowser base64={true} max={10} callback={this.imageBrowserCallback}/>);
-        }
-        const oldIndex =  (this.state.photos).findIndex(x => x.file === null );
+        const oldIndex =  (this.state.photos).findIndex(x => x.uri === null );
         const photos   = this.array_move(this.state.photos, oldIndex, (this.state.photos).length - 1);
         console.log('image arr ..', photos);
-
 
         return (
             <Container>
@@ -330,7 +325,7 @@ class AddEventImage extends Component {
 					}
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.navigate('addEventPrice')} style={styles.headerBtn}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate('addEventPrice', { ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description,  en_description, organization_id, category_id, tickets })} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
@@ -339,33 +334,32 @@ class AddEventImage extends Component {
                     </Animated.View>
                 </Header>
 
-                <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                <Content  contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20} ]}>
-                                    <View style={[styles.inputParent , styles.mb15]}>
-                                        <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={this._eventImg}>
-                                            <Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 ,
-                                                backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
-                                                borderBottomColor:'#fff'}]}>{ i18n.t('eventPhotos') }</Label>
-                                            <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform]}/>
-                                            <Text style={[styles.whiteText , styles.normalText , styles.itemText, {backgroundColor:'#f5f5f5',  color: COLORS.gray } ]}>{this.state.eventImg}</Text>
-                                        </TouchableOpacity>
-                                        <Image source={require('../../assets/images/add_camera.png')} style={styles.mapMarker} resizeMode={'contain'} />
-                                    </View>
+                            <View style={[styles.inputParent , styles.mb15]}>
+                                <TouchableOpacity stackedLabel style={styles.item } bordered  onPress={this._eventImg}>
+                                    <Label style={[styles.labelItem , {top: I18nManager.isRTL ?  -8 : -3.5 ,
+                                        backgroundColor :Platform.OS === 'ios' ?'#fff' : 'transparent' ,
+                                        borderBottomColor:'#fff'}]}>{ i18n.t('eventPhotos') }</Label>
+                                    <Image source={require('../../assets/images/Feather_blue.png')} resizeMode={'contain'} style={[styles.labelImg , styles.transform]}/>
+                                    <Text style={[styles.whiteText , styles.normalText , styles.itemText, {backgroundColor:'#f5f5f5',  color: COLORS.gray } ]}>{this.state.eventImg}</Text>
+                                </TouchableOpacity>
+                                <Image source={require('../../assets/images/add_camera.png')} style={styles.mapMarker} resizeMode={'contain'} />
+                            </View>
 
-                                    <FlatList
-                                        data={photos}
-                                        renderItem={({item}) => this.renderItems(item, this.state.imageId)}
-                                        numColumns={2}
-                                        keyExtractor={this._keyExtractor}
-                                        extraData={this.state.refreshed}
-                                    />
+                            <FlatList
+                                data={photos}
+                                renderItem={({item}) => this.renderItems(item, this.state.imageId)}
+                                numColumns={2}
+                                keyExtractor={this._keyExtractor}
+                                extraData={this.state.refreshed}
+                            />
 
                             {
                                 this.renderSubmit()
                             }
-
 
                         </View>
                     </ImageBackground>

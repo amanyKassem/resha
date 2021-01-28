@@ -156,6 +156,13 @@ class BookTicket extends Component {
             outputRange: ['rgba(0, 0, 0, 0)', '#00000099']
         });
 
+        let whatsNum = '';
+
+        if(this.props.eventDet && this.props.eventDet.user.mobile && Platform.OS == 'ios')
+            whatsNum = (this.props.eventDet.user.mobile).substr(1);
+        else if(this.props.eventDet && this.props.eventDet.user.mobile)
+            whatsNum = this.props.eventDet.user.mobile;
+
         return (
             <Container>
 
@@ -210,13 +217,13 @@ class BookTicket extends Component {
                                             </View>
                                         </View>
 
-                                        <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+this.props.eventDet.user.mobile)}>
+                                        <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+whatsNum)}>
                                             <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
                                         </TouchableOpacity>
 
                                     </View>
 
-                                    <Swiper key={this.props.eventDet.images.length} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot} containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
+                                    <Swiper key={this.props.eventDet.images.length} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot} containerStyle={styles.eventswiper} showsButtons={false} >
                                         {
                                             this.props.eventDet.images.map((img, i) =>{
                                                 return (
@@ -241,24 +248,26 @@ class BookTicket extends Component {
                                         <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                         <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.normal_price} { i18n.t('RS') }</Text>
                                     </View>
-                                    <TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.eventDet.latitude +','+ this.props.eventDet.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                        <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                        <Text style={[styles.blueText , styles.normalText, {paddingLeft:20}]}>{this.props.eventDet.address}</Text>
-                                    </TouchableOpacity>
-                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13}]}>{this.props.eventDet.details}</Text>
 
+                                    <TouchableOpacity onPress={() => this._linkPressed('https://google.com/maps/?q=' + this.props.eventDet.latitude +','+ this.props.eventDet.longitude +'')} style={[styles.blueBtn, { marginVertical: 10, width: '90%' }]}>
+                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('location') }</Text>
+                                    </TouchableOpacity>
+
+                                    {/*<TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.eventDet.latitude +','+ this.props.eventDet.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10]}>*/}
+                                    {/*    <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />*/}
+                                    {/*    <Text style={[styles.blueText , styles.normalText, {paddingLeft:20}]}>{this.props.eventDet.address}</Text>*/}
+                                    {/*</TouchableOpacity>*/}
+
+                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13}]}>{this.props.eventDet.details}</Text>
 
                                     {
                                         this.props.eventDet.is_booking === 1 ?
-                                            <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookType' , { event_id: this.props.eventDet.id })} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                                            <TouchableOpacity onPress={ () =>  this.props.user ? this.props.navigation.navigate('bookType' , { event_id: this.props.eventDet.id }) : this.props.navigation.navigate('login') } style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
                                                 <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('book') }</Text>
                                             </TouchableOpacity>
                                             :
                                             <View/>
                                     }
-
-
-
 
 
                                 </View>

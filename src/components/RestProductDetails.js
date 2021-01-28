@@ -134,7 +134,7 @@ class RestProductDetails extends Component {
                                 <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
 
                                     <Swiper key={this.props.showProduct.images} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                            containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
+                                            containerStyle={styles.eventswiper} showsButtons={false}>
                                         {
                                             this.props.showProduct.images.map((img, i) =>{
                                                 return (

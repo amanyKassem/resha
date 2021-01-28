@@ -82,7 +82,9 @@ class ProductDetails extends Component {
 
     componentDidMount() {
         const { index } = this.props.navigation.state.params;
-        setTimeout(() => this.flatListRef.scrollToIndex({ index , animated: true }), 1000);
+        if(this.flatListRef.scrollToIndex({ index , animated: true })){
+            this.flatListRef.scrollToIndex({ index , animated: true })
+        }
     }
 
     onStarRatingPress(rating) {

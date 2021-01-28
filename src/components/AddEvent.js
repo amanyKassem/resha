@@ -55,7 +55,6 @@ class AddEvent extends Component {
         drawerIcon: (<Image source={require('../../assets/images/add_event_menu.png')} style={styles.drawerImg} resizeMode={'contain'} /> )
     })
 
-
     showDatePicker = () => {
         this.setState({ isDatePickerVisible: true });
     };
@@ -71,6 +70,7 @@ class AddEvent extends Component {
 
         this.hideDatePicker();
     };
+
     showTimePicker = () => {
         this.setState({ isTimePickerVisible: true });
     };

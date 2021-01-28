@@ -178,12 +178,13 @@ class FamilyDetails extends Component {
 
                 { this.renderLoader() }
                 <Header style={[styles.header]} noShadow>
-                    {
-                        IS_IPHONE_X ?
-                            <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
-                            :
-                            <View/>
-                    }
+                    {/*{*/}
+                    {/*    IS_IPHONE_X ?*/}
+                    {/*        <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>*/}
+                    {/*        :*/}
+                    {/*        <View/>*/}
+                    {/*}*/}
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
@@ -201,15 +202,14 @@ class FamilyDetails extends Component {
 
                     </Animated.View>
                 </Header>
-
-                <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent} onScroll={e => this.headerScrollingAnimation(e) }>
+                <Content  contentContainerStyle={styles.flexGrow} style={[styles.whiteHome , {overflow:'hidden',  marginTop : IS_IPHONE_X ? -25 : -25}]} onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+                    {/*<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{width:'100%' , flex:1}}>*/}
                         {
                             this.props.profileDetails ?
-                                <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
+                                <View style={[{paddingHorizontal:20 , paddingVertical:20 , width: '100%'} ]}>
                                     <View style={styles.directionRowSpace}>
-                                        <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.profileDetails.name}</Text>
+                                        <Text style={[styles.boldGrayText , styles.normalText]}>{this.props.profileDetails.name}</Text>
 
                                         <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone=' + whatsNum)}>
                                             <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
@@ -259,7 +259,7 @@ class FamilyDetails extends Component {
                                 <View/>
                         }
 
-                    </ImageBackground>
+                    {/*</ImageBackground>*/}
 
                 </Content>
             </Container>

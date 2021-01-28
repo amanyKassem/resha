@@ -70,7 +70,7 @@ class FamilyProduct extends Component{
                 <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                 <Swiper key={this.props.data.images.length} dotStyle={[styles.eventdoteStyle , {backgroundColor:'#ccc' , bottom:-50}]}
                         activeDotStyle={[styles.eventactiveDot,{bottom:-50}]}
-                        containerStyle={[{height: 450, marginTop:20, marginBottom:15 }]} showsButtons={false} autoplay={true}>
+                        containerStyle={[{height: 450, marginTop:20, marginBottom:15 }]} showsButtons={false}>
                     {
                         this.props.data.images.map((img, i) =>{
                             return (

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "544851571645",
+    "project_id": "reesh-3c57e",
+    "storage_bucket": "reesh-3c57e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:544851571645:android:69256005d6631f864a18d4",
+        "android_client_info": {
+          "package_name": "com.app.reesh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "544851571645-ssocqdaec6tuektokh99om1ug4aqcj27.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJJS8f2lOIyHXBNHI7yZJDYQsEzRBzvtg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "544851571645-ssocqdaec6tuektokh99om1ug4aqcj27.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

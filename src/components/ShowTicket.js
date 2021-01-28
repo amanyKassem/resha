@@ -170,7 +170,7 @@ class ShowTicket extends Component {
                                     <View style={styles.directionRowSpace}>
                                         <View style={styles.directionRowAlignCenter}>
                                             <View style={styles.borderImg}>
-                                                <Image source={{ uri: this.props.ownerEventsDetails.user.avatar }} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                                                <Image source={{ uri: this.props.ownerEventsDetails.user ? this.props.ownerEventsDetails.user.avatar : '' }} style={[styles.footSearchImg]} resizeMode={'cover'} />
                                             </View>
                                             <View style={styles.directionColumn}>
                                                 <Text style={[styles.boldGrayText , styles.normalText , styles.mb10]}>{this.props.ownerEventsDetails.user.user_name}</Text>
@@ -192,7 +192,7 @@ class ShowTicket extends Component {
                                     </View>
 
                                     <Swiper key={this.props.ownerEventsDetails.images.length} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                            containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
+                                            containerStyle={styles.eventswiper} showsButtons={false}>
                                         {
                                             this.props.ownerEventsDetails.images.map((img, i) =>{
                                                 return (

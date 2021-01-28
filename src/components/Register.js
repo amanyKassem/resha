@@ -160,6 +160,8 @@ class Register extends Component {
         const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
         const userLocation = { latitude, longitude };
         this.setState({  initMap: false, mapRegion: userLocation });
+
+        console.log('damn map', this.state.initMap, this.state.mapRegion);
     }
 
 

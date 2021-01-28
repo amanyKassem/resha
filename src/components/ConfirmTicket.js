@@ -138,7 +138,7 @@ class ConfirmTicket extends Component {
                             </View>
 
                             <Swiper key={this.props.navigation.state.params.event_info.images} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                    containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
+                                    containerStyle={styles.eventswiper} showsButtons={false} >
                                 {
                                     this.props.navigation.state.params.event_info.images.map((img, i) =>{
                                         return (

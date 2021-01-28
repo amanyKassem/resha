@@ -170,7 +170,7 @@ class QrConfirmTicket extends Component {
                                     {
                                         this.props.ticketDetails ?
                                             <Swiper key={this.props.ticketDetails.images} dotStyle={styles.eventdoteStyle} activeDotStyle={styles.eventactiveDot}
-                                                    containerStyle={styles.eventswiper} showsButtons={false} autoplay={true}>
+                                                    containerStyle={styles.eventswiper} showsButtons={false}>
                                                 {
                                                     this.props.ticketDetails.images.map((img, i) =>{
                                                         return (
