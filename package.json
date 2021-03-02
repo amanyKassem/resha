@@ -11,7 +11,7 @@
     "@expo/vector-icons": "^10.0.0",
     "@ptomasroos/react-native-multi-slider": "^1.0.0",
     "@react-native-community/masked-view": "0.1.10",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "ex-react-native-i18n": "0.0.5",
     "expo": "~39.0.2",
     "expo-app-loading": "^1.0.1",
