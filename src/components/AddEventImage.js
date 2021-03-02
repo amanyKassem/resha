@@ -149,6 +149,7 @@ class AddEventImage extends Component {
         let localUri = result.uri;
         let filename = localUri.split('/').pop();
 
+
         // check if there is image then set it and make button not disabled
         if (!result.cancelled) {
             this.setState({ userImage: result.uri ,ImgBase64:result.base64 ,eventImg:filename});
@@ -183,7 +184,7 @@ class AddEventImage extends Component {
 
         if (item.uri === null){
             return(
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('imageBrowser', { routeName: 'addEventImage', ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description, en_description, organization_id, category_id, tickets })} style={[styles.directionRowAlignCenter]}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('imageBrowser', { routeName: 'addEventImage', ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description, en_description, organization_id, category_id, tickets, eventImg: this.state.eventImg })} style={[styles.directionRowAlignCenter]}>
                     <Image source={require('../../assets/images/add_more.png')} style={[styles.addMore]} resizeMode={'contain'} />
                     <Text style={[styles.blueText , styles.normalText , {marginLeft:10}  ]}>{ i18n.t('addManyPhotos') }</Text>
                 </TouchableOpacity>
@@ -283,7 +284,7 @@ class AddEventImage extends Component {
         this.componentWillMount()
 
         if (this.props.navigation.state.params && this.props.navigation.state.params.photos){
-            this.setState({ photos: this.props.navigation.state.params.photos })
+            this.setState({ photos: this.props.navigation.state.params.photos, eventImg: this.props.navigation.state.params.eventImg })
             let images =  this.state.photos;
 
             this.setState({ photos: images.concat(this.props.navigation.state.params.photos) });
@@ -317,12 +318,7 @@ class AddEventImage extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
-					{
-						IS_IPHONE_X ?
-							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
-							:
-							<View/>
-					}
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate('addEventPrice', { ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description,  en_description, organization_id, category_id, tickets })} style={styles.headerBtn}>

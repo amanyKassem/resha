@@ -69,8 +69,8 @@ export default class ImageBrowserScreen extends Component {
             .finally(() => navigation.setParams({ loading: false }));
     };
     navigateWithPhotos(){
-        const { routeName, ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description, en_description, organization_id, category_id, tickets } = this.props.navigation.state.params;
-        return this.props.navigation.navigate(routeName, {photos: this.state.photos, ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description, en_description, organization_id, category_id, tickets});
+        const { routeName, ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description, en_description, organization_id, category_id, tickets, eventImg } = this.props.navigation.state.params;
+        return this.props.navigation.navigate(routeName, {photos: this.state.photos, ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description, en_description, organization_id, category_id, tickets, eventImg});
     }
     async _processImageAsync(uri) {
         const file = await ImageManipulator.manipulateAsync(
@@ -91,20 +91,14 @@ export default class ImageBrowserScreen extends Component {
             <Text style={styles.countBadgeText}>{number}</Text>
         </View>
     );
+
     render() {
         const emptyStayComponent = <Text style={styles.emptyStay}>Empty =(</Text>;
         return (
             <View style={[styles.flex, styles.container]}>
-                <View style={{ backgroundColor: '#0580FF', width: '100%', height: 60, top: 0, flexDirection: 'row', justifyContent: 'space-between', padding: 10, alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-                        <Text>
-                            Back
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity title={'Done'} onPress={() => this.navigateWithPhotos()}>
-                        <Text>
-                            Done
-                        </Text>
+                <View style={{ backgroundColor: '#000', width: '100%', height: 80, top: 0, flexDirection: 'row', justifyContent: 'space-between', padding: 10, alignItems: 'center' }}>
+                    <TouchableOpacity title={'Done'} onPress={() => this.navigateWithPhotos()} style={{ margin: 10 }}>
+                        <Text style={{ color: '#fff' }}>Done</Text>
                     </TouchableOpacity>
                 </View>
                 <ImageBrowser

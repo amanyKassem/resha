@@ -127,12 +127,7 @@ class RestCafe extends Component {
                 { this.renderLoader() }
 
                 <Header style={[styles.header]} noShadow>
-					{
-						IS_IPHONE_X ?
-							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
-							:
-							<View/>
-					}
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <TouchableOpacity  onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
@@ -146,9 +141,9 @@ class RestCafe extends Component {
 
                 <Content bounces={false} scrollEnabled={false} contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={[styles.imageBackground2, { height: IS_IPHONE_X ? height-110 : height }]}>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={[styles.imageBackground2, { height: height-110 }]}>
 
-                        <View style={[styles.directionRowSpace , styles.w100  , styles.mt70, {paddingHorizontal:20 , paddingVertical:15}]}>
+                        <View style={[styles.directionRowSpace , styles.w100  , styles.mt25, {paddingHorizontal:20 , paddingVertical:15}]}>
                             <View style={[styles.directionColumn , {flex: 1}]}>
                                 <Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing ]}>{ i18n.t('rest&cafe') }</Text>
                                 {/*<Text style={[styles.whiteText, styles.normalText  , styles.asfs, styles.writing , {fontSize:14}]}>{ i18n.t('number') } : {this.props.count}</Text>*/}

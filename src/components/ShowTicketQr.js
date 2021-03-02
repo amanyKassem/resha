@@ -136,12 +136,7 @@ class ShowTicketQr extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
-					{
-						IS_IPHONE_X ?
-							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
-							:
-							<View/>
-					}
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate('reservations')} style={styles.headerBtn}>
@@ -164,16 +159,15 @@ class ShowTicketQr extends Component {
                                         <QRCode
                                             content={(this.props.navigation.state.params.ticketsInfo.ticket_id).toString()}
                                             backgroundColor={'#fff'}
-                                            size={80}
+                                            size={150}
                                         />
                                         :
                                         <AndroidQRCode
                                             value={(this.props.navigation.state.params.ticketsInfo.ticket_id).toString()}
-                                            size={80}
+                                            size={300}
                                             bgColor='#000'
                                             fgColor='white'/>
                                 }
-
 
                             </View>
                             <View style={styles.directionRowCenter}>
@@ -228,9 +222,9 @@ class ShowTicketQr extends Component {
 
                             <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing, styles.mb100]}>{ i18n.t('scanQr') }</Text>
 
-                            {
-                                this.renderSubmit()
-                            }
+                            {/*{*/}
+                            {/*    this.renderSubmit()*/}
+                            {/*}*/}
 
                         </View>
                     </ImageBackground>

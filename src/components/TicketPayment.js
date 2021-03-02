@@ -98,12 +98,7 @@ class TicketPayment extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
-					{
-						IS_IPHONE_X ?
-							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
-							:
-							<View/>
-					}
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate('confirmTicket')} style={styles.headerBtn}>

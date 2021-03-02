@@ -1,6 +1,6 @@
 import { I18nManager, AsyncStorage } from 'react-native';
 import i18n from '../../locale/i18n';
-import {Updates} from "expo";
+import * as Updates from 'expo-updates';
 
 
 export const chooseLang = lang => {
@@ -22,6 +22,6 @@ export const chooseLang = lang => {
 
 const setLang = async lang => {
     await AsyncStorage.setItem('lang', lang).then (() =>{
-        Updates.reload();
+        Updates.reloadAsync();
     });
 };

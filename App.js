@@ -1,7 +1,8 @@
 import React from 'react';
 import * as Font from 'expo-font';
 import {Ionicons} from '@expo/vector-icons';
-import {AppLoading} from 'expo';
+import AppLoading from 'expo-app-loading';
+import { View } from 'react-native';
 import { Asset } from 'expo-asset';
 import AppNavigator from './src/routes';
 import {Root} from "native-base";
@@ -10,7 +11,6 @@ import './ReactotronConfig';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {store, persistedStore} from './src/store';
-import { Notifications } from 'expo';
 import imagesArr from './src/consts/images'
 
   // Keystore password: a8a03061b1604aa281cd86143371afb1
@@ -39,14 +39,14 @@ export default class App extends React.Component {
     componentDidMount() {
 		console.disableYellowBox = true;
 
-        if (Platform.OS === 'android') {
-            Notifications.createChannelAndroidAsync('orders', {
-                name: 'Chat messages',
-                sound: true,
-            });
-        }
-
-        Notifications.addListener(this.handleNotification);
+        // if (Platform.OS === 'android') {
+        //     Notifications.createChannelAndroidAsync('orders', {
+        //         name: 'Chat messages',
+        //         sound: true,
+        //     });
+        // }
+        //
+        // Notifications.addListener(this.handleNotification);
         this.loadAssetsAsync()
     }
 
@@ -68,7 +68,7 @@ export default class App extends React.Component {
 
     render() {
         if (!this.state.isReady) {
-            return <AppLoading/>;
+            return <View/>;
         }
 
         return (

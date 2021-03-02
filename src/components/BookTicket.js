@@ -45,7 +45,17 @@ class BookTicket extends Component {
         drawerLabel: () => null
     });
 
-    _linkPressed (url){
+    _linkPressed (lat, lng){
+        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+        const latLng = `${lat},${lng}`;
+        const label = 'Custom Label';
+        let url = Platform.select({
+            ios: `${scheme}${label}@${latLng}`,
+            android: `${scheme}${latLng}(${label})`
+        });
+
+        console.log('damn location', url)
+
         Linking.openURL(url);
     }
 
@@ -168,12 +178,7 @@ class BookTicket extends Component {
 
                 { this.renderLoader() }
                 <Header style={[styles.header]} noShadow>
-					{
-						IS_IPHONE_X ?
-							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
-							:
-							<View/>
-					}
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
@@ -217,7 +222,7 @@ class BookTicket extends Component {
                                             </View>
                                         </View>
 
-                                        <TouchableOpacity onPress={() => this._linkPressed('https://api.whatsapp.com/send?phone='+whatsNum)}>
+                                        <TouchableOpacity onPress={() => Linking.openURL('https://api.whatsapp.com/send?phone='+whatsNum)}>
                                             <Image source={require('../../assets/images/whatsapp_icon.png')} style={[styles.overImg]} resizeMode={'cover'} />
                                         </TouchableOpacity>
 
@@ -249,7 +254,7 @@ class BookTicket extends Component {
                                         <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.normal_price} { i18n.t('RS') }</Text>
                                     </View>
 
-                                    <TouchableOpacity onPress={() => this._linkPressed('https://google.com/maps/?q=' + this.props.eventDet.latitude +','+ this.props.eventDet.longitude +'')} style={[styles.blueBtn, { marginVertical: 10, width: '90%' }]}>
+                                    <TouchableOpacity onPress={() => this._linkPressed(this.props.eventDet.latitude , this.props.eventDet.longitude )} style={[styles.blueBtn, { marginVertical: 10, width: '90%' }]}>
                                         <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('location') }</Text>
                                     </TouchableOpacity>
 

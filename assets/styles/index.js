@@ -494,12 +494,12 @@ const styles = ({
 
     homecontent:{
         zIndex: -1,
-        marginTop : IS_IPHONE_X ? -25 : -100
+        marginTop : IS_IPHONE_X ? -25 : -10
     },
     header : {
         backgroundColor:'transparent',
         paddingTop: 30,
-        height: 100,
+        height: 80,
         paddingLeft:0,
         paddingRight:0,
         borderBottomWidth:0,
@@ -510,7 +510,7 @@ const styles = ({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 5,
-        height: 100 ,
+        height: 80 ,
         marginTop:-50 ,
         alignItems:'center',
         paddingTop: 30,
@@ -540,7 +540,7 @@ const styles = ({
         width: '100%',
         paddingHorizontal:10,
         marginBottom:20,
-        marginTop: IS_IPHONE_X ? 0 : 85
+        // marginTop: !IS_IPHONE_X ? 0 : 85
     },
     whiteHome : {
         backgroundColor:'#fff',
@@ -659,7 +659,7 @@ const styles = ({
     // fa3lyat
     mainScroll:{
         height:40,
-        marginTop:90,
+        marginTop:30,
         justifyContent:'center',
         alignItems:'center',
     },
@@ -872,13 +872,15 @@ const styles = ({
         marginBottom:20
     },
     QR :{
-        width:80 ,
-        height:80 ,
+        width:300 ,
+        height:300 ,
         position:'absolute' ,
-        bottom:100 ,
-        left:20,
+        bottom:Platform.OS === 'ios' ? -200 : -230 ,
+        left: Platform.OS === 'ios' ? 10 : -60,
         marginBottom:30,
         overflow:'hidden',
+        // alignItems: 'center',
+        // justifyContent: 'center'
     },
     // reservation
 

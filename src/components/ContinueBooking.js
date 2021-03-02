@@ -75,6 +75,8 @@ class ContinueBooking extends Component {
 
 
     confirmTicketsNum(){
+        // console.log('counter', this.state.ticketsNo , this.props.navigation.state.params.available_count);
+
         if (this.state.ticketsNo > this.props.navigation.state.params.available_count || this.state.ticketsNo == '' || this.state.ticketsNo == null || this.state.ticketsNo.length == 0 ){
             Toast.show({
                 text: i18n.t('availTicket') ,
@@ -108,12 +110,7 @@ class ContinueBooking extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
-					{
-						IS_IPHONE_X ?
-							<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :0 , height:100 , width:'100%'}}/>
-							:
-							<View/>
-					}
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate('bookType')} style={styles.headerBtn}>
