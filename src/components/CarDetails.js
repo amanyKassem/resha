@@ -49,8 +49,7 @@ class CarDetails extends Component {
         this.setState({ loader: 1});
         const token = this.props.user ? this.props.user.token : null;
         this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id , token)
-
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+let { status } = await Location.requestPermissionsAsync();
         if (status !== 'granted') {
             alert('صلاحيات تحديد موقعك الحالي ملغاه');
         }else {
@@ -198,12 +197,6 @@ class CarDetails extends Component {
 
     render() {
 
-        const backgroundColor = this.state.backgroundColor.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['rgba(0, 0, 0, 0)', '#00000099']
-        });
-
-
         let whatsNum = '';
 
         if(this.props.profileDetails && Platform.OS == 'ios')
@@ -216,8 +209,8 @@ class CarDetails extends Component {
                 { this.renderLoader() }
 
                 <Header style={[styles.header]} noShadow>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
-                    <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-50 , height:350 , width:'100%'}}/>
+                    <View style={[ styles.animatedHeader]}>
                         <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                         </TouchableOpacity>
@@ -232,10 +225,10 @@ class CarDetails extends Component {
                             </TouchableOpacity>
                         </View>
 
-                    </Animated.View>
+                    </View>
                 </Header>
 
-                <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent} >
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         {

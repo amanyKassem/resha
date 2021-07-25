@@ -18,7 +18,7 @@ class BookType extends Component {
         this.state={
             backgroundColor: new Animated.Value(0),
             availabel: 0,
-            type:'vip',
+            type:'',
             price : '',
             vipPrice :'',
             goldPrice :'',
@@ -31,7 +31,7 @@ class BookType extends Component {
             vipTicketType :'',
             goldTicketType :'',
             normalTicketType :'',
-            ticketName : i18n.t('vipTicket'),
+            ticketName : '',
             // imgSrc:require('../../assets/images/ticket_vip.png'),
             imgSrc:'',
             vipImgSrc:'',
@@ -156,7 +156,7 @@ class BookType extends Component {
                 { this.renderLoader() }
 
                 <Header style={[styles.header]} noShadow>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-50 , height:350 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate('bookTicket', {isLoader:true})} style={styles.headerBtn}>
@@ -192,9 +192,9 @@ class BookType extends Component {
                             </TouchableOpacity>
 
 
-                            <TouchableOpacity onPress={ () => this.props.navigation.navigate('continueBooking', { event_id : this.props.navigation.state.params.event_id  , price : this.state.price ,
+                            <TouchableOpacity disabled={this.state.ticketName === ''} onPress={ () => this.props.navigation.navigate('continueBooking', { event_id : this.props.navigation.state.params.event_id  , price : this.state.price ,
                                 ticketName : this.state.ticketName ,imgSrc : this.state.imgSrc , available_count : this.state.ticketsNum,
-                                ticket_type : this.state.ticketType ,event_info : this.state.event_info  })} style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                                ticket_type : this.state.ticketType ,event_info : this.state.event_info  })} style={this.state.ticketName === '' ? [styles.disabledBtn, styles.mt50 , styles.mb15] : [styles.blueBtn, styles.mt50 , styles.mb15]}>
                                 <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('book') }</Text>
                             </TouchableOpacity>
 

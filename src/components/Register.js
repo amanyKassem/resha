@@ -160,8 +160,6 @@ class Register extends Component {
         const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
         const userLocation = { latitude, longitude };
         this.setState({  initMap: false, mapRegion: userLocation });
-
-        console.log('damn map', this.state.initMap, this.state.mapRegion);
     }
 
 
@@ -187,7 +185,7 @@ class Register extends Component {
     }
 
     _getLocationAsync = async () => {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        let { status } = await Location.requestPermissionsAsync();
         if (status !== 'granted') {
             this.setState({
                 locationResult: 'Permission to access location was denied',
@@ -204,7 +202,7 @@ class Register extends Component {
 
     async confirmLocation(){
         this.setState({ isModalVisible: !this.state.isModalVisible })
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+         let { status } = await Location.requestPermissionsAsync();
         // if (status !== 'granted') {
         //     alert('صلاحيات تحديد موقعك الحالي ملغاه');
         // }else {

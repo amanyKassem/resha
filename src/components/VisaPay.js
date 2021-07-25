@@ -16,16 +16,17 @@ import { WebView } from 'react-native-webview';
 import {connect} from "react-redux";
 import { getReservationDetails , getConfirmSub} from "../actions";
 import domain from "../consts/domain";
+import {NavigationEvents} from "react-navigation";
 
 const height = Dimensions.get('window').height;
-
-const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
+const IS_IPHONE_X = (height === 812 || height === 896) && Platform.OS === 'ios';
 
 class VisaPay extends Component {
     constructor(props){
         super(props);
 
         this.state={
+            webViewUrl: ''
         }
     }
 
@@ -37,12 +38,15 @@ class VisaPay extends Component {
     _onLoad(state, navigation) {
         console.log(state.url);
 
+        this.setState({ webViewUrl: state.url })
+
         if (state.url.indexOf('?status=') != -1) {
             let status      = state.url.split("?status=")[1];
             status          = status.substring(0, 1);
             let ticketId    = state.url.split("&id=")[1];
 
             console.log('damn id', ticketId, status);
+            const {user_id, pathName, subscription_id}  = this.props.navigation.state.params;
 
             if (status == 1){
                 Toast.show({
@@ -51,15 +55,13 @@ class VisaPay extends Component {
                     duration: 3000
                 });
 
-                const {user_id, pathName, subscription_id}  = this.props.navigation.state.params;
-
                 if (pathName === 'ticketPayment'){
                     return  this.props.getReservationDetails( this.props.lang ,
                         ticketId,
                         this.props.user.token,
                         this.props
                     )
-                }else if(pathName === 'FoodPayMethod'){
+                }else if(pathName === 'foodPayMethod'){
                     return  this.props.getConfirmSub(
                         this.props.lang ,
                         user_id ,
@@ -73,31 +75,41 @@ class VisaPay extends Component {
                     type: "danger",
                     duration: 3000
                 });
+
+                const {pathName, payType, user_id, total, subscription_id, event_id, tickets_type, tickets_count}  = this.props.navigation.state.params;
+                return navigation.navigate(pathName, { pathName, payType, user_id, price: total, subscription_id, event_id, tickets_type, tickets_count })
             }
 
-         //   return navigation.navigate('reCharge');
+         //  return navigation.navigate('reCharge');
         }
     }
 
-
-    render() {
-
+    componentDidMount() {
         const {user_id, pathName, payType}  = this.props.navigation.state.params;
         let webViewUrl = '';
 
         if (pathName === 'ticketPayment'){
             const {event_id, tickets_type, tickets_count} = this.props.navigation.state.params ;
             webViewUrl = 'https://reesh1.com/backend/payment_ticket/'+user_id+'/'+event_id+'/'+tickets_type+'/'+tickets_count+'/'+payType
-        } else if(pathName === 'FoodPayMethod'){
+        } else if(pathName === 'foodPayMethod'){
             const {total, subscription_id} = this.props.navigation.state.params ;
             webViewUrl = 'https://reesh1.com/backend/payment/'+user_id+'/'+total+'/'+subscription_id+'/'+payType
         }
 
-        // alert(this.props.navigation.state.params.user_id)
+        this.setState({ webViewUrl })
+    }
+
+    onFocus(payload){
+        this.componentDidMount()
+    }
+
+    render() {
+
+        const {pathName, payType, user_id, total, subscription_id, event_id, tickets_type, tickets_count}  = this.props.navigation.state.params;
 
         return (
             <Container>
-
+                <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                 <Header style={[styles.header]} noShadow>
                     {
                         IS_IPHONE_X ?
@@ -107,7 +119,7 @@ class VisaPay extends Component {
                     }
                     <View style={[ styles.animatedHeader ,{ backgroundColor: '#000'}]}>
                         <Right style={styles.flex0}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.navigate('ticketPayment')} style={styles.headerBtn}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate(pathName, { pathName, payType, user_id, price: total, subscription_id, event_id, tickets_type, tickets_count })} style={styles.headerBtn}>
                                 <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
                             </TouchableOpacity>
                         </Right>
@@ -116,24 +128,20 @@ class VisaPay extends Component {
                     </View>
                 </Header>
 
-                <Content contentContainerStyle={{ flexGrow: 1 , backgroundColor:'#241934' }} style={{padding:15}}>
-                    {/*<View style={[styles.directionRowSpace , styles.mt25]}>*/}
-                    {/*    <TouchableOpacity  onPress={() => this.props.navigation.navigate('ticketPayment')} style={styles.headerBtn}>*/}
-                    {/*        <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu]} resizeMode={'contain'} />*/}
-                    {/*    </TouchableOpacity>*/}
-                    {/*</View>*/}
+                <Content contentContainerStyle={{ flexGrow: 1 }} >
                     <WebView
-                        source = {{uri: webViewUrl}}
+                        source = {{uri: this.state.webViewUrl}}
                         style  = {{flex:1 , width:'100%' , height:'100%'}}
                         domStorageEnabled={true}
+                        ref={(ref) => { this.webViewRef = ref; }}
                         startInLoadingState={true}
                         scalesPageToFit={false}
                         scrollEnabled={true}
                         javaScriptEnabled={true}
+                        incognito={true}
                         onNavigationStateChange={(state) => this._onLoad(state, this.props.navigation)}
                     />
                 </Content>
-
             </Container>
 
         );

@@ -145,7 +145,7 @@ class AddEventPrice extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-50 , height:350 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate('addEventDesc', { ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description,  en_description, organization_id, category_id })} style={styles.headerBtn}>

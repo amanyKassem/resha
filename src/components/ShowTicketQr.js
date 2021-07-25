@@ -136,7 +136,7 @@ class ShowTicketQr extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-50 , height:350 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate('reservations')} style={styles.headerBtn}>
@@ -152,7 +152,7 @@ class ShowTicketQr extends Component {
 
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
 
-                        <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:25 , flex:0} ]}>
+                        <View style={[styles.whiteHome , { paddingVertical:25 } ]}>
                             <View style={styles.QR}>
                                 {
                                     Platform.OS == 'ios' ?
@@ -169,8 +169,11 @@ class ShowTicketQr extends Component {
                                             fgColor='white'/>
                                 }
 
+                                {/*<View style={{ height: 50 }} />*/}
+
                             </View>
-                            <View style={styles.directionRowCenter}>
+
+                            <View style={[styles.directionRowCenter, { paddingHorizontal:20 }]}>
 
                                 <View style={styles.dateView}>
                                     <Text style={[styles.boldGrayText , styles.normalText , {height:45 , lineHeight:45}]}>{ this.props.navigation.state.params.ticketsInfo.day}</Text>
@@ -192,8 +195,8 @@ class ShowTicketQr extends Component {
                                 }
                             </Swiper>
 
-                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing , styles.mb10]}>{ this.props.navigation.state.params.ticketsInfo.event_name}</Text>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing , styles.mb10, { paddingHorizontal:20 }]}>{ this.props.navigation.state.params.ticketsInfo.event_name}</Text>
+                            <View style={[styles.directionRowAlignCenter , styles.mb10, { paddingHorizontal:20 }]}>
                                 <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
                                     <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                     <Text style={[styles.blueText , styles.normalText]}>{ this.props.navigation.state.params.ticketsInfo.time}</Text>
@@ -203,16 +206,16 @@ class ShowTicketQr extends Component {
                                     <Text style={[styles.blueText , styles.normalText]}>{ this.props.navigation.state.params.ticketsInfo.date}</Text>
                                 </View>
                             </View>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                            <View style={[styles.directionRowAlignCenter , styles.mb10, { paddingHorizontal:20 }]}>
                                 <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>{ this.props.navigation.state.params.ticketsInfo.tickets_total_price} { i18n.t('RS') }</Text>
                             </View>
                             <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.navigation.state.params.ticketsInfo.latitude , this.props.navigation.state.params.ticketsInfo.longitude)}
-                                 style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                 style={[styles.directionRowAlignCenter , styles.mb10, { paddingHorizontal:20 }]}>
                                 <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>{ this.props.navigation.state.params.ticketsInfo.address}</Text>
                             </TouchableOpacity>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                            <View style={[styles.directionRowAlignCenter , styles.mb10, { paddingHorizontal:20 }]}>
                                 <Image source={require('../../assets/images/receipt_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
                                 <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('onlineBook') }</Text>
                             </View>
@@ -220,7 +223,8 @@ class ShowTicketQr extends Component {
 
                             <View style={styles.line}/>
 
-                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing, styles.mb100]}>{ i18n.t('scanQr') }</Text>
+                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing, { marginBottom: 100, top: -15 }, { paddingHorizontal:20 }]}>{ i18n.t('scanQr') }</Text>
+
 
                             {/*{*/}
                             {/*    this.renderSubmit()*/}

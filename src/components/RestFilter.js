@@ -56,8 +56,7 @@ class RestFilter extends Component {
 
     async componentWillMount() {
 
-
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+let { status } = await Location.requestPermissionsAsync();
         if (status !== 'granted') {
             alert('صلاحيات تحديد موقعك الحالي ملغاه');
         }else {
@@ -112,8 +111,7 @@ class RestFilter extends Component {
         }
     }
 
-    _getLocationAsync = async () => {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    _getLocationAsync = async () => {let { status } = await Location.requestPermissionsAsync();
         if (status !== 'granted') {
             this.setState({
                 locationResult: 'Permission to access location was denied',
@@ -211,7 +209,7 @@ class RestFilter extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-50 , height:350 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
