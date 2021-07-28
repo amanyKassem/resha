@@ -55,8 +55,7 @@ class RestCafeDetails extends Component {
         this.setState({ loader: 1});
         const token = this.props.user ? this.props.user.token : null;
         this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id , token)
-
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+let { status } = await Location.requestPermissionsAsync();
         if (status !== 'granted') {
             alert('صلاحيات تحديد موقعك الحالي ملغاه');
         }else {
@@ -245,7 +244,11 @@ class RestCafeDetails extends Component {
                             this.props.profileDetails.products.map((product, i) =>{
 
                                 return (
+<<<<<<< HEAD
                                     <TouchableOpacity style={{ marginBottom:3, width: '33%' }} key={i} onPress={() => this.props.navigation.navigate('productDetails', {products: this.props.profileDetails.products, product_id: product.product_id , backRoute:'familyDetails', index: i})}>
+=======
+                                    <TouchableOpacity style={{ marginBottom:3, width: '33%' }} key={i} onPress={() => this.props.navigation.navigate('productDetails', {products: this.props.profileDetails.products, product_id: product.product_id , backRoute:'restCafeDetails', index: i})}>
+>>>>>>> fef962f7ba6db4dabf1a8d39476c79cb23445ae6
                                         <ProgressImg source={{ uri: product.images[0].image }} style={[styles.productImg, { alignSelf: 'center' }]} resizeMode={'cover'}/>
                                     </TouchableOpacity>
                                 )

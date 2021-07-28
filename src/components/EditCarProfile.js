@@ -167,8 +167,7 @@ class EditCarProfile extends Component {
         }
     }
 
-    _getLocationAsync = async () => {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    _getLocationAsync = async () => {let { status } = await Location.requestPermissionsAsync();
         if (status !== 'granted') {
             this.setState({
                 locationResult: 'Permission to access location was denied',
@@ -186,8 +185,7 @@ class EditCarProfile extends Component {
 
 
     async confirmLocation(){
-        this.setState({ isModalVisible: !this.state.isModalVisible });
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        this.setState({ isModalVisible: !this.state.isModalVisible });let { status } = await Location.requestPermissionsAsync();
 
         const { latitude, longitude } = this.state.mapRegion;
 

@@ -89,8 +89,7 @@ class SearchFilter extends Component {
         this.props.getEventCategories(this.props.lang);
         this.props.getEventsPrices(this.props.lang);
 
-
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+let { status } = await Location.requestPermissionsAsync();
         if (status !== 'granted') {
             alert('صلاحيات تحديد موقعك الحالي ملغاه');
         }else {

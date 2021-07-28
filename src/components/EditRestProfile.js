@@ -92,7 +92,7 @@ class EditRestProfile extends Component {
 
         this.props.getTypeCategories(this.props.lang , this.props.user.type );
 
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        let { status } = await Location.requestPermissionsAsync();
         if (status !== 'granted') {
             alert('صلاحيات تحديد موقعك الحالي ملغاه');
         }else {
@@ -147,8 +147,7 @@ class EditRestProfile extends Component {
         }
     }
 
-    _getLocationAsync = async () => {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    _getLocationAsync = async () => {let { status } = await Location.requestPermissionsAsync();
         if (status !== 'granted') {
             this.setState({
                 locationResult: 'Permission to access location was denied',

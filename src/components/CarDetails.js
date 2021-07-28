@@ -49,8 +49,7 @@ class CarDetails extends Component {
         this.setState({ loader: 1});
         const token = this.props.user ? this.props.user.token : null;
         this.props.getProfileDetails( this.props.lang , this.props.navigation.state.params.user_id , token)
-
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+let { status } = await Location.requestPermissionsAsync();
         if (status !== 'granted') {
             alert('صلاحيات تحديد موقعك الحالي ملغاه');
         }else {
