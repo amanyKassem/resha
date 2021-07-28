@@ -69,7 +69,7 @@ class RestFilter extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
-        getCity += '&key=AIzaSyCiptKZt0io7ZOgjNPQ0yvjST9AQrUCW5Y&language=' +this.props.lang +'&sensor=true';
+        getCity += '&key=AIzaSyDCdYroxCIXCe6iCwvPUdV-I0TsaBPnXlY&language=' +this.props.lang +'&sensor=true';
 
         console.log(getCity);
 
@@ -97,7 +97,7 @@ class RestFilter extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += mapRegion.latitude + ',' + mapRegion.longitude;
-        getCity += '&key=AIzaSyCiptKZt0io7ZOgjNPQ0yvjST9AQrUCW5Y&language=' +this.props.lang +'&sensor=true';
+        getCity += '&key=AIzaSyDCdYroxCIXCe6iCwvPUdV-I0TsaBPnXlY&language=' +this.props.lang +'&sensor=true';
 
         console.log('locations data', getCity);
 
@@ -211,7 +211,7 @@ class RestFilter extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-50 , height:350 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>

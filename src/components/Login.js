@@ -79,6 +79,7 @@ class Login extends Component {
         if (!err){
             // this.setState({ isSubmitted: true });
             const {phone, password, expoPushToken , type} = this.state;
+            console.log('damn expoPushToken...', this.state.expoPushToken)
             setTimeout(() => this.props.userLogin({ phone, password, expoPushToken, type }, this.props.lang, this.props), 0);
         }
     }
@@ -86,6 +87,7 @@ class Login extends Component {
     async registerForPushNotificationsAsync() {
         let token;
         if (Constants.isDevice) {
+
             const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
             let finalStatus = existingStatus;
             if (existingStatus !== 'granted') {
@@ -98,8 +100,8 @@ class Login extends Component {
                 return null;
             }
 
+
             token = (await Notifications.getExpoPushTokenAsync()).data;
-            console.log(token);
         } else {
             alert('Must use physical device for Push Notifications');
         }
@@ -163,8 +165,8 @@ class Login extends Component {
             if (this.state.userId === null){
                 this.setState({ userId: newProps.auth.data.id });
                 this.props.profile(newProps.auth.data.token);
-
             }
+
             this.props.navigation.navigate('foodPayment' , {user_id :newProps.auth.data.id});
 
         }

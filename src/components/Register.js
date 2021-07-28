@@ -160,8 +160,6 @@ class Register extends Component {
         const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
         const userLocation = { latitude, longitude };
         this.setState({  initMap: false, mapRegion: userLocation });
-
-        console.log('damn map', this.state.initMap, this.state.mapRegion);
     }
 
 
@@ -171,7 +169,7 @@ class Register extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += mapRegion.latitude + ',' + mapRegion.longitude;
-        getCity += '&key=AIzaSyCiptKZt0io7ZOgjNPQ0yvjST9AQrUCW5Y&language= '+this.props.lang +'&sensor=true';
+        getCity += '&key=AIzaSyDCdYroxCIXCe6iCwvPUdV-I0TsaBPnXlY&language= '+this.props.lang +'&sensor=true';
 
         console.log('locations data', getCity);
 
@@ -216,7 +214,7 @@ class Register extends Component {
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
-        getCity += '&key=AIzaSyCiptKZt0io7ZOgjNPQ0yvjST9AQrUCW5Y&language=' +this.props.lang +'&sensor=true';
+        getCity += '&key=AIzaSyDCdYroxCIXCe6iCwvPUdV-I0TsaBPnXlY&language=' +this.props.lang +'&sensor=true';
 
         console.log(getCity);
 

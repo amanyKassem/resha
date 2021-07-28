@@ -104,7 +104,7 @@ class ConfirmTicket extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-50 , height:350 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate('continueBooking')} style={styles.headerBtn}>
@@ -119,9 +119,9 @@ class ConfirmTicket extends Component {
                 <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
-                        <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:25} ]}>
+                        <View style={[styles.whiteHome , { paddingVertical:25} ]}>
 
-                            <View style={styles.directionRowCenter}>
+                            <View style={[styles.directionRowCenter, { paddingHorizontal:20 }]}>
 
                                 <View style={styles.dateView}>
                                     <Text style={[styles.boldGrayText , styles.normalText , {height:45 , lineHeight:45}]}>{this.props.navigation.state.params.event_info.day}</Text>
@@ -143,69 +143,71 @@ class ConfirmTicket extends Component {
                                 }
                             </Swiper>
 
-                            <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing , styles.mb10]}>{this.props.navigation.state.params.event_info.event_name}</Text>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
-                                    <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.event_info.time}</Text>
+                            <View style={{ paddingHorizontal:20 }}>
+                                <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing , styles.mb10]}>{this.props.navigation.state.params.event_info.event_name}</Text>
+                                <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                    <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
+                                        <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.event_info.time}</Text>
+                                    </View>
+                                    <View style={[styles.directionRowAlignCenter ]}>
+                                        <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.event_info.date}</Text>
+                                    </View>
+                                </View>
+                                <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                    <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.price * this.props.navigation.state.params.ticketsNo} { i18n.t('RS') } ( { i18n.t('ticketsNo') } {this.props.navigation.state.params.ticketsNo} )</Text>
+                                </View>
+                                <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.navigation.state.params.event_info.latitude , this.props.navigation.state.params.event_info.longitude )}
+                                                  style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                    <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.event_info.address}</Text>
+                                </TouchableOpacity>
+                                <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                    <Image source={require('../../assets/images/receipt_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                    <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('onlineBook') }</Text>
                                 </View>
                                 <View style={[styles.directionRowAlignCenter ]}>
-                                    <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.event_info.date}</Text>
+                                    <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                    <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.event_info.category}</Text>
                                 </View>
-                            </View>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.price * this.props.navigation.state.params.ticketsNo} { i18n.t('RS') } ( { i18n.t('ticketsNo') } {this.props.navigation.state.params.ticketsNo} )</Text>
-                            </View>
-                            <TouchableOpacity onPress={()=> this._linkGoogleMap( this.props.navigation.state.params.event_info.latitude , this.props.navigation.state.params.event_info.longitude )}
-                                style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.event_info.address}</Text>
-                            </TouchableOpacity>
-                            <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                <Image source={require('../../assets/images/receipt_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{ i18n.t('onlineBook') }</Text>
-                            </View>
-                            <View style={[styles.directionRowAlignCenter ]}>
-                                <Image source={require('../../assets/images/Feather_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                <Text style={[styles.blueText , styles.normalText]}>{this.props.navigation.state.params.event_info.category}</Text>
-                            </View>
 
-                            <View style={styles.line}/>
+                                <View style={styles.line}/>
 
-                            <View style={styles.directionRowSpace}>
-                                <View style={styles.directionRowAlignCenter}>
-                                    <View style={styles.borderImg}>
-                                        <Image source={{ uri: this.props.navigation.state.params.event_info.user.avatar }} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                                <View style={styles.directionRowSpace}>
+                                    <View style={styles.directionRowAlignCenter}>
+                                        <View style={styles.borderImg}>
+                                            <Image source={{ uri: this.props.navigation.state.params.event_info.user.avatar }} style={[styles.footSearchImg]} resizeMode={'cover'} />
+                                        </View>
+                                        <Text style={[styles.boldGrayText , styles.normalText ]}>{this.props.navigation.state.params.event_info.user.name }</Text>
                                     </View>
-                                    <Text style={[styles.boldGrayText , styles.normalText ]}>{this.props.navigation.state.params.event_info.user.name }</Text>
+
+                                    <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookTicket' , { event_id: this.props.navigation.state.params.event_id , backRoute:'confirmTicket'})} >
+                                        <Text style={[styles.blueText , styles.normalText ]}>{ i18n.t('details') }</Text>
+                                    </TouchableOpacity>
                                 </View>
 
-                                <TouchableOpacity onPress={ () => this.props.navigation.navigate('bookTicket' , { event_id: this.props.navigation.state.params.event_id , backRoute:'confirmTicket'})} >
-                                    <Text style={[styles.blueText , styles.normalText ]}>{ i18n.t('details') }</Text>
-                                </TouchableOpacity>
-                            </View>
+                                <View style={styles.line}/>
 
-                            <View style={styles.line}/>
-
-                            <View style={styles.directionRowSpace}>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('ticketPayment', {
-                                    event_info : this.props.navigation.state.params.event_info,
-                                    event_id : this.props.navigation.state.params.event_id ,
-                                    price : this.props.navigation.state.params.price,
-                                    ticket_type : this.props.navigation.state.params.ticket_type,
-                                    imgSrc : this.props.navigation.state.params.imgSrc,
-                                    ticketName : this.props.navigation.state.params.ticketName,
-                                    ticketsNo : this.props.navigation.state.params.ticketsNo,
-                                })} style={[styles.blueBtn]}>
-                                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('continue') }</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('events')} style={[styles.disabledBtn]}>
-                                    <Text style={[styles.boldGrayText , styles.normalText ]}>{ i18n.t('deleteTicket') }</Text>
-                                </TouchableOpacity>
+                                <View style={styles.directionRowSpace}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ticketPayment', {
+                                        event_info : this.props.navigation.state.params.event_info,
+                                        event_id : this.props.navigation.state.params.event_id ,
+                                        price : this.props.navigation.state.params.price,
+                                        ticket_type : this.props.navigation.state.params.ticket_type,
+                                        imgSrc : this.props.navigation.state.params.imgSrc,
+                                        ticketName : this.props.navigation.state.params.ticketName,
+                                        ticketsNo : this.props.navigation.state.params.ticketsNo,
+                                    })} style={[styles.blueBtn]}>
+                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('continue') }</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('events')} style={[styles.disabledBtn]}>
+                                        <Text style={[styles.boldGrayText , styles.normalText ]}>{ i18n.t('deleteTicket') }</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
+                            </View>
                     </ImageBackground>
                 </Content>
             </Container>

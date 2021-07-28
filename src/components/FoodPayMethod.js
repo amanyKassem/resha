@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground} from "react-native";
-import {Container, Content} from 'native-base'
+import {View, Text, Image, TouchableOpacity, ImageBackground, Animated} from "react-native";
+import {Container, Content, Header, Left, Right} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
@@ -26,6 +26,7 @@ class FoodPayMethod extends Component {
 
     componentWillMount() {
         // alert(this.props.navigation.state.params.subscription_id + " aaa "  +this.props.navigation.state.params.user_id)
+        console.log('damn ....', this.props.navigation.state.params.price)
         this.setState({sSubmitted: false})
     }
 
@@ -59,7 +60,7 @@ class FoodPayMethod extends Component {
             subscription_id     : this.props.navigation.state.params.subscription_id ,
             total               : this.props.navigation.state.params.price ,
             payType             : this.state.payType,
-            pathName            : 'FoodPayMethod'
+            pathName            : 'foodPayMethod'
         })
 
         // this.props.getConfirmSub( this.props.lang , this.props.navigation.state.params.user_id , this.props.navigation.state.params.subscription_id , this.props)
@@ -73,6 +74,18 @@ class FoodPayMethod extends Component {
 
         return (
             <Container>
+                <Header style={[styles.header]} noShadow>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-50 , height:350 , width:'100%'}}/>
+                    <Animated.View style={[ styles.animatedHeader]}>
+                        <Right style={styles.flex0}>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate('foodPayment', {user_id:this.props.navigation.state.params.user_id})} style={styles.headerBtn}>
+                                <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
+                            </TouchableOpacity>
+                        </Right>
+                        <Text style={[styles.headerText , {right:20}]}>{ i18n.t('addProduct') }</Text>
+                        <Left style={styles.flex0}/>
+                    </Animated.View>
+                </Header>
                 <Content   contentContainerStyle={styles.flexGrow} >
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>

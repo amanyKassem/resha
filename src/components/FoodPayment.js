@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions,ImageBackground} from "react-native";
-import {Container, Content} from 'native-base'
+import {View, Text, Image, TouchableOpacity, Dimensions, ImageBackground, Animated} from "react-native";
+import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import COLORS from '../../src/consts/colors'
 import {connect} from "react-redux";
-import {getSubscriptions} from "../actions";
+import {getSubscriptions, logout, tempAuth} from "../actions";
 import * as Animatable from 'react-native-animatable';
 
 
@@ -16,7 +16,7 @@ class FoodPayment extends Component {
         super(props);
 
         this.state={
-            baqa:'month',
+            baqa:'',
             subId:1,
             price: 0
         }
@@ -30,6 +30,12 @@ class FoodPayment extends Component {
 
     componentWillMount() {
         this.props.getSubscriptions( this.props.lang )
+    }
+
+    logout(){
+        this.props.logout({ token: this.props.user.token })
+        this.props.tempAuth();
+        this.props.navigation.navigate('login');
     }
 
     renderLoader(){
@@ -49,7 +55,19 @@ class FoodPayment extends Component {
 
         return (
             <Container>
-                <Content   contentContainerStyle={styles.flexGrow} >
+                <Header style={[styles.header]} noShadow>
+
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: 0,position:'absolute' , top :-50 , height:350 , width:'100%'}}/>
+
+                    <View style={[ styles.animatedHeader ]}>
+                        <TouchableOpacity  onPress={() => this.logout()}>
+                            <Text style={[styles.headerText]}>{i18n.t('logout')}</Text>
+                        </TouchableOpacity>
+
+
+                    </View>
+                </Header>
+                <Content contentContainerStyle={styles.flexGrow} >
                     { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
 
@@ -67,13 +85,13 @@ class FoodPayment extends Component {
 
                             {
                                 this.props.subscriptions ?
-                                    <View style={[styles.directionRowSpace , styles.w100 , styles.mt50]}>
+                                    <View style={[styles.directionRowSpace , styles.w100 , styles.mt50, { justifyContent: 'space-around' }]}>
 
 										{/*{ console.log(this.props.subscriptions[0].name) }*/}
                                         {
 											this.props.subscriptions[0] ?
-												<TouchableOpacity onPress={() => this.selectLang('month' , this.props.subscriptions[0].id, this.props.subscriptions[0].price)} style={[styles.langBorder , {borderColor:this.state.baqa === 'month' ?COLORS.blue : 'transparent' , height:160}]}>
-													<View style={styles.lang}>
+												<TouchableOpacity onPress={() => this.selectLang('month' , this.props.subscriptions[0].id, this.props.subscriptions[0].price)} style={[styles.langBorder , {borderColor:this.state.baqa === 'month' ?COLORS.blue : 'transparent' , height:160, padding: 5}]}>
+													<View style={[styles.lang]}>
 														<Image source={require('../../assets/images/calender_month.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
 														<Text style={[styles.whiteText , styles.normalText , styles.tAC , {marginVertical:15}]}>{ this.props.subscriptions[0].name }</Text>
 														<Text style={[styles.whiteText , styles.normalText , styles.tAC]}>{ this.props.subscriptions[0].price } { i18n.t('RS') }</Text>
@@ -83,8 +101,8 @@ class FoodPayment extends Component {
 
                                         {
 											this.props.subscriptions[1] ?
-												<TouchableOpacity onPress={() => this.selectLang('year' , this.props.subscriptions[1].id, this.props.subscriptions[1].price)} style={[styles.langBorder , {borderColor:this.state.baqa === 'year' ?COLORS.blue : 'transparent' , height:160}]}>
-													<View style={styles.lang}>
+												<TouchableOpacity onPress={() => this.selectLang('year' , this.props.subscriptions[1].id, this.props.subscriptions[1].price)} style={[styles.langBorder , {borderColor:this.state.baqa === 'year' ?COLORS.blue : 'transparent' , height:160, padding: 5}]}>
+													<View style={[styles.lang]}>
 														<Image source={require('../../assets/images/calender_year.png')} style={[styles.headerMenu]} resizeMode={'contain'} />
 														<Text style={[styles.whiteText , styles.normalText , styles.tAC , {marginVertical:15}]}>{ this.props.subscriptions[1].name }</Text>
 														<Text style={[styles.whiteText , styles.normalText , styles.tAC]}>{ this.props.subscriptions[1].price } { i18n.t('RS') }</Text>
@@ -97,7 +115,7 @@ class FoodPayment extends Component {
                                     <View/>
                             }
 
-                            <TouchableOpacity onPress={ () => this.props.navigation.navigate('foodPayMethod' , {subscription_id:this.state.subId , price:this.state.price , user_id:this.props.navigation.state.params.user_id}) } style={[styles.blueBtn , styles.mt70]}>
+                            <TouchableOpacity disabled={this.state.baqa === ''} onPress={ () => this.props.navigation.navigate('foodPayMethod' , {subscription_id:this.state.subId , price:this.state.price , user_id:this.props.navigation.state.params.user_id}) } style={[styles.blueBtn , styles.mt70, { backgroundColor: this.state.baqa === '' ? '#999' : COLORS.blue }]}>
                                 <Text style={[styles.whiteText , styles.normalText , styles.tAC]}>{ i18n.t('next') }</Text>
                             </TouchableOpacity>
 
@@ -120,4 +138,4 @@ const mapStateToProps = ({ lang , subscriptions , profile }) => {
         loader: subscriptions.key
     };
 };
-export default connect(mapStateToProps, {getSubscriptions})(FoodPayment);
+export default connect(mapStateToProps, {getSubscriptions, logout, tempAuth})(FoodPayment);

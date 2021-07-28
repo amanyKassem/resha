@@ -15,15 +15,17 @@ import {Container, Content, Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
 import Swiper from 'react-native-swiper';
+import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import StarRating from 'react-native-star-rating';
 import {connect} from "react-redux";
 import {getEventDetails , setSaveEvent} from "../actions";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 import ProgressImg from 'react-native-image-progress';
+import COLORS from "../consts/colors";
 
 
-const height = Dimensions.get('window').height;
+const {height, width} = Dimensions.get('window');
 
 const IS_IPHONE_X 	= (height === 812 || height === 896) && Platform.OS === 'ios';
 
@@ -178,7 +180,7 @@ class BookTicket extends Component {
 
                 { this.renderLoader() }
                 <Header style={[styles.header]} noShadow>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-50 , height:350 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
@@ -197,13 +199,18 @@ class BookTicket extends Component {
                     </Animated.View>
                 </Header>
 
+
+
                 <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
+
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
+
                         {
                             this.props.eventDet ?
-                                <View style={[styles.homeSection , styles.whiteHome , {paddingHorizontal:20 , paddingVertical:20} ]}>
-                                    <View style={styles.directionRowSpace}>
+                                <View style={[ styles.whiteHome , { paddingVertical:20} ]}>
+
+                                    <View style={[styles.directionRowSpace, { paddingHorizontal:20 }]}>
                                         <View style={styles.directionRowAlignCenter}>
                                             <View style={styles.borderImg}>
                                                 <Image source={{ uri: this.props.eventDet.user.avatar }} style={[styles.footSearchImg]} resizeMode={'cover'} />
@@ -238,42 +245,43 @@ class BookTicket extends Component {
                                         }
                                     </Swiper>
 
-                                    <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing , styles.mb10]}>{this.props.eventDet.name}</Text>
-                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                        <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
-                                            <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                            <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.time}</Text>
+                                    <View style={{ paddingHorizontal:20 }}>
+                                        <Text style={[styles.boldGrayText , styles.normalText , styles.asfs , styles.writing , styles.mb10]}>{this.props.eventDet.name}</Text>
+                                        <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                            <View style={[styles.directionRowAlignCenter , {marginRight:10} ]}>
+                                                <Image source={require('../../assets/images/clock_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                                <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.time}</Text>
+                                            </View>
+                                            <View style={[styles.directionRowAlignCenter ]}>
+                                                <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                                <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.date}</Text>
+                                            </View>
                                         </View>
-                                        <View style={[styles.directionRowAlignCenter ]}>
-                                            <Image source={require('../../assets/images/calendar_icon_small.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                            <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.date}</Text>
+                                        <View style={[styles.directionRowAlignCenter , styles.mb10]}>
+                                            <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
+                                            <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.normal_price} { i18n.t('RS') }</Text>
                                         </View>
+
+                                        <TouchableOpacity onPress={() => this._linkPressed(this.props.eventDet.latitude , this.props.eventDet.longitude )} style={[styles.blueBtn, { marginVertical: 10, width: '90%' }]}>
+                                            <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('location') }</Text>
+                                        </TouchableOpacity>
+
+                                        {/*<TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.eventDet.latitude +','+ this.props.eventDet.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10]}>*/}
+                                        {/*    <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />*/}
+                                        {/*    <Text style={[styles.blueText , styles.normalText, {paddingLeft:20}]}>{this.props.eventDet.address}</Text>*/}
+                                        {/*</TouchableOpacity>*/}
+
+                                        <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13}]}>{this.props.eventDet.details}</Text>
+
+                                        {
+                                            this.props.eventDet.is_booking === 1 ?
+                                                <TouchableOpacity onPress={ () =>  this.props.user ? this.props.navigation.navigate('bookType' , { event_id: this.props.eventDet.id }) : this.props.navigation.navigate('login') } style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
+                                                    <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('book') }</Text>
+                                                </TouchableOpacity>
+                                                :
+                                                <View/>
+                                        }
                                     </View>
-                                    <View style={[styles.directionRowAlignCenter , styles.mb10]}>
-                                        <Image source={require('../../assets/images/ticket.png')} style={[styles.notiImg]} resizeMode={'contain'} />
-                                        <Text style={[styles.blueText , styles.normalText]}>{this.props.eventDet.normal_price} { i18n.t('RS') }</Text>
-                                    </View>
-
-                                    <TouchableOpacity onPress={() => this._linkPressed(this.props.eventDet.latitude , this.props.eventDet.longitude )} style={[styles.blueBtn, { marginVertical: 10, width: '90%' }]}>
-                                        <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('location') }</Text>
-                                    </TouchableOpacity>
-
-                                    {/*<TouchableOpacity onPress={()=> this._linkPressed('https://google.com/maps/?q=' + this.props.eventDet.latitude +','+ this.props.eventDet.longitude +'')} style={[styles.directionRowAlignCenter , styles.mb10]}>*/}
-                                    {/*    <Image source={require('../../assets/images/placeholder_blue.png')} style={[styles.notiImg]} resizeMode={'contain'} />*/}
-                                    {/*    <Text style={[styles.blueText , styles.normalText, {paddingLeft:20}]}>{this.props.eventDet.address}</Text>*/}
-                                    {/*</TouchableOpacity>*/}
-
-                                    <Text style={[styles.grayText , styles.normalText , styles.asfs , styles.writing , {fontSize:13}]}>{this.props.eventDet.details}</Text>
-
-                                    {
-                                        this.props.eventDet.is_booking === 1 ?
-                                            <TouchableOpacity onPress={ () =>  this.props.user ? this.props.navigation.navigate('bookType' , { event_id: this.props.eventDet.id }) : this.props.navigation.navigate('login') } style={[styles.blueBtn, styles.mt50 , styles.mb15]}>
-                                                <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('book') }</Text>
-                                            </TouchableOpacity>
-                                            :
-                                            <View/>
-                                    }
-
 
                                 </View>
                                 :

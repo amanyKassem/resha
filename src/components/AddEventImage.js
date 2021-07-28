@@ -49,9 +49,9 @@ class AddEventImage extends Component {
     }
 
     renderSubmit(){
-        if (base64.length <= 0 ){
+        if (base64.length != 0 ){
             return (
-                <TouchableOpacity style={[styles.blueBtn, styles.mt50 , styles.mb15 , { backgroundColor: '#999' }]}>
+                <TouchableOpacity onPress={() => console.log(base64.length)} style={[styles.blueBtn, styles.mt50 , styles.mb15 , { backgroundColor: '#999' }]}>
                     <Text style={[styles.whiteText , styles.normalText ]}>{ i18n.t('sendButton') }</Text>
                 </TouchableOpacity>
             );
@@ -158,7 +158,7 @@ class AddEventImage extends Component {
 
     async componentDidMount(){
         await Permissions.askAsync(Permissions.CAMERA);
-        await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        // await Permissions.askAsync(Permissions.CAMERA_ROLL);
     }
 
 
@@ -280,7 +280,7 @@ class AddEventImage extends Component {
         }
     }
 
-    onFocus(payload){
+    async onFocus(payload){
         this.componentWillMount()
 
         if (this.props.navigation.state.params && this.props.navigation.state.params.photos){
@@ -292,7 +292,8 @@ class AddEventImage extends Component {
             for (var i =0; i < imgs.length; i++){
                 if (imgs[i].uri != null) {
                     const imageURL = imgs[i].uri;
-                    FileSystem.readAsStringAsync(imageURL, { encoding: 'base64' }).then((base) => {
+                    await FileSystem.readAsStringAsync(imageURL, { encoding: 'base64' }).then((base) => {
+                        console.log('damn base', imageURL, base64.length)
                         base64.push(base);
                     })
                 }
@@ -318,7 +319,7 @@ class AddEventImage extends Component {
             <Container>
 
                 <Header style={[styles.header]} noShadow>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-50 , height:350 , width:'100%'}}/>
                     <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
                         <Right style={styles.flex0}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate('addEventPrice', { ar_name, en_name, date, time, event_hours, address, latitude, longitude, ar_description,  en_description, organization_id, category_id, tickets })} style={styles.headerBtn}>

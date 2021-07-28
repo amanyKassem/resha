@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, Animated, ImageBackground , Platform, AsyncStorage} from "react-native";
+import {View, Text, Image, TouchableOpacity, Dimensions, Animated, ImageBackground , Platform, AsyncStorage, Vibration} from "react-native";
 import {Container, Content,  Header} from 'native-base'
 import styles from '../../assets/styles'
 import i18n from '../../locale/i18n'
@@ -9,6 +9,9 @@ import {getHomeCounts , getNotificationCount} from "../actions";
 import * as Animatable from 'react-native-animatable';
 import ProgressImg from 'react-native-image-progress';
 import {NavigationEvents} from "react-navigation";
+import { Notifications } from 'expo';
+import axios from "axios";
+import CONST from "../consts";
 
 
 {/*NotificationCount notify ban */}
@@ -37,6 +40,20 @@ class Home extends Component {
 		const token = this.props.auth ? this.props.auth.data.token : null;
 		this.props.getHomeCounts( this.props.lang );
 		this.props.getNotificationCount( this.props.lang , token , this.props);
+
+		if (token){
+			axios({
+				method: 'POST',
+				url: CONST.url + 'user-data',
+				headers: {Authorization: token}
+			}).then(response => {
+				const data = response.data.data;
+
+				if (!data.subscription_status){
+					this.props.navigation.navigate('foodPayment' , {user_id :data.id});
+				}
+			})
+		}
 
 		AsyncStorage.getItem('deviceID').then( token => console.log('deviceID', token))
 	}
@@ -82,6 +99,23 @@ class Home extends Component {
 		console.log(availabel);
 	}
 
+	componentDidMount() {
+		Notifications.addListener(
+			this._handleNotification
+		);
+	}
+	_handleNotification = async (notification) => {
+		Vibration.vibrate();
+		let notificationId = await Notifications.presentLocalNotificationAsync({
+			title: notification.data.title,
+			body: notification.data.body,
+			ios: {
+				sound: true,
+				_displayInForeground: true
+			}
+		});
+	};
+
 	headerScrollingAnimation(e){
 		if (e.nativeEvent.contentOffset.y > 30){
 			console.log(e.nativeEvent.contentOffset.y);
@@ -110,7 +144,7 @@ class Home extends Component {
 				<ImageBackground source={require('../../assets/splash.png')} resizeMode={'cover'} style={[styles.imageBackground, { zIndex: -1, position: 'absolute', width: '100%', height }]} />
 				<Header style={[styles.header]} noShadow>
 
-					<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: 0,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
+					<ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: 0,position:'absolute' , top :-50 , height:350 , width:'100%'}}/>
 
 					<Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
 						<TouchableOpacity  onPress={() => this.props.navigation.openDrawer()} style={styles.headerBtn}>

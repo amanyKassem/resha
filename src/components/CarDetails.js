@@ -59,7 +59,7 @@ class CarDetails extends Component {
 
             let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
             getCity += userLocation.latitude + ',' + userLocation.longitude;
-            getCity += '&key=AIzaSyCiptKZt0io7ZOgjNPQ0yvjST9AQrUCW5Y&language= '+this.props.lang +'&sensor=true';
+            getCity += '&key=AIzaSyDCdYroxCIXCe6iCwvPUdV-I0TsaBPnXlY&language= '+this.props.lang +'&sensor=true';
 
             console.log('locations data', getCity);
 
@@ -198,12 +198,6 @@ class CarDetails extends Component {
 
     render() {
 
-        const backgroundColor = this.state.backgroundColor.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['rgba(0, 0, 0, 0)', '#00000099']
-        });
-
-
         let whatsNum = '';
 
         if(this.props.profileDetails && Platform.OS == 'ios')
@@ -216,8 +210,8 @@ class CarDetails extends Component {
                 { this.renderLoader() }
 
                 <Header style={[styles.header]} noShadow>
-                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-45 , height:350 , width:'100%'}}/>
-                    <Animated.View style={[ styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
+                    <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={{zIndex: -1,position:'absolute' , top :-50 , height:350 , width:'100%'}}/>
+                    <View style={[ styles.animatedHeader]}>
                         <TouchableOpacity  onPress={() => this.props.navigation.navigate(this.props.navigation.state.params.backRoute)} style={styles.headerBtn}>
                             <Image source={require('../../assets/images/back_white.png')} style={[styles.headerMenu, styles.transform]} resizeMode={'contain'} />
                         </TouchableOpacity>
@@ -232,10 +226,10 @@ class CarDetails extends Component {
                             </TouchableOpacity>
                         </View>
 
-                    </Animated.View>
+                    </View>
                 </Header>
 
-                <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent}  onScroll={e => this.headerScrollingAnimation(e) }>
+                <Content   contentContainerStyle={styles.flexGrow} style={styles.homecontent} >
                     <NavigationEvents onWillFocus={payload => this.onFocus(payload)} />
                     <ImageBackground source={require('../../assets/images/bg_app.png')} resizeMode={'cover'} style={styles.imageBackground}>
                         {

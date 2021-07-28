@@ -875,9 +875,9 @@ const styles = ({
         width:300 ,
         height:300 ,
         position:'absolute' ,
-        bottom:Platform.OS === 'ios' ? -200 : -230 ,
-        left: Platform.OS === 'ios' ? 10 : -60,
-        marginBottom:30,
+        bottom:Platform.OS === 'ios' ? -185 : -230 ,
+        left: Platform.OS === 'ios' ? 10 : I18nManager.isRTL ? -60 : 60,
+        marginBottom: Platform.OS === 'ios' ? 30 : 50,
         overflow:'hidden',
         // alignItems: 'center',
         // justifyContent: 'center'

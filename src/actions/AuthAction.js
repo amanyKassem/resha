@@ -4,11 +4,11 @@ import CONST from '../consts';
 import {Toast} from "native-base";
 import i18n from '../../locale/i18n'
 
-export const userLogin = ({phone, password, deviceId, type}, lang, props) => {
+export const userLogin = ({phone, password, expoPushToken, type}, lang, props) => {
     return (dispatch) => {
         dispatch({type: 'login_user'});
 
-        axios.post( CONST.url + 'login', {mobile:phone, password, device_id: deviceId, type, lang})
+        axios.post( CONST.url + 'login', {mobile:phone, password, device_id: expoPushToken, type, lang})
             .then(response => {
                 if (response.data.data.ban == 1){
 					Toast.show({

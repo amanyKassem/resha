@@ -24,9 +24,7 @@ class ActivationCode extends Component {
     }
 
     componentWillMount() {
-        this.props.getSendActivationCode( this.props.lang ,
-            this.props.navigation.state.params.mobile,
-        )
+        this.props.getSendActivationCode( this.props.lang , this.props.navigation.state.params.mobile, )
 
     }
 

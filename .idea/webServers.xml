@@ -9,6 +9,20 @@
           </advancedOptions>
         </fileTransfer>
       </webServer>
+      <webServer id="53055c17-e482-4103-8fbb-780d63de6cb6" name="Reesh" url="http://reesh1.com">
+        <fileTransfer rootFolder="/public_html" host="reesh1.com" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="16dcbdac-70ff-41e1-a698-38bdf87395b0" name="c.mta.sa" url="http://95.217.88.86">
+        <fileTransfer rootFolder="/public_html" host="95.217.88.86" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>
