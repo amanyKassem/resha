@@ -244,11 +244,8 @@ let { status } = await Location.requestPermissionsAsync();
                             this.props.profileDetails.products.map((product, i) =>{
 
                                 return (
-<<<<<<< HEAD
-                                    <TouchableOpacity style={{ marginBottom:3, width: '33%' }} key={i} onPress={() => this.props.navigation.navigate('productDetails', {products: this.props.profileDetails.products, product_id: product.product_id , backRoute:'familyDetails', index: i})}>
-=======
+
                                     <TouchableOpacity style={{ marginBottom:3, width: '33%' }} key={i} onPress={() => this.props.navigation.navigate('productDetails', {products: this.props.profileDetails.products, product_id: product.product_id , backRoute:'restCafeDetails', index: i})}>
->>>>>>> fef962f7ba6db4dabf1a8d39476c79cb23445ae6
                                         <ProgressImg source={{ uri: product.images[0].image }} style={[styles.productImg, { alignSelf: 'center' }]} resizeMode={'cover'}/>
                                     </TouchableOpacity>
                                 )
