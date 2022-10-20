@@ -45,7 +45,7 @@
     "react-native-modal-datetime-picker": "^9.1.0",
     "react-native-progress": "^3.6.0",
     "react-native-qrcode": "^0.2.7",
-    "react-native-reanimated": "~1.13.0",
+    "react-native-reanimated": "~2.10.0",
     "react-native-screens": "~2.10.1",
     "react-native-star-rating": "^1.1.0",
     "react-native-svg": "12.1.0",
